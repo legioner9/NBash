@@ -6,22 +6,35 @@ eval ${rand_value}="my_value"
 
 echo ${!rand_value}
 
-f1() {
 
-    rand_value=rand_$(printf '%s' $(echo "$RANDOM" | md5sum) | cut -c 1-20)
 
-    eval ${rand_value}="from f1"
-
-    echo 
-
+g1() {
+    local value="g1"
+    echo "from g1: ${value}"
 }
 
-f2() {
+g2() {
+    value="g2"
+    g1
+    echo "from g2: ${value}"
+}
+value="global"
+g2
 
-    rand_value=rand_$(printf '%s' $(echo "$RANDOM" | md5sum) | cut -c 1-20)
+l1() {
+     value="l1"
+    echo "from l1: ${value}"
+}
 
-    eval ${rand_value}="from f2"
+l2() {
+    value="l2"
+    l1
+    echo "from l2: ${value}"
+}
 
-    f1
+value="global"
+l2
 
+value(){
+    echo
 }
