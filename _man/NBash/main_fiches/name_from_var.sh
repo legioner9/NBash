@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/NBash/main_fiches/name_from_var.sh"
+filename="${COMMUNIS_PATH}/NBash/main_fiches/name_from_var.sh"
 
 echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 

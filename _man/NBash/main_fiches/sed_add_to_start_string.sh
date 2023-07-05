@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/NBash/main_fiches/sed_add_to_start_string.sh"
+filename="${COMMUNIS_PATH}/NBash/main_fiches/sed_add_to_start_string.sh"
 
 echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 

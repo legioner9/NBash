@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/cp_command/cp__parent/cp_.sh"
+filename="${COMMUNIS_PATH}/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/cp_command/cp__parent/cp_.sh"
 
 echo -e "${HLIGHT}---start file: $filename ---${NORMAL}" # start file
 
@@ -10,7 +10,7 @@ echo -e "${HLIGHT}---start file: $filename ---${NORMAL}" # start file
 
 #up_lib_git ${FUNCNAME[0]}
 
-cd $HOME/start/communis/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/cp_command/cp__parent || qq_exit
+cd ${COMMUNIS_PATH}/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/cp_command/cp__parent || qq_exit
 
 cp --parents ./A/C/bC ./B
 cp ./A/C/bC ./B

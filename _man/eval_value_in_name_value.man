@@ -1,4 +1,4 @@
-# file:///home/st/start/communis/Deploy_store/.qa/main_repo_fn/dir_cr_f_/_cr_f_/_debug/loop_intead_var/loop_1.sh
+# file://${COMMUNIS_PATH}/Deploy_store/.qa/main_repo_fn/dir_cr_f_/_cr_f_/_debug/loop_intead_var/loop_1.sh
 
     for ((i = 0; i < 4; i++)); do
 
@@ -19,7 +19,7 @@
     echo "\$adr_2=$adr_2"
     echo "\$adr_3=$adr_3"
 
-# file:///home/st/start/communis/Deploy_store/.qa/main_repo_fn/dir_cr_f_/cr_f_.sh
+# file://${COMMUNIS_PATH}/Deploy_store/.qa/main_repo_fn/dir_cr_f_/cr_f_.sh
 
         for ((i = 0; i < 100; i++)); do
 

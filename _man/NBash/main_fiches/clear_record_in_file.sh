@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/NBash/main_fiches/clear_record_in_file.sh"
+filename="${COMMUNIS_PATH}/NBash/main_fiches/clear_record_in_file.sh"
 
 echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 

@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="/home/st/start/communis/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/substrings/_deb/substr/length_substr.sh" 
+filename="${COMMUNIS_PATH}/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/substrings/_deb/substr/length_substr.sh" 
 
 echo -e "${HLIGHT}---start file://$filename with args: $@ ---${NORMAL}" # start file
 

@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/NBash/themes/pwd/pwd_fn.sh"
+filename="${COMMUNIS_PATH}/NBash/themes/pwd/pwd_fn.sh"
 
 echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 

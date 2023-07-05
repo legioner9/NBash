@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /home/st/start/communis/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/redirecting/upperconv
+cd ${COMMUNIS_PATH}/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/redirecting/upperconv
 . upperconv.sh input-file output-file
 
 cat input-file

@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/fiches_date/cp_file_with_date.sh"
+filename="${COMMUNIS_PATH}/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/fiches_date/cp_file_with_date.sh"
 
 echo -e "${HLIGHT}---start file: $filename ---${NORMAL}" # start file
 

@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/NBash/themes/pwd/dir/test.sh"
+filename="${COMMUNIS_PATH}/NBash/themes/pwd/dir/test.sh"
 
 echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 
@@ -10,7 +10,7 @@ echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 
 #up_lib_git
 
-. "$HOME/start/communis/NBash/themes/pwd/pwd_fn.sh"
+. "${COMMUNIS_PATH}/NBash/themes/pwd/pwd_fn.sh"
 
 ppwd
 pwd

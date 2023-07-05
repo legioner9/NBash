@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/NBash/commands/set.sh"
+filename="${COMMUNIS_PATH}/NBash/commands/set.sh"
 
 echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 

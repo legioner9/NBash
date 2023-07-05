@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/time_conditions/time_variant/cp_early.sh"
+filename="${COMMUNIS_PATH}/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/time_conditions/time_variant/cp_early.sh"
 
 echo -e "${HLIGHT}---start file://$filename ---${NORMAL}" # start file
 
@@ -24,8 +24,8 @@ echo -e "${GREEN}\$t_copy = $t_copy${NORMAL}" #print variable
 #     cp -f orig copy
 # fi
 
-orig=/home/st/start/communis/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/time_conditions/time_variant/orig
-copy=/home/st/start/communis/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/time_conditions/time_variant/copy
+orig=${COMMUNIS_PATH}/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/time_conditions/time_variant/orig
+copy=${COMMUNIS_PATH}/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/time_conditions/time_variant/copy
 
 file_1_laterch_2_3exec $orig $copy "cp -f $orig $copy"
 

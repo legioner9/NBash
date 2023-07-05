@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/if_return_echo/2.sh" 
+filename="${COMMUNIS_PATH}/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/if_return_echo/2.sh" 
 
 echo -e "${HLIGHT}---start file://$filename ---${NORMAL}" # start file
 

@@ -22,7 +22,7 @@
 
 ## fich array 775
 
-    $HOME/start/communis/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/fiches_array/arr_prem_775.sh
+    ${COMMUNIS_PATH}/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/fiches_array/arr_prem_775.sh
 Усложним задачу и сделаем скрипт, который будет выводить все файлы из указанной директории, которые имеют права доступа 755 : arr_prem_775.sh
 
 ## assoc array

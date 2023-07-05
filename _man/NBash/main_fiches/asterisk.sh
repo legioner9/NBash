@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/NBash/main_fiches/asterisk.sh"
+filename="${COMMUNIS_PATH}/NBash/main_fiches/asterisk.sh"
 
 echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 
@@ -12,7 +12,7 @@ echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 
 unset filename
 
-cd $HOME/start/communis/NBash/main_fiches/
+cd ${COMMUNIS_PATH}/NBash/main_fiches/
 
 declare i
 i=0

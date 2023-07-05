@@ -9,14 +9,14 @@ filename="$HOME/"
 idir=$(pwd)
 
 # cd "$(prs_f -d $filename)" || qq_exit "$(prs_f -d filename) not found"
-# cd /home/st/start/communis/Store/TGU/Анализ_данных_pdf/PT/5
+# cd ${COMMUNIS_PATH}/Store/TGU/Анализ_данных_pdf/PT/5
 # touch bind.html
 # for ((i = 1; i < 9; i++)); do
 #     echo -e "${BLUE}--- cat $i.html >> bind.html ---${NORMAL}" #sistem info mesage
 #     cat $i.html >>bind.html
 # done
 
-cd /home/st/start/communis/Store/TGU/Риск_менеджмент_pdf
+cd ${COMMUNIS_PATH}/Store/TGU/Риск_менеджмент_pdf
 
 rm bind.html
 touch bind.html

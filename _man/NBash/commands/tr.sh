@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/NBash/commands/tr.sh"
+filename="${COMMUNIS_PATH}/NBash/commands/tr.sh"
 
 echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 

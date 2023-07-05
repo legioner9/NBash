@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/cp_command/cp__backup/t_numbered/cp_.sh"
+filename="${COMMUNIS_PATH}/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/cp_command/cp__backup/t_numbered/cp_.sh"
 
 echo -e "${HLIGHT}---start file: $filename ---${NORMAL}" # start file
 
@@ -10,7 +10,7 @@ echo -e "${HLIGHT}---start file: $filename ---${NORMAL}" # start file
 
 #up_lib_git ${FUNCNAME[0]}
 
-cd_h "$HOME/start/communis/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/cp_command/cp__backup/t_numbered"
+cd_h "${COMMUNIS_PATH}/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/cp_command/cp__backup/t_numbered"
 
 cp --backup=t a b
 

@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/NBash/main_fiches/sed_remove_with_path.sh"
+filename="${COMMUNIS_PATH}/NBash/main_fiches/sed_remove_with_path.sh"
 
 echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 

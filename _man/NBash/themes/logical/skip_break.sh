@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/NBash/themes/logical/skip_break.sh"
+filename="${COMMUNIS_PATH}/NBash/themes/logical/skip_break.sh"
 
 echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 

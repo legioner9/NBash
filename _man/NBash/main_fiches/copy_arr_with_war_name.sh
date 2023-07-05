@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-# filename="$HOME/start/communis/NBash/main_fiches/copy_arr_with_war_name.sh"
+# filename="${COMMUNIS_PATH}/NBash/main_fiches/copy_arr_with_war_name.sh"
 
 # echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 
@@ -10,7 +10,7 @@
 
 #up_lib_git ${FUNCNAME[0]}
 
-# path=$HOME/start/communis/NBash/main_fiches/dir/file.var
+# path=${COMMUNIS_PATH}/NBash/main_fiches/dir/file.var
 
 # arr=$(cat "$path")
 

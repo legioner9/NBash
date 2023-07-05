@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/NBash/deep/function/2_ret_echo.sh"
+filename="${COMMUNIS_PATH}/NBash/deep/function/2_ret_echo.sh"
 
 echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 

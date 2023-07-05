@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/NBash/main_fiches/ls_arr.sh"
+filename="${COMMUNIS_PATH}/NBash/main_fiches/ls_arr.sh"
 
 echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 

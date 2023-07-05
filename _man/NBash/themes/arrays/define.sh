@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/NBash/themes/arrays/define.sh"
+filename="${COMMUNIS_PATH}/NBash/themes/arrays/define.sh"
 
 echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 

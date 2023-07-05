@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/start/communis/NBash/commands/tput.sh"
+filename="${COMMUNIS_PATH}/NBash/commands/tput.sh"
 
 echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 
