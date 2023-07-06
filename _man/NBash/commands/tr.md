@@ -1,6 +1,6 @@
 ## [komanda-tr-v-linux](https://losst.ru/komanda-tr-v-linux)
 
-    st@fedora ~/start/communis (master)$ tr a b
+    st@fedora ${COMMUNIS_PATH} (master)$ tr a b
     refewaaa
     refewbbb
     frewqgrwgaaaaa

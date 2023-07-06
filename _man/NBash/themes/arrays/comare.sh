@@ -2,7 +2,7 @@
 
 #. "$HOME/.bashrc"
 
-filename="$HOME/st/start/communis/NBash/themes/arrays/comare.sh"
+filename="${COMMUNIS_PATH}/NBash/themes/arrays/comare.sh"
 
 echo -e "${HLIGHT}---start file: $filename---${NORMAL}" # start file
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cd ${HOME}/start/communis/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/exec || qq_exit
+cd ${COMMUNIS_PATH}/Deploy_store/.qa/main_repo_fn/dir_bash_/_bash_/_man/exec || qq_exit
 
 exec 0<data.txt
 
