@@ -1,0 +1,225 @@
+#!/bin/bash
+
+# Переменные
+
+# Переменные среды
+
+echo "Путь до нашего хомяка $HOME"
+
+echo "Стоимость компьютера \$1000"
+
+# Пользовательские переменные
+
+readonly COLOR="Зеленый"
+readonly COLOR_CODE="#008000"
+
+echo "Код цвета $COLOR - $COLOR_CODE"
+
+kernelVersion=$(uname -a)
+
+echo "$kernelVersion"
+
+# Математические операции
+
+someNumber=2
+anotherNumber=4
+
+summ=$((someNumber + anotherNumber))
+echo "summ of $someNumber and $anotherNumber is $summ"
+
+diff=$((someNumber - anotherNumber))
+echo "diff of $someNumber and $anotherNumber is $diff"
+
+div=$((someNumber / anotherNumber))
+echo "div of $someNumber and $anotherNumber is $div"
+
+mult=$((someNumber * anotherNumber))
+echo "mult of $someNumber and $anotherNumber is $mult"
+
+# someNumberFloat=2.56
+# summ=$(($someNumber + $someNumberFloat))
+# echo "summ of $someNumber and $someNumberFloat is $summ"
+
+# Массив
+
+# Индексированные массивы
+declare -a myArray
+myArray[0]=1
+myArray[1]=2
+myArray[2]=3
+
+
+myArray2=(One Two Three)
+
+echo "${myArray[2]}"
+echo "${myArray2[1]}"
+
+# Ассоциативные массивы
+
+declare -A myArrayA
+myArrayA[One]=1
+myArrayA[Two]=2
+myArrayA[Three]=3
+
+echo "${myArray[@]}"
+echo "${myArray2[@]}"
+echo "${!myArrayA[@]}"
+echo "${myArrayA[@]}"
+
+declare -A myArrayA2=(
+	[four]=4
+	[Five]="Five"
+	[six]=6
+)
+
+echo "${!myArrayA2[@]}"
+echo "${myArrayA2[@]}"
+echo "${myArrayA2[Five]}"
+
+echo $((myArrayA2[four] + myArrayA2[six]))
+
+# Операции с массивами
+
+# Длина массива
+echo "Количество элементов массива myArray: ${#myArray[@]}"
+
+declare -a array
+
+array[3]=3
+array[5]=5
+array[10]=10
+
+echo "Количество элементов массива array: " "${#array[@]}"
+echo "Количество элементов массива array: " "${#array[*]}"
+echo "Индексы элементов массива array: " "${!array[@]}"
+
+# Установка и удаление индексированных элементов массива
+
+unset array
+array[2]="Two"
+
+echo "Количество элементов массива array: " "${#array[@]}"
+echo "Индексы элементов массива array: " "${!array[@]}"
+
+# Добавление элемента в массив
+array[5]=3
+
+array+=(10)
+array+=(11)
+array+=(12)
+
+array+=("${myArray[@]}")
+
+echo "Количество элементов массива array: " "${#array[@]}"
+echo "Индексы элементов массива array: " "${!array[@]}"
+echo "Элементы массива array: " "${array[@]}"
+echo "${array[10]}"
+
+# if then
+
+# username=$USER
+
+# if grep $username /etc/passwd
+# then
+# 	echo "user $username exist"
+# fi
+
+username=user123
+
+if grep $username /etc/passwd
+then
+	echo "user $username exist"
+elif ls /home1
+	then
+		echo "ls home works"
+else
+	echo "user $username doesn't exist"
+fi
+
+# Сравнение чисел
+
+# -eq - равно (==)
+# -ge - больше или равно (>=)
+# -gt - больше (>)
+# -le - меньше или равно (<=)
+# -lt - меньше (<)
+# -ne - не равно (!=)
+
+num1=1
+num2=2
+num3=3
+
+if [ $num1 -eq $num2 ]
+then
+	echo "Yes"
+elif [ $num1 -gt $num3 ]
+	then
+	echo "num1 less then num3"
+else
+	echo "No"
+fi
+
+# Сравнение строк
+
+# = - равно
+# != - не равно
+# < - меньше
+# > - больше
+# -n - истина если длина строки не нулевая
+# -z - истина если длина строки нулевая
+
+someString="Tes"
+anotherString="Test"
+thirdString=""
+
+someString=$thirdString
+
+if [ "$someString" = "$anotherString" ]
+then
+	echo "$someString = $anotherString"
+elif [ "$someString" \> "$anotherString" ]
+	then
+		echo "$someString > $anotherString"
+elif [ "$someString" \< "$anotherString" ]
+	then
+		echo "$someString < $anotherString"
+# elif [ $someString -z ]
+# 	then
+# 		echo "someString is empty"
+else
+	echo "someString=$someString"
+fi
+
+# Проверка файлов
+
+# -d name - истина если файл существует и является директорией
+# -e name - истина если существует файл
+# -f name - истина если файл существует и является файлом
+# -r name - истина если файл существует и доступен для чтения
+# -s name - истина если файл существует и он пустой
+# -w name - истина если файл существует и доступен для записи
+# -x name - истина если файл существует и доступен для исполнения
+
+# -nt - проверяется является ли файл более новым
+# по сравнению с другим
+
+# -ot - проверяется является ли файл более старым 
+# по сравнению с другим
+
+# -O name - проверяет что файл существует и его владелец 
+# текущий пользователь
+
+# -G name - проверяет что файл существует и индентификатор 
+# группы соответствует идентификатору группы текущего пользователя
+
+echo "Files and directories"
+
+homeDir=$HOME
+scriptsDir="/Bash/scripts"
+
+if [ -w "$homeDir$scriptsDir/someFile1" ]
+then
+	echo "Yes"
+else
+	echo "No"
+fi

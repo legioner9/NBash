@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# break - прерывает выполнение цикла
+# continue - прерывает выполнение текущей итерации в цикле
+
+# Генератор паролей
+echo "-----------------------------------------"
+password=""
+
+while [[ ${#password} -ne 30 ]]
+do
+    rand_char=$(shuf -e -n1 {A..Z} {a..z} {0..9})
+    
+    if [[ $rand_char =~ [AaBbDdCcDdEeFfiz] ]]
+    then
+        echo "continue trigger"
+        continue
+    fi
+
+    password+="$rand_char"
+
+done
+
+echo "Ваш новый пароль: $password"

@@ -1,0 +1,50 @@
+#!/bin/bash
+
+validint()
+{
+	number="$1"
+	min="$2"
+	max="$3"
+
+	# Проверка на пустой ввод
+	if [ -z $number ]; then
+		echo "Пустой ввод. Введите число" >&2
+		return 1
+	fi
+
+	# Проверка на знак минус
+	if [ "${number%${number#?}}" = "-" ]; then
+		testvalue="${number#?}"
+	else
+		testvalue="$number"
+	fi
+
+	# Проверка на то что введено число
+	nodigits="$(echo $testvalue | sed 's/[[:digit:]]//g')"
+
+	if [ ! -z "$nodigits" ]; then
+		echo "Неверный формат числа. Введите только цифры без разделителей." >&2
+		return 1
+	fi
+
+	# Основное сравнение
+	if [ ! -z $min ]; then
+		if [ "$number" -lt "$min" ]; then
+			echo "Введенное значение числа меньше заданного нижнего предела $min" >&2
+			return 1
+		fi
+	fi
+
+	if [ ! -z $max ]; then
+		if [ "$number" -gt "$max" ]; then
+			echo "Введено значение числа больше заданного верхнего предела $max" >&2
+			return 1
+		fi
+	fi
+
+	return 0
+}
+
+# if validint "$1" "$2" "$3" ; then
+# 	echo "Заданное число находится в диапазоне $min - $max"
+# fi

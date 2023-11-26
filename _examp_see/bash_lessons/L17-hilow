@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# hilow -- Простая игра "угадай число"
+biggest=100 # Максимальное возможное число
+guess=0 # Число, предложенное игроком
+guesses=0 # Количество попыток
+
+number=$(( $$ % $biggest )) # Случайное число от 1 до $biggest
+
+echo "Guess a number between 1 and $biggest"
+    while [ "$guess" -ne $number ] ; do
+        /bin/echo -n "Guess? " ; read guess
+        echo "guess=$guess"
+        if [ "$guess" -lt $number ] ; then
+           echo "... bigger!"
+        elif [ "$guess" -gt $number ] ; then
+           echo "... smaller!"
+        fi
+        guesses=$(( $guesses + 1 ))
+        echo "guesses=$guesses"
+    done
+echo "Right!! Guessed $number in $guesses guesses."
+exit 0

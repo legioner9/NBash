@@ -1,0 +1,100 @@
+#!/bin/bash
+
+archivedir="$HOME/.deleted-files"
+realrm="$(which rm)"
+move="$(which mv)"
+dest=$(pwd)
+
+if [ ! -d $archivedir ] ; then
+	echo "$0: Не найден каталог с удаленными файлами" >&2
+	exit 1
+fi
+
+cd $archivedir
+
+# Если сценарий запущен без аргументов выводим список файлов
+if [ $# -eq 0 ] ; then
+	echo "Содержимое архива удаленных файлов (отсортировано по дате):"
+	ls | sed -e 's/\([[:digit:]][[:digit:]]\.\)\{4\}//g' \
+	-e 's/\([[:digit:]][[:digit:]]\-\)//g'
+	
+	exit 0
+fi
+
+# Если пользователь задал шаблон для поиска.
+matches="$(ls -d *"$1" 2> /dev/null | wc -l)"
+
+if [ $matches -eq 0 ] ; then
+	echo "Нет совпадений для \"$1\" в архиве удаленных." >&2
+	exit 1
+fi
+
+if [ $matches -gt 1 ] ; then
+	echo "Более одного совпадения в архиве:"
+	index=1
+	for name in $(ls -td *"$1")
+	do
+		datetime="$(echo $name | cut -c1-14 | awk -F. '{ print $5"/"$4" в "$3":"$2":"$1 }')"
+		filename="$(echo $name | cut -c16-)"
+		if [ -d $name ] ; then
+			filecount="$(ls $name | wc -l | sed 's/[^[:digit:]]//g')"
+			echo " $index) $filename (содержит = ${filecount} элементов, удалено = $datetime)"
+		else
+			size="$(ls -sdk1 $name | awk '{ print $1 }' )"
+			echo " $index) $filename (размер = ${size}Кб, удалено = $datetime)"
+		fi
+		index=$(( $index + 1 ))
+	done
+	
+	echo ""
+
+	echo -n "Какую версию $1 вы желаете восстановить ('0' для выхода)? [1] : "
+	read answer
+
+	if [ ! -z "$(echo $answer | sed 's/[[:digit:]]//g')" ] ; then
+		echo "$0: Восстановление отменено пользователем: неверный ввод." >&2
+		exit 1
+	fi
+
+	if [ ${answer:=1} -ge $index ] ; then
+		echo "$0: Восстановление отменено пользователем: выбран индекс больше максимального"  >&2
+		exit 1
+	fi
+
+	if [ $answer -lt 1 ] ; then
+		echo "$0: Восстановление отменено пользователем" >&2
+		exit 1
+	fi
+
+	restore="$(ls -td1 *"$1" | sed -n "${answer}p")"
+
+	if [ -e "$dest/$1" ] ; then
+		echo "\"$1\" уже существует в этом каталоге, невозможно перезаписать." >&2
+		exit 1
+	fi
+
+	echo -n "Восстановление файла \"$1\" ... "
+	$move "$restore" "$dest/$1"
+	echo "Завершено."
+
+	echo -n "Удалить остальные резервные копии файла из хранилища? [y] "
+	read answer
+
+	if [ ${answer:=y} = "y" ] ; then
+		$realrm -rf *"$1"
+		echo "Удалено."
+	else
+		echo "Оставшиеся резервные копии сохранены"
+	fi
+else
+	if [ -e "$dest/$1" ] ; then
+		echo "\"$1\" уже существует в этом каталоге, невозможно перезаписать." >&2
+		exit 1
+	fi
+
+	restore="$(ls -d *"$1")"
+
+	echo -n "Восстановление файла \"$1\" ... "
+	$move "$restore" "$dest/$1"
+	echo "Завершено."
+fi

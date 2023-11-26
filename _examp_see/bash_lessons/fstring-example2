@@ -1,0 +1,22 @@
+
+nroff (short for "new roff") is a text-formatting program on Unix and Unix-like operating systems. It produces output suitable for simple fixed-width printers and terminal windows. It is an integral part of the Unix help system, being used to format man pages for display.
+
+nroff and the related troff were both developed from the original roff. While nroff was intended to produce output on terminals and line printers, troff was intended to produce output on typesetting systems. Both used the same underlying markup and a single source file could normally be used by nroff or troff without change.
+
+History
+nroff was written by Joe Ossanna for Version 2 Unix,[1] in Assembly language and then ported to C.
+
+It was a descendant of the RUNOFF program from CTSS, the first computerized text-formatting program, and is a predecessor of the Unix troff document processing system.
+
+Variants
+The Minix operating system, among others, uses a clone of nroff called cawf by Vic Abell, based on awf, the Amazingly Workable Formatter designed in awk by Henry Spencer. These are not full replacements for the nroff/troff suite of tools, but are sufficient for display and printing of basic documents and manual pages.
+
+In addition, a simplified version of nroff is available in Ratfor source code form as an example in the book Software Tools by Brian Kernighan and P. J. Plauger.[2]
+
+See also
+troff
+groff
+TeX
+LaTeX
+man page
+Lout

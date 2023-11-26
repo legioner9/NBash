@@ -1,0 +1,38 @@
+#!/bin/bash
+
+RAND_NUMBER=$((1 + RANDOM % 100))
+readonly RAND_NUMBER
+
+step=0
+array=()
+
+while [ $step -le $RAND_NUMBER ]
+do
+    array+=("$step")
+    step=$((step + 1))
+done
+
+echo "${array[@]}"
+
+echo "-----------------------------------------"
+
+unset array
+
+for ((step = 0; step <= $RAND_NUMBER; step++))
+{
+    array+=("$step")
+}
+
+echo "${array[@]}"
+
+# Генератор паролей
+echo "-----------------------------------------"
+password=""
+
+while [[ ${#password} -ne 30 ]]
+do
+    rand_char=$(shuf -e -n1 {A..Z} {a..z} {0..9})
+    password+="$rand_char"
+done
+
+echo "Ваш новый пароль: $password"

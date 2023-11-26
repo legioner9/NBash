@@ -1,0 +1,47 @@
+#!/bin/bash
+
+prettybc="./L14-prettybc"
+
+scale=0
+
+show_help() {
+	cat << EOF
+	В дополнение к стандартным функциям калькулятор так же поддерживает:
+	a % b - остаток от деления a на b
+	a ^ b - возвести a в степень b
+	s(x) - синус x, x в радианах
+	c(x) - косинус x, x в радианах
+	a(x) - арктангенс x, в радианах
+	l(x) - натуральный логорифм x
+	e(x) - экспоненциальный логарифм возведения e в x
+	scale N - точность вычислений N знаков после запятой
+EOF
+}
+
+if [ $# -gt 0 ] ; then
+	exec $prettybc "$@"
+fi
+
+echo "Это простой калькулятор. Введите \"help\" для справки, \"quit\" чтобы выйти"
+echo "Точность по умолчанию равна $scale знаков после запятой"
+
+echo -n "calculator> "
+
+while read command args
+do
+	echo "command=$command"
+	echo "args=$args"
+	
+	case $command
+		in
+		quit|exit ) exit 0 ;;
+		help|\? ) show_help ;;
+		scale ) scale=$args ;;
+		*) $prettybc -p $scale "$command" "$args" ;;
+	esac
+	echo -n "calculator> "
+done
+
+echo ""
+
+exit 0

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Подключение библиотеки
+. library.sh
+
+initializeANSI
+
+echo "Поиск команды в PATH [введите название команды]:"
+read -r answer
+check_command_in_PATH $answer
+case $? in
+	0 ) echo -e "${boldon}$answer ${greenf}найдено ${reset}${boldon}в PATH${reset}" ;;
+	1 ) echo -e "${boldon}$answer ${yellowf}не найдено или не является исполняемым${boldoff}" ;;
+	2 ) echo -e "${boldon}$answer ${redf}не найдено${reset} в PATH ${boldoff}" ;;
+esac
+
+echo "Представление большого числа в удобном формате [введите число]:"
+read -r answer
+nicenumber $answer
+
+
+echo "Проверка високосного года [введите год цифрами]:"
+read -r answer
+is_leap_year $answer
+case $? in
+	0 ) echo "Да $answer - високосный";;
+	1 ) echo "Нет $answer - не високосный" ;;
+esac

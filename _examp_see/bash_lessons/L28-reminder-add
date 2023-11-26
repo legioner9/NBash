@@ -1,0 +1,85 @@
+#!/bin/bash
+
+reminderfile="$HOME/.reminderfile"
+
+is_day_name() {
+	case $(echo "$1" | tr '[:upper:]' '[:lower:]') in
+		mon*|tue*|wed*|thu*|fri*|sat*|sun*) return 0 ;;
+		* ) return 1 ;;
+	esac
+}
+
+is_month_name() {
+	case $(echo "$1" | tr '[:upper:]' '[:lower:]') in
+		jan*|feb*|mar*|apr*|may|jun*) return 0 ;;
+		jul*|aug*|sep*|oct*|nov*|dec*) return 0 ;;
+		* ) return 1 ;;
+	esac
+}
+
+normalize() {
+	result=$(echo -n "$1" | cut -c1 | tr '[:lower:]' '[:upper:]')
+	result+=$(echo "$1" | cut -c2-3 | tr '[:upper:]' '[:lower:]')
+	echo "$result"
+}
+
+if [ ! -w "$HOME" ] ; then
+	echo "$0: Домашняя директория недоступна для записи ($HOME)" >&2
+	exit 1
+fi
+
+echo "Reminder - утилита для напоминаний о событиях"
+echo -n "Дата события (day mon, day month year, dayname): "
+read -r var1 var2 var3
+
+if is_day_name "$var1" ; then
+	if [ -n "$var2" ] ; then
+		echo "Неверный ввод данных, введите только название дня недели" >&2
+		exit 1;
+	fi
+
+	date="$(normalize "$var1")"
+
+else
+	if [ -z "$var2" ] ; then
+		echo "Невеный ввод данных, неизвестное название дня недели" >&2
+		exit 1
+	fi
+
+	if [ -n "$(echo "$var1" | sed 's/[[:digit:]]//g')" ] ; then
+		echo "Неверный ввод данных, введите сначала день с помощью цифр" >&2
+		exit 1
+	fi
+
+	if [ "$var1" -lt 1 ] || [ "$var1" -gt 31 ] ; then
+		echo "Неверный ввод данных, день месяца может быть только числом от 1 до 31" >&2
+		exit 1
+	fi
+
+	if ! is_month_name "$var2" ; then
+		echo "Неверный ввод данных, неизвестное название месяца" >&2
+		exit 1
+	fi
+
+	var2="$(normalize "$var2")"
+
+	if [ -z "$var3" ] ; then
+		date="$var1$var2"
+	else
+		if [ -n "$(echo "$var3" | sed 's/[[:digit:]]//g')" ] ; then
+			echo "Неверный ввод данных, третье поле должно быть годом" >&2
+			exit 1
+		elif [ "$var3" -lt 2023 ] || [ "$var3" -gt 2500 ] ; then
+			echo "Неверный ввод данных, значение года должно быть не менее чем 2023 и не более чем 2500" >&2
+			exit 1
+		fi
+		date="$var1$var2$var3"
+	fi
+fi
+
+echo -n "Однострочное описание напоминания: "
+read -r description
+
+echo "$(echo "$date"|sed 's/ //g')|$description" >> "$reminderfile"
+
+exit 0

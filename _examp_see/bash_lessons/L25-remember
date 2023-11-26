@@ -1,0 +1,13 @@
+#!/bin/bash
+
+remember_file="$HOME/.remember"
+
+if [ $# -eq 0 ]; then
+	echo "Введите свою заметку и закончите ввод с помощью ctrl+D (^D):"
+	cat - >> $remember_file
+else
+	# Записать в файл все полученные аргументы
+	echo "$@" >> $remember_file
+fi
+
+exit 0

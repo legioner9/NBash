@@ -1,0 +1,57 @@
+#!/bin/bash
+
+prettybc="./L14-prettybc"
+
+# Функция преобразования размеров файлов
+
+readablesize()
+{
+	if [ $1 -ge 1048576 ] ; then
+		echo "$($prettybc -p 2 $1 / 1048576)Gb"
+	elif [ $1 -ge 1024 ] ; then
+		echo "$($prettybc -p 2 $1 / 1024)Mb"
+	else
+		echo "${1}Kb"
+	fi
+}
+
+# Основной сценарий
+
+if [ $# -gt 1 ] ; then
+	echo "Использование: $0 [dirname]" >&2
+	exit 1
+elif [ $# -eq 1 ] ; then
+	# Альтерантивный короткий вариант от @balaamster
+	# { [ -d "$1" ] && cd $1; } || \
+	# echo "Ошибка: Заданный каталог не сущестует" >&2; exit 1
+	cd "$@" 2> /dev/null
+	if [ $? -ne 0 ] ; then
+		echo "Ошибка: Заданный каталог не сущестует" >&2
+		exit 1
+	fi
+fi
+
+for file in *
+do
+	if [ -d "$file" ] ; then
+		size=$(ls "$file" | wc -l | sed 's/[^[:digit:]]//g')
+		if [ $size -eq 1 ] ; then
+			echo "$file ($size файл)|"
+		elif [ $size -gt 1 ] && [ $size -lt 5 ] ; then
+			echo "$file ($size файла)|"
+		else
+			echo "$file ($size файлов)|"
+		fi
+	else
+		size="$(ls -sk "$file" | awk '{print $1}')"
+		echo "$file ($(readablesize $size))|"
+	fi
+done | \
+	sed 's/ /^^^^^/g' | \
+	xargs -n 2 | \
+	sed 's/\^\^\^\^\^/ /g' | \
+	awk -F\| '{ printf "%-39s %-39s\n", $1, $2 }'
+
+exit 0
+
+

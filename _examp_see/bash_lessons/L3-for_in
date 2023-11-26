@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# for in
+readonly some_array=(one 2 three 4 five "six" seven eight nine ten "Hello my friend!")
+
+# Сказать про извлечение массива в кавычках и использование спецсимвола
+for item in "${some_array[@]}"
+do
+echo "$item"
+done
+
+# Дополнительный if на длину строки
+for item in "${some_array[@]}"
+do
+    if [[ ${#item} -eq 3 ]]
+        then
+            echo "$item length is equal to 3"
+    else
+            echo "$item length is not equal to 3"
+
+    fi
+done
+
+# Проверка на вхождение в значение подстроки или спецсимволов
+for item in "${some_array[@]}"
+do
+    if [[ $item =~ [@#$%\&*+=-] ]]
+    #if [[ $item =~ "th" ]]
+        then
+            echo "$item"
+    fi
+done
+
+# Вывод только директорий в заданном подкаталоге
+
+echo "----Вывод подкаталогов в заданном расположении----"
+for item in /home/stas0n/*
+do
+    if [ -d "$item" ]
+        then
+            echo "$item"
+    fi
+done
+
+# for в стиле С для заданного количества итераций
+echo "Цикл for для заданного количества итераций"
+new_array=()
+
+for ((i = 0; i <= 100; i++))
+{
+    new_array+=("$i")
+}
+
+echo "${new_array[@]}"

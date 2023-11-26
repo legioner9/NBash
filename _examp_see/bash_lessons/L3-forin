@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Цикл for in
+
+some_array=(one 2 three 4 five "si@x" seven 'eight%' nine ten 'He&$\llo my friend!')
+readonly some_array
+
+for item in "${some_array[@]}"
+do
+    echo "$item"
+done
+
+echo "--------------------------------"
+for item in "${some_array[@]}"
+do
+    if [[ ${#item} -eq 3 ]]
+    then
+        echo "$item Длина строки равна 3"
+    else
+        echo "$item Длина строки не равна 3"
+    fi
+done
+
+echo "--------------------------------"
+for item in "${some_array[@]}"
+do
+    if [[ $item =~ [@#$%\&*+=-] ]]
+    then
+        echo "$item - содержит спецсимволы"
+    fi
+done
+
+echo "--------------------------------"
+readonly PATH_FOR_CHECK="/home/stas0n/Загрузки/Test"
+
+for item in "$PATH_FOR_CHECK"/*
+do
+    if [ -d "$item" ]
+    then
+        echo "$item"
+    fi
+done
+
+
+echo "--------------------------------"
+new_array=()
+
+for ((i = 100; i >=0; i--))
+{
+    new_array+=("$i")
+}
+
+echo "${new_array[@]}"
+

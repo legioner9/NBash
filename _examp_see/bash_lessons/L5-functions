@@ -1,0 +1,102 @@
+#!/bin/bash
+
+# Функция без параметров
+print_hello () {
+    echo "Hello!"
+}
+
+print_hello
+
+# Передача параметров в функцию
+print_hello_to_user () {
+    echo "Hello, $1!"
+    echo "Hello, $2!"
+}
+
+print_hello_to_user Vasia Petia
+
+# Возврат значения через использование вывода в консоль
+error () {
+    echo "Some text here"
+    echo "Some text here2"
+}
+
+error_return=$( error )
+echo "Состояние возвращаемого значения ошибки функции: $?" 
+echo "Состояние возвращаемого значения ошибки функции: $error_return"
+
+# Различные коды возврата
+
+multiple_return () {
+    case $1 in
+        1) return 1;;
+        2) return 2;;
+        3) return 3;;
+        *) return 0;;
+    esac
+}
+
+multiple_return 1
+echo "Код возврата multiple_return: $?" 
+multiple_return 2
+echo "Код возврата multiple_return: $?" 
+multiple_return 3
+echo "Код возврата multiple_return: $?"
+multiple_return 7
+echo "Код возврата multiple_return: $?"
+
+# Проверка по статусу кода возврата
+multiple_return 1
+return_code=$?
+if [ $return_code -eq 0 ]
+then
+    echo "Все отработало штатно"
+elif [ $return_code -eq 1 ]
+then
+    echo "Код возврата 1"
+else
+    echo "Завершилось с ошибкой"
+fi
+
+multiple_return 5
+case $? in
+    1) echo "Вернулся код 1";;
+    2) echo "Вернулся код 2";;
+    3) echo "Вернулся код 3";;
+    *) echo "Вернулся код 0";;
+esac
+
+# Проверка существует ли файл с заданным именем и является ли он файлом
+check_file () {
+    if [ -f "$1" ]
+    then
+        echo "It's exist and it's a file"
+        return 0
+    elif [ -d "$1" ]
+    then
+        echo "It's exist but it's directory"
+        return 1
+    else
+        echo "Doesn't exist"
+        return 1
+    fi
+}
+name_for_check="TestDir2"
+check_file $name_for_check
+
+case $? in
+    1)
+        touch $name_for_check;;
+    
+    *)
+        cp $name_for_check $name_for_check.backup
+        echo "Привет я строчка, я добавилась" >> $name_for_check;;
+esac
+
+# Переопределение системной команды
+ls () {
+command ls -la
+}
+
+ls
+

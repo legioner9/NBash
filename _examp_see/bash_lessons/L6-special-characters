@@ -1,0 +1,168 @@
+#!/bin/bash
+
+# Это какой то комментарий
+echo "# - решетка" # вывод команды echo
+echo '# Комментарий'
+
+# ;
+
+echo 1; echo 2; echo 3
+
+# ;;
+some_number=40
+case $some_number in
+    1 | 2 | 3) echo "Число в диапазоне от 1 до 3";;
+    4 | 5 | 6) echo "Число в диапазоне от 4 до 6";;
+    7 | 8 | 9) echo "Число в диапазоне от 7 до 9";;
+    *) echo "Число не попало ни в какой диапазон";;
+esac
+
+# .
+touch .somefile
+cp .somefile ./somefile2
+
+# ""
+echo "Какая то строка"
+
+# ''
+echo '!Какая то строка'
+
+# ,
+some_number=$((12 + 4, 15 / 3, 100 * 10))
+echo $some_number
+
+for file in /{,usr/}bin/*calc
+do
+    if [ -x "$file" ]
+    then echo "$file"
+    fi
+done
+
+# \
+
+# /
+
+# ``
+some_ls=`ls -l`
+echo $some_ls
+
+# :
+
+# while :
+# do
+#     echo 1
+# done
+
+some_number=1
+if [ $some_number -eq 1 ]
+then :
+else
+    echo "Текст"
+fi
+
+# : > somefile2
+
+not_empty_func()
+{
+    :
+}
+
+# !
+
+while ! true
+do
+    echo 1
+done
+
+# *
+
+# ?
+
+# условие?результат_если_истина:результат_если_ложь
+
+(( some_var = some_number>10? 100 : 200 ))
+echo $some_var
+
+# $
+
+echo $some_number
+
+# ()
+
+(some_number=100; echo $some_number)
+echo $some_number
+
+some_array=(1 2 3 4)
+
+# {}
+
+echo \"{Эти,слова, выведутся,в,кавычках}\"
+
+echo {A..Z} {0..100}
+
+fileName=sometextfile
+
+{
+    read -r line1
+    read -r line2
+    read -r line3
+} < $fileName
+
+echo "$line1"
+echo "$line2"
+echo "$line3"
+
+{
+    echo "Какой то тестовый текст 123123123"
+    echo $(ls -la)    
+} > sometextfile.txt
+
+# []
+
+if [ $some_number -le 100 ]
+then
+    echo "Ok"
+fi
+
+echo ${some_array[0]}
+
+# (())
+
+a=$((5 + 10))
+echo $a
+
+echo "----------------------"
+(( a = 25 ))
+echo $a
+
+echo $(( a++ ))
+echo $(( ++a ))
+
+echo $(( a-- ))
+echo $(( --a ))
+
+# > < &>
+
+# |
+
+# ||
+
+a=60
+if [[ a -eq 30 ]] || [[ a -gt 40 ]]
+then
+    echo "Сработало одно из условий"
+fi
+
+# &
+
+for i in {1..10}
+do
+    echo $i
+    sleep 1
+done &
+
+for i in {a..z}
+do
+    echo $i
+    sleep 2
+done

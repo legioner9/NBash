@@ -1,0 +1,46 @@
+#!/bin/bash
+
+retries="10" # Число проверок по умолчанию
+action="lock" # Действие по умолчанию
+
+# Обработка опций
+while getopts "lur:" opt; do
+	case $opt in
+		l ) action="lock" ;;
+		u ) action="unlock" ;;
+		r ) retries="$OPTARG" ;;
+	esac
+done
+shift $((OPTIND - 1))
+
+# Проверка пустого ввода
+if [ $# -eq	 0 ]; then
+	cat << EOF >&2
+	Использование: $0 [-l|-u] [-r retries] LOCKFILE
+	Где -l блокировка (по-умолчанию), -u разблокировка, -r X
+	определяет максимальное количество попыток разблокировки.
+EOF
+exit 1
+fi
+
+# Проверка lockfile в системе
+if [ -z "$(which lockfile | grep -v '^no ')" ]; then
+	echo "$0 ошибка: утилита 'lockfile' не найдена" >&2
+	exit 1
+fi
+
+# Основное тело
+if [ "$action" = "lock" ]; then
+	if ! lockfile -1 -r $retries "$1" 2> /dev/null; then
+		echo "$0: Ошибка: сейчас невозможно создать файл блокировки" >&2
+		exit 1
+	fi
+else
+	if [ ! -f "$1" ]; then
+		echo "$0: Ошибка: файл блокировки $1 отсутствует, невозможно разблокировать"
+		exit 1
+	fi
+	rm -f "$1"
+fi
+
+exit 0

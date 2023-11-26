@@ -1,0 +1,65 @@
+#!/bin/bash
+
+DD="."
+TD=","
+
+nicenumber()
+{
+	integer=$(echo $1 | cut -d$DD -f1) # целая часть
+	decimal=$(echo $1 | cut -d$DD -f2) # дробная часть
+
+	# проверка на наличие дробной части
+	if [ "$decimal" != "$1" ]; then
+		result="$DD$decimal"
+	fi
+
+	thousands=$integer
+
+	# формирование целой части с разделителями
+	while [ $thousands -gt 999 ]; do
+		remainder=$(($thousands % 1000))
+
+		# добавление значащих нулей до полного разряда
+		while [ ${#remainder} -lt 3 ]; do
+			remainder="0$remainder"
+			echo "remainder=$remainder"
+		done
+
+		result="$TD${remainder}${result}"
+		echo "result=$result"
+
+		thousands=$(($thousands / 1000))
+		echo "thousands=$thousands"
+	done
+
+	nicenum="${thousands}${result}" # итоговое представление числа
+
+	# вывод на печать при наличии второго параметра
+	if [ ! -z $2 ]; then
+		echo $nicenum
+	fi
+}
+
+# Основной сценарий
+
+# Обработка флагов
+while getopts "d:t:" opt; do
+	case $opt in
+		d) DD="$OPTARG";;
+		t) TD="$OPTARG";;
+	esac
+done
+shift $(($OPTIND - 1)) # смещение индекса параметров на кол-во флагов
+
+# Проверка ввода
+if [ $# -eq 0 ]; then
+	echo "Usage: $(basename $0) [-d c] [-t c] number"
+	echo "-d - specifies the decimal point delimiter"
+	echo "-t - specifies the thousands delimiter"
+	exit 0
+fi
+
+# вызов функции обработки числа и вывод его на экран
+nicenumber $1 1
+
+exit 0

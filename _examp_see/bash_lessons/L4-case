@@ -1,0 +1,107 @@
+#!/bin/bash
+
+# case expression in 
+
+#   pattern-1)
+#     statement 
+#     ;;
+#     .
+#     .
+#     .
+#   pattern-N) 
+#     statement 
+#     ;;
+#   *) 
+#     statement 
+#     ;; 
+# esac
+
+some_number=40
+
+case $some_number in
+    1 | 2 | 3) echo "Число в диапазоне от 1 до 3";;
+    4 | 5 | 6) echo "Число в диапазоне от 4 до 6";;
+    7 | 8 | 9) echo "Число в диапазоне от 7 до 9";;
+    *) echo "Число не попало ни в какой диапазон";;
+esac
+
+
+while true
+do
+    echo -en "Ваш ответ? [yes / no]: "
+    read -r user_answer
+    case $user_answer in
+    Yes | yes) echo "Ответ - да"; break;;
+    No | no) echo "Ответ - нет";;
+    *) echo "Некорректный ответ. Попробуйте еще раз" ;;
+    esac
+done
+
+echo "------------------------------"
+while true
+do
+    echo "------------------------------"
+    printf "Меню:\n"
+    printf "1 - Авторизация \n2 - Регистрация\n3 - Войти как гость\n"
+    
+    echo -en "Выберите пункт: "
+    read -r user_answer
+    case $user_answer in
+        1) echo "Выбран пункт - Авторизация"
+        break;;
+
+        2) echo "Выбран пункт - Регистрация"
+        break;;
+
+        3) echo "Выбран пункт - Войти как гость"
+        break;;
+        
+        *) echo "Некорретный выбор!" ;;
+    esac
+
+    # if [[ "$user_answer" -eq 1 ]]; then
+    #     echo "Выбран пункт - Авторизация"
+    #     if 
+    #     break
+    # elif [[ "$user_answer" -eq 2 ]]; then
+    #     echo "Выбран пункт - Регистрация"
+    #     break
+    # elif [[ "$user_answer" -eq 3 ]]; then
+    #     echo "Выбран пункт - Войти как гость"
+    #     break
+    # else
+    #     echo "Некорретный выбор!"
+    # fi
+
+done
+
+echo "Мы видим этот текст"
+
+
+# Примеры из интернета как еще можно задействовать конструкцию case
+
+
+# for File in $(ls)
+# do
+#   # extract the file extension
+#   Extension=${File##*.}
+
+#   case "$Extension" in
+
+#     sh)
+#       echo " Shell script: $File"
+#       ;;
+
+#     md)
+#       echo " Markdown file: $File"
+#       ;;
+
+#     png)
+#       echo "PNG image file: $File"
+#       ;;
+
+#     *)
+#       echo "Unknown: $File"
+#       ;;
+#   esac
+# done

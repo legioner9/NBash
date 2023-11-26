@@ -1,0 +1,26 @@
+#!/bin/bash
+
+prettybc="./L14-prettybc"
+
+if [ $# -ne 3 ] ; then
+	echo "Использование: $0 сумма платежа, годовая процентная ставка, протяженность в годах." >&2
+	exit 1
+fi
+
+paiment=$1 rate=$2 years=$3
+
+J="$( $prettybc -p 8 $rate / \( 12 \* 100 \) )"
+N="$(( $years * 12 ))"
+
+monthly_paiment="$( $prettybc -p 8 $paiment \* \( $J / \(1 - \( 1 + $J \) \^ -$N\) \) )"
+
+# Преобразование значений
+rubbles="$(echo $monthly_paiment | cut -d. -f1)"
+copecks="$(echo $monthly_paiment | cut -d. -f2 | cut -c1-2)"
+
+cat << EOF
+Платеж по кредиту при сумме $paiment с процентной ставкой $rate% и продолжительностью $years года
+составит $rubbles рублей $copecks копеек.
+EOF
+
+exit 0

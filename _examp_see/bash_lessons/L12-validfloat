@@ -1,0 +1,56 @@
+#!/bin/bash
+
+. L11-validint
+
+validfloat()
+{
+	floatinput="$1"
+
+	# Проверка десятичной точки
+	if [ ! -z $(echo "$floatinput" | sed 's/[^.]//g') ]; then
+
+		# Извлечение целой части
+		decimal_part="$(echo "$floatinput" | cut -d. -f1)"
+
+		# Извлечение дробной части
+		fractional_part="${floatinput#*\.}"
+
+		# Проверка целой части числа
+		if [ ! -z "$decimal_part" ]; then
+			if ! validint "$decimal_part" "" ""; then
+				return 1
+			fi
+		fi
+
+		# Проверка дробной части
+		# Проверка что в дробной части нет знака "-"
+		if [ "${fractional_part%${fractional_part#?}}" = "-" ]; then
+			echo "Неверно задано число, дробная часть не может содержать знак минус" >&2
+			return 1
+		fi
+		if [ "$fractional_part" != "" ]; then
+			if ! validint "$fractional_part" "" ""; then
+				return 1
+			fi
+		fi
+	else
+		if [ "$floatinput" = "-" ]; then
+			echo "Неверно задано число" >&2
+			return 1
+		fi
+
+		# Проверка что оставшиеся цифры представляют допустимое число
+		if ! validint "$floatinput" "" ""; then
+			return 1
+		fi
+	fi
+
+	return 0
+}
+
+# Для тестирования сценария
+if validfloat $1; then
+	echo "$1 допустимое вещественное число"
+fi
+
+exit 0

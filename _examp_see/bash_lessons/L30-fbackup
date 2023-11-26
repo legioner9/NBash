@@ -1,0 +1,18 @@
+#!/bin/bash
+
+current_date=$(date +%Y-%m-%d-%H-%M) # временная метка
+backup_dir="$HOME/Загрузки" # место для хранения бэкапов
+folder_list=("$HOME/Загрузки/MyFiles/folder1" "$HOME/Загрузки/MyFiles/folder2") # папка которую бэкапим
+period=7 # время за которое хранить бэкапы в днях
+filename="backup-$current_date"
+
+for folder in "${folder_list[@]}"
+do
+	tar -rf "$backup_dir/$filename.tar.gz" "$folder"
+done
+
+# Создание архива резервной копии
+#tar -cf "$backup_dir/$filename.tar.gz" "$folder"
+
+# Очистка от лишних копий
+find "$backup_dir"/*.tar.gz -type f -mtime +$period -exec rm -rf {} \;

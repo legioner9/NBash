@@ -1,0 +1,61 @@
+#!/bin/bash
+
+month_num_to_name()
+{
+	case $1 in
+		1) month="Jan" ;; 2) month="Feb" ;;
+		3) month="Mar" ;; 4) month="Apr" ;;
+		5) month="May" ;; 6) month="Jun" ;;
+		7) month="Jul" ;; 8) month="Aug" ;;
+		9) month="Sep" ;; 10) month="Oct" ;;
+		11) month="Nov" ;; 12) month="Dec" ;;
+		*) echo "$0: Неизвестный номер месяца $1"
+			exit 1
+	esac
+	return 0
+}
+
+# Обработка форматов MM/DD/YYYY и MM-DD-YYYY
+if [ $# -eq 1 ] ; then
+	set -- "$(echo "$1" | sed 's/[\/\-]/ /g')"
+fi
+
+# Проверка что передано 3 аргумента
+if [ $# -ne 3 ] ; then
+	echo "Использование: $0 месяц день год"
+	echo "Доступные форматы August 3 1917 и 10 23 917"
+	exit 1
+fi
+
+# Проверка что год передан верно
+# year_string="$3"
+# if [ ${#year_string} -le 3 ] ; then
+# 	echo "$0: ожидается 4 цифры в значении года"
+# 	exit 1
+# fi
+
+if [ -n "$(echo "$3" | sed 's/[[:digit:]]//g')" ] ; then
+	echo "$0: Год содержит недопустимые символы"
+	exit 1
+elif [ "$3" -le 0 ] ; then
+	echo "$0: Год не может быть меньше или равен 0"
+	exit 1
+fi
+
+# Проверка что день не больше чем 31
+if [ "$2" -ge 32 ] ; then
+	echo "$0: Число дней в месяце не может быть больше чем 31"
+	exit 1
+fi
+
+# Месяц введен как число?
+if [ -z "$(echo "$1" | sed 's/[[:digit:]]//g')" ] ; then
+	month_num_to_name "$1"
+else
+	month="$(echo "$1" | cut -c1 | tr '[:lower:]' '[:upper:]')"
+	month="$month$(echo "$1" | cut -c2-3 | tr '[:upper:]' '[:lower:]')"
+fi
+
+echo "$month" "$2" "$3"
+
+exit 0

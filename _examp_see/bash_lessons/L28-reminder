@@ -1,0 +1,36 @@
+#!/bin/bash
+
+reminderfile="$HOME/.reminderfile"
+
+check_date() {
+	weekday=$1 day=$2 month=$3 year=$4
+	format1="$weekday" format2="$day$month" format3="$day$month$year"
+
+	# Выполнение самого поиска записей по заданной дате
+
+	IFS="|"
+
+	echo "События на сегодня:"
+
+	while read -r date description ;
+	do
+		if [ "$date" == "$format1" ] || [ "$date" == "$format2" ] || [ "$date" == "$format3" ] ; then
+			echo " $description"
+		fi
+	done < "$reminderfile"
+}
+
+if [ ! -e "$reminderfile" ] ; then
+	echo "$0: Похоже что у вас еще нет файла с напоминаниями" >&2
+	echo "Необходимо запустить L28-reminder-add для добавления напоминаний" >&2
+	exit 1
+fi
+
+# Получение текущей даты
+
+eval "$(date '+weekday="%a" month="%b" day="%e" year="%G"')"
+day="$(echo "$day" | sed 's/ //g')"
+
+check_date "$weekday" "$day" "$month" "$year"
+
+exit 0

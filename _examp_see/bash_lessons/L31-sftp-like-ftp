@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# ftp: test.rebex.net
+# username: demo
+# password: password
+
+echo -n "User account: "
+read -r account
+
+if [ -z "$account" ] ; then
+    exit 0
+fi
+
+if [ -z "$1" ] ; then
+    echo -n "Remote host: "
+    read -r host
+    if [ -z "$host" ] ; then
+        exit 0
+    fi
+else
+    host=$1
+fi
+
+exec sftp -C "$account"@"$host"
+

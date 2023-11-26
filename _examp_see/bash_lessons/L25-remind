@@ -1,0 +1,17 @@
+#!/bin/bash
+
+remember_file="$HOME/.remember"
+
+if [ ! -f $remember_file ]; then
+	echo "$0: Похоже что не существует файла .remember" >&2
+	echo "Чтобы исправить это запустите \"remember\" для добавления записей" >&2
+	exit 1
+fi
+
+if [ $# -eq 0 ]; then
+	more $remember_file
+else
+	grep -i -- "$@" $remember_file | ${PAGER:-more}
+fi
+
+exit 0

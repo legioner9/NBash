@@ -1,0 +1,17 @@
+#!/bin/bash
+
+locatedb="./locate.db"
+
+if [ $# -eq 0 ] ; then
+	echo "Использование: $0 [имя для поиска]" >&2
+	exit 1
+fi
+
+if [ ! -f "$locatedb" ] ; then
+	echo "Отсутствует файл locate.db поиск невозможен" >&2
+	exit 1
+fi
+
+exec grep -i "$@" $locatedb
+
+exit 0

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+locatedb="./locate.db"
+
+if [ "$(whoami)" != "root" ] ; then
+	echo "$0 должен быть запущен от имени суперпользователя" >&2
+	exit 1
+fi
+
+find / -print > $locatedb
+
+exit 0
