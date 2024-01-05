@@ -1,3 +1,10 @@
+cd
+cp
 find
+ls
+mkdir
 name_ramus
+pwd
+readlink
+realpath
 type
