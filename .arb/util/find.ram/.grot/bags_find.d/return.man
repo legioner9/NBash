@@ -1,0 +1,1 @@
+# find not ( return 1 or return 0 ) - see only stdout - $(find)
