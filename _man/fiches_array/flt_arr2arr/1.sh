@@ -34,4 +34,5 @@ done
 IFS=$' \t\n'
 
 parr3e_ arr_res
-parr3e_ arr_res
+arr_res2=("${arr_res[@]}")
+parr3e_ arr_res2
