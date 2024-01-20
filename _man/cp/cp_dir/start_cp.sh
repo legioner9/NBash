@@ -46,9 +46,9 @@ fi
 #-------------------------------------
 #-------------------------------
 
-rm -rfv dir_dist/0 dir_dist/.a dir_dist/a
+# rm -rfv dir_dist/0 dir_dist/.a dir_dist/a
 # cp -a dir_src/. dir_dist
-cp -rfuv dir_src/. dir_dist
+cp -rfv dir_src/* dir_dist
 
 #{body}
 #-------------------------------
