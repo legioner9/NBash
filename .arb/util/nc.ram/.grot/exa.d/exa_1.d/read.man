@@ -1,0 +1,4 @@
+# term1 
+
+stdout term 1 -> stdin term 2
+stdout term 2 -> stdin term 1
