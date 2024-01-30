@@ -1,0 +1,7 @@
+Asterisk (*) wildcard: Matches any sequence of characters, including no characters. For example, *.txt will match all files with a .txt extension in the current directory.
+Question mark (?) wildcard: Matches any single character. For example, file?.txt will match files like file1.txt, file2.txt, etc., where the question mark can be any single character. 
+Square brackets ([ ]) wildcard: Matches any character within the specified range or set. For example, [abc].txt will match files named a.txt, b.txt, or c.txt, but not any other file. 
+Negation (!) wildcard: Matches any file that does not belong to the specified range or set. For example, ![abc].txt will match files excluding a.txt, b.txt, and c.txt. 
+Brace expansion ({ }) wildcard: Expands a sequence or set of strings. For example, file{1,2,3}.txt will match files like file1.txt, file2.txt, and file3.txt.
+
+Read more at: https://ubuntuask.com/blog/how-to-use-wildcards-for-file-matching-in-bash
