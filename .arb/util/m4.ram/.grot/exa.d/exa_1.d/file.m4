@@ -1,0 +1,3 @@
+define(name, stuff)
+
+name

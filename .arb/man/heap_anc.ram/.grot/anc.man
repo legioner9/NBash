@@ -1,3 +1,19 @@
 [command linux - computerhope.com](https://www.computerhope.com/unix.htm)
 
 [bash command - ss64.com](https://ss64.com/bash/) 
+
+[man_1 Команды и прикладные программы пользовательского уровня _ opennet.ru](https://www.opennet.ru/man_1_eng.shtml)
+
+[man_2 Системные вызовы _ opennet.ru](https://www.opennet.ru/man_2_eng.shtml)
+
+[man_3 Библиотечные вызовы _ opennet.ru](https://www.opennet.ru/man_3_eng.shtml)
+
+[man_4 Специальные файлы /dev/* _ opennet.ru](https://www.opennet.ru/man_4_eng.shtml)
+
+[man_5 Форматы файлов _ opennet.ru](https://www.opennet.ru/man_5_eng.shtml)
+
+[man_7 Макропакеты и соглашения _ opennet.ru](https://www.opennet.ru/man_7_eng.shtml)
+
+[man_8 Команды системного администрирования _ opennet.ru](https://www.opennet.ru/man_8_eng.shtml)
+
+[man_9 Ядро _ opennet.ru](https://www.opennet.ru/man_9_eng.shtml)
