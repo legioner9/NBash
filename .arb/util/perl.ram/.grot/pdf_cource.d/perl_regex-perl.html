@@ -1,0 +1,1826 @@
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=koi8-r">
+<title>Регулярные выражения в Perl</title>
+</head>
+
+<body bgcolor="#DDE1C2">
+<!--#include virtual="/header.raw"-->
+<h3>Версия для печати</h3>
+<b><a href="http://www.opennet.ru/docs/">Архив документации на OpenNet.ru</a> / 
+Раздел "<a href="http://www.opennet.ru/docs/141.shtml">Perl</a>"
+</b>
+ <small>(<a href="./">Многостраничная версия</a>)</small>
+<hr noshade size=1>
+
+<a name="index_html"></a>
+<h1>Регулярные выражения в Perl</h1>
+<br>Оригинал: <a href="http://www.perl.ru/">http://www.perl.ru/</a> 
+<br>
+<ul>
+	<li><a href="#index_html_opred">Определения</a></li>
+     <ul>
+	    <li><a href="#index_html_single">одиночные символы (characters)</a></li>
+    	<li><a href="#index_html_klass">классы символов (character classes)</a></li>
+	    <li><a href="#index_html_altern">альтернативные шаблоны (alternative match patterns)</a></li>
+    	<li><a href="#index_html_kvant">квантификаторы (quantifiers)</a></li>
+    	<li><a href="#index_html_menim">мнимые символы (assertions)</a></li>
+    	<li><a href="#index_html_brefs">ссылки на найденный текст (backreferences)</a></li>
+     </ul>
+	<li><a href="#index_html_funct">Функции, использующие регулярные выражения</a></li>
+     <ul>
+	    <li><a href="#index_html_split">split</a></li>
+	    <li><a href="#index_html_grep">grep</a></li>
+	    <li><a href="#index_html_map">map</a></li>
+	    <li><a href="#index_html_other">другие</a></li>
+     </ul>
+	<li><a href="#index_html_work">Как работают регулярные выражения</a></li>
+	<li><a href="#index_html_logika">Логические операции в регулярных выражениях</a></li>
+	<li><a href="#index_html_subroutines">Вызов функций и подпрограмм</a></li>
+	<li><a href="#index_html_vstr">Использование встроенных переменных</a></li>
+	<li><a href="#index_html_examples">Примеры</a></li>
+	<li><a href="#index_html_exprogs">Рабочие программы, использующие регулярные выражения</a></li>
+     <ul>
+	    <li><a href="#index_html_match">Выделение чисел в математической записи</a></li>
+	    <li><a href="#index_html_work1">Облегчение поиска работы</a></li>
+	    <li><a href="#index_html_newsline">Очень простое решение для зеркала новостной ленты</a></li>
+            <li><a href="#index_html_findres">Вывод результатов поиска</a>
+     </ul>
+	<li><a href="#index_html_FAQ">Список наиболее употребительных регулярных выражений.</a></li>
+</ul>
+<h3><a name="index_html_opred">Определения</a></h3>
+<p align=justify>Регулярные выражения в perl одна из самых мощных его возможностей. regex позволяют в perl сопоставлять текст с указанным шаблоном, разбивать текст в массив по шаблону, производить замену текста по шаблону и многое многое другое. Так-же иногда регекспами называются операторы поиска и замены.
+<p align=justify>Оператор <font color="Green">q(text)</font> заменяет строку text на строку, заключенную в одинарные кавычки(например если в <font color=green>q(text)</font> поставить символ q<font color=green>(text\n)</font>, то напечатает <font color=green>text\n</font> , т.е. <font color=green>\n</font> это два символа, подобно p<font color=green>rint 'amam $file'</font> напечатает <font color=green>amam $file</font>). В данном случае почти все специальные символы не будут интерпретироваться внутри <font color=green>q()</font>, исключая <font color=green>'\'</font> <pre><font color="Green">
+$some=q(Don't may be);
+</pre></font>
+<p align=justify> Оператор <font color="Green">qq~text~;</font> (вместо значка <font color="Green">~</font> можно ставить например знак <font color="Green">|</font>) позволяет работать со строками и многострочными текстами. пользуясь этим оператором можно выводить целые куски html-кода и писать в этом коде имена скалярных переменных.
+<p align=justify>
+Оператор <font color="Green">qw("text")</font> разбивает строку на массив слов.
+<pre><font color="Green">
+@mass=qw("я вышел погулять и увидел как через реку строят новый мост");
+#хотя с настроенной локалью будет работать и
+@mass=qw(я вышел погулять и увидел как через реку строят новый мост);
+for(@mass){print $_,"\n"}
+</pre></font><p align=justify>
+
+Оператор <font color=green>qr/pattern/</font> ключи - <font color=green>imosx</font>
+работает подобно регулярному выражению <font color=green>s/.../.../</font>
+
+<pre><font color=green>$rex=qr/my.STRING/is;
+s#$rex#foo#;
+#тоже самое, что и 
+s/my.STRING/foo/is;
+</pre></font>
+Результат может использоваться подобно вызову подпрограммы(см perldoc perlop Regex quote like operator)
+
+<pre><font color=green>$re=qr/$pattern/;
+$string=~/foo${re}bar/; 
+$string=~$re;           
+$string=~/$re/;    </pre></font>  
+   
+Ключи <font color=green>imosx</font> стандартные(см. ниже)
+<p align=justify>
+Оператор <font color=green>qx/STRING/</font> работает как системная команда, подобно <font color=green>$output = `cmd 2>$1`;</font>. Программа, иллюстрирующая использование данного оператора:
+
+<pre><font color=green>#!/usr/bin/perl
+qx[dbfdump --fs="\x18" --rs="\x19"  pdffile.dbf &gt;pdffile.txt];</font></pre>
+<p align=justify>
+файл <font color=green>pdffile.dbf</font> содержит memo-поля(memo-поле содержит ссылку, подобно функции <font color=green>seek</font>, на текст в файле с расширением *.fpt), которые при помощи <font color=green>DBI.pm</font> мне когда-то давно выудить не удалось. Принимает разрешения FoxBASE4 и дампит файлы со встроенными <font color=green>memo</font>-полями в текстовый вид. Т.е. таким образом получилось вытащить информацию из файла memo-типа <font color=green>*.fpt</font>.
+<p align=justify>
+Допустим используя команду <font color=green>$perl_info = qx(ps $$);</font> мы выводим информацию о текущем процессе запущенного скрипта(каждая запущенная программа в UNIX имеет свой собственный уникальный идентификатор, который содержится во встроенной переменной <font color=green>$$</font> - достаточно уникальное число, можно использовать почти как счетчик случайных чисел). Если сказать <font color=green>$shell_info = qx'ps $$';</font> то выведет информацию о самом <font color=green>ps</font>. Т.е. скобки осуществляют своеобразное экранирование от двойной кавычки.
+<p align=justify>
+В перл есть три основных оператора, работающих со строками:<br><br>
+<font color="Green"><font color=green>m/.../</font></font> - проверка совпадений (matching),<br>
+<font color="Green"><font color=green>s/.../.../</font></font> - подстановка текста (substitution), <br>
+<font color="Green">tr/.../</font> - замена текста (translation).<br><br>
+Опертаор <font color="Green"><font color=green>m/.../</font></font> анализирует входной текст и ищет в нем подстроку совпадающую с указанным шаблоном (он задан регулярным выражением). Оператор <font color="Green"><font color=green>s/.../.../</font></font> выполняет подстановку одних текстовых фрагментов вместо других, при помощи регулярных выражений. Оператор <font color="Green"><font color=green>tr/.../.../</font></font>  заменяет выходной текст, но при этом он не использует регулярные выражения, осуществляя замену посимвольно. 
+<br><br>
+Оператор <font color="Green">m/шаблон/</font> - поиск подстроки по определенному шаблону. Например
+<font color="Green">print "$1 г.\n" while m!((\d){4})!g</font> 
+найдет и выведет все даты в переменной <font color="Green">$_</font>.
+В шаблоне не важно, что будет его ограничителем. Например при поиске гиперссылок,
+ которые зачастую содержат символы <font color="Green">/</font>, 
+разумнее пользоваться не <font color="Green">/</font>, а например 
+<font color="Green">#</font> или <font color="Green">!</font> 
+как символами ограничителями. В таком случае шаблон будет более прост для понимания другим
+программистам, да и немного короче. В perl оператор <font color="Green"><font color=green>m/.../</font></font> используется очень часто, и поэтому используется сокращение, без начальной буквы <font color="Green">m</font>. Если начальная буква есть, то в качетсве символов ограничителей можно исползовать любой другой символ.
+<p align=justify>
+Для оператора <font color="Green">m/pattern/</font> есть 6 параметров: <font color="Green">gimsxo</font>
+<p align=justify>
+<font color="Green">m/foo/g</font> говорит компилятору найти все 
+<font color="Green">foo</font> в тексте, в то время как <font color="Green">m/foo/</font> 
+найдет только 
+первое вхождение подстроки <font color="Green">foo</font> в строке <font color="Green">$_</font>. 
+В строке <font color="Green">$_</font> содержится обычный текст, как и в 
+переменной <font color="Green">$text</font>$, <font color="Green">$_</font> такая-же переменная, 
+только она существует всегда и вводится, когда не определена специально другая, по умолчанию. <p align=justify>
+Например можно сказать 
+<font color="Green">for (@mass){print $_,"\n"}</font> или 
+<font color="Green">for $elem (@mass){print $elem,"\n"}</font>.
+Эти две строчки делают одно и то-же, но в первом случае запись короче, 
+да и зачастую бывает удобно использовать переменную <font color="Green">$_</font>, например, когда нужно 
+выделить при помощи регулярного выражения определенные данные, пользуясь перебором 
+массива(функция map):
+<pre><font color="Green">
+@res=map{/(\d\d\d\d)/} split /\s/, $texts; 
+</pre></font>
+что эквививалентно коду
+<pre><font color="Green">
+push @res, $1 while m!((\d){4})!g; #(в данном случае $_=$texts)
+</pre></font>
+или что эквивалентно конструкции
+<pre><font color="Green">
+foreach(split /\s/, $texts){
+push @res, $1 if(/(\d\d\d\d)/g)
+}
+</pre></font><p align=justify>
+Следующий параметр <font color="Green">m/foo/i</font>, 
+говорит о том, что не нужно учитывать регистр при 
+поиске по подстроке.
+<p align=justify>
+Параметр <font color="Green">m/foo/s</font> говорит от том, что строка, по которой производится поиск, состоит из одной строчки.
+<p align=justify>
+Например нужно выцепить все url картинок из странички www.astronomynow.com, чтобы сделать
+локальное зеркало этой странички и пользователи могли с 
+интересом читать последние новости астрономии:
+<pre><font color="Green">
+#!/usr/bin/perl -wT
+use LWP::Simple;
+$page=get "http://www.astronomynow.com";
+&getlink($page);
+sub getlink{
+  local $_=$_[0];
+  push(@res, "http://$2")
+    while m{SRC\s*=\s*(["'])http://(.*?)\1\s*(.*?)WIDTH="100" HEIGHT="100"(.*?)>}igs
+}
+</pre></font><p align=justify>
+В подпрограмме заводится при помощи функции 
+<font color="Green">local</font> переменная, видимая 
+только в области действия подпрограммы. Этой переменной присваивается значение
+переменной <font color="Green">$page</font>, 
+в которой содержится текст выкачанной <font color="Green">Simple.pm</font> странички.
+<p align=justify>
+Можно сделать немного по другому, сохранить
+скачанную страничку в файл на диск и затем следующее:
+<pre><font color="Green">
+$/="\001";
+open F, "&lt;page.html"; $page=&lt;F&gt;; close F;
+&getlink($page); 
+...
+</pre></font><p align=justify>
+Встроенная переменная <font color="Green">$/</font> содержит символ разделителя входных записей. Это может быть перевод каретки или, при upload far'ом на сервер файлов в не ASCI виде, она приобретают на конце строчки хитрый символ <font color="Green">^M</font>. 
+<p align=justify> Если <font color="Green">$/</font> переопределить, то можно свободно
+пользоваться дескрипторами открытия файлов для просмотра 
+многострочного текста(<font color="Green">m/pattern/s</font>). 
+Например когда открывается файл при помощи
+функции <font color="Green">open F, "&lt;file.txt"; @mass=&lt;F&gt;</font>, 
+то присваивая дескриптор <font color="Green">F</font> массиву
+в массиве появятся строчки, разделенные символом, содержащимся в 
+<font color="Green">$/</font>.<p align=justify>
+Переопределив <font color="Green">$/</font> можно запросто написать: 
+<pre><font color="Green">
+open F, "&lt;file.txt"; $mass=&lt;F&gt;
+</pre></font><p align=justify>
+и в переменной <font color="Green">$mass</font> 
+будет содержаться многострочный текст с точки зрения человека,
+но программа будет видеть этот текст как одну строку и по тексту можно будет запросто 
+пройтись поиском <font color="Green">m/pattern/igs</font> и выделить все необходимые подстроки.
+<p align="justify">
+Параметр <font color="Green">m/foo/o</font> говорит от том, что шаблон нужно компилировать только один раз. Если оператор используется в сочетании с операциями привязки <font color="Green">=~</font> и отрицание <font color="Green">!~</font>, то строкой, в которой ведется поиск, является переменная, стоящая слева от операции привязки. В противном случае поиск ведется в строке <font color="Green">$_</font>.
+<p align="justify">
+Оператор <font color="Green">s!pattern!substring!</font> - поиск в строке по шаблону <font color="Green">pattern</font> и замена найденного текста на <font color="Green">substring</font>. Как и для оператора <font color="Green"><font color=green>m/.../</font></font>, косую черту можно не ставить, пригоден любой символ, который не находится в противореции с заданным выражением. Не рекомендуется использовать в качестве ограничителей <font color="Green">?</font> и <font color="Green">'</font>.
+<p align="justify">
+<font color="Green">s!/usr/local/etc/!/some/where/else!</font> - заменяет путь.<br>
+<font color="Green">s(/usr/local/etc/)(/some/where/else)g</font> - заменяет все встречающимеся пути до файла.<br><br>
+
+параметры: <font color="Green">egimsxo</font>
+<font color="Green">e</font> - указывает, что substring нужно вычислить.
+<p align="justify">
+например нужно переделать все escape последовательности, для этого вызывается соответствующая подпрограмма:
+<pre><font color="Green">$text =~ s/(&.*?;)/&esc2char($1)/egs;</font></pre>
+т.е. из регулярного выражения происходит вызов подпрограммы.
+<p align="justify">
+<font color="Green">g</font> - заменить все одинаковые компоненты, а не один, как в отсутствии ключа <font color="Green">g</font>.<br>
+<font color="Green">i</font> - не учитывать регистр.<br>
+<font color="Green">m</font> - строка, в которой происходит поиск, состоит из множества строк.<br>
+<font color="Green">s</font> - строка, в которой происходит поиск, состоит из одной строки.<br>
+<font color="Green">x</font> - сложный шаблон, т.е. можно писать не в строчку, а для упрощения понимания разбивать шаблон на несколько строк, примеры об этом ниже.<br>
+<font color="Green">o</font> -  компилировать шаблон один раз.<br>
+<p align="justify">
+Допустим нужно сделать поисковик, который ходит по директориям на сервере, но некоторые директории типа <font color="Green">/cgi-bin/</font> и т.п. индексировать нельзя. Объявляем переменную, которая будет содержать регулярное выражение, в данном случае перечисление или <font color="Green">img</font> или <font color="Green">image</font> или <font color="Green">temp</font> или <font color="Green">tmp</font> или <font color="Green">cgi-bin</font>: 
+<pre><font color="Green">
+$no_dir = '(img|image|temp|tmp|cgi-bin)';</font></pre>
+<p align="justify">
+Ключи регулярного выражения <font color="Green">m#$no_dir$#io</font> говорят о том, что компилировать содержимое <font color="Green">$no_dir</font> нужно только один раз(ключ <font color="Green">o</font>) и также еще не учитывать регистр(ключ <font color="Green">i</font>).
+<p align="justify">
+Оператор <font color="Green">tr/выражение1/выражение2/</font>, ключи <font color="Green">cds</font>
+<p align="justify">
+Смысл: замена <font color="Green">выражения1</font> на <font color="Green">выражение2</font>. Если указан ключ <font color="Green">с</font>, то это инверсия <font color="Green">выражения1</font>, т.е. в выражение один не входят содержащиеся в нем символы. если указа ключ <font color="Green">d</font>, то значит стереть замененные символы. Если указан ключ <font color="Green">s</font>, то значит заменить многочисленные повторяющиеся символы на одиночный символ.
+<p align="justify">
+Оператор <font color="Green">y/выражение1/выражение2/</font>(ключи <font color="Green">cds</font>), равносилен оператору <font color="Green">tr</font>.
+<p align="justify">
+Например в поисковой системе нужно приводить запрос в нижний регистр, дабы не зависеть от настроек локали:
+<pre><font color="Green">
+$CAP_LETTERS = '\xC0-\xDF\xA8';
+$LOW_LETTERS = '\xE0-\xFF\xB8';
+
+$code = '$html_text =~ ';
+$code .= "tr/A-Z$CAP_LETTERS/a-z$LOW_LETTERS/";
+$down_case = eval "sub{$code}";
+</font></pre>
+<h4><a name="index_html_single">одиночные символы</a></h4>
+
+В регулярном выражении любой символ соответствует самому себе, если только он не является метасимволом со специальным значением (такими метасимволами являются <font color=green>\</font>, <font color=green>|</font>, <font color=green>(</font>, <font color=green>)</font>, <font color=green>[</font>, <font color=green>{</font>, <font color=green>*</font>, <font color=green>+</font>, <font color=green>^</font>, <font color=green>$</font>, <font color=green>?</font> и <font color=green>.</font>). В следующем примере проверяется, не ввел ли пользователь команду "quit" (и если это так, то прекращаем работу программы): 
+<pre><font color="Green">
+while(<>){
+  if(m/quit/){exit;}
+}</font></pre>
+<p align="justify">
+Правильнее проверить, что введенное пользователем слово "quit" не имеет со-седних слов, изменяющих смысл предложения. (Например, программа выполнит заведомо неверное действие, если вместо "quit" пользователь введет команду "Don't quit!".) Это можно сделать с помощью метасимволов <font color=green>^</font> и <font color=green>$</font>. Заодно, что-бы сравнение было нечувствительно к разнице между прописными и заглавными буквами, используем модификатор <font color=green>i</font>:
+<pre><font color="Green">
+while (<>) 
+{if (m/^quit$/i) {exit;} }
+</font></pre>
+<p align="justify">
+Кроме обычных символов perl определяет специальные символы. Они вводятся с помощью обратной косой черты (escape-последовательности) и также могут встречаться в регулярном выражении: 
+<ul>
+	<li><font color=green>\077</font> - восьмеричный символ, </li>
+	<li><font color=green>\а</font> - символ BEL (звонок),</li>
+	<li><font color=green>\с[</font> - управляющие символы (комбинация Ctrl + символ, в данном случае это управляющий символ ESC),</li>
+	<li><font color=green>\d</font> - соответствует цифре, </li>
+	<li><font color=green>\D</font> - соответствует любому символу, кроме цифры,</li>
+	<li><font color=green>\е</font> - символ escape (ESC),</li>
+	<li><font color=green>\Е</font> - конец действия команд <font color=green>\L</font>, <font color=green>\U</font> и <font color=green>\Q</font>,</li>
+	<li><font color=green>\f</font> - символ прогона страницы (FF),</li>
+	<li><font color=green>\1</font> - следующая литера становится строчной (lowercase),</li>
+	<li><font color=green>\L</font> - все последующие литеры становятся строчными вплоть до командй \Е,</li>
+	<li><font color=green>\n</font> - символ новой строки (LF, NL),</li>
+	<li><font color=green>\Q</font> - вплоть до команды <font color=green>\Е</font> все последующие метасимволы становятся обычными символами,</li>
+	<li><font color=green>\r</font> - символ перевода каретки (CR),</li>
+	<li><font color=green>\s</font> - соответствует любому из "пробельных символов" (пробел, вертикальная , или горизонтальная табуляция, символ новой строки и т. д.),</li>
+	<li><font color=green>\S</font> - любой символ, кроме "пробельного", </li>
+	<li><font color=green>\t</font> - символ горизонтальной табуляции (НТ, TAB),     </li>
+	<li><font color=green>\u</font> - следующая литера становится заглавной (uppercase), </li>
+	<li><font color=green>\U</font> - все последующие литеры становятся заглавными вплоть до команды <font color=green>\E</font>, </li>
+	<li><font color=green>\v</font> - символ вертикальной табуляции (VT),</li>
+	<li><font color=green>\w</font> - алфавитно-цифровой символ (любая буква, цифра или символ подчеркивания), </li>
+	<li><font color=green>\W</font> - любой символ, кроме букв, цифр и символа подчеркивания,</li>
+	<li><font color=green>\x1B</font> - шестнадцатиричный символ.</li>
+
+</ul>
+<p align=justify>
+
+Bat также можете "защитить" любой метасимвол, то есть заставить perl рассматривать его как обыкновенный символ, а не как команду, поставив перед метасимволом обратную косую черту <font color=green>\</font>. Обратите внимание на символы типа <font color=green>\w</font>, <font color=green>\d</font> и <font color=green>\s</font>, которые соответствуют не одному, а любому символу из некоторой группы. Также заметьте, что один такой символ, указанный в шаблоне, соответствует ровно одному символу проверяемой строки. Поэтому для задания шаблона, соответствующего, например, слову из букв, цифр и символов подчеркивания, надо использовать конструкцию <font color=green>\w+</font>, как это сделано в следующем примере:
+
+<pre><font color=green>$text = "Here is some text."
+$text =~ s/\w+/There/;
+print $text;
+There is some text.
+</pre></font>
+
+<h4><a name=index_html_klass>классы символов</a></h4>
+
+Символы могут быть сгруппированы в классы. Указанный в шаблоне класс символов сопоставляется с любым из символов, входящим в этот класс. Класс - это
+ совокупность символов, заключенный в квадратные скобки <font color=green>[</font> и <font color=green>]</font>. Можно указывать как отдельные символы, так и их диапазон (диапазон задается двумя крайними символами, соединенными тире). 
+Наример, следующий код производит поиск гласных:
+<pre><font color=green>$text ="Here is the text.";
+if ($text =" /[aeiou]/) {print "Vowels: we got 'em.\n";}
+Vowels: we got 'em.
+</pre></font><p align=justify>Другой пример: с помощью шаблона <font color=green>[A-Za-z]+</font> (метасимвол <font color=green>+</font> означает утверждение: "один или более таких символов") ищется и заменяется первое слово:
+
+<pre><font color=green>$text = "What is the subject.";
+$text =" s/[A-Za-z]+/Perl/;
+print $text;
+Perl is the subject;</pre></font>
+<p align=justify>
+Если требуется задать минус как символ, входящий в класс символов, перед ним надо поставить обратную косую черту <font color=green>\-</font>. Если  сразу после открывающей квадратной скобки стоит символ <font color=green>^</font>, то смысл меяется на противоположный. А именно, этот класс сопоставляется любому символу, кроме перечисленных в квадратных скобках. В следующем примере производится замена фрагмента текста, составленного не из букв и не из пробелов:
+<pre><font color=green>$text = "perl is the subject on page 493 of the book.";
+$text =- s/[a-Za-z\s]+/500/;
+print $text; 
+perl is the subject on page 500 of the book.</pre></font>
+
+
+<h4><a name=index_html_altern>альтернативные шаблоны</a></h4>
+
+Вы можете задать несколько альтернативных шаблонов, используя символ <font color=green>|</font> как разделитель. Альтернативные шаблоны позволяют превратить процедуру поиска из однонаправленного процесса в разветвленный:
+если не подходит один шаблон perl подставляет другой и повторяет сравнение, и так до тех пор, пока не иссякнут все возможные альтернативные комбинации. Например, следующий фрагмент проверяет, не ввел ли пользователь "exit", "quit" или "stop":
+
+<pre><font color=green>while (&lt;&gt;){
+  if(m/exit|quit|stop/){exit;}
+}
+</pre></font><p align=justify>
+Чтобы было ясно, где начинается и где заканчивается набор альтернативных шаблонов, их заключают в круглые скобки - иначе символы, расположенные справа и слева от группы шаблонов, могут смещаться с альтернативыми шаблонами.<p align=justify>
+В следующем примере метасимволы <font color=green>^</font> и <font color=green>$</font> обозначают начало и конец строки и отделяются от набора альтернативных шаблонов с помощью скобок:
+<pre><font color=green>while (&lt;&gt;){
+  if(m/^(exit|quit|stop)$/){exit;}
+}
+</font></pre><p align=justify>Альтернативные варианты перебираются слева направо. Как только найдена первая альтернатива, для которой выполняется совпадение с шаблоном, перебор прекращается. Участки шаблона, заключенные в круглые скобки, выполняют специальную роль при выполнении операций поиска и замены. Если символ <font color=green>\</font>  находится в квадратных скобках, он интерпретируется как обычный символ. Поэтому если вы используете конструкцию шаблона вида <font color=green>[Tim|Tom|Tam]</font>, то она будет эквивалентна классу символов <font color=green>[Tioam|]</font>. Точно так же большинство других метасимволов и команд, специфичных для регулярных выражений - в частности, квантификаторы и мнимые символы, описанные в двух последующих разделах, - внутри квадратных скобок превращаются в обычные символы или escape-последовательности текстовых строк.
+<h4><a name=index_html_kvant>квантификаторы</a></h4>
+<p align=justify>
+Квантификаторы в регулярных выражениях<p align=justify>
+Квантификаторы указывают на то, что тот или иной шаблон в строке может повторяться определенное количество раз. Например, можно использовать квантификатор <font color=green>+</font> для поиска мест неоднократного, повторения подряд латинской буквы <font color=green>е</font> и их замены на одиночную букву <font color=green>е</font>:
+<pre><font color=green>$text = "Hello from Peeeeeeeeeeeeeeerl.";
+$text =~ s/e+/e/:
+print $text;
+Hello from perl. 
+
+</pre></font>
+<h4><a name=index_html_menim>мнимые символы</a></h4>
+<p align=justify>
+Мнимые символы в регулярных выражениях<p align=justify>
+В perl имеются символы (метасимволы), которые соответствуют не какой-либо литере или литерам, а означают выполнение определенного условия (поэтому в английском языке их называют assertions, или утверждениями). Их можно рассматривать как мнимые символы нулевого размера, расположенные на границе между реальными символами в точке, соответствующей определенному условию:
+<ul>
+	<li><font color=green>^</font> - начало строки текста,</li>
+	<li><font color=green>$</font> - конец строки или позиция перед символом начала новой строки, распо-ложенного в конце,</li>
+	<li><font color=green>\b</font> - граница слова,</li>
+	<li><font color=green>\В</font> - отсутствие границы слова,</li>
+	<li><font color=green>\А</font> - "истинное" начало строки, </li>
+	<li><font color=green>\Z</font> - "истинный" конец строки или позиция перед символом начала новой строки, расположенного в "истинном" конце строки,</li>
+	<li><font color=green>\z</font> - истинный конец строки,</li>
+	<li><font color=green>\G</font> - граница, на которой остановился предыдущий глобальный поиск, выполняемый командой <font color=green>m/.../</font>g,</li>
+	<li><font color=green>(?= шаблон)</font> - после этой точки есть фрагмент текста, который соответствует указанному регулярному выражению,</li>
+	<li><font color=green>(?! шаблон)</font> - после этой точки нет текста, который бы соответствовал указанному регулярному выражению,</li>
+	<li><font color=green>(?&lt;= шаблон)</font> - перед этой точкой есть фрагмент текста, соответствующий указанному регулярному выражению,</li>
+	<li><font color=green>(?&lt;! шаблон)</font> - перед этой точкой нет фрагмента текста, соответствующего указанному регулярному выражению.</li>
+</ul>
+
+Например, вот как выполнить поиск и замену слова, используя метасимволы границы слов:
+<pre><font color=green>$text = "Here is some text.";
+$text = s~/\b([A-Za-z)+)\b/There/;
+print $text;
+There is some text.</pre></font><p align=justify>
+perl считает границей слова точку, расположенную между <font color=green>\w</font> и <font color=green>\W</font>, независимо от того, в каком порядке следуют эти символы . В следующем примере выводится сообщение о том, что пользователь ввел слово "yes", при условии, что оно единственное, что ввел пользователь. Для этого шаблон включает мнимые символы начала и конца строки:
+<pre><font color=green>while (&lt;&gt;) {
+ if (m/^yes$/) {
+  print "Thank you for being agreeable.\n";
+  } 
+}
+</pre></font><p align=justify>
+Приведенный выше пример требует комментария. Прежде всего, бросается в глаза наличие двух групп метасимволов для начала и конца строки. В большинстве случаев они означают одно и то же, так как обычно символы новой строки (то есть <font color=green>\n</font>), встречающиеся внутри текстового выражения, не рассматриваются как вложенные строки. Однако если для команды <font color=green><font color=green>m/.../</font></font> или <font color=green><font color=green>s/.../.../</font></font> указан модификатор <font color=green>m</font>, то текстовое выражение будет рассматриваться как многострочный текст, в котором границами строк выступают символы новой строки <font color=green>\n</font>. В случае многострочного текста метасимвол <font color=green>^</font> сопоставляется с позицией после любого символа новой строки, а не только с началом текстового выражения. Точно также метасимвол <font color=green>$</font> - это позиция перед любым символом новой строки, расположенным внутри текстового выражения, а не обяательно конец текстового выражения или же позиция перед концевым символом <font color=green>\n</font>. Однако метасимвол <font color=green>\A</font> - начало текстового выражения, а метасимвол <font color=green>\Z</font> - конец текстового выра-жения или позиция перед концевым символом <font color=green>\n</font>, даже если в текстовом выражении имеются вложенные символы <font color=green>\n</font> и при выполнении операции поиска или йены указан модификатор <font color=green>m</font>. 
+Метасимвол точка (<font color=green>.</font>) соответствует любому символу, кроме символа новой строки <font color=green>\n</font>. Независимо от того, задан ли модификатор <font color=green>m</font>, она не будет сопоставляться ни c внутренними, ни с концевыми символами <font color=green>\n</font>. Единственный способ заставить точку рассматривать <font color=green>\n</font> как обычный символ - использовать модификатор <font color=green>s</font>.<p align=justify>
+Отсюда понятна разница между метасимволами <font color=green>\Z</font> и <font color=green>\z</font>. Если в качестве текстового выражения используется результат чтения входного потока данных, то с большой вероятностью данное выражение заканчивается символом <font color=green>\n</font>, за исключениeм того варианта, когда программа предусмотрительно "отщипнула" его с помощью функции <font color=green>chop</font> или <font color=green>chomp</font>. Метасимвол <font color=green>\Z</font> игнорирует концевой символ <font color=green>\n</font> если он случайно остался на месте, рассматривая обе ситуации как "конец строки". В отличие от него метасимвол <font color=green>\z</font> оказывается более пунктуальным и рассматривает концевой символ <font color=green>\n</font> как неотъемлемую часть проверяемого текстового выражения, если только пользователь не позаботился об удалении этого символа.<p align=justify>
+Отдельно следует остановиться на метасимволе <font color=green>\G</font>. Он может указыватьсяв регулярном выражении только в том случае, если выполняется глобальный поиск (то есть если команда <font color=green><font color=green>m/.../</font></font> имеет модификатор <font color=green>g</font>). Метасимвол <font color=green>\G</font>, указанный в шаблоне, соответствует точке, на котброй остановилась предыдущая операция поиска. <p align=justify>
+
+<h4><a name=index_html_brefs>ссылки на найденный текст</a></h4>
+
+<p align=justify>
+
+Иногда нужно сослаться на подстроку текста, для которой получено совпадение с некоторой  частью шаблона. Например, при обработке файла, HTML может потребоваться выделять фрагменты текста, ограниченные открывающими и закрывающими метками HTML (например, &lt;А&gt; и &lt;/А&gt;). В начале уже приводился пример, в котором выделялся текст, ограниченнуй метками HTML &lt;А&gt; и &lt;B&gt;. Следующий пример позволяет выделять текст, расположенный между любыми правильно закрытыми метками:
+
+<pre><font color=green>$text = "&lt;А&gt;Here is an anct1or.&lt;/А&gt;"; 
+if($text=~m%&lt;([A-Za-z]+)&gt;[\w\s\.]+&lt;/\1&gt;%i){
+}
+</pre></font><p align=justify>
+Вместо косой черты в качестве ограничителя шаблона использован другой символ. Это позволяет использовать символ косой черты внутри шаблона без предшествующей ему обратной косой черты.
+Каждому фрагменту шаблона, заключенному в круглые скобки, соответствует определенная внутренняя переменная. Переменные пронумерованы, так что на них можно ссылаться внутри шаблона, поставив перед номером обратную косую черту (<font color=green>\1</font>, <font color=green>\2</font>, <font color=green>\3</font>,...). На значения переменных можно ссылаться внутри шаблона, как на обычный текст, поэтому <font color=green>&lt;/\1&gt;</font> соответствует &lt;/\A&gt;, если открываю-щей меткой служит<А>, и </IMG>, если открывающей меткой служит </IMG>.
+
+
+
+Эти же самые внутренние переменные можно использовать и вне шаблона, ссылаясь на них как на скаляры с именами <font color=green>$1</font>, <font color=green>$2</font>, <font color=green>$3</font>,<font color=green>...</font>, <font color=green>$n</font>: 
+<pre><font color=green>$text = "I have 4 apples.";
+if ($text =- /(\(\d+)/) {
+print "Here Is the number of apples: $1.\n";
+Here is the number of apples: 4.
+</pre></font><p align=justify>
+Каждой паре скобок внутри шаблона после завершения операции поиска будет соответствовать скалярная переменная с соответствующим номером. Это можно 'использовать при выделении нужных для последующей работы фрагментов ана-лизируемой строки. В следующем примере мы изменяем порядок трех слов в тек-стовой строке с помощью команды <font color=green><font color=green>s/.../.../</font></font>: 
+
+<pre><font color=green>$text = "I see you.";
+$text=-s/^(\w+) *(\w+) *(\w+)/$3 $2 $1/; 
+print $text; 
+you see I.
+</pre></font>
+<p align=justify>
+Переменные, соответствующие фрагментам шаблона, нуумеруются слева направо с учетом вложенности скобок. Например, после следующей операции поиска будут проинициализированы шесть переменных, соответствующих шести парам скобок:
+
+<pre><font color=green>$text = "ABCDEFGH";
+$text =- m/(\w(\w)(\w))((\w)(\w))/;
+print "$1/$2/$3/$4/$5/$6/";
+ABC/B/C/DE/D/E
+</pre></font><p align=justify>
+Кроме переменных, ссылающихся на найденный текст, можно использовать специальные переменные perl. 
+
+<h3><a name="index_html_funct">Функции, использующие регулярные выражения</a></h3>
+Фактически, есть три функции, которые в качестве разделителя могут использовать регулярные выражение: <font color=green>split</font>, <font color=green>grep</font>, <font color=green>map</font> и еще можно воспользоваться специальными операторами <font color=green>...</font> и <font color=green>..</font> и используемыми совместно с ними условиями <font color=green>if</font>, <font color=green>unless</font> и просто логическими операторами.
+
+<h4><a name=index_html_split>split</a></h4>
+<p align=justify>
+Если необходимо разделить данные из <font color=green>STDIN</font> по нужному разделителю, то можно воспользоваться локализацией <font color=green>$/</font>:
+
+<pre><font color=green>
+sub example_local{
+  local $/ = undef;
+  @mass= split /pattern/, &lt;&gt;;
+  return 1;
+}
+print scalar(@mass); 
+</pre></font>
+Можно разделять данные из файла и так:
+
+<pre><font color=green>undef $/;
+@res=split /pattern/, &lt;F&gt;;</pre></font>
+
+что эквивалентно:
+
+<pre><font color=green>while (&lt;F&gt;) {push @asdf, split}</pre></font>
+
+После split можно ставить вместо запятой и стрелочку:
+
+<pre><font color=green>@mass = split /(\d){4}/ => $file;</pre></font>
+
+<p align=justify>В функции сплит можно воспользоваться макисмальным квантификатором <font color=green>*</font>, который в том числе и о символов, позволит разделить строку на символы, которых там нет(в силу того, что <font color=green>*</font> это 0 и более символов), т.е. посимвольно:
+
+<pre><font color=green>@ruru = split /\001*/ => "lalalalalala";
+#массив @ruru будет содержать элементы по одной букве.</pre></font>
+
+Если строка состоит из нескольких строк, то можно поставить разделителем и символ начала новой строки:
+
+<pre><font color=green>  $str = "asdf\nghjk\nqwer\n";
+  @lines = split /^/ => $str;</pre></font>
+
+Вобщем, в split можно вставлять любой поиск по шаблону.
+<h4><a name=index_html_grep>grep</a></h4>
+Функция grep так-же позволяет запонять массив значениями. Например нужно получить список расширений файлов в заданной директории:
+
+<pre><font color=green>while(<$dir/*.*>){push @files, $_}             #читаем директорию
+@test = grep { s|.*/(.*?)\.(.*)|$2| } @files;  #оставляем в директории только расширения файлов
+</pre></font>
+
+можно использовать признак четности для занесения в массив:
+<pre><font color=green>@test1=qw(1 2 3 4 5 6 7 8 9);
+@evens = grep($_%2 == 1) @test1;
+</pre></font>
+
+Или более сложное регулярное выражение для вытаскивания всех e-mail адресов из текстовой странички:
+
+<pre><font color=green>@mass=grep{s/(.*) ([\w+\-\.]+\@[\w\-\.]+\.\w{2,3})(.*)/$2/ig} split /\n/, $test;</pre></font>
+
+Здесь используется укороченная запись: 
+
+<pre><font color=green>@mass=grep {/pattern/} split /\n/, $test;</pre></font>
+
+которая эквивалента записи из двух сторчек:
+
+<pre><font color=green>@uuu=split /\n/, $test;
+@mass=grep {/pattern/} @uuu;
+</pre></font>
+<h4><a name=index_html_map>map</a></h4>
+Функция map похожа по своей работе на обычное условие <font color=green>if</font>, допустим нужно разделить записи на блоки, разделенные четырьмя пробелами:
+
+<pre><font color=green>
+@probel = map m!\s{4}!, split /\n/, $test;
+</pre></font>
+<h4><a name=index_html_other>other</a></h4>
+
+Вывод строк из заданного интервала для данной строки:
+
+<pre><font color=green>if(/pattern1/i .. /pattern2/i){...}
+#истинность первого оператора включает конструкцию, а второго е  выключает.
+if($nomer1 .. $nomer2){...}</pre></font>
+
+<font color=green>...</font> не возвратит истину, в отличии от <font color=green>..</font>, если условия выполняются в одной строке.
+
+<pre><font color=green>if(/pattern1/i ... /pattern2/i){...}
+if($nomer1 ... $nomer2){...}
+</pre></font>
+для многострочного файла
+
+<pre><font color=green>print -ne 'print if 3 .. 15' file.txt</pre></font>
+выведет строки файла с 3 по 15 строчку, та-же самая опреация но немного по другому:
+
+<pre><font color=green>open F, "&lt;file";
+while(&lt;F&gt;){
+  print if(3 .. 15)
+}</pre></font>
+или с какой нибудь начальной и конечно разметкой, например есть вспомогательный файл шаблонов(просто различные виды html, в зависимости от действия пользователя) для разных определенны случаев, которые нужны исходя из контекста программы:
+
+<pre><font color=green>open F, "&lt;file";
+while(&lt;F&gt;){
+  print if(/&lt;!--begin welcome--&gt;/i ... /&lt;!--end welcome--&gt;/i)
+}</pre></font>
+
+Такая конструкция позволяет выводить куски многострочного html кода(для однострочного нужно ставить оператор <font color=green>..</font>).
+
+Условия в таких операторах можно ставить и разнотипными
+<pre><font color=green>$file=qr/2345/;
+while(&lt;F&gt;){
+  print if(/^$/ .. 10); #увидим, что находится от пустой до 10-й строки
+  print if(/^\001/ .. /$file/); #выведет все, что после нуля и до того что задано qr
+}
+</pre></font>
+Программа чтения почтовых адресов из mbox или sent-mail:
+<pre><font color=green>while(&lt;F&gt;){
+  next unless /^From:?\s/i .. /^$/;
+  while (/([^&lt;&gt;(,;)\s]+\@[^&lt;&gt;(,;)\s]+)/)g{
+    print "$1\n" unless $test{$1}++;
+  }
+}</pre></font>
+
+запускается <font color=green>./regex.pl /root/mail/sent-mail</font>  и выводит каждый емейл по одному разу.
+
+<h3><a name="index_html_vstr">Использование встроенных переменных</a></h3>
+
+<ul>
+	<li><font color=green>$'</font> - подстрока, следующая за совпадением.</li>
+	<li><font color=green>$&</font> - совпадение с шаблоном поиска</li>
+	<li><font color=green>$`</font> - подстрока, расположенная перед совпадением</li>
+	<li><font color=green>$^R</font> - результат вычисления утверждения в теле шаблона</li>
+	<li><font color=green>$n</font> - n-ный фрагмент совпадения</li>
+	<li><font color=green>\n</font> - n-ный фрагмент совпадения вызываемый в самом шаблоне</li>
+    <li><font color=green>$+</font> - фрагмент совпадения</li>
+    <li><font color=green>$*</font> - разрешает выполнять поиск в многострочных файлах</li>
+	<li><font color=green>@-</font> - спецмассив, который содержит начальную позицию найденного слова</li>
+	<li><font color=green>@+</font> - массив, содержащий позицю последнего найденного слова</li>
+</ul>
+
+<p align=justify>
+<font color=green>$&</font> - совпадение с шаблоном поиска, при последней операции поиска или замены. В отличии от переменной <font color=green>$_</font>, эту переменную переопределять как вздумается нельзя. 
+<p align=justify>
+<font color=green>$'</font> подстрока за совпадением с шаблоном поиска, е  также можно только читать.
+<p align=justify>
+<font color=green>$`</font> - подстрока, расположенная перед совпадением, разрешается только е  чтение.<p align=justify>
+<font color=green>$^R</font> - результат вычисления утверждения в теле шаблона для последнего вычисления шаблона, если в нем идет счет или вызывается внешняя программа:
+
+<pre><font color=green>$qwer="lala";
+$qwer=~ /x(?{$var=5})/;
+print $^R;
+5</pre></font>
+<font color=green>$+</font> - фрагмент совпадения в шаблоне, который в нем был последним в круглых скобках. Разрешается только чтение <font color=green>$+</font>.
+<p align=justify>
+<font color=green>$*</font> - разрешает выполнять поиск в многострочных файлах, булева переменная, если она взведена в <font color=green>1</font>,  то символы шаблона поиска <font color=green>^</font> и <font color=green>$</font> сопоставляются позициям перед и после внутренних символов новой строки, если <font color=green>0</font>, то от начала текста и до конца текста:
+
+<pre><font color=green>$kim="lala\nfa\eti\nzvuki...";
+$kim=~~ /^eti/; #совпадение не нашлось
+$*=1;
+$kim=~~ /^eti/; #совпадение нашлось</pre></font>
+
+<font color=green>$n</font> - <font color=green>n</font>-ный фрагмент совпадения:
+
+<pre><font color=green>print "$1 $2 $3\n" if(/^(\d)(\w)(\W)$/);</pre></font>
+
+<font color=green>\n</font> - <font color=green>n</font>-ный фрагмент совпадения вызываемый в самом шаблоне, например поиск гиперссылок:
+
+<pre><font color=green>/a href=(['"])(.*?)\1>/</pre></font>
+
+Например нужно занести в массив только цифры из строчки <font color=green>"12@#34@@#@@###34@@##67##@@#@#@34"</font>:
+
+<pre><font color=green>$_='12@#34@@#@@###34@@##67##@@#@#@34';
+s/@/#/g;
+s/(#)\1+/$1/g;
+print join /\n/, split /#/, $_;</pre></font>
+
+Регулярное выражение s/(#)\1+/$1/g; изпользует повторение переменной <font color=green>$1</font> (квантификатор <font color=green>+</font>) и если оно есть, то заменяет все подряд идущие <font color=green>#</font> между цифрами на одну #, содержащуюся в<font color=green>$1</font>(переменная <font color=green>$1</font> существует, если часть шаблона или шаблон указать в круглых скобках).
+<p align=justify>
+Допустим нужно определить, все ли цифры числа различны. Попробуем найти хотя-бы одно повторяющееся число:
+
+<pre><font color=green>if(/(\d).*(?=\1)/g){
+print "по крайней мере одна цифра $1 различна\n";
+}</pre></font>
+
+
+<p align=justify>Выражение берет 1-ю цифру и ищет е  совпадения со всеми остальными, если есть, то говорит, что найдено и заканчивает работу. Регулярное выражение берет первое число при помощи (\d) и начинает его сравнивать со всеми остальными числами при помощи .*(?=\1). Если первое число в строке уникально, регулярное выражение начнет сопостовлять второе число со всеми восемью оставшимися числами. Если и второе число в строке уникально, то берется третье число и сравнивается со всеми остальными. И т.д., если совпадение было найдено, то регулярное выражение возвращает true и заканчивает свою работу, даже если в строке еще есть повторяющиеся числа.  Чтобы можно было просмотреть все повторяющиеся числа, можно воспользоваться модификацией предыдущего кода:
+
+<pre><font color=green>$_ = '2314152467';
+my @a = m/(\d)(?=\d*\1)/g ; 
+if (@a){
+  print join(',',@a)," - Repeat\n";
+}
+else{
+  print "Ok\n" ;
+}
+</pre></font>
+Этот усовершенствованный код работает до тех пор, пока не будут найдены все совпадения, если таковые вообще есть.
+<p align=justify>
+В perl 5.6 вводятся переменные <font color=green>@-</font> и <font color=green>@+</font>, комбинация которых может заменять переменные <font color=green>$`</font>, <font color=green>$&</font>, и <font color=green>$'</font>. После совпадения шаблона переменная <font color=green>$-[0]</font> содержит начало соответсвия текста шаблону, а переменная <font color=green>$+[0]</font> содержит конец соответсвия текста шаблону. В начале поиска обе являются нулями. Это значит, что можно вычислить значения <font color=green>$`</font>, <font color=green>$&</font>, и <font color=green>$'</font>:
+
+<pre><font color=green>$do      = substr($stroka, 0, $-[0]);
+$sovpalo = substr($stroka, $-[0], $+[0] - $-[0]);
+$posle   = substr($stroka, $+[0]);</pre></font>
+
+Например:
+
+<pre><font color=green>$test="11-231234";
+$test=~/\d{2}-\d{6}/;
+print "$-[0], $+[0]";
+0, 9
+</pre></font>
+<p align=justify>
+Соответственное переменные <font color=green>$#-</font> и <font color=green>$#-</font> указывают размерность массивов <font color=green>@-</font> и <font color=green>@+</font>.
+<p align=justify>
+Переменная $^N.
+
+<h3><a name="index_html_work">Как работают регулярные выражения<a></h3>
+
+<p align=justify>
+Регулярные выражения, использующие квантификаторы, могут порождать процесс, который называется перебор с возвратом (backtracking). Чтобы произошло совпадение текста с шаблоном, надо построить соответствие между текстом и всем регулярным выражением, а не его частью. Начало шаблона может содержать квантификатор, который поначалу срабатывает, но впоследствии приводит к тому, что для части шаблона не хватает текста или возникает несоответствие между текстом и шаблоном. В таких случаях perl возвращается назад и начинает построение соответствия между текстом и шаблоном с самого начала, ограничивая "жадность" квантификатора (именно поэтому процесс и называется "перебор с возвратом"). 
+Перечислим квантификаторы perl:
+<ul>
+	<li><font color=green>*</font> - ноль или несколько совпадений, </li>
+	<li><font color=green>+</font> - одно или несколько совпадений, </li>
+	<li><font color=green>?</font> - ноль совпадений или одно совпадение,   </li>
+	<li><font color=green>{n}</font> - ровно <font color=green>n</font> совпадений,</li>
+	<li><font color=green>{n,}</font> - по крайней мере <font color=green>n</font> совпадений,</li>
+	<li><font color=green>{n,m}</font> - от <font color=green>n</font> до <font color=green>m</font> совпадений.</li>
+
+</ul>
+
+Например квантификатор <font color=green>+</font> соответствует фразе "один или несколько" и является жадным. Расмотрим пошагово принцип перебора с возвратом на примере квантификатора <font color=green>+</font>:
+
+<pre><font color=green>'aaabc' =~/a+abc/;
+</pre></font>
+
+<font color=green>a+</font> сразу в силу жадности совпадает с тремя <font color=green>а</font>: 
+
+<pre><font color=green>(aaa)bc</pre></font>
+
+но после <font color=green>aaa</font> не следует строка "<font color=green>abc</font>", а следует "<font color=green>bc</font>". Поэтому результат - failed
+поэтому анализатор должен откатиться назад и вернуть с помощью <font color=green>a+</font> два <font color=green>a</font>:
+
+<font color=green>(aa)abc</font> 
+
+т.е. на втором шаге шаблон найдет совпадение.
+<p align=justify>
+Рассмотрим пример работы еще одного жадного квантификатора <font color=green>*</font>(ноль или несколько совпадений):
+
+<pre><font color=green>  amxdemxg    /.*m/</pre></font>
+<p align=justify>
+Сначала будет найдена вся строка <font color=green>abcdebfg</font> в силу жадности <font color=green>.*</font>, потом квантификатору нужно будет найти сравнение с буквой <font color=green>m</font>, произойдет ошибка. Квантификатор <font color=green>.*</font> отдаст одну букву и его содержимое будет уже <font color=green>amxdemx</font>. На конце снова нет буквы <font color=green>m</font>. Будет отдана еще одна буква и снова не будет найдено совпадение со всем шаблоном и наконец квантификатор <font color=green>.*</font> будет содержать подстроку <font color=green>amxde</font>, за которой уже стоит символ <font color=green>m</font>. И поиск на этом и закончится не смотря на то, что в строке <font color=green>amxdemxg</font> содержится не одна буква <font color=green>m</font>. Потому и говорят, что квантификаторы обладают жадностью, т.е. находят максимально возможное совпадение.
+<p align=justify>
+Допустим нужно найти совпадение:
+
+<pre><font color=green>$uu="How are you? Thanks! I'm fine, you are ok??"; 
+$uu=~s/.*you//;
+print $uu;</pre></font>
+<p align=justify>
+Квантификатор <font color=green>.*</font> оставит  текст <font color=green>" are ok??"</font>, а вовсе не <font color=green>"? Thanks! I'm fine, you are ok??"</font>. Если же поставить ограничитель <font color=green>?</font>, который вместе со знаком квантификатора означает максимально возможное совпадение
+
+<pre><font color=green>$uu="How are you? Thanks! I'm fine, you are ok??"; 
+$uu=~s/.*you//;
+print $uu;
+</pre></font>
+то переменная $uu будет содержать текст <font color=green>"? Thanks! I'm fine, you are ok??"</font>.
+
+<p align=justify>
+Предположим нужно найти совпадения типа network workshop, т.е. перекрытия.
+
+<pre><font color=green>
+$u='network';
+$m='workshop';
+print "перекрытие $2 найдено: $1$2$3\n" if("$u $m" =~/^(\w+)(\w+) \2(\w+)$/);</pre></font>
+
+<font color=green>$1</font> сразу берет все слово в <font color=green>$u</font>, но дальше идет еще один максимальный квантификатор <font color=green>(\w+)</font>, которому тоже чего-то надо и он забирает из переменной <font color=green>\1</font> букву <font color=green>k</font>(причем только одну):
+
+<pre><font color=green>
+#!/usr/bin/perl
+$uu="asdfg asdf";
+$uu=/(\w+)(\w+)\s(\w+)(\w+)/;
+print "$1 $2##$3 $4";
+asdf g##asd f 
+</pre></font>
+
+далее пошаговая работа regex выглядит примерно так:
+
+<pre><font color=green>
+1: 'networ''k'=> '\sk' совпадает ли с '\sworkshop'     falure
+2: 'netwo''rk'=> '\srk' совпадает ли с '\sworkshop'    falure
+3: 'netw''ork'=> '\sork' совпадает ли с '\sworkshop'   falure
+4: 'net''work'=> '\swork' совпадает ли с '\sworkshop'  ok
+</pre></font>
+и в результате программа выдаст:
+<pre><font color=green>перекрытие work найдено: networkshop</pre></font>
+
+Данный регексп не сработает, если 
+
+<pre><font color=green>$u='networkwork';
+$m='workshop';
+</pre></font>
+шаблон найдет перекрытия <font color=green>workwork</font>, а не <font color=green>work</font>. Чтобы этого избежать, нужно сделать минимальным  <font color=green>\1: /^(\w+?)(\w+) \2(\w+)$/</font>
+
+<p align=justify>Квантификатор действует только на предшествующий ему элемент шаблона. Например, конструкция <font color=green>\d{2}[a-z]+</font> будет соответствовать последовательности из одной или нескольких строчных латинских букв, начинающейся с двух цифр, а не последовательности, составленной из чередующихся цифр и букв. Для выделения группы элементов, на которую действует квантификатор, используются круглые скобки: <font color=green>(\d{2}(a-z])+</font><p align=justify>
+
+
+<h3><a name="index_html_logika">Логические операции в регулярных выражениях</a></h3>
+
+В регулярных выражениях perl есть синтаксические выражение, позволяющие в шаблонах использовать простые логические конструкции: 
+<ul>
+	<li><font color=green>(?= шаблон)</font> - после этой точки есть фрагмент текста, который соответствует указанному регулярному выражению</li>
+	<li><font color=green>(?! шаблон)</font> - после этой точки нет текста, который бы соответствовал указанному регулярному выражению,</li>
+	<li><font color=green>(?&lt;= шаблон)</font> - перед этой точкой есть фрагмент текста, соответствующий указанному регулярному выражению,</li>
+	<li><font color=green>(?&lt;! шаблон)</font> - перед этой точкой нет фрагмента текста, соответствующего указанному регулярному выражению.</li>
+	<li><font color=green>(?#текст)</font> - комментарий. Текст комментария игнорируется.</li>
+	<li><font color=green>(?:шаблон)</font> или <font color=green>(?модификаторы:шаблон)</font> - группирует элементы шаблона. В отличие от обычных круглых скобок, не создает нумерованной переменной. Например, модификатор <font color=green>i</font> не будет делать различия между строчными и заглавными буквами, однако область действия этого модификатора будет ограничена только указанным шаблоном.</li>
+	<li><font color=green>(?=шаблон)</font> - "заглядывание вперед". Требует, чтобы после текущей точки находился текст, соответствующий данному шаблону. Такая, конструкция обрабатывается как условие или мнимый символ, поскольку не включается В результат поиска. Например, поиск с помощью команды <font color=green>/w+(?=\s+)/</font> найдет слово, за которым следуют один или несколько "пробельных символов", однако сами они в результат не войдут.</li>
+	<li><font color=green>(?!шаблон)</font> - случай, противоположный предыдущему. После текущей точки не должно быть текста, соотносимого с заданным шаблоном. Так, если шаблон <font color=green>w+(?=\s)</font> - это слово, за которым следует "пробельный символ", то шаблон <font color=green>w+(?!\s)</font> - это слово, за которым мет "пробельного символа".</li>
+	<li><font color=green>(?&lt;=шаблон)</font> - заглядывание назад. Требует, чтобы перед текущей точкой находился соответствующий текст. Так, шаблон <font color=green>(?&lt;=\s)w+</font> интерпретируется как слово, перед которым имеется пробельный символ (в отличие от заглядывания вперед, заглядывание назад может работать только с фиксированным числом проверяемых символов).</li>
+	<li><font color=green>(?&lt;!шаблон)</font> - отрицание предыдущего условия. Перед текущей точкой не должно быть текста, соотносимого с заданным шаблоном. Соответственно, от команды <font color=green>/(?&lt;!\s)w+/</font> требуется найти слово, перед которым нет пробельного символа.</li>
+	<li><font color=green>(?{код})</font> - условие (мнимый символ), которое всегда выполняется. Сводится к выполнению команд perl в фигурных скобках. Вы можете использовать эту конструкцию, только если в начале сценария указана команда <font color=green>use re 'eval'</font>. При последовательном соотнесении текста и шаблона, когда perl доходит до такой конструкции, выполняется указанный код. Если полного соответствия для оставшихся элементов найти не удалось, то при возврате левее данной точки шаблона вычисления, проделанные с локальными переменными, откатываются назад. (Условие является экспериментальным. В документации, прилагаемой в perl, можно найти довольно детальное рассмотрение (с примерами) работы этого условия и возможных трудностей в случае его применения.)</li>
+	<li><font color=green>(?&gt;шаблон)</font> - "независимый" или "автономный" шаблон. Используется для оптимизации процесса поиска, поскольку запрещает "поиск с возвратом". Такая конструкция соответствует подстроке, на которую налагается заданный шаблон, если его закрепить в текущей точке без учета последующих элементов шаблона. Например, шаблон <font color=green>(?&gt;а*)аb</font> в отличие от <font color=green>a*ab</font> не может соответствовать никакой строке. Если поставить в любом месте шаблон <font color=green>а*</font>, он съест все буквы <font color=green>а</font>, не оставив ни одной шаблону <font color=green>ab</font>. (Для шаблона <font color=green>а*аb</font> "аппетит" квантификатор <font color=green>*</font> будет ограничен за счет работы поиска с возвратами: после того как на первом этапе не удастся найти соответствие между шаблоном и текстом, perl сделает шаг назад и уменьшит количество букв <font color=green>а</font>, захватываемых конструкцией <font color=green>а*</font>.) </li>
+	<li><font color=green>(?(условие)шаблон-да|шаблон-нет)</font> или (<font color=green>?(условие)шаблон-да)</font> - условный оператор, который подставляет тот или иной шаблон в зависимости от выполнения заданного условия. Более подробно описан в документации perl.</li>
+	<li><font color=green>(?модификаторы)</font> - задает модификаторы, которые локальным образом меняют работу процедуры поиска. В отличие от глобальных модификаторов, имеют силу только для текущего блока, то есть для ближайшей группы круглых скобок, охватывающих конструкцию, Например, шаблон <font color=green>((?i)text)</font> соответcтвует слову "text" без учета регистра.</li>
+</ul>
+
+<p align=justify>
+
+Поиск повторяющихся слов в регулярном выражении осуществляется при помощи т.н. обратных ссылок. Выше уже был приведен пример их использования для выбирания всех адресов рисунков с www.astronomynow.com:
+
+<pre><font color=green>m{SRC\s*=\s*(["'])http://(.*?)\1\s+(.*?)WIDTH="100" HEIGHT="100"(.*?)>}igs</pre></font>
+
+<font color=green>(["'])</font> - найти либо <font color=green>"</font> либо <font color=green>'</font> либо ничего, т.к. <font color=green>src=http://</font> может быть без кавычек. Как только был надено что-либо из этих трех позиций, через минимальное количество символов(регулярное выражение <font color=green>(.*?)</font>) символов оно заносится в специальную переменную <font color=green>\1</font>, которая вне <font color=green>m/.../</font> может быть вызвана как <font color=green>$1</font>(в <font color=green>s/.../.../</font> она вызывается в его левую половину как <font color=green>$1</font>). Дальше после <font color=green>*.gif|*.jpg|*.bmp</font> и т.д. должен обязательно идти хотя-бы один пробел <font color=green>\s+</font>, т.к. броузеры воспримут подстроку <font color=green>src=file.gifborder=0</font> как файл картинки с расширением <font color=green>gifborder=0</font>. Поэтому данное регулярное выражение вполне исправно работает, хотя оно было сделано для сайта, где в <font color=green>img src</font> ставится полный адрес, т.е. начинающийся с <font color=green>http://</font> Для других сайтов придется выстраивать полные пути в ссылках используя <font color=green>base href</font>, если есть или его <font color=green>url</font>. 
+
+Если нужно найти какое-то по счету совпадение шаблона в строке, то это реализуется примерно так:
+
+<pre><font color=green>while($str=~/WHAT/g){$n++}
+$n++ while $str=~/WHAT/g;
+$n++ while $str=~/(?=WHAT)/g;#для перекрывающихся совпадений
+for($n=0; $n=~/WHAT/g; $n++){}</pre></font>
+
+Каждое кратное совпадение 
+
+<pre><font color=green>(++$n % 6) == 0;</pre></font>
+
+Нужное Вам совпадение:
+
+<pre><font color=green>$n=($str=~/WHAT/gi)[6]; #допустим шестое</pre></font>
+
+Или каждое четное совпадение
+
+<pre><font color=green>@mass=grep{$n++ %2==0} /WHAT/gi; </pre></font>
+
+для нечетного нужно написать внутри <font color=green>grep</font>: <font color=green>$n++ %2==1</font>
+
+Логические операции внутри регулярных выражений.
+
+
+Если нужно найти последнее совпадение, то можно воспользоваться отрицанием опережающей проверки <font color=green>(?!WHAT)</font>:
+
+<pre><font color=green>m#PATTERN(?!.*PATTERN)$#</pre></font>
+т.е. нийти какой-то <font color=green>PATTERN</font>, при этом не должно найтись что-то еще(<font color=green>.*</font>) и <font color=green>PATTERN</font>, т.е. результат - последнее совпадение;
+
+<p align=justify>
+
+Минимальные квантификаторы <font color=green>*?</font>, <font color=green>+?</font>, <font color=green>??</font>,<font color=green>{}?</font>
+
+<p align=justify>
+
+допустим нужно найти двойку, перед которой не стоит 3 или пробел:
+
+<pre><font color=green>print "$1\n" while m%2(?![3\s])gm%;</pre></font><p align=justify>
+
+используется условие по отрицанию, <font color=green>A(?!B)</font>: найти <font color=green>А</font>, перед которым не находится <font color=green>В</font>. Чтобы найти двойку, за которой стоит 3 или пробле(<font color=green>\s</font>), то можно воспользоваться: 
+
+<pre><font color=green>print "$1\n" while m%2(?=[3\s])gm%;</pre></font>
+
+или 
+
+<pre><font color=green>print "$1\n" while m%2(?![^3\s])gm%;</pre></font>
+<p align=justify>
+где используется <font color=green>^</font>, <font color=green>[^3\s]</font>, который значит следущее: в класс символов, которые нужно найти, не входят <font color=green>3</font> и пробел, или другими словами найти все кроме <font color=green>3</font> и <font color=green>\s</font>.
+<p align=justify>
+
+Допустим существует HTML-документ, в котором произвольное число вложенных таблиц [&<font color=green>lt;table&gt;.*&lt;/table&gt;</font>]. Требуется "вырезать" по очереди самые вложенные таблицы (не содержащие внутри [<font color=green>&lt;table&gt;.*&lt;/table&gt;</font>]), и, соответственно, выводить. И так - рекурсивно до конца вырезать изнутри всю таблицу. Ниже представлена программа, реализующая эту задачу при помощи логического оператора <font color=green>(?!...)</font>:
+
+<pre><font color=green>
+#!/usr/bin/perl -wT
+
+$file=qq|s&lt;table&gt;aaa bbb
+      &lt;table&gt;cc&lt;table&gt;ccc
+      &lt;table&gt; 2&lt;table&gt;bb&lt;/table&gt; &lt;table&gt;cc&lt;/table&gt;    &lt;/table&gt;&lt;/table>cc
+  &lt;/table&gt;
+     ddd&lt;/table&gt;d
+|;
+
+print $file;
+&req($file);
+sub req {
+  if($file=~m%(&lt;table&gt;((?!.*&lt;table&gt;).*?)&lt;/table&gt;)%igs){
+    $file=~s%(&lt;table&gt;((?!.*&lt;table&gt;).*?)&lt;/table&gt;)%%igs;
+    print "Virezali --$1--";
+    &req($file);
+  }
+return $file;
+}</pre></font> 
+
+<p align=justify>
+Продолжаем рассматривать логические операторы в регулярных выражениях на опретаорах типа OR, AND или NOT.
+<p align=justify>
+
+Регексп истиннен, если <font color=green>/AM|BMA/</font> или <font color=green>/AM/ || /BMA/</font> и если есть перекрытие типа <font color=green>/BMAM/</font>.
+Так-же и <font color=green>/AM/ && /BMA/</font>: 
+
+<pre><font color=green>/^(?=.*AM)(?=.*BMA)/s</pre></font>
+
+Выражение истинно если <font color=green>/AM/ и /BMA/</font> совпадают при перекрытии которое не разрешено:
+
+<pre><font color=green>/AM.*BMA|BMA.*AM/s</pre></font>
+
+Выражение истинно, если шаблон <font color=green>/ABC/</font> не совпадает:
+
+<pre><font color=green>!~/ABC/</pre></font> 
+
+или
+
+<pre><font color=green>/^(?:(?!ABC).)*$/s</pre></font>
+
+Выражение истинно, если <font color=green>ABC</font> не совпадает, а <font color=green>VBN</font> совпадает:
+<pre><font color=green>/(?=^(?:(?!ABC).)*$)VBN/s</pre></font>
+
+Несовпадение можно проверить несколькими способами:
+
+<pre><font color=green>unless($str =~ /MMM/){...}
+if(!($str =~ /MMM/)){...}
+if($str !~ /MMM/){...}</pre></font>
+
+Для обязательного совпадения в двух шаблонах:
+
+<pre><font color=green>unless ($str !~ /MMM/ && $str !~ /BBB/){...}
+#или
+if ($str =~ /MMM/ && $str =~ /BBB/){...}</pre></font>
+
+Хотя бы в одном
+
+<pre><font color=green>unless ($str !~ /MMM/ || $str !~ /BBB/){...}
+#или
+if ($str =~ /MMM/ || $str =~ /BBB/){...}</pre></font>
+
+
+
+
+
+
+
+
+
+
+<p align="justify">
+Регулярные выражения - основа работы с операторами <font color="Green"><font color=green>m/.../</font></font> и <font color="Green"><font color=green>s/.../.../</font></font>, так как они передаются последним в качестве аргументов. Разберемся, как устроено регулярное выражение <font color="Green">\b([A-Za-z)+)\b</font>, осуществляющее поиск отдельных слов в строке:
+<pre><font color="Green">
+$text = "Perl is the  subject.";
+$text =~/\b([A-Za-z]+)\b/;
+print $1;
+</font></pre><p align="justify">
+Выражение <font color="Green">\b([A-Za-z]+)\b</font> включает в себя группирующие метасимволы <font color="Green">(</font> и <font color="Green">)</font>, метасимвол границы слова <font color="Green">\b</font>, класс всех латинских букв <font color="Green">[A-Za-z]</font> (он объединяет заглавные и строчные буквы) и квантификатор <font color="Green">+,</font> который указывает на то, что требуется найти один или несколько символов рассматриваемого класса. Поскольку регулярные выражения, как это было в предыдущем примере, могут быть очень сложными, разберем их по частям. В общем случае регулярное выражение состоит из следующих компонентов:
+<p align=justify>
+
+Совпадение с любым символом<p align=justify>
+
+В perl имеется еще один мощный символ - а именно, точка <font color=green>(.)</font>. В шаблоне он соответствует любому знаку, кроме символа новой строки. Например, следующая команда заменяет в строке все символы на звездочки (использован модификатор <font color=green>g</font>, обеспечивающий глобальную замену):
+<pre><font color=green>$text = "Now is the time.";
+$text =~ s/./*/g;
+print $text;
+********************</pre></font><p align=justify>
+А что делать, если требуется проверить совпадение именно с точкой? Символы вроде точки (конкретно, <font color=green>\|()[{^$*+?.</font>), играющие в регулярном выражении осббую роль) называются, как уже было сказано выше, метасимволами, и если вы хотите, чтобы они внутри шаблона интерпретировались как обычные символы, метасимволу должна предшествовать обратная косая черта. Точно так же обратная косая черта предшествует символу, используемому в качестве ограничителя для команды <font color=green><font color=green>m/.../</font></font>, <font color=green><font color=green>s/.../.../</font></font> или <font color=green><font color=green>tr/.../.../</font></font>, если он встречается внутри шаблона и не должен рассматриваться как ограничитель. Рассмотрим пример: 
+
+<pre><font color=green>$line = ".Hello!"; 
+if ($1ine =- m/\./) {
+  print "Shouldn't start a sentence with a perlod!\n";
+}
+Shouldn't start a sentence with a perlod!
+</pre></font>
+
+Если нужно найти самый короткий текстовый фрагмент <font color=green>/QQ(.*?)FF/</font> в <font color=green>"QQ ff QQ ff FF"</font>, однако оно найдет <font color=green>"ff QQ ff"</font>. Шаблон всегда находит левую строку минимальной длины, которая соответствует всему шаблону, т.е. это вся строка в этом примере. Для правильного шаблона нужно воспользоваться логическими операторами в регулярных выражениях: <font color=green>/QQ((?:(?!QQ).)*)FF/</font>,
+т.е. сначала <font color=green>QQ</font>, потом <font color=green>не QQ</font>, потом <font color=green>FF</font>.
+
+<p align=justify>
+Конструкции <font color=green>(?&lt;=шaблoн)</font> и <font color=green>(?&lt;!шаблон)</font> работают только с шаблонами, соответствующими фиксированному числу символов. Иными словами, в шаблонах, указываемых для <font color=green>(?&lt;=...)</font> и <font color=green>(?&lt;!...)</font>, не должно быть квантификаторов.<p align=justify>
+Эти условия полезны, если нужно проверить, что перед определенным фрагментом текста или после него находится нужная строка, однако ее не требуется включать в результат поиска. Это бывает необходимо, если в коде используются спе-циальные переменные <font color=green>$&</font> (фрагмент, для которого найдено соответствие между текстом и регулярным выражением), <font color=green>$`</font> (текст, предшествующий найденному фрагменту) и <font color=green>$'</font> (текст, следующий за найденным фрагментом). Более гибким представляется применение нумерованных переменных <font color=green>$1</font>, <font color=green>$2</font>, <font color=green>$3</font>, ... в которые заносятся отдельные части найденного фрагмента.<p align=justify>
+В следующем примере ищется слово, за которым следует пробел, но сам пробел не включается в результат поиска:
+<pre><font color=green>$text = "Маrу Tom Frank ";
+while ($text =~ /\w+(?=\s)/g) {print $& . "\n";}
+Маrу
+Tom
+Frank
+</pre></font>
+<p align=justify>
+Того же результата можно добиться, если заключить в круглые скобки интересу-ющую нас часть шаблона и затем использовать ее как переменную <font color=green>$1</font>:
+<pre><font color=green>$text = "Mary Tom Frank ";
+while ($text =~ /(\w+)\s/g) {
+  print $1 . "\n";
+}
+Маrу
+Tom
+Frank
+</pre></font><p align=justify>
+Следует четко понимать, что вы имеете в виду, когда используете то или иное условие. Рассмотрим следующий пример:
+<pre><font color=green>
+$text="Mary+Tom";
+if($text=~m|(?!Mary\+)Tom|){
+  print "Tom is without Mary!\n";
+}
+else{
+  print "Tom is busy...\n";
+}</pre></font>
+
+Вопреки нашим ожиданиям, perl напечатает:
+<font color=green>Tom is without Mary!</font>
+Это произойдет по следующей причине. Пробуя различные начальные точки входной строки, от которой начинается сопоставление шаблона и текста, pеr1 рано или поздно доберется до позиции, расположенной прямо перед именем "<font color=green>Tom</font>". Условие <font color=green>(?!Маry\+)</font> требует, чтобы после текущей точки не находился текст *<font color=green>Маry+</font>", и это условие для рассматриваемой точки будет выполнено. Далее, perl последовательно проверяет, что после текущей точки следуют буквы "Т", "o" и "m", и это требование также в силе (после проверки условия <font color=green>(?!Маry\+)</font> текущая точка остается на месте). Тем самым найдено соответствие между подстрокой "Тоm" и шаблоном, поэтому команда поиска возвращает значение истина.<p align=justify>
+Регулярное выражение <font color=green>(?!Mary\+)....Tom</font>, резервирующее четыре символа под текст "<font color=green>Маry+</font>", для приведенного выше случая выведет то, что требовалось, но выдаст ошибочный ответ, если перед именем "Тоm" нет четырех символов:
+
+<pre><font color=green>
+$text="O, Tom! ";
+if($text =~ m|(?!Mary\+)....Tom|){
+  print "Tom is without Mary!\n";
+}
+else{
+  print "Tom is busy...\n";
+}
+
+Tom is busy...
+</pre></font>
+Наконец, если более точно сформулировать, чего требуется, получится нужный результат: 
+<pre><font color=green>
+$text="Mary+Tom";
+if($text=~m|(?&lt;!Mary\+)Tom|){
+  print "Tom is without Mary!\n";
+}
+else{
+  print "Tom is busy...\n";
+}
+
+Tom is busy...
+</pre></font>
+
+Вспомнить и написать про строчку вида 
+
+<pre><font color=green>push @mass, $li unless($li=~m/(([2 .. 12]).*?1995)|(([6 .. 12]).*?2001)|/)</pre></font>; perldoc perlop [0-9.]
+
+
+<p align=justify>
+Модификаторы команд <font color=green><font color=green>m/.../</font></font> и <font color=green><font color=green>s/.../.../</font></font><p align=justify>
+В perl имеется несколько модификаторов, используемых с командами <font color=green><font color=green>m/.../</font></font> и <font color=green><font color=green>s/.../.../</font></font>:
+<ul>
+	<li><font color=green>i</font> - игнорирует различие между заглавными и строчными буквами. </li>
+	<li><font color=green>s</font> - метасимволу "точка" разрешено соответствовать символам <font color=green>\n</font>.</li>
+	<li><font color=green>m</font> - разрешает метасимволам <font color=green>^</font> и <font color=green>$</font> привязываться к промежуточным символам <font color=green>\n</font>, имеющимся в тексте. Не влияет на работу метасимволов <font color=green>\А</font>, <font color=green>\Z</font> и <font color=green>\z</font>.</li>
+	<li><font color=green>х</font> - игнорирует "пробельные символы" в шаблоне (имеются в виду "истинные" пробелы, а не метасимволы <font color=green>\s</font> и пробелы, созданные через escape-последовательности). Разрешает использовать внутри шаблона комментарии.</li>
+	<li><font color=green>g</font> - выполняет глобальный поиск и глобальную замену.</li>
+	<li><font color=green>с</font> - после того как в скалярном контексте при поиске с модификатором <font color=green>g</font> не удалось найти очередное совпадение, не позволяет сбрасывать текущую позицию поиска. Работает только для команды <font color=green><font color=green>m/.../</font></font> и только вместе с модификатором <font color=green>g</font>.</li>
+	<li><font color=green>о</font> - запрещает повторную компиляцию шаблона при каждом обращении к данному оператору поиска или замены, пользователь, однако, должен гарантировать, что шаблон не меняется между вызовами данного фрагмента кода.</li>
+	<li><font color=green>е</font> - показывает, что правый аргумент команды <font color=green><font color=green>s/.../.../</font></font> - это фрагменты выполняемого кода. В качестве текста для подстановки будет использовано возвращаемое значение - возможно, после процесса интерполяции.</li>
+	<li><font color=green>ee</font> - показывает, что правый аргумент команды <font color=green><font color=green>s/.../.../</font></font> - это строковое выражение, которое надо вычислить и выполнить как фрагмент кода (через функцию <font color=green>eval</font>). В качестве текста для подстановки используется возвращаемое значение - возможно, после процесса интерполяции </li>
+</ul>
+<p align=justify>
+Особенности работы команд <font color=green><font color=green>m/.../</font></font> и <font color=green><font color=green>s/.../.../</font></font><p align=justify>
+
+До сих пор мы рассматривали регулярные выражения, используемые в качестве шаблонов для команд <font color=green><font color=green>m/.../</font></font> и <font color=green><font color=green>s/.../.../</font></font>, и не особо интересовались, как работают эти команды. Настало время восполнить пробелы.<p align=justify>
+Команда <font color=green><font color=green>m/.../</font></font> ищет текст по заданному шаблону. Ее работа и возвращаемое значение сильно зависят от того, в скалярном или списковом контексте она используется и имеется ли модификатор <font color=green>g</font> (глобальный поиск). <p align=justify>
+Команда <font color=green><font color=green>s/.../.../</font></font> ищет прототип, соответствующий шаблону, и, если поиск оказывается успешным, заменяет его на новый текст. Без модификатора замена производится только для первого найденного совпадения, с модификатором <font color=green>g</font> выполняются замены для всех, совпадений во входном тексте. Команда возвращает в качестве результата число успешных замен или пустую строку (условие ложь false), если ни одной замены сделано не было.  
+В качестве анализируемого текста используется <font color=green>$_</font> (режим по умолчанию) или выражение, присоединенное к шаблону с помощью оператора <font color=green>=~</font> или <font color=green>!~</font>. В случае поиска (команда <font color=green><font color=green>m/.../</font></font>) конструкция, расположенная слева от операторов <font color=green>=~</font> или <font color=green>!~</font>, может и не быть переменной. В случае замены (команда <font color=green><font color=green>s/.../.../</font></font>) в левой части должна стоять скалярная переменная, или элемент массива, или элемент хэша, или же команда присвоения одному из указанных объектов.<p align=justify>
+Вместо косой черты в качестве ограничителя для аргументов команд <font color=green><font color=green>m/.../</font></font> и <font color=green><font color=green>s/.../.../</font></font> можно использовать любой символ, за исключением "пробельного символа", буквы или цифры. Например, в этом качестве можно использовать символ комментария, который будет работать как ограничитель:
+
+<pre><font color=green>$text="ABC-abc";
+$text =~ s#B#xxx#ig;
+print $text;
+AxxxC-axxxc
+</pre></font><p align=justify>
+В качестве ограничителей не стоит использовать вопросительный знак и апостроф (одинарную кавычку) - шаблоны, с такими ограничителями обрабатываются специалиным образом.
+Если команда <font color=green><font color=green>m/.../</font></font> использует символ косой черты в качестве разделителя, то букву m можно опустить:
+<pre><font color=green>
+while (defined($text = &lt;&gt;)) 
+{ if ($text =~/^exit$/i) {exit;} }</pre></font><p align=justify>
+Если в качестве ограничителя для команды <font color=green><font color=green>m/.../</font></font> используется вопросительный знак, то букву m также можно опустить. Однако шаблоны, ограниченные символом <font color=green>?</font>, в случае поиска работают особым образом (независимо от наличия или отсутствия начальной <font color=green>m</font>). А именно, они ведут себя как триггеры, которые срабатывают один раз и потом выдают состояние ложь (false), пока их не взведут снова, вызвав функцию reset (она очищает статус блокировки сразу всех конструкций <font color=green>?...?</font>, локальных для данного пакета). Например, следующий фрагмент сценария проверяет, есть ли в файле пустые строки:
+<pre><font color=green>while (&lt;&gt;)
+if (?^$?) {print ."There is an empty line nere.\n";} continue {
+reset if eof;   #очистить для следующего файла
+}</pre></font><p align=justify>
+Диагностическое сообщение будет напечатано только один раз, даже если в файле присутствует несколько пустых строк. Команда поиска с вопросительным знаком относится к подозрительным командам, а потому может не войти в новые версии perl.                      1
+В качестве ограничителей можно также использовать различные (парные) койструкции скобок:
+<pre><font color=green>while (&lt;&gt;){
+  if(m/^quit$/i){exit;}
+  if(m(^stop$)i){exit;} 
+  if(m[^end$]i) {exit;} 
+  if(m{^bye$}i) {exit;}
+  if (!1)&lt;^ехit$&gt;i) {exit;}
+}
+</pre></font>
+В случае команды <font color=green><font color=green>s/.../.../</font></font> и использования скобок как ограничителей для первого аргумента, ограничители второго аргумента могут выбираться независимо:
+<pre><font color=green>$text =~ "Perl is wonderful"; 
+$text =~ s/is/is very/;
+$text =~ s[wonderful]{beautiful};
+$text =~ s(\.)/!/;
+print $text;
+Perl is very beautiful!
+</pre></font><p align=justify>
+Предварительная обработка регулярных выражений<p align=justify>
+Аргументами команд <font color=green><font color=green>m/.../</font></font> и <font color=green><font color=green>s/.../.../</font></font> являются регулярные выражения, которые перед началом работы интерполируются подобно строкам, заключенным в двойные кавычки  В отличие от текстовых строк, для шаблона не выполняется интерполяция имен типа <font color=green>$)</font>, <font color=green>$|</font> и одиночного <font color=green>$</font> - perl считает, что такие конструкции соответствуют метасимволу конца строки, а не специальной переменной. Если же в результате интерполяции шаблон поиска оказался пустой строкой, perl использует последний шаблон, который применялся им для поиска или замены.
+<p align=justify>
+Если вы не хотите, чтобы perl выполнял интерполяцию регулярного выражения, в качестве ограничителя надо использовать апостроф (одиночную кавычку), тогда шаблон будет вести себя, как текстовая строка, заключенная в апострофы. Однако, например, в случае команды замены <font color=green><font color=green>s/.../.../</font></font> с модификатором е или ее (их работа описывается чуть дальше) для второго аргумента будет выполняться интерполяция даже в том случае, если он заключен в апострофы. 
+<p align=justify>
+Если вы уверены, что при любом обращениик команде поиска или замены шаблон остается неизменным (например, несмотря на интерполяцию, скалярные переменные внутри шаблона не будут менять своего значения), то можно задать модификатор <font color=green>о</font>. Тогда perl компилирует шаблон в свое внутреннее представление только при первой встрече с данной командой поиска или замены. При остальных обращениях к команде будет использовать откомпилированное значение. Однако, если внезапно изменить значение переменных, задействованных в шаблоне, perl этого даже не заметит.
+<p align=justify>
+Команда замены <font color=green><font color=green>s/.../.../</font></font> использует регулярное выражение, указанное в качестве второго аргумента, для замены текста. Поскольку оно обрабатывается (интерполируется) после того, как выполнена очередная операция поиска, в нем можно, в частности, использовать временные переменные, созданные на этапе поиска. В следующем примере мы последовательно заменим местами пары слов, заданных во входном тексте, оставив между ними по одному пробелу:
+<pre><font color=green>$text = "One   Two   Three   Four  Five   Six";
+$text =- s/(\w+)\s*(\w+)/$2$1/g;    
+Two One Four Three Six Five
+</pre></font><p align=justify>Однако perl допускает и более сложные способы определения заменяющего текста. Так, если для команды <font color=green><font color=green>s/.../.../</font></font> указать модификатор <font color=green>е</font>, то в качестве второго аргумента надо указать код, который необходимо выполнить (например, вызвать функцию). Полученное выражение будет использованокак текст для подстановки. При этом после вычисления текстового значения, но пер д его подстановкой будет выполнен процесс интерполяции, аналогичный процессу интерполяции текстовых строк, заключенных в двойные кавычки. Еще более сложная схема реализуется, если задан модификатор <font color=green>ее</font>. В этом слу-чае второй аргумент команды <font color=green><font color=green>s/.../.../</font></font> - это строковое выражение, которое сперва надо вычислить (то есть интерполировать), затем выполнить в качестве кода (вызвав встроенную функцию <font color=green>eval</font>) и только после второй интерполяции полученный результат подставляется вместо найденного текста.<p align=justify>
+
+Работа команды <font color=green>m/.../</font> в режиме однократного поиска <font color=green></font>
+
+В скалярном контексте и без модификатора <font color=green>g</font> команда <font color=green><font color=green>m/.../</font></font> возвращает логическое значение - целое число <font color=green>1</font> (истина (true)), если поиск оказался успешным, и пустую строку "" (ложь (false)), если нужный фрагмент текста найти не удалось. Если внутри шаблона имеются группы элементов, заключенные в круглые скобки, то после операции поиска создаются нумерованные переменные <font color=green>$1</font>, <font color=green>$2</font>, ..., в которых содержится текст, соответствующий круглым скобкам. В частности, если весь шаблон заключить в круглые скобки, то в случае успешного поиска переменная <font color=green>$1</font> будет содержать текст, соотнесенный с шаблоном. После успешного поиска можно также использовать специальные переменные <font color=green>$&</font>, <font color=green>$'</font>, <font color=green>$'</font> и <font color=green>$+</font>
+
+<pre><font color=green>$text = "---one---two---three---";
+$scalar = ($text =' m/(\w+)/); 
+print "Result: $scalar ($1).";
+Result: 1 (one).
+</pre></font><p align=justify>
+Если вы используете команду <font color=green><font color=green>m/.../</font></font> в списковом контексте, то возвращаемое значение сильно зависит от того, есть ли группы из круглых скобок в вашем шаблоне. Если они есть (то есть если создаются нумерованные переменные), то после успешного поиска в качестве результата будет получен список, составленный из нумерованных переменных (<font color=green>$1</font>, <font color=green>$2</font>,...):
+
+<pre><font color=green>$text = "---one,   two,   three---";
+ array = ($text ='m/(\w+),\s+(\w+),\s+(\w+)/);
+print join "=",  array;
+one=two=three.
+</pre></font><p align=justify>
+В отличие от ранних версий, perl 5 присваивает значения нумерованным переменным, даже если команда поиска работает в списковом контексте: 
+
+<pre><font color=green>$text = "---one,   two,   three--- ";
+($Fa, $Fb, $Fc) = ($text=-m/(\w+),\s+(\w+),\s+(\w+)/);
+print "/$Fa/$Fb/$Fc/\n";
+print "$1=$2=$3.\n";
+/one/two/three/
+one=two::three.
+</pre></font><p align=justify>
+Если же в шаблоне нет групп, выделенных круглыми скобками, то в случае успешного поиска возвращается список, состоящий из одного элемента - числа <font color=green>1</font>. При неудачном поиске независимо от того, были ли в шаблоне круглые скобки, возвращается пустой список:
+<pre><font color=green>$text = "---one,   two,   three--- ";
+@array = ($text=~ m/z\w+/);
+print "Result: /", @array, "/\n"; 
+print "Size: ", $#array+1, ".\n";
+Result://
+Size: 0. 
+</pre></font>Обратите внимание на разницу между пустым и неопределенным списками.
+<p align=justify>
+Работа команды <font color=green>m/.../</font> в режиме глобального поиска<p align=justify>
+
+Команда <font color=green><font color=green>m/.../</font></font> работает иначе, если указан модификатор <font color=green>g</font>, задающий глобальный поиск всех вхождений шаблона по всему тексту. Если оператор используется в списковом контексте и в шаблоне есть группы круглых скобок, то в случае удачного поиска возвращается список, состоящий из всех найденных групп, расположенных друг за другом:
+
+<pre><font color=green>$text = "---one---two-~-three---";
+@array = ($text =~m/(-(\w+))/);
+print "Single: [", join(", ",  array),"].\n";
+@array = ($text =~m/(-(\w+))/g);
+print "Global: [", join(", ",  array),"].\n";
+Single: [-one, one]. 
+Global: [-one, one, -two, two, -three, three].
+</pre></font><p align=justify>
+
+Если же в шаблоне нет групп круглых скобок, то оператор поиска возвращает список всех найденных прототипов шаблона, то есть ведет себя так, как если бы весь шаблон был заключен в круглые скобки:
+<pre><font color=green>$text = "---one---two---three--";
+@array = ($text =~m/\w+/);
+print "Result: (", join(", ", @array), ").\n";
+Result: (one, two, three).
+</pre></font>
+В случае неудачного поиска, как и в предыдущих вариантах, возвращается пустой список.  
+В скалярном контексте и с модификатором <font color=green>g</font> комaндa <font color=green><font color=green>m/.../</font></font> ведет себя сивершенно особым образом. Специальная переменная <font color=green>$_</font> или переменная, стоящая слева от оператора <font color=green>=~</font> или <font color=green>!~</font>, при поиске с модификатором <font color=green>g</font> получает дополнительные свойства - в нее записывается последнее состояние. При каждом последующем обращении к данному фрагменту кода поиск будет продолжаться с того места, на котором он остановился в последний раз. Например, следующая команда подсчитывает количество букв х в заданной строке текста:
+<pre><font color=green>
+$text = "Here is texxxxxt.";
+$counter = O;
+while ($text =~ m/x/g){
+print "Found another x.\n";
+$conter++;
+print "Total amount = $counter.\n";
+Found another х. 
+Found another х.
+Found another x.
+Found another x. 
+Found another x.
+Total amount = 5.
+</pre></font>
+<p align=justify>
+Состoяние (точнее, позиция) поиска сохраняется даже в случае перехода к следующему оператору поиска, имеющему модификатор <font color=green>g</font>. Неудачный поиск сбрасывает значение в исходное состояние, если только для команды <font color=green><font color=green>m/.../</font></font> не указан модификатор <font color=green>с</font> (то есть команда должна иметь вид <font color=green><font color=green>m/.../</font>gc</font>). Изменение текстового буфера, для которого выполняется поиск, также сбрасывает позицию поиска в исходное состояние. В следующем примере из текстовой строки последовательно извлекаются и выводятся пары имя/значение до тех пор, пока строка не закончится:<pre><font color=green>
+$text = "X=5; z117e=3.14l6; temp=lQ24;";
+$docycle = 1; $counter = 0;
+while ($docycle) { 
+  undef $name; undef $value;
+  if ($text =~ m/(\w+)\s*=\s*/g) {$name = $1;} 
+  if ($text =~ m/([\d\.\*\-]*)\s*;/g) {$value = $1;}
+  if (defined($name) and defined($value)) { 
+    print "Name=$name, Value=$value.\n";
+    $counter++,
+  }else{
+    $docycle = 0;
+  }
+}
+print "I have found $conter values.\n";
+Name=X, Value=5.
+Name=z117e, Value=3.1416. 
+Name=temp, Value=1024.
+I have found 3 values.</pre></font>
+
+Позиция, на которой остановился поиск, может быть прочитана и даже переустановлена с помощью встроенной функции perl <font color=green>pos</font>. В шаблоне на текущую позицию поиска можно ссылаться с помощью метасимвола <font color=green>\G</font>. В следующем примере из строки последовательно извлекаются буквы <font color=green>p</font>, <font color=green>o</font> и <font color=green>q</font> и выводится текущая позиция поиска:
+
+<pre><font color=green>$index = 0;
+$_ = "ppooqppqq";
+while ($index++ &lt; 2) {
+print "1: '";
+print $1 while /(o)/gc; print "', pos=", pos, "\n";
+print "2: '";
+print $1 if /\G(q)/gc; print "', pos=";' pos, "\n";
+print "3: '";
+print while /(p)/gc; print "', pos=",pos, "\n";
+} 
+
+1: 'oo', pos=4;
+2: 'q', pos=7;
+3: 'pp', pos=4;
+1: '', pos=7;
+2: 'q', pos=8;
+3: '', pos=8;
+</pre></font><p align=justify>
+В документации perl приводится основанный на этом механизме интересный пример последовательного лексического разбора текста. В нем каждая последующая команда поиска очередной лексической единицы начинает выполнятьсяс того места, где завершила свою работу предыдущая. Советую внимательно разобраться с этим примером (страница руководства <font color=green>perlop</font>, раздел "<font color=green>Regexp Quote-Uke Operators</font>", описание команды <font color=green>m/PATTERN/</font>), если вы хотите расширить доступный вам инструментарий perl!
+<p align=justify>
+Замена строк с помощью команды <font color=green><font color=green>tr/.../.../</font></font><p align=justify>
+
+Кроме команд <font color=green><font color=green>m/.../</font></font> и <font color=green><font color=green>s/.../.../</font></font> строки можно обрабатывать с помощью команды <font color=green><font color=green>tr/.../.../</font></font> (она же - команда <font color=green>у/.../.../</font>):
+
+<pre><font color=green>
+tr/список1/список2/модификаторы;
+у/список1/список2/модификаторы;
+</pre></font><p align=justify>
+В отличие от <font color=green><font color=green>m/.../</font></font> и <font color=green><font color=green>s/.../.../</font></font>, эта команда не использует шаблоны и регулярные выражения, а выполняет посимвольную замену, подставляя в текст вместо литер из первого списка соответствующие им литеры из второго списка. Например, в следующем случае производится замена литер "<font color=green>i</font>" на "<font color=green>о</font>":
+<font color=green>
+$text = "My name is Tim.";
+$text =~ tr/i/o/;
+print $text;   
+My name is Tom.
+</font><p align=justify>
+В качестве списков используются идущие друг за другом символы, не разделяемые запятыми (то есть это скорее строки, чем списки). В отличие от шаблонов команд <font color=green>m/.../</font></font> и <font color=green>s/.../.../</font></font>, аргументы команды <font color=green><font color=green>tr/.../.../</font></font> не интерполируются (то есть подстановки значений вместо имен переменных не происходит), хотя escape-последовательности, указанные внутри аргументов, обрабатываются правильно.
+Подобно <font color=green>m/.../</font> и <font color=green>s/.../.../</font>, команда <font color=green><font color=green>tr/.../.../</font></font> пo умолчанию работает с переменной <font color=green>$_</font>:
+<pre><font color=green>while (&lt;&gt;){
+tr/iI/jJ/;
+print;
+</pre></font><p align=justify>
+ В качестве списков можно указывать диапазоны символов - как, например в следующем фрагменте кода, заменяющем строчные буквы на заглавные:
+<font color=green>$text = "Here is the text.";
+$text =~ tr/a-z/A-Z/; 
+print $text;
+HERE IS THE TEXT.
+</font> <p align=justify>
+Как и в случае <font color=green><font color=green>m/.../</font></font> u <font color=green>s/.../.../</font>, команда <font color=green>tr/.../.../</font> не требует использовать именно знаки косой черты в качестве ограничителей. Можно использовать практически любой символ, отличный от "пробельных", букв и цифр, а также парные скобочные конструкции.<p align=justify>
+Команда <font color=green>tr/.../.../</font> возвращает число успешных замен. В частности, если не было сделано никаких замен, она возвращает число ноль. Это позволяет, например, подсчитать с помощью команды <font color=green>tr/.../.../</font> количество вхождений буквы <font color=green>х</font> в строку <font color=green>$text</font>, не меняя содержимого этой переменной:
+<font color=green>$text = "Here is the text.";
+$xcount = ($text =~tr/x/x/);
+print $xcount;
+1 </font>
+Если у команды <font color=green>tr/.../.../</font> нет модификаторов (см. далее раздел "Модификаторы команды <font color=green>tr/.../.../</font>"), то ее аргументы при обычных условиях должны быть одинаковой длины. Если второй аргумент длиннее первого, то он усекается до длины первого аргумента - так, команда <font color=green>tr/abc/0-9/</font> эквивалентна команде <font color=green>tr/abc/012/</font>. Если первый аргумент длиннее второго и второй не пуст, то для второго аргумента необходимое число раз повторяется его последний символ - так, команда <font color=green>tr/O-9/abc/</font> эквивалентна команде <font color=green>tr/0123456789/abcccccccc/</font>. Если же второй, аргумент пуст, то команда <font color=green>tr/.../.../</font> подставляет вместо него первый аргумент.
+<p align=justify>
+Как легко заметить, если второй аргумент пуст, то (при отсутствии модификаторов) команда <font color=green>tr/.../.../</font> не производит никаких действий, а возвращаемое ею значение равно числу совпадений между первым аргументом и обрабатываемым текстом. Например, следующая команда подсчитывает количество цифр в строке:
+<pre><font color=green>$text = "Pi=3.1415926536, е=2.7182"; 
+$digit_counter=($text =~ tr/0-9//); 
+print $digit_counter;
+16
+</pre></font>
+<p align=justify>Команда <font color=green>tr/.../.../</font> работает без рекурсии, просто последовательно заменяет символы входного текста. Например, для замены заглавных букв на строчные, и на-оборот, достаточно выполнить команду:
+<pre><font color=green>$text = "MS Windows 95/98/NT";
+$text =" tr/A-Za-z/a-zA-Z/;
+print $text;
+ms WINDOWS 95/98/nt</pre></font><p align=justify>
+Если в списке, указанном в качестве первого аргумента, есть повторяющиеся символы, то для замены используется первое вхождение символа:
+<pre><font color=green>$text = "Billy Gates";
+$text =~ tr/ttt/mvd/;
+print $text;
+Billy Games
+</pre></font>Модификаторы команды <font color=green>tr/.../.../</font><p align=justify>
+Команда <font color=green>tr/.../.../</font> допускает использование следующих модификаторов: 
+<ul>
+	<li><font color=green>d</font> - удаляет непарные символы, не выравнивая аргументы по длине. </li>
+	<li><font color=green>с</font> - в качестве первого аргумента использует полный список из 256 символов за вычетом указанных в списке символов.</li>
+	<li><font color=green>s</font> - удаляет образовавшиеся в результате замены повторяющиеся символы. </li>
+</ul><p align=justify>
+Если указан модификатор <font color=green>d</font>, a первый аргумент команды длиннее второго, то все символы из первого списка, не имеющие соответствия со вторым списком, удаляются из обрабатываемого текста. Пример: удаляем строчные латинские буквы и заменяем пробелы на слэши:
+<pre><font color=green>$text = "Here is the text.";
+$text =~ tr[ a-z][/]d;
+print $text;
+H///.</pre></font><p align=justify>
+ Наличие модификатора <font color=green>d</font> - единственный случай, когда первый и второй аргументы не выравниваются друг относительно друга, В остальных вариантах второй аргумент либо усекается, либо последний символ в нем повторяется до тех пор, пока аргументы не сравняются, либо, если второй аргумент пуст, вместо Второго аргумента берется копия первого.<p align=justify>
+Если указан модификатор <font color=green>с</font>, то в качестве первого аргумента рассматриваются все символы, кроме указанных. Например, заменим на звездочки все символы, кроме строчных латинских букв:
+<pre><font color=green>$text = "Here is the text,";
+$text =' tr/a-z/*/c;
+print $text;
+*ere*is*the*text*
+</pre></font><p align=justify>
+Если указан модификатор <font color=green>s</font>, то в случае если замещаемые символы образуют цепочки из одинаковых символов, они сокращаются до одного. Например, заменим слова, состоящие из латинских букв, на однократные символы косой черты:
+<pre><font color=green>$text = "Here is the text.";
+$text ="tr(A-Za-z)(/)s;
+print $text;
+/ / / /. 
+</pre></font>Без модификатора <font color=green>s</font> результат был бы другим:
+<pre><font color=green>$text = "Here is the text.";
+$text =' tr(A-Za-z)(/);
+print $text;
+//// // /// ////.</pre></font>
+
+Примеры: <br>
+1. Заменить множественные пробелы и нетекстовые символы на одиночные пробелы:
+<pre><font color=green>$text = "Here   is   the   text."
+$text =~ tr[\000-\040\177\377][\040]s;
+print $text;
+Here is the text. </pre></font>
+2. Сократить удвоенные, утроенные и т.д. буквы;
+<pre><font color=green>$text = "Here is the texxxxxxt.";
+$text =~ tr/a-zA-Z/s;
+print $text;
+Here is the text.</pre></font>
+3. Пересчитать количество небуквенных символов:
+<pre><font color=green>$xcount=($text =~ tr/A-Za-z//c);</pre></font>
+4. Обнулить восьмой бит символов, удалить нетекстовые символы:
+<pre><font color=green>$text =- tr{\200-\377}{\000-\l77};
+$text =~ tr[\000-\037\177][]d;</pre></font>
+5. Заменить нетекстовые и 8-битные символы на одиночный пробел:
+<pre><font color=green>$text =~ tr/\021-\176/ /cs;</pre></font>
+Поиск отдельных слов<p align=justify>
+Чтобы выделить слово, можно использовать метасимвол \S соответствующий символам, отличным от "пробельных":
+<pre><font color=green>$text = "Now is the time.";
+$text =- /(\S+)/;
+print $1;
+Now</pre></font>
+
+Однако метасимвол <font color=green>\S</font> соответствует также и символам, обычно не используемым для идентификаторов. Чтобы отобрать слова, составленные из латинских букв, цифр и символов подчеркивания, нужно использовать метасимвол <font color=green>\w</font>: <pre><font color=green>$text = "Now is the time.";
+$text =~ /(\w+)/;
+print $1;
+Now
+</pre></font>
+Если требуется включить в поиск только латинские буквы, надо использовать класс символов:
+<pre><font color=green>$text = "Now is the time.";
+$text =~ /([A-Za-z]+)/;
+print $1;
+Now
+</pre></font>
+Более безопасный метод состоит в том, чтобы включить в шаблон мнимые символы границы слова:
+<pre><font color=green>$text = "How is the time.";
+$text=~/\b([A-Za-z]+)\b/;
+print $1;
+Now
+</pre></font>
+Привязка к началу строки<p align=justify>
+
+Началу строки соответствует метасимвол (мнимый символ) <font color=green>^</font>. Чтобы шаблон к началу строки, надо задать этот символ в начале регулярного выражения. Например, вот так можно проверить, что текст не начинается с точки:
+<pre><font color=green>$line = ".Hello!";
+if($line=~m/^\./){
+  print "Shouldn't start a sentence with a period!\n";
+}
+Shouldn't start a sentence with a period!
+</pre></font>
+<p align=justify>Чтобы точка, указанная в шаблоне, не интерпретировалась как метасимвол перед ней пришлось поставить обратную косую черту.<p align=justify>
+Привязка к концу строки<p align=justify>
+Чтобы привязать шаблон к концу строки, используется метасимвол (мнимый символ) <font color=green>$</font>. В нашем примере мы используем привязку шаблона к началу и к концу строки, чтобы убедиться, что пользователь ввел только слово "exit":
+<pre><font color=green>while(&lt;&gt;){
+  if(m/"exlt$/) {exit;}
+}</pre></font>
+Поиск чисел<p align=justify>
+Для проверки того, действительно ли пользователь ввел число, можно использо-вать метасимволы <font color=green>\d</font> и <font color=green>\D</font>. Метасимвол <font color=green>\D</font> соответствует любому символу, кроме цифр. Например, следующий код проверяет, действительно ли введенный текст представляет собой целое значение без знака и паразитных пробелов:
+<pre><font color=green>$test = "Hello!";
+if($text =~ /\D/){
+print "It is not a number.\n";
+}
+It is not a number.
+</pre></font>To же самое можно проделать, использовав метасимвол \d:
+<pre><font color=green>$text = "333";
+if($text =~ /^\d+$/){
+print "It is a number.\n";
+}
+It is a number.</pre></font>
+<p align=justify>
+Вы можете потребовать, чтобы число соответствовало привычному формату. То есть число может содержать десятичную точку, перед которой стоит по краййей мере одна цифра и, возможно, какие-то цифры после нее:
+<pre><font color=green>$text= "3,1415926";
+if($text =~ /^(\d+\.\d*|\d+)$/){
+print "It is a number.\n";
+}
+It is a number.
+</pre></font><p align=justify>
+Кроме того, при проверке можно учитывать тот факт, что перед числом может стоять как плюс, так и минус (или пустое место):
+<pre><font color=green>$text = "-2.7182";
+if ($text =~ /^([+-]*\d+)(\.\d*|)$/) { 
+print "It is a number.\n";</pre></font>
+<p align=justify>
+Поскольку плюс является метасимволом, его надо защищать обратной косой чертой. Однако внутри квадратных скобок, то есть класса символов, он не может быть квантификаторам. Знак "минус" внутри класса символов обычно играет роль оператора диапазона и поэтому должен защищаться обратной косой чертой. Однако в начале или в конце шаблона он никак не может обозначать диапазон, и поэтому обратная косая черта необязательна. Наконец, более строгая проверка, требует, чтобы знак, если он присутствует, был только один:
+
+<pre><font color=green>$text = "+0.142857142857142857"; 
+if ($text =~ /^(+|-|)\d+(\.\d*\)$/) {
+  print "It is a number.\n";
+}
+It is a number.</pre></font><p align=justify>
+Альтернативные шаблоны, если они присутствуют, проверяются слева направо. Перебор вариантов обрывается, как только найдено соответствие между текстом и шаблоном. Поэтому, например, порядок альтернатив в шаблоне <font color=green>(\.\d*|)</font> мог бы стать критичным, если бы не привязка к концу строки. Наконец, вот как можно произвести проверку того, что текст является шестна-дцатеричным числом без знака и остальных атрибутов:
+<pre><font color=green>$text = "1AO";
+unless (ftext =~ m/^[a-fA-F\d]+$/) { 
+print "It is not a hex number, \n";
+}
+</pre></font><p align=justify>
+Проверка идентификаторов<p align=justify>
+
+С помощью метасимвола <font color=green>\w</font> можно проверить, состоит ли текст только из букв, цифр и символов подчеркивания (это те символы, которые perl называет словесными (word characters)):
+<pre><font color=green>$text="abc";
+if($text=~/^\w+$/){
+  print "Only word characters found. \n";
+}
+Only word characters found.
+</pre></font><p align=justify>
+Однако, если вы хотите убедиться, что текст содержит латинские буквы и несодержит цифр или символов подчеркивания, придется использовать другой шаблон:
+<pre><font color=green>$text = "аbс";
+if($text=~ /^[A-Za-z]+$/)
+{ print "Only letter characters found.\n";}
+Qnly letter characters found.
+</pre></font><p align=justify>
+Наконец, для проверки, что текст является идентификатором, то есть начинаетcя с буквы и содержит буквы, цифры и символы подчеркивания, можно испольpовать команду:                 <pre><font color=green>
+$text = "X125c";
+if($text=~ /^[A-Za-z]\w+$/)
+{ print "This is identifier.\n";}
+This is identifier.</pre></font>
+
+Как найти множественные совпадения<p align=justify>
+
+Для поиска нескольких вхождений шаблона можно использовать модификатор <font color=green>g</font>. Следующий пример, который мы уже видели ранее, использует команду <font color=green>m/.../</font> с модификатором <font color=green>g</font> для поиска всех входжений буквы <font color=green>x</font> в тексте:
+<pre><font color=green>$text="Here is texxxxxt";
+while($text=~m/x/g){
+  print "Found another x.\n";
+}
+Found another x.
+Found another x.
+Found another x.
+Found another x.
+Found another x.</pre></font><p align=justify>
+
+Модификатор <font color=green>g</font> делает поиск глобальным. В данном (скалярном) контексте perl помнит, где он остановился в строке при предыдущем поиске. Следующий поиск продолжается с отложенной точки. Без модификатора <font color=green>g</font> команда <font color=green>m/.../</font> будет упорно находить первое вхождение буквы <font color=green>х</font>, и цикл будет продолжаться бесконечно. <p align=justify>
+В отличие от команды <font color=green>m/.../</font> команда <font color=green>s/.../.../</font> с модификатором <font color=green>g</font> выполняет глобальную замену за один раз, работая так, будто внутри нее уже имеется встроенный цикл поиска, подобный приведенному выше. Следующий пример за один раз заменяет все вхождения <font color=green>х</font> на <font color=green>z</font>:
+<pre><font color=green>$text = "Here is texxxxxt."; 
+$text =~ s/x/z/g;
+print $text;
+Here is tezzzzzt.
+</pre></font><p align=justify>
+Без модификатора g команда <font color=green>s/.../.../</font> заменит только первую букву <font color=green>х</font>. Команда <font color=green>s/.../.../</font> возвращает в качестве значения число сделанных подстановок, что может оказаться полезным:
+<pre><font color=green>$text= "Here is texxxxxt.";
+print (text =~ s/x/z/g)
+5 
+</pre></font>Поиск нечувствительных к регистру совпадений<p align=justify>
+Вы можете использовать модификатор <font color=green>i</font>, чтобы сделать поиск нечувствительным к разнице между заглавными и строчными буквами. В следующем примере про-грамма повторяет на экране введенный пользователем текст до тех пор, пока не будет введено <font color=green>Q</font>, или <font color=green>q</font> (сокращение для QUIT или quit), после чего программа прекращает работу:
+<pre><font color=green>while(&lt;&gt;){
+  chomp;
+  unless (/^q$/i){
+    print
+  }
+  else { 
+    exit; 
+  }
+}
+</pre></font>Выделение подстроки <p align=justify>
+Чтобы получить найденную подстроку текста, можно использовать круглые скобки в теле шаблона. Если это более удобно, можно также использовать встроенную функцию substr. В следующем примере мы вырезаем из текстовой строки нужный нам тип изделия:
+<pre><font color=green>$record = "Product number:12345
+           Product type: printer 
+		   Product price: $325";
+if($record=~/Product type:\s*([a-z]+)/i){
+  print "The product's type Is^$1.\n";
+}
+product's type is printer.
+</pre></font>
+Вызов функций и вычисление выражений при подстановке текста<p align=justify>
+
+Используя для команды <font color=green>s/.../.../</font> модификатор <font color=green>е</font>, вы тем самым показываете, что правый операнд (то есть подставляемый текст) - это то выражение perl, которое надо вычислить. Например, с помощью встроенной функции perl <font color=green>uc</font> (uppercase) можно заменить все строчные буквы слов строки на заглавные:
+<pre><font color=green>$text = "Now is the time.";
+$text=~ s/(\w+)/uc($1)/ge;
+print $text; 
+NOW IS THE TIME.
+</pre></font>Вместо функции uc($l) можно поместить произвольный код, включая вызовы программ.<p align=justify>
+
+Поиск n-го совпадения<p align=justify>
+С помощью модификатора g перебираются все вхождения заданного шаблона. Но то делать, если нужна вполне определенная точка совпадения с шаблоном, например, вторая или третья? Оператор цикла while в сочетании с круглыми cкобками, выделяющими нужный образец, поможет вам:
+<pre><font color=green>$text = "Name:Anne Nanie:Burkart Name:Glaire Name: Dan";
+while ($text =~ /Name: \s*(\w+)/g){
+  ++$match;
+  print "Match number $match is $1.\n"; 
+}
+
+Match number 1 is Anne
+Match number 2 is Burkart
+Match number 3 is Claire 
+Match number 4 is Dan
+</pre></font>
+Этот пример можно переписать, используя цикл for: 
+
+<pre><font color=green>$text = "Name:Anne Name:Burkart Name:Ciaire Name:Dan";
+for ($match = 0;
+     $text =~ /Name:\s*(\w+)/g;
+	 print "Match number ${\match} is $1.\n")
+{}
+Match nuwber 1 Is Anne
+Match number 2 is Burkart 
+Match number 3 is Claire
+Match number 4 is Dan
+</pre></font><p align=justify>
+ Если же вам требуется определить нужное совпадение не по номеру, а по содержанию (например, по первой букве имени пользователя), то вместо счетчика <font color=green>$match</font> можно анализировать содержимое переменной <font color=green>$1</font>, обновляемой при каждом найденном совпадении.
+Когда требуется не найти, а заменить второе или третье вхождение текста, можно применить ту же схему, использовав в качестве тела цикла выражение perl, вызываемое для вычисления заменяющей строки:
+<pre><font color=green>$text = "Name:Anne Name:Burkart Name:Claire Name:Dan";
+$match =0;
+$text =~ s/(Name:\s*(\w+))/   # начинается код perl
+         if (++$match == 2)   # увеличить счетчик 
+		    {"Name:John ($2)"}# вернуть новое значение
+         else {$1}            # оставить старое значение
+         /gex;
+print $text;  
+Name:Anne Name:John (Burkart) Name:ClaireName:Dan
+</pre></font>
+В процессе глобального поиска при каждом найденном совпадении вычисляется выражение, указанное в качестве второго операнда. При его вычислении увеличивается значение счетчика, и в зависимости от него в качестве замены подставляется либо старое значение текста, либо новое. Модификатор <font color=green>х</font> позволяет добавить в поле шаблона комментарии, делая код более прозрачным. Обратите внимание, что нам пришлось заключить весь шаблон в круглые скобки, чтобы получить значение найденного текста и подставить его на прежнее место полностью.
+<p align=justify>
+Как ограничить "жадность" квантификаторов
+<p align=justify>
+По умолчанию квантификаторы ведут себя как "жадные" объекты. Начиная с текущей позиции поиска, они захватывают самую длинную строку, которой может соответствовать регулярное выражение, стоящее перед квантификатором. Алгоритм перебора с возвратами, используемый perl, способен ограничивать аппетит квантификаторов, возвращаясь назад и уменьшая длину захваченной строки, если не удалось найти соответствия между текстом и шаблоном. Однако этот механизм не всегда работает так, как хотелось бы. Рассмотрим следующий пример. Мы хотим заменить текст "That is" текстом "That's". Однако в силу "жадности" квантификатора регулярное выражение "<font color=green>.*is</font>" сопоставляется фрагменту текста от начала строки и до последнего найденного "is":
+<pre><font color=green>$text = "That is some text, isn't it?";
+$text =~ s/.*is/That's/;
+print $texts;
+That'sn't it?
+</pre></font><p align=justify>
+Чтобы сделать квантификаторы не столь жадными, а именно заставить их захватывать минимальную строку, с которой сопоставимо регулярное выражение, после квантификатора нужно поставить вопросительный знак. Тем самым квантификаторы принимают следующий вид:
+<ul>
+	<li><font color=green>*?</font> - ноль или несколько совпадений,</li>
+	<li><font color=green>+?</font> - одно или несколько совпадений, </li>
+	<li><font color=green>??</font> - ноль совпадений или одно совпадение,</li>
+	<li><font color=green>{n}?</font> - ровно <font color=green>n</font> совпадений,</li>
+	<li><font color=green>{n,}?</font> - по крайней мере <font color=green>n</font> совпадений,</li>
+	<li><font color=green>{n,m}?</font> - совпадений по крайней мере <font color=green>n</font>, но не более, чем m.</li>
+</ul>
+Оратите внимание, что смыслквантификатора от этого не меняется; меняется только поведение алгоритма поиска. Если в процессе сопоставления шаблона и текста прототип определяется однозначно, то алгоритм поиска с возвратами увеличит "жадность" такого квантификатора точно так же, как он ограничивает аппетит собрата. Однако если выбор неоднозначен, то результат поиска будет другим:
+<pre><font color=green>$text = "That is some text, isn't it?";
+$text =~ s/.*?is/That's/;
+print $texts;
+That's some text, isn't it?
+</pre></font> <p align=justify>
+Как удалить ведущие и завершающие пробелы<p align=justify>
+
+Чтобы отсечь от строки начальные "пробельные символы", можно использовать, следующую команду:
+<pre><font color=green>
+$text = "          Now is the time.";
+$text =~ s/^\s+//;
+print $texts;
+Now is the time.
+</pre></font>
+Чтобы отсечь "хвостовые" пробелы, годится команда:
+<pre><font color=green>
+$text = "Now is the time.          ";
+$text =~ s/\s+$//;
+print $texts;
+Now is the time.</pre></font>
+<p align=justify>
+Чтобы отсечь и начальные, и хвостовые пробелы лучше вызвать последователно эти две команды, чем использовать шаблон, делающий отсечение ненужных пробелов за один раз. Поскольку процедура сопоставления шаблона и текста достаточно сложна, на эту простую операцию 
+может уйти гораздо больше времеви, чем хотелось бы.
+<p align=justify>
+
+
+
+<p align=justify>
+Например в тексте нужно найти текст, находящийся между открывающим и 
+закрывающим тегом:
+<pre><font color="Green">
+$text="&lt;a&gt;blah-blah&lt;/a&gt;";
+if($text=~m!&lt;([a|b])&gt;(.*?)/\1!ig){
+print "$2\n";
+}
+</pre></font>
+найдет все слова, стоящие между тегами &lt;a&gt;&lt;/a&gt; и &lt;b&gt;&lt;/b&gt;.
+<p align=justify>
+В регулярных выражениях пристутствует своя семантика: быстрота, торопливость и возврат.
+Если квантификатор <font color=green>*</font> совпадает во многих случаях, то в результате быдет выведен наибольший по длинне результат. Это жадность. Быстрота: поиск старается найти как можно быстрее.
+<font color=green>"Text"=~/m*/</font>, по смыслу символов <font color=green>m</font> нет, но в результате будет возвращено значение <font color=green>0</font>. Т.е. формально <font color=green>0</font> и более символов.
+
+<pre><font color=green>$test="aaooee ooaao";
+$test=~s/o*/e/;
+print $test;
+eaaooee ooaao</pre></font>
+потому что 1 элемент сторки - <font color=green>0</font> и более символов.<p align=justify>
+
+Если добавить квантификатор <font color=green>g</font>, то результат будет таким: 
+
+<pre><font color=green>eaeaeeeeee eeaeaee</pre></font>
+т.к строка содержит 13 мест, где может встречатся <font color=green>o</font>, в том числе и пустых.
+<p align=justify>
+Модификаторы:
+
+<ul>
+	<li><font color=green>/i</font> игнорировать регистр</li>
+	<li><font color=green>/x</font> игнорировать пропуски в шаблоне и разрешить комментарии.</li>
+	<li><font color=green>/g</font> модификатор разрешающий выполнение поиска/замены везде, где это возможно</li>
+	<li><font color=green>/gc</font> не сбрасывается позиция при неудачном поиске.</li>
+	<li><font color=green>/s</font> разрешается совпрадение <font color=green>.</font> с <font color=green>\n</font>, игнорируется <font color=green>$*</font>.</li>
+	<li><font color=green>/m</font> разрешить совпадение <font color=green>^</font> и <font color=green>$</font> для начала и конца строки во внутренних переводах строк</li>
+	<li><font color=green>/o</font> однократная компиляция</li>
+	<li><font color=green>/e</font> правая часть <font color=green>s///</font> представляет собой выполняемый код</li>
+	<li><font color=green>/ee</font> правая часть <font color=green>s///</font> выполняется, после чего возвращаемое значение интерпретируется снова.</li>
+</ul>
+<p align=justify>
+при вызове <font color=green>use locаle</font> учитываются локальные настройки. Модификатор <font color=green>/g</font> может заполнить массив значений <font color=green>@nums = m/(\d+)/g;</font> но это сработает для ненакладывающихся совпадений.
+Чтобы поймать совпадения нужно воспользоваться оператором <font color=green>?=...</font> Если ширина <font color=green>= 0</font>, то механизм поиска остался на прежнем месте. Найденые данные остаются внутри скобок. Если есть модификатор <font color=green>/g</font>, то текущая позиция остается прежней, но происходит перемещение на один символ вперед.
+
+<font color=green>$numbers="123456789";
+@one=$numbers=~/(\d\d\d)/g;
+@two=$numbers=~/(?=(\d\d\d))/g;
+print "@one \n";
+print "@two \n";</font>
+<p align=justify>
+Модификаторы <font color=green>m</font> и <font color=green>s</font> нужны для поиска последовательностей символов, содержащих перевод строки. При <font color=green>s</font> точка совпадает с <font color=green>\n</font> и игнорируется <font color=green>$*</font>. m делает совпадающими <font color=green>^</font> и <font color=green>$</font> до и после <font color=green>\n</font>. <font color=green>e</font> правая часть выполняется как программный код: <font color=green>perl -i -n -p -e 's/(.)/lc($1)/g' *.html</font> приводит все литеры во всех файлах <font color=green>*.html</font> текущей директории к нижнему регистру.
+<p align=justify>
+Встроенные переменные в regex.
+<p align=justify>
+<font color=green>$1, $2, $3, $4, ..., $n ...</font> содержат ссылки на найденный текст, только в том случае если regex был в круглых скобках:
+
+<pre><font color=green>s%&lt;f(.*?)&gt;&lt;(.*?)"&gt;&lt;(.*?)"&gt;%$1 $2 $3%g;</pre></font>
+
+внутри regex можно  использовать переменные типа <font color=green>\1, \2, \3, \4, ... \n, ...</font>
+
+<pre><font color=green>s/a href=(["'])(.*?)\1&gt;/$2/g </pre></font>
+
+найдет все урл, заключенные в двойные, одинарные и вообще без кавычек, находящиеся в документе.
+<p align=justify>
+для <font color=green>/(a.*b)|(mumu)/</font>  в переменной <font color=green>$+</font> содержится <font color=green>$1</font> или <font color=green>$2</font>.
+<p align=justify>
+<font color=green>$& </font> содержит полный текст совпадения при последнем поиске.
+<p align=justify>
+<font color=green>$'</font> и <font color=green>$`</font> содержатся строки до и после совпадения<p align=justify>
+
+Если нужно скопировать и сделать подстановку, то нужно действовать примерно так:
+
+<pre><font color=green>($at = $bt) =~ s!m(.*?)o!! #для строк
+for(@mass1 = @mass2){s/umka/maugli/} #для массивов
+
+
+$u = ($m=~s/a/b/g); #поменять $m и занести в $u число замен.
+
+</pre></font>
+
+Если нужно выцепить только алфавитные символы, с учетом настроек locale, то регексп примерно такой: <font color=green>/^[^\W\d_]+$/</font> в нем учитываются все не алфавитные символы, не цифры и не подчеркивания(для случая "ванька-встанька"), симвлол отрицания в группе <font color=green>[]</font> - <font color=green>^</font>, т.е. найти все, что не <font color=green>[\W\d_]</font>, можно было написать и скажем так <font color=green>!~m/^(\W|\d|_)*/</font>.
+<p align=justify>
+Для упрощения понимания сложных регулярных выражений можно воспользоваться их комментированием. Иногда правда можно только по виду регулярного выражения определить зачем оно предназначено: 
+
+<pre><font color=green>$mmm{$1} = $2 while ($nnn =~ /^([^:]+):\s+(.*)$/m);</pre></font>
+
+читаем регулярное выражение: <p align=justify>
+<font color=green>нужно найти в файле все что до двоеточия не двоеточие и все что после двоеточия(включая возможные повторения после первого <b>: .*?: .*?: .*?:</b>, потому что была найдена первая позиция: выделить все что не есть двоеточие до  первого двоеточия)</font>
+<p align=justify>
+Что это может быть, вполне вероятно, что оно нужно для составления статистики писем, выцепление заголовка письма и его названия из mbox в хеш. По крайней мере это регулярное выражение подходит для данной задачи.
+</pre></font>
+
+<h3><a name=index_html_exprogs>Рабочие программы, использующие регулярные выражения</a></h3>
+
+В принципе регулярные выражениея это вовсе не вещь в себе, хотя иногда и может встретится задача, фактически полностью реализуемая при помощи regex. Ниже приведены программы, иллюстрирующие использование реглуярных выражений:
+
+<h4><a name=index_html_match>Выделение чисел в математической записи</a></h4>
+<p align=justify>
+Пример использования логических условий для нахождения любых чисел в том числе и в общепринятой математической записи:
+
+<pre><font color=green>
+#!/usr/bin/perl
+$_=qq~
+1234
+34 -4567
+ 3456
+-0.35e-0,2
+    56grf45
+-.034 E20
+     -.034 e2,01   -,045 e-,23
+  -,034 e201  3e-.20
+-,045 e-,23 e-0.88
+
+4 E-0.20
+22 
+E-21
+ -0.2 w         4 3
+345
+2 ^-,3
+~;
+print "$1\n" while 
+ m%(([+-]?(?=\d|[\.,]\d)\d*([\.,]\d*)?((\se|e|\s?\^)
+    ([-+]?\d*[,\.]?)\d+)?)|([+-]?e[+-]?\d*[,.]?\d+))%gxi;
+
+</pre></font>
+программа исправно выводит все числа. Разберем регулярное выражение 
+
+<pre><font color=green> 
+ m%(([+-]?(?=\d|[\.,]\d)\d*([\.,]\d*)?((\se|e|\s?\^)
+    ([-+]?\d*[,\.]?)\d+)?)|([+-]?e[+-]?\d*[,.]?\d+))%gxi;
+</pre></font>
+<p align=justify>
+в переменной <font color=green>$1</font> содержится то, что регулярное выражение находит в результате, т.е. 
+<font color=green>m%(...)%gmi. m%((что-то)|([+-]?e[+-]?\d*[,.]?\d+))%gmi</font>  нужно для
+того, чтобы находить числа вида <font color=green>e-20</font> или <font color=green>E21</font>(так в математике обозначают десятку в какой-то степени, например <font color=green>e-0,20 = 10<sup>-0,20</sup></font> или <font color=green>E20 = 10<sup>21</sup></font>). Рассмотрим левое регулярное выражение "что-то" для чисел вида не <font color=green>e20</font> или <font color=green>E21</font>:
+
+<pre><font color=green>([+-]?(?=\d|[\.,]\d)\d*([\.,]\d*)?((\se|e|\s?\^)([-+]?\d*[,\.]?)\d+)?)</pre></font>
+<p align=justify>
+<font color=green>[+-]?</font> - есть ли в перед числом знак <font color=green>+</font> или <font color=green>-</font>. <font color=green>?</font> - если вообще есть что-то, находящееся внутри впереди стоящего <font color=green>[...]</font>. Выкинем проверку знака, регексп сократится до
+
+<pre><font color=green>(?=\d|[\.,]\d)\d*([\.,]\d*)?((\se|e|\s?\^)([-+]?\d*[,\.]?)\d+)?</pre></font>
+<p align=justify>
+рассмотрим regex <font color=green>(?=\d|[\.,]\d)\d*</font> логический оператор <font color=green>(?=B)</font> требует, чтобы перед числов было <font color=green>B</font>. В данном случае <font color=green>B</font> представляет из себя regex <font color=green>\d|[\.,]\d</font> Regex <font color=green>\d|[\.,]\d</font> значит, что 
+перед каждым числом должно быть что-то либо просто число, либо число, перед которым стоит либо запятая, либо точка, т.е. находим все числа вида <font color=green>,2</font> <font color=green>.2</font> или просто числа <font color=green>2</font>(<font color=green>2</font> выбрано для примера, может быть и 3). Далее скобка закрывается и идет <font color=green>\d*</font>, т.е. число вида <font color=green>,2</font> точно пройдет(например <font color=green>,2 e-,23</font> где перед запятой забыли поставить нолики, но мало ли бывает, забыли, надо и это предусмотреть. Вообще когда пишешь программу, надо предполагать, что е  использовать будет ленивый склеротический чайник, правда не всегда возможно предугадать что учудит юзер, но к этому надо стремится), а вот число вида <font color=green>,223</font> не пройдет. Да и regex <font color=green>(?=\d|[\.,]\d)</font> говорит о том, что нужно найти только одну цифру после запятой. Для остальных цифр и нужен квантификатор <font color=green>\d*</font>, который значит любое количество цифр, в том числе и ноль, т.е. оно работает и для числе вида <font color=green>.2</font> или <font color=green>,2</font> Далее идет регулярное выражение <font color=green>([\.,]\d*)?</font> которое говорит о том, есть ли вообще точка и запятая(здесь всю полную строчку в принципе можно усовершенствовать) и число <font color=green>\d*</font>(в том числе и его отсутствие, ведь квантификатор <font color=green>*</font> значит любой символ в том числе и ноль). Отбрасывая все что было выше от этого большого регулярного выражения остается строчка:
+
+<pre><font color=green>((\se|e|\s?\^)([-+]?\d*[,\.]?)\d+)?</pre></font>
+<p align=justify>
+Эта строчка отвечает за поиск в строке <font color=green>$_</font> математических обозначений степеней типа <font color=green>e201</font>, <font color=green>E,20</font>(число в степени <font color=green>0,20</font> например <font color=green>a<sup>-0,20</sup></font>) и т.д. но только для подстрок вида <font color=green>-,034 e201</font>. Заметьте, что в конце стоит знак вопроса, т.е. если степенное обозначение вообще существует. <font color=green>(\se|e|\s?\^)</font> есть ли числа вида <font color=green>-,034 e201</font> или <font color=green>-,034e201</font> и числа в "компьютерной" записи вида <font color=green>2 ^-,3 = 2<sup>-0,3</sup></font>, т.е. этим регекспом мы разрешили пользователю ставить или не ставить пробел при указании степени и разрешили писать значек <font color=green>^</font> с пробелом перед ним(если есть). Далее идет выражение <font color=green>([-+]?\d*[,\.]?)</font>, которое говорит о том, что степень может быть с <font color=green>+</font> или <font color=green>-</font> (типа <font color=green>e,-23</font> где юзер забыл поставть нолик, а на самом деле хотел написать <font color=green>a<sup>-0,23</sup></font>). Дальше идет цифра <font color=green>\d*</font> (а может и не идет, т.к. квантификатор то <font color=green>*</font>). Потом идет либо точка либо запятая(причем тут негласно введено ограничение на использование запятой/точки, после <font color=green>e</font>, если степень дробная или вообще есть, точка или запятая должна быть, иными словами не имеет смысла написать <font color=green>-2,34e-,23</font>, хотя юзер на самом деле хотел написать число <font color=green>-2,34<sup>-0,23</sup></font>).  Наконец мы добрались до конца: идет <font color=green>\d+</font>, но тут уж, пользователь, будь добр напиши хотя бы одно число, т.к. квантификатор <font color=green>+</font>, а не <font color=green>*</font> после <font color=green>\d</font>. Т.е. наложили своего рода ограничения здравого смысла, можно просто написать <font color=green>2</font>, а можно написать и <font color=green>2e,-</font> что суть бессмыленно.
+И еще, <font color=green>m%(что-то)%igm</font> стоит квантификатор <font color=green>i</font>, который разрешает <font color=green>e</font> быть и заглавным и квантификатор <font color=green>x</font>, который разрешает разносить регулярное выражение на несколько строк.
+<p align=justify>
+Прошу прошения что не ставил иногда знаки препинания, которые есть точка и запятая, тогда Вы бы подумали, что что-то лишнее написно и не подсечено как спецсимвол при помощи бэкслэша <font color=green>\</font>. 
+<p align=justify>
+Итак, регулярным выражением 
+<pre><font color=green> 
+ m%(([+-]?(?=\d|[\.,]\d)\d*([\.,]\d*)?((\se|e|\s?\^)
+    ([-+]?\d*[,\.]?)\d+)?)|([+-]?e[+-]?\d*[,.]?\d+))%gxi;
+</pre></font>
+<p align=justify>
+были предусмотрены числа степенного порядка, просто числа, числа со знаком, нецелые числа вида ,3(которое есть 0,3 или 0.3), ошибки пользователя при вводе чисел( типа <font color=green>-.034 e2,01</font> хотя надо бы писать либо <font color=green>-,034 e2,01</font> либо <font color=green>-.034 e2.01</font> хотя по смыслу перед точками и запятыми нужно ставить нули, но мы предусмотрели и это) и числа в "компьютерном" представлении.<p align=justify>
+ Конечно, данное регулярное выражение не претендует на абсолютную работу, т.к. оно успешно не работает на подстроках вида <font color=green>-,045 e -,23 e-0.88</font> считая <font color=green>-,045</font> отдельным числом, а <font color=green>-,23</font>  возводит в степень <font color=green>e-0.88</font>, хотя по идее должно было бы быть два числа <font color=green>-,045 e -,23</font> и <font color=green>e-0.88</font>, в таком случае еще одно ограничение пользователю: если хочется, чтобы степенные числа понимались корректно(для этой программы), то нельзя ставить пробел перед степенью <font color=green>e</font>.  
+
+<h4><a name=index_html_work1>Облегчение поиска работы</a></h4>
+Допустим Вы оказались без работы, развалилась ваша фирма или еще какая-нибудь причина. Вам требуется найти новую. Для упрощения этой задачи естьь следующий скрипт, который выцепливает по нужной позиции(веб программирование, зарплата от 200$ и т.д.) с www.job.ru все заявки за последние 10-15 дней, точнее емейлы, куда нужно слать резюме, что значительно убыстряет поиск работы(имея базы адресов легче разослать одно и то-же резюме, используя нехитрый список рассылки):
+
+<pre><font color=green>#!/usr/bin/perl -wT
+$url0="http://www.job.ru/cgi/list1.cgi?GR_NUM=";
+$url1="%31&TOPICID=9&EDUC=2&TP=&Gr=&SEX=&AGEMIN=23&AGEMAX=&MONEY=200&CDT=";
+$url2="&LDAY=99&ADDR=%ED%CF%D3%CB%D7%C1&KWORD=&KW_TP=AND";
+use LWP::Simple;
+foreach($i=1; $i<=57; $i++){#57 число листаемых страниц
+$plus.="%31%2B";
+$test=$url0.$plus.$url1.$url2,"\n";
+@mass=grep{s/(.*) ([\w+\-\.]+\@[\w\-\.]+\.\w{2,3})(.*)/$2/ig} split /\n/, get "$test";
+$test.=join "\n", @mass;
+$test.=\n";
+}
+@un=grep{!$test{$_}++} split /\n/, $test;
+print join "\n", @un;
+print "\nВы можете отправлять по вашей специальности $#un резюме\n";
+</pre></font>
+<p align=justify>
+Что делает эта программа, она составляет GET запрос из параметров, которые скрыты
+в hidden полях навигации по результатам запроса на www.job.ru.
+Программа при помощи <font color=green>Simple.pm</font> отправляет запрос на сервер и как бы листает странички с поиском. Критерий ваших профессиональных навыков составлен в GET-запросе и осталось только разослать почту(для этого можно написать список рассылки) по адресам, которые выдала программа. Разберем регулярное выражение для вытаскивания почтового адреса из текущей странички 
+<font color=green>s/(.*) ([\w+\-\.]+\@[\w\-\.]+\.\w{2,3})(.*)/$2/ig</font>.
+<p align=justify>
+<font color=green>[\w+\-\.]\@</font> - найти все что содержит буквы, тире и точки до символа <font color=green>@</font>, ведь почтовый адрес по спецификации может быть вида a<font color=green>a.ss-ss@chto-to.ru</font>. Тоже самое после символа <font color=green>@</font> - <font color=green>[\w\-\.]+</font>
+далее может быть точка <font color=green>\.</font> и любая буква от 2 до 3 символов <font color=green>\w{2,3}</font>, т.е. окончание, самый верхний домен <font color=green>.com</font>, <font color=green>.ru</font>, <font color=green>.cz</font> и т.д. Далее регулярное выражение состоит из трех классов скобок  <font color=green>(.*)</font> - переменная <font color=green>$1</font>, <font color=green>([\w+\-\.]+\@[\w\-\.]+\.\w{2,3})</font> переменная <font color=green>$2</font> и все остальное в <font color=green>(.*)</font> - <font color=green>$3</font>. Пробел перед <font color=green>$2</font> стоит потому, что так устроен html, отдаваемый пользователю поиском по базе предложений о работе www.job.ru. Нам нужно содержимое <font color=green>$2</font>, в котором находится e-mail работодателя. Пишем его во вторую часть <font color=green>s/наш regex/$2/ig</font>. Квантификатор <font color=green>i</font> нужен для того, чтобы не различать регисты <font color=green>Vasya@pupkin.ru</font> и <font color=green>vasya@pupkin.ru</font>, квантиикатор g задействова на тот случай, если работодатель указывает 2 адреса, по которым нужно высылать резюме. На 23 августа 2001 года на 20 часов 10 минут прогамма выдала 410 e-mail адресов(пролистав за 3-4 минуты 57 страниц), где вас ждут, как потенциального сотрудника.
+<p align=justify>
+Остается написать скрипт почтовой рассылки по e-mails, выданным данным скриптом. Но это в другой главе.
+<p align=justify>
+Примером выше был получен спсиок  email адресов. Теперь необходимо проверить, действительно ли существуют домены, на которых заведены такие пользщователи(примитивная - но проверка).
+
+<pre><font color=green>#!/usr/bin/perl
+use Socket;                      #загрузить inet_addr
+s{                               #
+  (                              #Сохранить имя хоста в $1
+    (?:                          #Группирующие скобки
+	  (?! [-_] )                 #ни подчеркивание, ни дефис
+	  [\w-] +                    #кусок имени хоста
+	  \.                         #и точка домена
+	)+                           #повторить несколько раз
+	[A-Za-z]                     #следующий символ - буква
+	[\w-]+                       #домен верхнего уровня
+  )                              #конец записи $1
+}{                               #Заменить следующим:
+  "$1" .                         #исходн часть + пробел
+    (($addr = gethostbyname($1)) #Если имеется адрес
+	? "[" . inet_ntoa($addr). "]"#отформатировать
+	: "[???]"                    #иначе пометить как сомнительный
+	)
+}gex
+</pre></font>
+Переписываем исходную программу с учетом вышеприведенного кода
+
+<pre><font color=green>#!/usr/bin/perl -wT
+$url0="http://www.job.ru/cgi/list1.cgi?GR_NUM=";
+$url1="%31&TOPICID=9&EDUC=2&TP=&Gr=&SEX=&AGEMIN=23&AGEMAX=&MONEY=200&CDT=";
+$url2="&LDAY=99&ADDR=%ED%CF%D3%CB%D7%C1&KWORD=&KW_TP=AND";
+use Socket;
+use LWP::Simple;
+foreach($i=1; $i<=57; $i++){
+  $plus.="%31%2B";
+  $test=$url0.$plus.$url1.$url2,"\n";
+  @mass=grep{s/(.*) ([\w+\-\.]+\@[\w+\-\.]+\.\w{2,3})(.*)/$2/ig} split /\n/, get "$test";
+  $test1.=join "\n", @mass;
+  $test1.="\n";
+}
+@res=split /\n/, $test1;
+@un=grep{!$test{$_}++} @res;
+foreach $file(@un){
+  $file=~s/(.*)\@(.*)/www\.$2/;
+=pod
+  $file=~s{((?:(?![-_])[\w-]+\.)+[A-Za-z][\w-]+)}
+    {"$1".(($addr=gethostbyname($1))?"[".inet_ntoa($addr)."]":"[???]")}gex;
+  print $file,"\n" if($file !~/\?\?\?/);
+=cut
+$file=~s{
+  (
+    (?:
+      (?![-_])
+      [\w-]+
+      \.
+    )+
+    [A-Za-z]
+    [\w_]+
+  )
+}{
+  "$1".
+  (($addr = gethostbyname($1))
+   ? "[".inet_ntoa($addr)."]"
+   : "[???]"
+  ) 
+}gex;
+print $file,"\n" if($file !~/\?\?\?/);
+}</pre></font>
+Между строчками можно комментировать целые куски кода.
+<pre><font color=green>=pod
+  $file=~s{((?:(?![-_])[\w-]+\.)+[A-Za-z][\w-]+)}
+    {"$1".(($site=gethostbyname($1))?"[".inet_ntoa($site)."]":"[???]")}gex;
+  print $file,"\n" if($file !~/\?\?\?/);
+=cut</pre></font>
+<p align=justify>
+Эта программа успешно удалила некторые из адресов, которые Socket.pm показались подозрительными. Все-таки какую-никакую, а проверку существования e-mail адресс окольными путями при помощи perl провести можно. Автору сего текста все-таки больше нравится вариант, заключенный в комментарии =pod(.*?)=cut. Он просто короче. Да и если научится читать сложные регулярные выражения, то можно написать полный регексп е-mail адресов, который занимается тем, что выделяет адреса в точности с соответствующим RFC(занимает это регулярное выражение несколько страгниц). Но впрочем ниже будет подглава, посвященная чтению монстрообразных, на первый взгляд, регекспов налету, со множеством примеров, выше же мы уже попытались угадать предназначение регулярного выражения только по его виду.
+<p align=justify>Ключи, которые использовались в вышеприведенном регулярном выражении<p align=justify>
+<font color=green>g</font> - глобальная замена<br>
+<font color=green>е</font> - выполнение<br>
+<font color=green>x</font> - улучшенное форматирование.<br>
+
+Если написать это регулярное выражение в одну строчку, то оно врядли там поместится:
+
+<pre><font color=green>
+s{((?:(?![-_])[\w-]+\.)+[A-Za-z][\w-])}#здесь силовой перевод каретки
+{"$1".(($addr=gethostbyname($1))?"[".inet_ntoa($addr)."]":"[???]")}gex
+</pre></font>
+Разберем один интересный момент в данном регекспе:
+
+<pre><font color=green>s/regex/условие?да:иначе/</pre></font>
+<p align=justify>
+Тут проявляется пожалуй одна из действительно сильнейших особенностей <font color=green>regex</font>, возможность в одном регулярном выражении избежать многострочных условий с циклом. В приведенном примере работает все примерно так: Если <font color=green>$addr=gethostbyname($1)</font> - да, то ставить ip-адрес(<font color=green>inet_ntoa($addr)</font>), если нет(не откликнулся сервер, сбой на линии и пр) то метить этот урл как подозрительный <font color=green>[???]</font>. В принципе в программе ничего человеку делать не нужно, т.к. подозрительные отметаются условием <font color=green>print $file,"\n" if($file !~/\?\?\?/);</font> Общее время работы программы 10-15 минут.
+
+<h4><a name=index_html_newsline>Очень простое решение для зеркала новостной ленты</a></h4><p align=justify>
+Допустим нужно сделать зеркало какой-либо зарубежной новостной ленты вместе с загрузкой картинок с удаленного сервера, чтобы не ждать по несколько минут отображения содержимого полностью загруженной большой таблицы. Приведенный скрипт запускается при помощи crontab каждые 5 часов:
+
+<pre><font color=green>#!/usr/bin/perl -w
+$/="\001";
+print "content-type: text/html\n\n";
+$dir="/var/www/docs/html/news/images";
+$imgurl="http://www.qwerty.ru/news/images";
+use LWP::Simple;
+use LWP::UserAgent;
+$page=get "http://www.astronomynow.com";
+$page=~s/face="(.*?)"//igs;
+&getimg($page);
+$page=~s!/images/grafix/listdot.gif!../../listdot.gif!igs;
+$page=~s!/images/grafix/spacer.gif!../../spacer.gif!igs;
+$page=~s!images/grafix/spacer.gif!../../spacer.gif!igs;
+if($page=~m!&lt;TABLE WIDTH="400" BORDER="0" CELLPADDING="0" CELLSPACING="0"&gt;(.*?)&lt;/TD&gt;&lt;/TR&gt;&lt;/TABLE&gt;!igsm){
+  $file=$1; 
+  &getlink($page);
+  foreach $names(@res){
+    $names=~s|.*/||ig;
+    $file=~s|src="http://(.*?)$names"|src=$imgurl/$names|igs;
+  }
+  $html=qq~
+  &lt;TABLE BORDER="0" CELLPADDING="0"
+  CELLSPACING="0"&gt;
+  $file
+  &lt;/TD&gt;&lt;/TR&gt;&lt;/TABLE&gt;~;
+}
+open F, "&gt;$dir/news.txt"; 
+print F $html or die "\n\n\n ERROR: $!\n\n\n";
+close F;
+sub getimg{
+  &getlink($_[0]);
+  foreach $img(@res){
+    my $res = LWP::UserAgent-&gt;new-&gt;request(new HTTP::Request GET => $img);
+    if ($res-&gt;is_success) {
+      $img=~s|.*/||;
+      open (ABC, "&gt;$dir/$img") or die "\n\n\nERROR: $!\n\n\n";
+      binmode(ABC);
+      print ABC $res-&gt;content; close ABC or die "\n\n\nERROR: $!\n\n\n";
+    } else {
+      print $res-&gt;status_line;
+    }
+  }
+  return @res;
+}
+sub getlink{
+  local $_=$_[0];
+  push(@res, "http://$2")
+    while m{SRC\s*=\s*(["'])http://(.*?)\1\s*(.*?)WIDTH="100" HEIGHT="100"(.*?)&gt;}igs;
+  return @res;
+}</pre></font>
+
+<h4><a name=index_html_findres>Вывод результатов поиска</a></h4>
+<p align=justify>
+Предположим есть необходимость подсветить результаты поиска в файлах,
+подобно тому как это делает поисковик aport. Данное регулярное выражение
+позволяет влоб реализовать эту красивую функцию для поисковика. но оно имеет
+очень большой минус, при обработке текста машина начинает неимоверно
+подтормаживать, но мы рассмотрим этот регексп из общих соображений:
+
+<pre><font color=green>
+$sn=4;
+{
+  local $_=$description1;
+  print "...$1&lt;font color=red&gt;$3&lt;/font&gt;$4..."
+    while(m/(([\s,\.\n^]*\w*){$sn})(\s*$query\s*)(([\s,\.\n^]*\w+){$sn})/ig);
+}
+$_="";
+</pre></font>
+<p align=justify>Исходная задача состоит в следующем: вывести по 4 слова
+спереди и сзади результата поиска, причем так, чтобы если слово находится
+первым, то будет видно 4 слова позади него. В точности такое-же условие и
+для последнего слова.<p>
+Соответственно из вида регекспа понятно, что разделителями слов могут
+быть символы <font color=green>[\s,\.\n^]*</font>, в том числе и символ 
+перевода каретки <font color=green>^</font>.
+Комбинация <font color=green>(\d\d\d){$sn}</font>
+<hr>
+
+<!--#include virtual="/footer.raw"-->
+
+</body></html>
