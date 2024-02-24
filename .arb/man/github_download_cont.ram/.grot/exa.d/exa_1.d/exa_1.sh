@@ -3,7 +3,7 @@
 cd ${REPO_PATH}/NBash/.arb/man/github_download_cont.ram/.grot/exa.d/exa_1.d || plt_exit
 
 # bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
-c#! url -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh > mhsanaei_install.sh
+#! curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh > mhsanaei_install.sh
 
 # https://github.com/legioner9/lex/tree/master/.d/.read
 
