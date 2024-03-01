@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  app_apache_8081:
+    build:
+      context: ./apache
+    ports:
+      - 8081:80
