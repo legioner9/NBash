@@ -1,0 +1,2 @@
+result='-it {} /bin/bash'
+echo $result | sed 's[{}[vew[g' # -it vew /bin/bash
