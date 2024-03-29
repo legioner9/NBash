@@ -7,8 +7,10 @@ cd ${REPO_PATH}/NBash/.arb/man/sed_f_into_f.ram/.grot/exa.d/exa_1.d/exa_dir || p
 cp init.file receive.file
 
 # sed -e '/{{in}}/{r insert.file' -e 'd;}' receive.file > tmp
+echo -e "${HLIGHT}--- exec: sed -e '/{{in}}/{r insert.file' -e '$1;}' receive.file > tmp ---${NORMAL}" #start files
 sed -e '/{{in}}/{r insert.file' -e ''"$1"';}' receive.file > tmp
 
 mv tmp receive.file
 
+echo "$1->"
 cat receive.file
