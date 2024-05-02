@@ -1,0 +1,19 @@
+doxygen - Doxygen is a documentation system for C, C++ and IDL
+doxygen-wizard - GUI frontend for doxygen
+kf5-kapidox - KDE Frameworks 5 doxygen tools
+python3-module-kapidox - KF5 doxygen tools bindings
+libcuckoo-devel - A high-performance, compact hash table
+libdbus-c++-apidocs - libdbus-c++ API documentation
+doxygen2man - Program to create nicely-formatted man pages from Doxygen XML files
+adonthell-doc - API documentation for adonthell
+antlr3-C-docs - API documentation for the C run-time support for ANTLR-generated parsers
+clsync-apidocs - API documentation for clsync
+doxygen-doc - Documentation and examples for doxygen
+doxypy - doxypy is an input filter for Doxygen
+fstrm-doc - API documentation for fstrm library
+libasyncns-devel-doc - Development documentation for libasyncns
+libleptonica-doc - Documentation prepared with Doxygen
+opencc-doc - Documentation for OpenCC
+perl-Syntax-Highlight-Engine-Kate - Port to Perl of the syntax highlight engine of the Kate text editor
+python3-module-breathe - Make reStructuredText and Sphinx read and render Doxygen xml output
+waf - A Python-based build system

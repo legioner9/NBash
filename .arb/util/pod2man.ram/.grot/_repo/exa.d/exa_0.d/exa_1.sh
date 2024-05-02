@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# Bash code goes here
+#
+exit 0
+
+: << EOF
+=pod
+
+=head1 NAME
+
+Here is a brief description of what are script does.
+
+=head1 SYNOPSYS
+
+scriptname [options] argument
+
+=head1 OPTIONS
+
+-h, --help 
+    Show this message
+        
+-f, --foo
+    This option does foo
+        
+-b, --bar 
+    This option does bar
+
+=cut
+
+EOF
