@@ -1,0 +1,707 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Source code documentation and analysis tool"/>
+  <meta name="keywords" content="documentation,tool,source code,open source,GPL,analysis,structure"/>
+  <meta name="generator" content="Doxygen 1.10.0"/>
+  <title>Doxygen extensions</title>
+  <link rel="icon" href="doxygen.ico" type="image/x-icon" />
+  <link href="bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="tocbot.min.css" rel="stylesheet" type="text/css" />
+  <link href="doxygen_homepage.css" rel="stylesheet" type="text/css" />
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1917318012276499" crossorigin="anonymous"></script>
+  
+</head>
+
+<body>
+  <div id="main">
+    <div class="container">
+      <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-primary doxygen-navbar">
+        <div class="container-fluid">
+          <a class="navbar-brand ms-3" href="index.html"><img src="assets/doxygen.svg" width="120" height="35" alt="Doxygen" /></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-0 mt-0 px-2">
+              <li class="nav-item mx-1">
+                <a class="nav-link" href="manual/index.html">Docs</a>
+              </li>
+              <li class="nav-item mx-1">
+                <a class="nav-link" href="manual/changelog.html">Changelog</a>
+              </li>
+              <li class="nav-item mx-1">
+                <a class="nav-link" href="helpers.html">Extensions</a>
+              </li>
+              <li class="nav-item mx-1">
+                <a class="nav-link" href="examples.html">Examples</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav mr-auto d-inline-flex my-0 mx-1 download-button">
+              <li class="nav-item bg-success download">
+                <a class="nav-link" href="download.html">
+                  <img class="download-icon" src="assets/download.svg" width="16" height="16"
+                    alt="Download doxygen" />
+                  <span>Download</span>
+                </a>
+              </li>
+            </ul>
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" class="nav-item d-inline-flex px-1 mx-1">
+              <input type="hidden" name="cmd" value="_donations" />
+              <input type="hidden" value="doxygen@gmail.com" name="business" />
+              <input type="hidden" name="bn" value="PP-DonationsBF:btn_donate_LG.gif:NonHosted" />
+              <input type="hidden" name="lc" value="US" />
+              <input type="hidden" name="tax" value="0" />
+              <input type="hidden" name="item_name" value="Doxygen donation" />
+              <input type="hidden" name="no_shipping" value="1" />
+              <table class="donate">
+                <tr>
+                  <td class="donate-button"><input type="image" width="74" height="21"
+                      src="https://www.paypal.com/en_GB/i/btn/btn_donate_SM.gif" name="submit"
+                      alt="Donate to Doxygen with PayPal!" /></td>
+                </tr>
+                <tr>
+                  <td class="currency"><select size="1" name="currency_code">
+                      <option selected="selected" value="EUR">&euro; (EUR)</option>
+                      <option value="USD">$ (USD)</option>
+                    </select></td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row doxygen-updates">
+        <div class="d-flex justify-content-center">
+          <p class="message"><a id="banner-link-updates" href="download.html">Version 1.10.0</a> is now
+            available!<span class="release-spacer">&#160;</span>Release date: 25 December 2023</p>
+        </div>
+      </div>
+    </div>
+
+    
+<div class="container-fluid extensions">
+    <div class="row">
+        <div class="col-md-8 m-auto d-flex justify-content-center my-3">
+            <div class="extensions-content">
+                <h2 id="dox_extensions">Doxygen extensions</h2>
+
+                Since the number of tools/scripts is ever growing, I've divided them into
+                a number of categories:
+
+                <h3 id="diagrams">Diagram generators</h3>
+
+                <h4 id="nassi_shneiderman">Nassi-Shneiderman diagrams</h4>
+                <p>
+                    Eckard Klotz has started a projected called <a
+                        href="https://sourceforge.net/projects/moritz/">Moritz</a>.
+                    It generates
+                    <a href="https://en.wikipedia.org/wiki/Nassi-Shneiderman_diagram">Nassi-Shneiderman diagrams</a>
+                    of functions and methods in C/C++ sources as HTML files, which could be included
+                    in software documentation or simply viewed in a web browser.
+                </p>
+
+                <hr />
+
+                <h3 id="dox_langfilters">Filters to add support for other languages</h3>
+
+                <h4 id="doxfilt_perl">Perl</h4>
+                <p>
+                    Bret Jordan has written <a href="https://github.com/jordan2175/doxygen-filter-perl">a filter</a>
+                    <a href="http://www.bigsister.ch/doxygenfilter/">Another filter</a> is written by Thomas Aeby.
+                </p>
+
+                <h4 id="doxfilt_js">Javascript</h4>
+                <p>
+                    For those working with <b>JavaScript</b> it may be good to know that J&ouml;rg Schaible
+                    has written a perl script to let doxygen deal with it. Unfortunately his site at
+                    berlios.de has been removed. If you google for <code>js2doxy.pl</code>
+                    you can still find copies of the script however.
+                </p>
+
+                <h4 id="doxfilt_opascal">Object Pascal</h4>
+
+                <p>
+                    Darren Bowles has started a project
+                    <a href="https://sourceforge.net/projects/pas2dox/">Pas2dox</a> which converts
+                    <b>Object Pascal</b> into a C++ style syntax, that doxygen can then happily parse.
+                    The project's goal is to allow doxygen to be used for Delphi/Kylix projects.
+                </p>
+
+                <h4 id="doxfilt_vb">Visual Basic</h4>
+
+                <p>
+                    <a href="cdn-cgi/l/email-protection.html#35564c595457755d5c525d4150441b5b5041">Mathias Henze</a> wrote an
+                    <a href="http://www.doxygen.org/dl/vbfilter.zip">awk script</a>
+                    that converts <b>Visual Basic</b> code into something doxygen understands. The package
+                    includes a small batch-wrapper. To use it, one has to put following line
+                    for the config-option "INPUT_FILTER":
+                </p>
+                <pre>
+C:/path/to/filer/tools/vbfilter.bat C:\path\to\filter\tools
+</pre>
+                <p>
+                    Some Unix tools like sh.exe, gawk.exe and tee.exe are required to be
+                    available under the supplied path. They can be downloaded
+                    <a href="http://unxutils.sourceforge.net/">here</a>.
+                </p>
+
+                <p>
+                    An <a href="http://home.in.tum.de/~grembowi/vbfilter/vbfilter.py">alternative filter</a>
+                    for <b>Visual Basic</b> is provided by Basti Grembowietz. It requires python and
+                    comes with the following usage instructions:
+                </p>
+
+                <p>
+                    The VB-Files have to be prepared the following way:
+                </p>
+                <pre>
+
+  '* &lt;comments directly handed to doxygen&gt;
+  &lt;vb- Function / Sub / Member&gt;
+</pre>
+                <p>
+                    For shorter usage also this is allowed:
+                </p>
+                <pre>
+  &lt;vb-member (recommended)&gt; '* &lt;doxygen-comment&gt;
+</pre>
+                <p>
+                    For comments addressing to a class / module, '! must be used.
+                </p>
+
+                <p>
+                    Giovanni De Cicco wrote an Add-in called <a
+                        href="https://sourceforge.net/projects/vbdoxyaddin/">VBDoxyAddin</a>
+                    for VB6 developers based on the script of Mathias.
+                </p>
+
+                <p>
+                    For the newer <b>VB.NET</b> (and also for classic VB) an awk
+                    based <a href="https://github.com/sevoku/doxygen-vb-filter">filter</a> was written by
+                    Vsevolod Kukol.
+                </p>
+
+                <h4 id="doxfilt_matlab">MatLab</h4>
+                <p>
+                    Ben Heasly has written a
+                    <a href="https://code.google.com/archive/p/tower-of-psych/downloads">filter</a>
+                    for doxygen that converts <b>MatLab</b> scripts (including the new object
+                    oriented features) into something doxygen can understand.
+                </p>
+                <p>
+                    An <a href="http://www.doxygen.org/dl/mtoc.tgz">alternative filter</a>
+                    is provided by Ian Martins.
+                </p>
+                <p>
+                    There is also one by Fabrice which can be found on
+                    <a href="https://www.mathworks.com/matlabcentral/fileexchange/25925-using-doxygen-with-matlab">Matlab
+                        Central</a>.
+                </p>
+
+                <h4 id="doxfilt_proc">Pro*C</h4>
+                <p>
+                    Darren Bowles has created
+                    <a href="https://sourceforge.net/projects/proc2dox">Proc2Dox</a>, which
+                    is a pre-processor addon for doxygen to add support for Pro*C code.
+                </p>
+
+                <h4 id="doxfilter_asm">Assembly</h4>
+                <p>
+                    Bogdan Drozdowski and Rick Foos have written a filter to
+                    convert <a href="https://github.com/rfoos/doxygen">assembly</a> into
+                    C like code which doxygen can then parse.
+                </p>
+
+                <h4 id="doxfilt_lua">Lua</h4>
+                <p>
+                    Alec Chen has written a <a href="https://github.com/alecchen/doxygen-lua">filter</a> to
+                    make doxygen parse <b>Lua</b> code. Simon Dales has
+                    another <a href="http://www.ctan.org/pkg/lua2dox">lua filter</a> to do the same.
+                </p>
+
+                <h4 id="doxfilt_glsl">GLSL Shader</h4>
+                <p>
+                    Sebastian Schaefer has a written a <a
+                        href="http://www.grasmo.de/2012/02/15/doxygen-and-glsl-shader/">filter</a> to
+                    make doxygen parser the <b>GLSL shader</b> language.
+                </p>
+
+                <h4 id="doxfilt_qml">Qt QML</h4>
+                <p>
+                    Aur&eacute;lien G&acirc;teau has written a <a
+                        href="https://agateau.com/projects/doxyqml/">filter</a> for Qt's <b>QML</b> files.
+                </p>
+
+                <h4 id="doxyfilt_gob2">GOB-doc</h4>
+                <p>
+                    The <a href="https://github.com/landesfeind/gob-doc">GOB-doc filter</a> parses
+                    <a href="https://www.jirka.org/gob.html">*.gob files</a> and produces C++ class definitions.
+                </p>
+
+                <h4 id="doxyfilt_prolog">Prolog</h4>
+                <p>
+                    Dr Beco wrote a <a href="https://github.com/drbeco/doxygenprolog">filter for Prolog</a>.
+                </p>
+
+                <h4 id="doxyfilt_capl">CAPL</h4>
+                <p>
+                    Bretislav Rychta wrote <a href="https://github.com/BretislavRychta/CAPL-filter-for-Doxygen">filter
+                        for CAPL</a>
+                    the CAN Access Programming Language.
+                </p>
+
+                <h4 id="doxyfilt_stx">STX</h4>
+                <p>
+                    Jan Lochmatter has written a <a href="https://github.com/JanLochi/doxygen-stx-filter">filter for the
+                        STX language</a>, which is used for
+                    PLC's (programmable logic controller) from the german manufacturer <a
+                        href="https://www.jetter.de/en/products/software/jetsym.html">Jetter</a>.
+                </p>
+
+                <h4 id="kick_assember">KickAssembler</h4>
+                <p>
+                    Raffaele Intorcia wrote a <a href="https://github.com/intoinside/KickAssemblerToDoxygen">Python
+                        script</a>
+                    that provides a simple conversion from KickAssembler source code into C-like format.
+                </p>
+
+                <hr />
+
+                <h3 id="dox_easeofuse">Increase ease of use</h3>
+
+                <h4 id="doxease_doxygenator">Doxygenator</h4>
+                <p>
+                    Pierre Clouthier wrote <a href="https://github.com/chakani/Doxygenator">Doxygenator</a>
+                    which is a tool to automatically insert Doxygen comment blocks before functions.
+                    The Doxygen commands are a template or skeleton, you fill in the details.
+                </p>
+
+                <h4 id="doxease_assist">DoxyAssist</h4>
+                <p>
+                    ChEeTaH wrote <a
+                        href="https://www.simply-life.net/cheetah/blog/2011-01-23/announcing-doxyassist">DoxyAssist</a>.
+                    This tool can use a template doxygen configuration file and adjust its settings
+                    for specific projects and sub projects it manages. For each (sub) project
+                    doxygen is run separately, resulting in separate documentation sets for each
+                    sub project. It will combine these parts back for the Qt Assistant, making
+                    sure the appropriate filters are available. Qt Assistant can then be used to
+                    view the documentation as a whole, or easily limit the view to a subproject.
+                    There is special support for Drupal, for which all contributed modules are
+                    automatically discovered and added as subproject (see <a
+                        href="https://www.simply-life.net/cheetah/blog/2011-01-23/drupal-development-made-easier-qt-assistant-part-4">this</a>
+                    demonstration).
+                </p>
+
+                <h4 id="doxease_eclipse">Eclipse</h4>
+                <p>
+                    <a href="https://anb0s.github.io/eclox/">Eclox</a> is a doxygen
+                    frontend plugin for <a href="http://www.eclipse.org">Eclipse</a>.
+                </p>
+
+                <h4 id="doxease_vs">Visual studio</h4>
+                <p>
+                    If you use <b>Visual Studio .NET</b> have a look
+                    at <a
+                        href="https://www.codeproject.com/Articles/2704/Useful-enhancements-for-Visual-Studio-NET">Steve
+                        King's set of addins</a>. Greg Engelstad has written
+                    <a href="http://www.doxygen.org/dl/sln_reader.zip">a perl script</a> to parse a Visual
+                    Studio .NET solution file (.sln) and run doxygen for each
+                    separate project contained therein.
+                </p>
+
+                <p>
+                    Jason Williams has written
+                    an <a href="http://www.atomineer.com/AtomineerUtils.html">
+                        Addin for Visual Studio 2005 & 2008</a> which is able to
+                    auto-generate doxygen (or DocXml) style comments from most code elements
+                    (file, namespace, class, struct, enum, function, etc). It parses C, C++, C#
+                    and Java code to produce fully formed doxygen comments, and can update
+                    those comments if the code element is changed, and word-wrap the
+                    descriptions to keep them tidy. It uses a set of user-editable rules to
+                    provide automatic descriptions of elements, parameters and return codes,
+                    minimizing the effort involved in generating doc comments.
+                </p>
+
+                <p>
+                    jgallardo has also written a
+                    <a href="https://archive.codeplex.com/?p=doxygenbrowseraddin">
+                        Addin for Visual Studio</a> that eases browsing the documentation
+                    generated by doxygen.
+                </p>
+
+                <p>
+                    An addin for <b>Visual Studio 2005</b>
+                    called <a href="http://doxycomment.sourceforge.net/">DoxyComment</a> was created by
+                    Troels Gram. It is designed to
+                    assist you in inserting context sensitive comment blocks into C/C++
+                    source files. DoxyComment also comes with an xslt template that lets
+                    you generate documentation like the MSDN library.
+                </p>
+
+                <p>
+                    If you are using Microsoft's Developer Studio 6.0, an add-in called
+                    <a href="https://sourceforge.net/projects/doxbar/">DoxBar</a> is available that can be used
+                    to run doxygen from within Developer Studio and to search through the
+                    generated HTML help files.<br>
+                    <b>Note:</b> I do not have enough time to maintain DoxBar myself anymore,
+                    so I moved DoxBar to sourceforge. Olivier Sannier has introduced a number
+                    of improvements to DoxBar.
+                    If you too want to join the development team, please register as
+                    a user at sourceforge and mail <a href="cdn-cgi/l/email-protection.html#1773786f6e70727957707a767e7b3974787a">me</a>
+                    your user name.
+                </p>
+
+                <p>
+                    <a href="cdn-cgi/l/email-protection.html#20620e6e4f5741524160540d4f4e4c494e450e4445">Bernhard Nowara</a>
+                    has written a <a href="http://www.doxygen.org/dl/ProfEd-1.5.5.zip">profile editor</a>, which is a
+                    doxywizard-like tool for Windows. He also created an
+                    <a href="http://www.doxygen.org/dl/Doxbar-0.14.zip">enhanced version of DoxBar</a> that
+                    includes his editor and <a href="http://www.doxygen.org/dl/VCMacros4Doxygen.zip">some
+                        macros for Visual Studio</a> to ease the preparation of the source code
+                    for doxygen. These changed have been merged into more recent version of
+                    doxygen by Olivier Sannier.
+                </p>
+
+                <p>
+                    FeinSoftware has released a
+                    development tool for Microsoft Visual Studio .NET (Visual C++)
+                    called <a href="https://commentmakerpro.software.informer.com/">CommentMaker</a>,
+                    which creates customizable function header that developers can adjust to
+                    most specific documentation requirements. By default it generates
+                    doxygen compatible comments.
+                </p>
+
+                <h4 id="doxease_tpt">TechPubs Tools</h4>
+                <p>
+                    Glenn Maxey has released
+                    <a href="http://doxygen.sourceforge.net/dl/tp_tools_02.zip">The TechPubs Tools (TPT)</a>
+                    which wraps around any number of mini-HTML systems and creates a
+                    comprehensive HTML system complete with table of contents and an
+                    auto-generated index/concordance. TPT consists of Perl programs, UNIX
+                    shell scripts, and master template files (HTML).
+                </p>
+
+                <h4 id="doxease_treeview">Tree view applet</h4>
+                <p>
+                    Those having performance problems with the TREEVIEW option, could try
+                    <a href="http://www.doxygen.org/dl/tree2script.zip">this script</a> written by Glenn Maxey</a>.
+                </p>
+
+                <h4 id="doxease_msdn">MSDN integration</h4>
+                <p>
+                    For those using Windows and wanting to integrate the compressed HTML
+                    generated by doxygen into MSDN look at
+                    <a href="https://www.codeproject.com/Articles/930/A-guide-to-MSDN-Collection-Integration">this MSDN
+                        integrator utility</a>.
+                </p>
+
+                <h4 id="doxease_perlcnf">Configure via Perl</h4>
+                <p>
+                    Richard Y. Kim has written a <a href="http://www.doxygen.org/dl/Doxygen.pm">perl module</a>
+                    to use/configure doxygen more easily from perl scripts.
+                </p>
+
+                <h4 id="doxease_ant">Ant task</h4>
+                <p>
+                    If you're into <a href="http://ant.apache.org/">Ant</a>
+                    have a look at <a href="http://ant-doxygen.sourceforge.net/">
+                        Karthik A Kumar's</a>
+                    Ant task object's for doxygen</a>.
+                </p>
+
+                <h4 id="doxease_amake">Automake/autoconf integration</h4>
+                <p>
+                    Oren Ben-Kiki shows how to
+                    <a href="https://www.gnu.org/software/autoconf-archive/ax_prog_doxygen.html">integrate</a> doxygen
+                    with
+                    Automake and Autoconf.
+                </p>
+
+                <h4 id="doxease_embed">Embed HTML</h4>
+                <p>
+                    Wilfred Nilsen has written <a href="http://barracudaserver.com/examples/BarracudaDoc/">a tool</a>
+                    (for windows) to combine multiple HTML files and embed them in a single
+                    executable. This could be used in combination with the doxygen's HTML output.
+                </p>
+
+                <h4 id="doxease_trac">Trac plugin</h4>
+                <p>
+                    If you are using <a href="http://trac.edgewall.org/">Trac</a> to track your
+                    issue then have a look at
+                    this <a href="https://trac-hacks.org/wiki/DoxygenPlugin">plugin</a> to
+                    embed doxygen documentation.
+                </p>
+
+                <p>
+                <h4 id="doxease_cmake">CMake integration</h4>
+                Stefan Majewsky has written a blog entry about integrating doxygen
+                in a <a href="https://majewsky.wordpress.com/2010/08/14/tip-of-the-day-cmake-and-doxygen/">CMake</a>
+                based project.
+                </p>
+
+                <h4 id="doxyease_grpr">DoxyGrouper</h4>
+                <p>
+                    Raja Kajiev write a tool called <a
+                        href="https://sourceforge.net/projects/doxygrouper/">DoxyGrouper</a>
+                    which can help to include items into groups on directory structure basis.
+                </p>
+
+                <h4 id="qtres2dox">qtres2dox</h4>
+                <p>
+                    Markus Schwartz wrote a tool called <a href="https://www.linux-apps.com/p/1131361">qtres2dox</a>
+                    which can generate an input file for doxygen from .ui and .qrc files.
+                </p>
+
+                <h4 id="doxyease_num">Doxynum</h4>
+                <p>
+                    <a href="http://doxynum.sourceforge.net">Doxynum</a> is a program for automatic
+                    numbering of sections and drawings, as well as for creating contents in documentation,
+                    generated using the doxygen software
+                </p>
+
+                <hr>
+
+                <h3 id="dox_editoraddons">Editor addons</h3>
+
+                <h4 id="doxedit_vs">Visual Studio</h4>
+                <p>
+                    Sedeniono wrote <a href="https://github.com/Sedeniono/VSDoxyHighlighter">VSDoxyHighlighter</a>,
+                    a Visual Studio 2022 extension to provide syntax highlighting and autocomplete functionality.
+                </p>
+
+                <p>
+                    Christoph Schlosser wrote <a
+                        href="https://marketplace.visualstudio.com/items?itemName=cschlosser.doxdocgen">VS Code
+                        Extensions provides Doxygen Documentation generation on the fly by starting a Doxygen comment
+                        block and pressing enter.</a> which is a
+                    VS Code Extensions that provides Doxygen Documentation generation on the fly by starting a Doxygen
+                    comment block and pressing enter.
+                </p>
+
+                <h4 id="doxedit_vim">VIM</h4>
+                <p>
+                    If VIM is your favorite editor (it is mine!), Michael Geddes wrote a
+                    <a href="https://vim.sourceforge.io/scripts/script.php?script_id=5">syntax highlighting script</a>
+                    on
+                    top of C/C++/IDL/Java. Ralf Schandl also has a some
+                    <a href="http://www.doxygen.org/dl/doxyvim.tar.gz">macros and syntax highlighting files</a> for you.
+                    Emilio Riva sent <a href="http://www.doxygen.org/dl/c.vim.vim60">yet an alternative vim highlighting
+                        file</a>.
+                </p>
+
+                <h4 id="doxedit_emacs">Emacs</h4>
+                <p>
+                    If you are using the Emacs editor, take a look
+                    at <a href="https://code.google.com/archive/p/epydoc-el/">epydoc-el</a>
+                    which is a lisp script to simplify writing doxygen comments.
+                </p>
+
+                <p>
+                    Ryan Sammartino maintains a project called
+                    <a href="https://sourceforge.net/projects/doxymacs/">Doxymacs</a> at sourceforge,
+                    which produced an elisp package to make using doxygen from within {X}Emacs
+                    easier.
+                </p>
+
+                <h4 id="doxedit_ultraedit">UltraEdit</h4>
+                <p>
+                    If UltraEdit is your editor of choice, take a look at Dominik Stadler's
+                    <a href="http://www.doxygen.org/dl/ultraedit_syntax.txt">script</a> for information on how to
+                    enable syntax highlighting for doxygen comment blocks.
+                </p>
+
+                <h4 id="doxedit_tse">TSE Pro/32</h4>
+                <p>
+                    For SemWare's TSE Pro/32 editor Howard Kapustein has provided
+                    <a href="http://www.doxygen.org/dl/semware.zip">syntax definition files</a> for doxygen style
+                    comment blocks.
+                </p>
+
+                <h4 id="doxedit_delphi">Delphi/C++ Builder</h4>
+                <p>
+                    If you use Delphi or C++ Builder in combination with
+                    <a href="http://www.gexperts.org/">GExperts</a> you can use this
+                    <a href="http://www.doxygen.org/dl/GexpertMacro_Litux.xml">XML macro</a> written by Miguel A.
+                    Richard
+                    to serve as a template for comments in your code.
+                </p>
+
+                <hr>
+
+                <h3 id="dox_toolmigration">Migration from other doc tools</h3>
+
+                <h4 id="doxtm_cocoon">Cocoon</h4>
+                <p>
+                    If you want to convert Cocoon (or C++) style comments into Qt-style comments
+                    on the fly you might want to try the
+                    <a href="http://www.doxygen.org/dl/filterComments.pl.zip">filterComments.pl</a> script written
+                    by Paul S. Strauss. Use it in combination with doxygen's <code>INPUT_FILTER</code>
+                    configuration option.
+                </p>
+
+                <p>
+                <h4 id="doxtm_autoduck">AutoDuck</h4>
+                Martin Slater wrote a python script <a href="https://www.doxygen.org/dl/duck2dox.py">duck2dox</a>
+                that can be used to convert <b>AutoDuck</b> style comments to doxygen comments.
+                Steven Blackburn has written <a href="http://www.doxygen.org/dl/duck2dox_src.zip">an alternative
+                    filter</a>
+                written in C++.
+                Brian Szuter has written <a href="https://sourceforge.net/projects/duck2dox/">yet another filter</a>
+                after trying the other filters and finding them inadequate for his needs.
+                </p>
+
+                <hr>
+                <h3 id="dox_xmlexamples">XML/XSLT examples</h3>
+
+                <h4 id="doxxml_breathe">Breathe</h4>
+                <p>
+                    Micheal Jones has written <a href="https://github.com/michaeljones/breathe">an extension</a>
+                    to reStructuredText and Sphinx to be able to read and render the doxygen XML output.
+                </p>
+
+                <h4 id="doxxml_cs">C# doxmlparser</h4>
+                <p>
+                    Baneu Mihai has written a <a href="https://code.google.com/archive/p/doxygenxmlparser">wrapper</a>
+                    around
+                    doxygen's xml parser (found in addon/doxmlparser) to make it accessible
+                    from C#.
+                </p>
+
+                <h4 id="doxxml_clean">Doxyclean</h4>
+                <p>
+                    Matt Ball has written a script called
+                    <a href="https://github.com/mattball/doxyclean/">doxyclean</a>
+                    to convert doxygen's output into something that closer resembles Apple's own
+                    documentation.
+                </p>
+
+                <h4 id="doxxml_dotnet">Doxygen.NET</h4>
+                <p>
+                    Thomas Hansen and Kariem Ali have written
+                    <a href="https://code.google.com/archive/p/doxygen-net">Doxygen.NET</a>
+                    which provides .NET object wrappers for the XML output generated by
+                    doxygen.
+                </p>
+
+                <h4 id="doxxml_dox">Dox</h4>
+                <p>
+                    Narech Koumar has written a tool
+                    called <a href="http://dox.narechk.net/">Dox</a> which reads the XML output
+                    produced by doxygen and turns that into formatted HTML whose style resembles
+                    that of Javadoc's.
+                </p>
+
+                <h4 id="doxxml_xslt">XSLT examples</h4>
+                <p>
+                    If you want to see how you can use XSLT to transform doxygen's XML output
+                    into something else (HTML/CHM in this case), have a look at
+                    <a href="http://www.doxygen.org/dl/xslt-example.tgz">Chelpanov's example</a>.
+                    It has some limitations though:
+                </p>
+                <ul>
+                    <li>C++ is not supported
+                    <li>It is slower than using doxygen directly or writing a SAX based
+                        transformation in C from XML to HTML.
+                    <li>It support the CHM format only.
+                    <li>It works on Windows platform only.
+                    <li>Only some of the features of doxygen are supported.
+                </ul>
+                <p>
+                    and some additional requirements:
+                </p>
+                <ul>
+                    <li>HTML Help WorkShop
+                    <li>Microsoft .Net Framework 1.1
+                </ul>
+                <p>
+                    If you have comments or suggestions please send them to
+                    <a href="cdn-cgi/l/email-protection.html#8eedeff8cec0c1d1dddecfc3a0edfcf7fefae1fefce1a0fcfb">Chelpanov</a> (remove the
+                    the NO_SPAM part from the mail address).
+                </p>
+                <p>
+                    Bo Peng wrote a small <a href="http://sourceforge.net/mailarchive/message.php?msg_id=9720800">XSLT
+                        script</a>
+                    to extract information for SWIG/Python interfaces.
+                </p>
+            </div>
+            <div class="col-md-3">
+                <nav class="js-toc navbar sticky-top"></nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <div class="container-fluid" id="sponsors">
+      <div class="row">
+        
+        <div class="col-md-6 text-center">
+          <div class="carbonads">
+            <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script async="" type="text/javascript"
+              src="https://cdn.carbonads.com/carbon.js?serve=CK7DTK3M&amp;placement=stacknl" id="_carbonads_js"></script>
+          </div>
+        </div>
+        <div class="col-md-6 text-center">
+          <div class="googleads">
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-1917318012276499"
+     data-ad-slot="5320520181"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="container-fluid doxygen-footer">
+      <footer class="d-flex flex-wrap justify-content-between align-items-center py-4 ms-4 mb-0">
+        <ul class="nav col-md-4 d-flex align-items-center list-unstyled">
+          <li class="ms-3"><a href="https://twitter.com/doxygen">Follow @doxygen</a></li>
+          <li class="ms-3">
+            <div class="github-star-button"><a class="github-button" href="https://github.com/doxygen/doxygen"
+                data-show-count="true" aria-label="Star on GitHub">Star</a></div>
+          </li>
+          <li class="ms-3"><a href="notify.html">Be notified</a>
+          </li>
+        </ul>
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex me-4 align-items-center flex-grow-1">
+          <li class="ms-3"><a href="support.html">Support</a></li>
+          <li class="ms-3"><a href="privacy.html">Privacy</a></li>
+          <li class="ms-3"><a href="license.html">License</a></li>
+        </ul>
+      </footer>
+    </div>
+    <script src="bootstrap.min.js"></script>
+    <script src="tocbot.min.js"></script>
+    <script src="doxygen_homepage.js"></script>
+    
+<script>
+    tocbot.init({
+        tocSelector: '.js-toc',
+        contentSelector: '.extensions',
+        headingSelector: 'h3, h4',
+        hasInnerContainers: true,
+    });
+</script>
+
+
+
+</body>
+
+</html>
+
