@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+tutorial_directory=${BASH_SOURCE[0]%/*}
+
+# This script creates a custom (volatile) bashrc that will basically
+# just enable programmable completion for other tutorial scripts and
+# invoke an interactive shell
+read -N 4096 bashrc <<EOF
+. /etc/profile
+shopt -s progcomp sourcepath
+PATH="$PATH:$tutorial_directory"
+. "$tutorial_directory/../argsparse-completion.sh"
+complete -F _argsparse_complete \
+	1-basics 2-values 3-cumulative-options \
+	4-types 5-custom-types 6-properties \
+	7-value-checking 8-setting-hook 9-misc
+
+cd "$tutorial_directory" || exit
+
+printf "You are currently in %s directory and completion is enabled.\\\\n" \
+	"$tutorial_directory"
+printf "Try:\\\n\\\\n./1-basics -<tab><tab>\\\\n\\\\n"
+EOF
+exec bash --rcfile <(printf %s "$bashrc") -i
+
+cat <<EOF
+
+As you can see, the Bash Argsparse Completion module can automatically
+enable the bash completion for the scripts you develop with the Bash
+Argsparse library.
+
+To enable completion for your own scripts, please ensure
+bash_completion is enabled, and then in your ~/.bashrc, add lines such
+as:
+
+    . argsparse-completion.sh
+    complete -F _argsparse_complete yourscript your_other_script
+
+EOF
