@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.9.1" xml:lang="en-US">
+  <compound refid="init_8sh" kind="file"><name>init.sh</name>
+    <member refid="init_8sh_1a3954d7bfa09f488946bc9fd37ef3e7e0" kind="variable"><name>V_INTERNALSTARTTIME</name></member>
+    <member refid="init_8sh_1a770b63fb2fd5114ddc4577dc8d6e1b99" kind="variable"><name>V_CURRENTTIMESTAMP</name></member>
+    <member refid="init_8sh_1a794dd8efc8d3cf27ed9b62732418e0e2" kind="variable"><name>V_HOSTNAME</name></member>
+    <member refid="init_8sh_1ad9d878c0b5598608f0046245c7e815eb" kind="variable"><name>D_SCRIPT</name></member>
+    <member refid="init_8sh_1aced1eae7629d21fa6cfc1077ed460a09" kind="function"><name>func_check_user_root</name></member>
+  </compound>
+  <compound refid="init__1_8sh" kind="file"><name>init_1.sh</name>
+    <member refid="init__1_8sh_1ad441e79f437ef238f73879de31d1141a" kind="variable"><name>V_INTERNALSTARTTIME</name></member>
+    <member refid="init__1_8sh_1a5b495c94efec58659086168abbe47906" kind="variable"><name>V_CURRENTTIMESTAMP</name></member>
+    <member refid="init__1_8sh_1af010cd2e6bd799458894029b7365f152" kind="variable"><name>V_HOSTNAME</name></member>
+    <member refid="init__1_8sh_1ad9d878c0b5598608f0046245c7e815eb" kind="variable"><name>D_SCRIPT</name></member>
+    <member refid="init__1_8sh_1aced1eae7629d21fa6cfc1077ed460a09" kind="function"><name>func_check_user_root</name></member>
+  </compound>
+  <compound refid="main_8sh" kind="file"><name>main.sh</name>
+  </compound>
+  <compound refid="dir_6c2ed4107834fbcfb86d35ffaa854b78" kind="dir"><name>/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/wolf-u.li.ru.d/poroject.ws</name>
+  </compound>
+  <compound refid="indexpage" kind="page"><name>index</name>
+  </compound>
+</doxygenindex>

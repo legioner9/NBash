@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_main_8sh" xml:lang="en-US">
+<title>/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/wolf-u.li.ru.d/poroject.ws/main.sh File Reference</title>
+<indexterm><primary>/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/wolf-u.li.ru.d/poroject.ws/main.sh</primary></indexterm>
+<para>
+
+<para>Runs the cooles things in the world. </para>
+ 
+</para>
+<section>
+<title>Detailed Description</title>
+
+<para>Runs the cooles things in the world. </para>
+
+<para><formalpara><title>Author</title>
+
+<para>Uli Wolf </para>
+</formalpara>
+<formalpara><title>Date</title>
+
+<para>2016-06-08 </para>
+</formalpara>
+<formalpara><title>Copyright</title>
+
+<para>Released under the WTFPL</para>
+</formalpara>
+This script provides the required code to run code that is cooler than anybody elses code </para>
+</section>
+</section>

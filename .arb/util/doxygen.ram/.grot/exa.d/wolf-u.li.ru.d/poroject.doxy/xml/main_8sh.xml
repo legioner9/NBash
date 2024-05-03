@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="main_8sh" kind="file" language="C++">
+    <compoundname>main.sh</compoundname>
+    <briefdescription>
+<para>Runs the cooles things in the world. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="author"><para>Uli Wolf </para>
+</simplesect>
+<simplesect kind="date"><para>2016-06-08 </para>
+</simplesect>
+<simplesect kind="copyright"><para>Released under the WTFPL</para>
+</simplesect>
+This script provides the required code to run code that is cooler than anybody elses code </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#!/bin/sh</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>@file<sp/>main.sh</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>@brief<sp/>Runs<sp/>the<sp/>cooles<sp/>things<sp/>in<sp/>the<sp/>world.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>@author<sp/>Uli<sp/>Wolf</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>@date<sp/>2016-06-08</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>@copyright<sp/>Released<sp/>under<sp/>the<sp/>WTFPL</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>@details<sp/>This<sp/>script<sp/>provides<sp/>the<sp/>required<sp/>code<sp/>to<sp/>run<sp/>code<sp/>that<sp/>is<sp/>cooler<sp/>than<sp/>anybody<sp/>elses<sp/>code</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#######################################################################################################################</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>@mainpage<sp/>MyFile<sp/>Docs</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>This<sp/>line<sp/>shows<sp/>a<sp/>quick<sp/>overview<sp/>of<sp/>what<sp/>the<sp/>Project<sp/>does</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>@tableofcontents</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>@section<sp/>secoverview<sp/>Overview</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>Now<sp/>this<sp/>section<sp/>shows<sp/>really<sp/>the<sp/>details.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>@section<sp/>secprerequisites<sp/>Prerequisites</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>This<sp/>describes<sp/>the<sp/>minimum<sp/>requirements<sp/>to<sp/>run<sp/>this<sp/>script</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>@subsection<sp/>subsecdatabase<sp/>Prerequisites:<sp/>Database</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>*<sp/>No<sp/>database<sp/>is<sp/>required<sp/>currently</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>@subsection<sp/>subsecagentversions<sp/>Prerequisites:<sp/>Minimum<sp/>Version<sp/>of<sp/>the<sp/>Agents</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>The<sp/>minimum<sp/>level<sp/>of<sp/>the<sp/>respective<sp/>are:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>*<sp/>What<sp/>Agents?</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>@section<sp/>secintro<sp/>Installation</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>Here<sp/>you<sp/>could<sp/>show<sp/>how<sp/>to<sp/>install<sp/>the<sp/>script</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>@section<sp/>secexecution<sp/>Execution</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>The<sp/>script<sp/>is<sp/>executed<sp/>like<sp/>this.<sp/>The<sp/>usage<sp/>of<sp/>the<sp/>user<sp/>root<sp/>is<sp/>forbidden.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>```{.sh}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>myfile.sh</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>```</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#######################################################################################################################</highlight></codeline>
+    </programlisting>
+    <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/wolf-u.li.ru.d/poroject.ws/main.sh"/>
+  </compounddef>
+</doxygen>
