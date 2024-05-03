@@ -2,7 +2,9 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
   <compounddef id="dir_6c2ed4107834fbcfb86d35ffaa854b78" kind="dir">
     <compoundname>/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws</compoundname>
+    <innerfile refid="dox__exa_8h">dox_exa.h</innerfile>
     <innerfile refid="main_8cpp">main.cpp</innerfile>
+    <innerfile refid="with__uml_8c">with_uml.c</innerfile>
     <briefdescription>
     </briefdescription>
     <detaileddescription>

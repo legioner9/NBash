@@ -1,7 +1,33 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.9.1" xml:lang="en-US">
+  <compound refid="struct_box_struct__struct" kind="struct"><name>BoxStruct_struct</name>
+    <member refid="struct_box_struct__struct_1a4593938c5e90f024e7971bdb1392d9d6" kind="variable"><name>a</name></member>
+    <member refid="struct_box_struct__struct_1aee44748dc579c5d794853ee8b133d197" kind="variable"><name>b</name></member>
+    <member refid="struct_box_struct__struct_1a4543370ed67b2cf5ae3f55201bea11e6" kind="variable"><name>c</name></member>
+  </compound>
+  <compound refid="class_receiver" kind="class"><name>Receiver</name>
+    <member refid="class_receiver_1a162099741e0324e6254c9bc570566e40" kind="function"><name>Command</name></member>
+  </compound>
+  <compound refid="class_sender" kind="class"><name>Sender</name>
+    <member refid="class_sender_1a8ad2c6f9baa4e798868fe4a4d45f8fda" kind="function"><name>Ack</name></member>
+  </compound>
+  <compound refid="dox__exa_8h" kind="file"><name>dox_exa.h</name>
+    <member refid="dox__exa_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4" kind="enum"><name>BoxEnum_enum</name></member>
+    <member refid="dox__exa_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a2bf0bdd7b9b287724c66f6c0f74ceb01" kind="enumvalue"><name>BOXENUM_FIRST</name></member>
+    <member refid="dox__exa_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a3ede3b6dfb2dbdac72634f0334e11c63" kind="enumvalue"><name>BOXENUM_SECOND</name></member>
+    <member refid="dox__exa_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a227130e825c6c4506cc4a226539d85fb" kind="enumvalue"><name>BOXENUM_ETC</name></member>
+    <member refid="dox__exa_8h_1a2345a085bbc7582971ddac2b2c7d1d7e" kind="typedef"><name>BoxEnum</name></member>
+    <member refid="dox__exa_8h_1a40a25b8d3b226c01f7f83e410c6b58d7" kind="typedef"><name>BoxStruct</name></member>
+    <member refid="dox__exa_8h_1aaddf8ced9406a68229baee8c1e922b6a" kind="function"><name>Box_The_Function_Name</name></member>
+    <member refid="dox__exa_8h_1a7ec4699a4197d74b5487929228b0597c" kind="function"><name>Box_The_Second_Function</name></member>
+    <member refid="dox__exa_8h_1a01d1bdf75bc1d4b6445faeafa8fd853d" kind="function"><name>Box_The_Last_One</name></member>
+  </compound>
   <compound refid="main_8cpp" kind="file"><name>main.cpp</name>
     <member refid="main_8cpp_1a00fd949edf3c83a1129db7d8b3fa2761" kind="function"><name>mainx</name></member>
+  </compound>
+  <compound refid="with__uml_8c" kind="file"><name>with_uml.c</name>
+  </compound>
+  <compound refid="todo" kind="page"><name>todo</name>
   </compound>
   <compound refid="dir_6c2ed4107834fbcfb86d35ffaa854b78" kind="dir"><name>/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws</name>
   </compound>

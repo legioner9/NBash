@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="struct_box_struct__struct" kind="struct" language="C++" prot="public">
+    <compoundname>BoxStruct_struct</compoundname>
+    <includes refid="dox__exa_8h" local="no">dox_exa.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_box_struct__struct_1a4593938c5e90f024e7971bdb1392d9d6" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int BoxStruct_struct::a</definition>
+        <argsstring></argsstring>
+        <name>a</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Some documentation for the member <ref refid="struct_box_struct__struct_1a4593938c5e90f024e7971bdb1392d9d6" kindref="member">BoxStruct::a</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/dox_exa.h" line="62" column="7" bodyfile="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/dox_exa.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_box_struct__struct_1aee44748dc579c5d794853ee8b133d197" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int BoxStruct_struct::b</definition>
+        <argsstring></argsstring>
+        <name>b</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Some documentation for the member <ref refid="struct_box_struct__struct_1aee44748dc579c5d794853ee8b133d197" kindref="member">BoxStruct::b</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/dox_exa.h" line="63" column="7" bodyfile="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/dox_exa.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_box_struct__struct_1a4543370ed67b2cf5ae3f55201bea11e6" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double BoxStruct_struct::c</definition>
+        <argsstring></argsstring>
+        <name>c</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Etc. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/dox_exa.h" line="64" column="10" bodyfile="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/dox_exa.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Use brief, otherwise the index won&apos;t have a brief explanation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Detailed explanation. </para>
+    </detaileddescription>
+    <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/dox_exa.h" line="61" column="1" bodyfile="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/dox_exa.h" bodystart="61" bodyend="65"/>
+    <listofallmembers>
+      <member refid="struct_box_struct__struct_1a4593938c5e90f024e7971bdb1392d9d6" prot="public" virt="non-virtual"><scope>BoxStruct_struct</scope><name>a</name></member>
+      <member refid="struct_box_struct__struct_1aee44748dc579c5d794853ee8b133d197" prot="public" virt="non-virtual"><scope>BoxStruct_struct</scope><name>b</name></member>
+      <member refid="struct_box_struct__struct_1a4543370ed67b2cf5ae3f55201bea11e6" prot="public" virt="non-virtual"><scope>BoxStruct_struct</scope><name>c</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="with__uml_8c" kind="file" language="C++">
+    <compoundname>with_uml.c</compoundname>
+    <innerclass refid="class_sender" prot="public">Sender</innerclass>
+    <innerclass refid="class_receiver" prot="public">Receiver</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="class_sender" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_sender" kindref="compound">Sender</ref></highlight></codeline>
+<codeline lineno="9"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="12" refid="class_sender_1a8ad2c6f9baa4e798868fe4a4d45f8fda" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_sender_1a8ad2c6f9baa4e798868fe4a4d45f8fda" kindref="member">Ack</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ok);</highlight></codeline>
+<codeline lineno="13"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="22" refid="class_receiver" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_receiver" kindref="compound">Receiver</ref></highlight></codeline>
+<codeline lineno="23"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="26" refid="class_receiver_1a162099741e0324e6254c9bc570566e40" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_receiver_1a162099741e0324e6254c9bc570566e40" kindref="member">Command</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>commandId);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal">};</highlight></codeline>
+    </programlisting>
+    <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/with_uml.c"/>
+  </compounddef>
+</doxygen>

@@ -3,5 +3,15 @@
     <info>
     <title>My_Project</title>
     </info>
+<chapter>
+    <title>Todo List</title>
+    <xi:include href="todo.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+</chapter>
+<chapter>
+    <title>Data Structure Documentation</title>
+    <xi:include href="struct_box_struct__struct.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="class_receiver.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="class_sender.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+</chapter>
 <index/>
 </book>
