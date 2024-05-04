@@ -9,6 +9,6 @@ cd poroject.doxy || echo "FAIL cd poroject.doxy" >&2
 rm -r ${dir}/poroject.doxy/*
 
 ls ${dir}/poroject.doxy
-export PROJECT_NUMBER=999
+export PROJECT_NUMBER=9991
 doxygen ${dir}/Doxyfile
 yandex-browser ${dir}/poroject.doxy/html/index.html
