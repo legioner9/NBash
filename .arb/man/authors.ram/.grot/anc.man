@@ -1,0 +1,5 @@
+## https://www.reddit.com/r/bash/comments/od7fi0/a_tool_to_discover_unintended_variable_shadowing/
+
+Summary: don't use *sh for complex scripts, use python/perl/et al.
+
+You could laugh but I'm porting it from some of those to bash. I want it to work without any deps.
