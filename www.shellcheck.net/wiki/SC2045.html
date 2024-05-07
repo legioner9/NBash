@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2045 – Iterating over ls output is fragile. Use globs.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2045 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2045">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="iterating-over-ls-output-is-fragile-use-globs">Iterating over ls
+output is fragile. Use globs.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2045.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="va">$(</span><span class="fu">ls</span> <span class="pp">*</span>.wav<span class="va">)</span></span>
+<span id="cb1-2"><a href="SC2045.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb1-3"><a href="SC2045.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$f</span><span class="st">&quot;</span></span>
+<span id="cb1-4"><a href="SC2045.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2045.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="pp">*</span>.wav</span>
+<span id="cb2-2"><a href="SC2045.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb2-3"><a href="SC2045.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">[[</span> <span class="ot">-e</span> <span class="st">&quot;</span><span class="va">$f</span><span class="st">&quot;</span> <span class="kw">]]</span> <span class="kw">||</span> <span class="cf">break</span>  <span class="co"># handle the case of no *.wav files</span></span>
+<span id="cb2-4"><a href="SC2045.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$f</span><span class="st">&quot;</span></span>
+<span id="cb2-5"><a href="SC2045.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Also note that in Bash, <code>shopt -s nullglob</code> will allow the
+loop to run 0 times instead of 1 if there are no matches. There are also
+<a
+href="http://mywiki.wooledge.org/BashPitfalls#for_i_in_.24.28ls_.2A.mp3.29">several
+other conditions</a> to be aware of.</p>
+<h3 id="rationale">Rationale:</h3>
+<p>When looping over a set of files, it's always better to use globs
+when possible. Using command expansion causes word splitting and glob
+expansion, which will cause problems for certain filenames (typically
+first seen when trying to process a file with spaces in the name).</p>
+<p>The following files can or will break the first loop:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2045.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> <span class="st">&#39;filename with spaces.wav&#39;</span></span>
+<span id="cb3-2"><a href="SC2045.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> <span class="st">&#39;filename with * globs.wav&#39;</span></span>
+<span id="cb3-3"><a href="SC2045.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> <span class="st">&#39;More_Globs[2003].wav&#39;</span></span>
+<span id="cb3-4"><a href="SC2045.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> <span class="st">&#39;files_with_fønny_chæracters_in_certain_locales.wav&#39;</span></span></code></pre></div>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><a href="http://mywiki.wooledge.org/BashPitfalls#pf1">Bash Pitfalls:
+for i in $(ls *.mp3)</a></li>
+<li><a
+href="https://stackoverflow.com/questions/2107945/how-to-loop-over-directories-in-linux">How
+to loop over directories in Linux?</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

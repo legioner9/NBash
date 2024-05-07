@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2239 – Ensure the shebang uses the absolute path to the interpreter.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2239 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2239">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="ensure-the-shebang-uses-the-absolute-path-to-the-interpreter">Ensure
+the shebang uses the absolute path to the interpreter.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2239.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!bin/sh</span></span>
+<span id="cb1-2"><a href="SC2239.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Hello World&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2239.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb2-2"><a href="SC2239.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Hello World&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>The script's interpreter, as specified in the shebang, does not start
+with a <code>/</code>.</p>
+<p>The interpreter should always be specified by absolute path to ensure
+that the script can be executed from any directory. When it's not, it's
+generally a typo like in the problematic example.</p>
+<p>If you don't know where the interpreter is and you hoped to use
+<code>#! bash</code>, this is not an option. Use
+<code>/usr/bin/env</code> instead:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2239.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb3-2"><a href="SC2239.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Hello World&quot;</span></span></code></pre></div>
+<p>While not required by POSIX, <code>env</code> can essentially always
+be found in <code>/usr/bin</code> and will search the PATH for the
+specified executable.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

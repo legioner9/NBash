@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2161 – Instead of `[ 1 ]`, use `true`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2161 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2161">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="instead-of--1--use-true">Instead of <code>[ 1 ]</code>, use
+<code>true</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2161.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">[</span> 1 <span class="bu">]</span></span>
+<span id="cb1-2"><a href="SC2161.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb1-3"><a href="SC2161.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;infinite loop&quot;</span></span>
+<span id="cb1-4"><a href="SC2161.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2161.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="fu">true</span></span>
+<span id="cb2-2"><a href="SC2161.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb2-3"><a href="SC2161.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;infinite loop&quot;</span></span>
+<span id="cb2-4"><a href="SC2161.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>This is a stylistic suggestion to use <code>true</code> instead of
+<code>[ 1 ]</code>.</p>
+<p><code>[ 1 ]</code> seems to suggest that the value "1" is somehow
+relevant to the statement. This is not the case: it doesn't matter. You
+can replace it with <code>[ 0 ]</code> or <code>[ wombat ]</code>, and
+it will still always be true.</p>
+<p>If you instead use <code>true</code>, the value is actually
+considered and can be inverted by replacing with <code>false</code>.</p>
+<p>On bash, you can also use <code>(( 1 ))</code>, which evaluates to
+true much like in C. <code>(( 0 ))</code> is similarly false.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

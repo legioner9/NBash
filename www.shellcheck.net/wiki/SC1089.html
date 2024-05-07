@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1089 – Parsing stopped here. Is this keyword correctly matched up?</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1089 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1089">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="parsing-stopped-here-is-this-keyword-correctly-matched-up">Parsing
+stopped here. Is this keyword correctly matched up?</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1089.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="fu">true</span></span>
+<span id="cb1-2"><a href="SC1089.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb1-3"><a href="SC1089.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> hello</span>
+<span id="cb1-4"><a href="SC1089.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb1-5"><a href="SC1089.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1089.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="fu">true</span></span>
+<span id="cb2-2"><a href="SC1089.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb2-3"><a href="SC1089.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> hello</span>
+<span id="cb2-4"><a href="SC1089.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>This error is typically seen when there are too many <code>fi</code>,
+<code>done</code> or <code>esac</code>s, or when there's a
+<code>do</code> or <code>then</code> without a corresponding
+<code>while</code>, <code>for</code> or <code>if</code>. This is often
+due to deleting a loop or conditional statement but not its
+terminator.</p>
+<p>In some cases, it can even be caused by bad quoting:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC1089.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span><span class="st">&quot;foo</span></span>
+<span id="cb3-2"><a href="SC1089.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">if [[ </span><span class="va">$var</span><span class="st"> = &quot;</span>bar <span class="ex">]</span></span>
+<span id="cb3-3"><a href="SC1089.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb3-4"><a href="SC1089.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> true</span>
+<span id="cb3-5"><a href="SC1089.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>In this case, the <code>if</code> ends up inside the double quotes,
+leaving the <code>then</code> dangling.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

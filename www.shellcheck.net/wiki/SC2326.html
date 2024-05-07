@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2326 – ! is not allowed in the middle of pipelines. Use command group as in `cmd | { ! cmd; }` if necessary.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2326 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2326">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="-is-not-allowed-in-the-middle-of-pipelines-use-command-group-as-in-cmd----cmd--if-necessary">!
+is not allowed in the middle of pipelines. Use command group as in
+<code>cmd | { ! cmd; }</code> if necessary.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2326.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="kw">|</span> <span class="ot">! </span><span class="fu">tee</span> /dev/full</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>Either negate the entire pipeline (this is equivalent unless
+<code>pipefail</code> is set):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2326.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ot">! </span><span class="fu">cat</span> <span class="kw">|</span> <span class="fu">tee</span> /dev/full</span></code></pre></div>
+<p>Or use a command group to negate a single stage:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2326.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="kw">|</span> <span class="kw">{</span> <span class="ot">! </span><span class="fu">tee</span> /dev/full<span class="kw">;</span> <span class="kw">}</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><a
+href="https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_09_02">POSIX
+specifies</a> that a status negation operator <code>!</code> is only
+used to negate the status of an entire pipeline, not individual
+stages.</p>
+<p>By default the status of a pipeline is that of the last command, so
+use <code>!</code> in front of the pipeline to negate as necessary.</p>
+<p>If you have set the option <code>pipefail</code> to OR the status of
+each stage together, and want to negate the status of only a single
+stage, you can use negate inside a
+<code>{ ! command group; }</code>.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>Ksh supports <code>!</code> in front of individual pipeline stages.
+ShellCheck does not warn when the shebang declares that the script will
+run with Ksh.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

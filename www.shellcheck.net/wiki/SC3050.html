@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC3050 – In POSIX sh, `printf %q` is undefined.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC3050 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC3050">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="in-posix-sh-printf-q-is-undefined">In POSIX sh,
+<code>printf %q</code> is undefined.</h2>
+<p>(or "In dash, ... is not supported." when using
+<code>dash</code>)</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC3050.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> host <span class="st">&quot;cat </span><span class="va">$(</span><span class="bu">printf</span> <span class="st">&quot;%q&quot;</span> <span class="st">&quot;</span><span class="va">$remotefile</span><span class="st">&quot;</span><span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>There is not really a good, built-in way to escape a string for a
+remote shell in POSIX sh. However, you can replace each <code>'</code>
+in the input with <code>'\''</code> and then wrap the whole results in
+single quotes:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC3050.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">escape()</span> <span class="kw">{</span> <span class="bu">printf</span> <span class="st">&quot;&#39;%s&#39;</span><span class="dt">\\</span><span class="st">n&quot;</span> <span class="st">&quot;</span><span class="va">$(</span><span class="bu">printf</span> <span class="st">&#39;%s&#39;</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="at">-e</span> <span class="st">&quot;s/&#39;/&#39;</span><span class="dt">\\\\</span><span class="st">&#39;&#39;/g&quot;</span><span class="va">)</span><span class="st">&quot;</span><span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb2-2"><a href="SC3050.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> host <span class="st">&quot;cat </span><span class="va">$(</span><span class="ex">escape</span> <span class="st">&quot;</span><span class="va">$remotefile</span><span class="st">&quot;</span><span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
+<p>Alternatively, switch to a shell that <em>does</em> support
+<code>printf %q</code> like <code>ksh</code> or <code>bash</code>.</p>
+<h3 id="rationale">Rationale:</h3>
+<p><code>printf %q</code> is a bash and ksh extension. It's not
+supported on POSIX sh or dash.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If the command is gated by a check for the correct shell, you can <a
+href="ignore.html">ignore</a> this warning.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

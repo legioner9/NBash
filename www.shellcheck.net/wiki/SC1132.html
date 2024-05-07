@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1132 – This `&` terminates the command. Escape it or add space after `&` to silence.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1132 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1132">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this--terminates-the-command-escape-it-or-add-space-after--to-silence">This
+<code>&amp;</code> terminates the command. Escape it or add space after
+<code>&amp;</code> to silence.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1132.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> https://www.google.com/search<span class="pp">?</span>q=cats<span class="kw">&amp;</span><span class="va">tbm</span><span class="op">=</span>isch</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1132.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&quot;https://www.google.com/search?q=cats&amp;tbm=isch&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>An unescaped and unquoted <code>&amp;</code> terminates the command,
+but here it's used in the middle of what would otherwise be a shell
+word. This most commonly happens when copying a URL with query string
+parameters without escaping the <code>&amp;</code>.</p>
+<p>Either quote or escape the <code>&amp;</code> if you wanted it as a
+literal ampersand, or add a space after it to make it easier to see
+where the previous command stopped.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you do want to background one command and run another, e.g.
+<code>sleep 10&amp;wait</code>, just add a space or linefeed after the
+<code>&amp;</code> to make this more obvious:
+<code>sleep 10&amp; wait</code></p>
+<p>This does not change the meaning of the script, it just makes it
+clear to ShellCheck (and other humans) that the <code>&amp;</code> isn't
+supposed to be a part of the shell world.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: Directive – ShellCheck directives</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>Directive – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/Directive">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h1 id="shellcheck-directives">ShellCheck directives</h1>
+<p>Shellcheck directives allow you to control how
+<code>shellcheck</code> works, and take the form of comments in
+files:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="Directive.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hexToAscii()</span> <span class="kw">{</span></span>
+<span id="cb1-2"><a href="Directive.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># shellcheck disable=SC2059</span></span>
+<span id="cb1-3"><a href="Directive.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">printf</span> <span class="st">&quot;\x</span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb1-4"><a href="Directive.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<p>or entries in a <code>.shellcheckrc</code> in the project root or
+user's home directory:</p>
+<pre class="shellcheckrc"><code># ~/.shellcheckrc
+
+# Don&#39;t suggest [ -n &quot;$VAR&quot; ] over [ ! -z &quot;$VAR&quot; ] 
+disable=SC2236
+
+# Suggest ${VAR} in place of $VAR
+enable=require-variable-braces</code></pre>
+<h2 id="supported-directives">Supported directives</h2>
+<h3 id="disable"><code>disable</code></h3>
+<p>Prevent ShellCheck from processing one or more warnings:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="Directive.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=code[,code...]</span></span>
+<span id="cb3-2"><a href="Directive.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">statement_where_warning_should_be_disabled</span></span></code></pre></div>
+<p>A range of errors can also be specified, handy when disabling things
+for the entire file.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="Directive.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb4-2"><a href="Directive.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=SC1000-SC9999</span></span></code></pre></div>
+<p>An alias <code>all</code> is available instead of specifying 0-9999
+to disable all checks.</p>
+<h3 id="enable"><code>enable</code></h3>
+<p>Enables an <a href="optional.html">optional</a> check (since 0.7.0).</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="Directive.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb5-2"><a href="Directive.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck enable=require-variable-braces</span></span>
+<span id="cb5-3"><a href="Directive.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Hello </span><span class="va">$USER</span><span class="st">&quot;</span>  <span class="co"># Will suggest ${USER}</span></span></code></pre></div>
+<p>To see a list of optional checks with examples, run
+<code>shellcheck --list-optional</code>. See <a href="optional.html">here</a>
+for more information.</p>
+<h3 id="external-sources"><code>external-sources</code></h3>
+<p>Set whether or not to follow arbitrary file paths in
+<code>source</code> statements (since 0.8.0).</p>
+<p>Use <code>external-sources=true</code> in <code>.shellcheckrc</code>
+to let shellcheck access arbitrary files, whether or not they're
+specified as input. <code>external-sources=false</code> disables this,
+which is the default.</p>
+<p>Individual script files can disable but not enable this option.</p>
+<h3 id="source"><code>source</code></h3>
+<p>Tell ShellCheck where to find a sourced file (since 0.4.0):</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="Directive.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck source=src/examples/config.sh</span></span>
+<span id="cb6-2"><a href="Directive.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">locate_config</span><span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="source-path"><code>source-path</code></h3>
+<p>Give ShellCheck a path in which to search for sourced files (since
+0.7.0).</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="Directive.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The script will now look for src/examples/mylib.sh</span></span>
+<span id="cb7-2"><a href="Directive.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck source-path=src/examples</span></span>
+<span id="cb7-3"><a href="Directive.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span> mylib.sh</span></code></pre></div>
+<p>The special value <code>source-path=SCRIPTDIR</code> will search in
+the current script's directory, and it can be used as a relative path
+like <code>source-path=SCRIPTDIR/../lib</code>.</p>
+<p>To support the common pattern of
+<code>. "$CONFIGDIR/mylib.sh"</code>, ShellCheck strips one leading,
+dynamic section before trying to locate the rest. That means that
+ShellCheck will look for <code>config.sh</code> and
+<code>utils.sh</code> in the same directory as this script when it is
+being checked:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="Directive.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb8-2"><a href="Directive.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck source-path=SCRIPTDIR</span></span>
+<span id="cb8-3"><a href="Directive.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="va">here</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$(</span> <span class="bu">cd</span> <span class="st">&quot;</span><span class="va">$(</span> <span class="fu">dirname</span> <span class="st">&quot;</span><span class="va">${BASH_SOURCE</span><span class="op">[</span><span class="dv">0</span><span class="op">]</span><span class="va">}</span><span class="st">&quot;</span> <span class="va">)</span><span class="st">&quot;</span> <span class="op">&amp;&gt;</span> /dev/null <span class="kw">&amp;&amp;</span> <span class="bu">pwd</span> <span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb8-4"><a href="Directive.html#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span> <span class="st">&quot;</span><span class="va">$here</span><span class="st">/config.sh&quot;</span></span>
+<span id="cb8-5"><a href="Directive.html#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span> <span class="st">&quot;</span><span class="va">$here</span><span class="st">/utils.sh&quot;</span></span></code></pre></div>
+<h3 id="shell"><code>shell</code></h3>
+<p>Specify the shell for a script (similar to the shebang, if you for
+any reason don't want to add one) (since <a
+href="https://github.com/koalaman/shellcheck/issues/581#issuecomment-249437837">0.4.5</a>):</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="Directive.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck shell=sh</span></span>
+<span id="cb9-2"><a href="Directive.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> foo <span class="op">&amp;&gt;</span> bar</span></code></pre></div>
+<p>Directives that replace or are immediately after the shebang apply to
+the entire script. Otherwise, they are scoped to the command that
+follows it (including compound commands like function definitions, loops
+and case statements). A directive may only be applied to a complete
+command, and can not be used immediately preceding an <code>else</code>
+block or individual <code>case</code> branch:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="Directive.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Directive VALID here, applies to whole `case`</span></span>
+<span id="cb10-2"><a href="Directive.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="va">$1</span> <span class="kw">in</span></span>
+<span id="cb10-3"><a href="Directive.html#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Directive INVALID, `-v)` is not a complete command</span></span>
+<span id="cb10-4"><a href="Directive.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="ss">-v</span><span class="kw">)</span></span>
+<span id="cb10-5"><a href="Directive.html#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Directive VALID here, applies to whole `if`</span></span>
+<span id="cb10-6"><a href="Directive.html#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$v</span><span class="st">&quot;</span> <span class="bu">]</span></span>
+<span id="cb10-7"><a href="Directive.html#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">then</span></span>
+<span id="cb10-8"><a href="Directive.html#cb10-8" aria-hidden="true" tabindex="-1"></a>       <span class="co"># Directive VALID here, applies to `die ..` command</span></span>
+<span id="cb10-9"><a href="Directive.html#cb10-9" aria-hidden="true" tabindex="-1"></a>       <span class="ex">die</span> <span class="st">&quot;Only one -v allowed&quot;</span></span>
+<span id="cb10-10"><a href="Directive.html#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Directive INVALID here, `else` is not a complete command</span></span>
+<span id="cb10-11"><a href="Directive.html#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb10-12"><a href="Directive.html#cb10-12" aria-hidden="true" tabindex="-1"></a>      <span class="va">v</span><span class="op">=</span>1</span>
+<span id="cb10-13"><a href="Directive.html#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span> <span class="cf">;;</span></span>
+<span id="cb10-14"><a href="Directive.html#cb10-14" aria-hidden="true" tabindex="-1"></a> <span class="cf">esac</span></span></code></pre></div>
+<p>There is no support for scoping a directive to the first structure of
+the script. In these cases, use a dummy command <code>true</code> or
+<code>:</code> and then add directives, such as</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="Directive.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This directive applies to the entire script</span></span>
+<span id="cb11-2"><a href="Directive.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=2086</span></span>
+<span id="cb11-3"><a href="Directive.html#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">true</span></span>
+<span id="cb11-4"><a href="Directive.html#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="Directive.html#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># This directive only applies to this function</span></span>
+<span id="cb11-6"><a href="Directive.html#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=2043</span></span>
+<span id="cb11-7"><a href="Directive.html#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">f()</span> <span class="kw">{</span></span>
+<span id="cb11-8"><a href="Directive.html#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">...</span></span>
+<span id="cb11-9"><a href="Directive.html#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<p>Silencing parser errors is purely cosmetic; any parser error found
+will still stop ShellCheck at the point of the error.</p>
+<h2 id="documenting-directive-use">Documenting directive use</h2>
+<p>To document why a specific directive was used, it is recommended to
+add a comment.</p>
+<p>The comment can be added on the preceding line. This is the
+recommended option for long comments.</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="Directive.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this is intentional because of reasons</span></span>
+<span id="cb12-2"><a href="Directive.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># that are long and need explaining</span></span>
+<span id="cb12-3"><a href="Directive.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=SC1234</span></span>
+<span id="cb12-4"><a href="Directive.html#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ex">statement_where_warning_should_be_disabled</span></span></code></pre></div>
+<p>The comment can also be added at the end of the directive line. This
+is the recommended option for short comments.</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="Directive.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=SC1234 # this is intentional</span></span>
+<span id="cb13-2"><a href="Directive.html#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">statement_where_warning_should_be_disabled</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

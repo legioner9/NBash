@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2001 – See if you can use `${variable//search/replace}` instead.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2001 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2001">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="see-if-you-can-use-variablesearchreplace-instead">See if you can
+use <code>${variable//search/replace}</code> instead.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2001.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">string</span><span class="op">=</span><span class="st">&quot;stirng&quot;</span> <span class="kw">;</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$string</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="at">-e</span> <span class="st">&quot;s/ir/ri/&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2001.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">string</span><span class="op">=</span><span class="st">&quot;stirng&quot;</span> <span class="kw">;</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${string</span><span class="op">//</span><span class="ss">ir</span><span class="op">/</span>ri<span class="va">}</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Let's assume somewhere earlier in your code, you have put data into a
+variable (Ex: $string). Now you want to search and replace inside the
+contents of $string and echo the contents out. You could pass this to
+sed as done in the example above, but for simple substitutions, a
+parameter expansion can do it with less overhead.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>Occasionally a more complex sed substitution is required. For
+example, getting the last character of a string.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2001.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">string</span><span class="op">=</span><span class="st">&quot;stirng&quot;</span> <span class="kw">;</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$string</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="at">-e</span> <span class="st">&quot;s/^.*\(.\)$/\1/&quot;</span></span></code></pre></div>
+<p>This is a bit simple for the example, and there are alternative ways
+of doing this in the shell, but this SC2001 flags on several of my crazy
+complex sed commands beyond this example's scope. Utilizing some of the
+more complex capabilities of sed is required occasionally, and it is
+safe to ignore SC2001.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Bash Manual: <a
+href="https://www.gnu.org/software/bash/manual/bashref.html#Shell-Parameter-Expansion">Shell
+Parameter Expansion</a></li>
+<li>Wooledge BashGuide: <a
+href="https://mywiki.wooledge.org/BashGuide/Parameters#Parameter_Expansion">Parameter
+Expansion</a>.</li>
+<li>Bash Hacker Wiki: <a
+href="http://wiki.bash-hackers.org/syntax/pe">Parameter
+Expansion</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

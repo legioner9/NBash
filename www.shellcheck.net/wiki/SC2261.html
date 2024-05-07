@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2261 – Multiple redirections compete for stdout. Use `cat`, `tee`, or pass filenames instead.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2261 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2261">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="multiple-redirections-compete-for-stdout-use-cat-tee-or-pass-filenames-instead">Multiple
+redirections compete for stdout. Use <code>cat</code>, <code>tee</code>,
+or pass filenames instead.</h2>
+<p>(or <code>stdin</code>, or <code>stderr</code>, or
+<code>FD 3</code>)</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2261.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> foo <span class="op">&lt;</span> input1 <span class="op">&lt;</span> input2 <span class="op">&gt;</span> output1 <span class="op">&gt;</span> output2 <span class="op">&gt;</span> output3</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2261.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge inputs into a single stream, write outputs individually</span></span>
+<span id="cb2-2"><a href="SC2261.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> input1 input2 <span class="kw">|</span> <span class="fu">grep</span> foo <span class="kw">|</span> <span class="fu">tee</span> output1 output2 <span class="op">&gt;</span> output3</span>
+<span id="cb2-3"><a href="SC2261.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="SC2261.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Pass inputs as filenames, write outputs individually</span></span>
+<span id="cb2-5"><a href="SC2261.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> foo input1 input2 <span class="kw">|</span> <span class="fu">tee</span> output1 output2 <span class="op">&gt;</span> output3</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>A file descriptor, whether stdin, stdout, stderr, or non-standard
+ones, can only point to a single file/pipe.</p>
+<p>For input, many commands support processing multiple filenames. In
+these cases you can just specify the filenames instead of redirecting.
+Alternatively, you can use <code>cat</code> to merge multiple filenames
+into a single stream.</p>
+<p>For output, you can use <code>tee</code> to write to multiple output
+sinks in parallel.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>Zsh will automatically <code>cat</code> inputs and <code>tee</code>
+outputs, but none of the shells supported by ShellCheck do.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

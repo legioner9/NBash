@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2022 – Note that unlike globs, `o*` here matches `ooo` but not `oscar`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2022 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2022">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="note-that-unlike-globs-o-here-matches-ooo-but-not-oscar">Note
+that unlike globs, <code>o*</code> here matches <code>ooo</code> but not
+<code>oscar</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2022.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">&#39;foo*&#39;</span></span></code></pre></div>
+<p>when wanting to match <code>food</code> and <code>foosball</code>,
+but not <code>mofo</code> or <code>keyfob</code>.</p>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2022.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">&#39;^foo&#39;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>As a glob, <code>foo*</code> means "Any string starting with foo",
+e.g. <code>food</code> and <code>foosball</code>.</p>
+<p>As a regular expression, "foo*" means "f followed by 1 or more o's,
+anywhere", e.g. "mofo" or "keyfob".</p>
+<p>This construct is way more common as a glob than as a regex, so
+ShellCheck notifies you about it.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you're aware of the above, you can ignore this message. If you'd
+like shellcheck to be quiet, use a <a href="directive.html">directive</a> or
+<code>'fo[o]*'</code>.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

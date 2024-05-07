@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2174 – When used with `-p`, `-m` only applies to the deepest directory.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2174 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2174">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="when-used-with--p--m-only-applies-to-the-deepest-directory">When
+used with <code>-p</code>, <code>-m</code> only applies to the deepest
+directory.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2174.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="at">-m</span> 0755 foo/bar/baz</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2174.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> foo/bar/baz</span>
+<span id="cb2-2"><a href="SC2174.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 0755 foo/bar/baz foo/bar foo</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>When using <code>-m 0755</code>, the mode of the directory created
+will be set to 0755. When using <code>-p</code>, parent directories
+which do not exist will be created, but the mode specified by
+<code>-m</code> will only be used on the last directory. The parent
+directories will get their access mode the default way, via <a
+href="http://man7.org/linux/man-pages/man2/umask.2.html">umask(2)</a>.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>ShellCheck does not warn if the path only has one component, as in
+<code>mkdir -p -m 0755 mydir</code>, but will not attempt to determine
+whether this applies for a variable as in
+<code>mkdir -p -m 0755 "$mydir"</code>. You can mkdir/chmod separately
+or <a href="ignore.html">ignore</a> this message.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC3044 – In POSIX sh, `declare` is undefined.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC3044 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC3044">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="in-posix-sh-declare-is-undefined">In POSIX sh,
+<code>declare</code> is undefined.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC3044.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb1-2"><a href="SC3044.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="va">var</span><span class="op">=</span><span class="st">&quot;value&quot;</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC3044.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb2-2"><a href="SC3044.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-r</span> <span class="va">readonly</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC3044.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb3-2"><a href="SC3044.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> ...</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>If assigning a simple variable outside of a function, skip
+<code>declare</code> all together:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC3044.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span><span class="st">&quot;value&quot;</span></span></code></pre></div>
+<p>If declaring a variable read-only:</p>
+<pre><code>var=value
+readonly var</code></pre>
+<p>If you are unable to find a suitable replacement, consider switching
+to a shell that supports <code>declare</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="SC3044.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb6-2"><a href="SC3044.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> ...</span></code></pre></div>
+<p>Indexed arrays, associative arrays, local variables, namerefs, and
+integer variables are not supported in POSIX sh. Either write around
+them, or switch to a shell that supports them.</p>
+<h3 id="rationale">Rationale:</h3>
+<p>The <code>declare</code> command is non-standard, and most of its
+functionality is not available across shells.</p>
+<p>Either find a POSIX replacement, or switch to a shell that is
+guaranteed to support them.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If your <code>declare</code> command is guarded by a check of the
+shell version, such as inspecting <code>$BASH_VERSION</code>, you can
+ignore this message.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

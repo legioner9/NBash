@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2010 – Don't use `ls | grep`. Use a glob or a for loop with a condition to allow non-alphanumeric filenames.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2010 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2010">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="dont-use-ls--grep-use-a-glob-or-a-for-loop-with-a-condition-to-allow-non-alphanumeric-filenames">Don't
+use <code>ls | grep</code>. Use a glob or a for loop with a condition to
+allow non-alphanumeric filenames.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2010.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /directory <span class="kw">|</span> <span class="fu">grep</span> mystring</span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2010.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="va">$(</span><span class="fu">ls</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;\.c$&#39;</span><span class="va">)</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2010.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># BASH</span></span>
+<span id="cb3-2"><a href="SC2010.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">shopt</span> <span class="at">-s</span> extglob</span>
+<span id="cb3-3"><a href="SC2010.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">--</span> <span class="pp">!(*</span>.c<span class="pp">)</span></span>
+<span id="cb3-4"><a href="SC2010.html#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="SC2010.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># POSIX</span></span>
+<span id="cb3-6"><a href="SC2010.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> ./<span class="pp">*</span></span>
+<span id="cb3-7"><a href="SC2010.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb3-8"><a href="SC2010.html#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="va">$f</span> <span class="kw">in</span></span>
+<span id="cb3-9"><a href="SC2010.html#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="pp">*</span><span class="ss">.c</span><span class="kw">)</span> <span class="fu">true</span><span class="cf">;;</span></span>
+<span id="cb3-10"><a href="SC2010.html#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="pp">*</span><span class="kw">)</span> <span class="fu">rm</span> <span class="st">&quot;</span><span class="va">$f</span><span class="st">&quot;</span><span class="cf">;;</span></span>
+<span id="cb3-11"><a href="SC2010.html#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">esac</span></span>
+<span id="cb3-12"><a href="SC2010.html#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><a href="https://mywiki.wooledge.org/ParsingLs">Parsing ls</a> is
+generally a bad idea because the output is fragile and human readable.
+To better handle non-alphanumeric filenames, use a glob. If you need
+more advanced matching than a glob can provide, use a <code>for</code>
+loop.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<ul>
+<li><code>ls</code> has sorting options that are tricky to get right
+with other commands. If a specific order of files is needed, ls
+<em>&lt;sort options&gt;</em> | grep might be the best alternative.</li>
+<li>network shares like AFS behave much faster using ls</li>
+</ul>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/020">BashFaq: How can I
+find and safely handle file names containing newlines, spaces or
+both?</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

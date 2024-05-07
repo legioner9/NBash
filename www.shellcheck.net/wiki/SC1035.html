@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1035 – You need a space here</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1035 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1035">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="you-need-a-space-here">You need a space here</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1035.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ex">![-z</span> foo ]<span class="kw">;</span> <span class="cf">then</span> <span class="fu">true</span><span class="kw">;</span> <span class="cf">fi</span> <span class="co"># if command `[-z&#39; w/ args `foo&#39;, `]&#39; fails..</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1035.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ot">! </span><span class="bu">[</span> <span class="ot">-z</span> foo <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span> <span class="fu">true</span><span class="kw">;</span> <span class="cf">fi</span> <span class="co"># if command `[&#39; w/ args `-z&#39;, `foo&#39;, `]&#39; fails..</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Bourne shells are very whitespace sensitive. Adding or removing
+spaces can drastically alter the meaning of a script. In these cases,
+ShellCheck has noticed that you're missing a space at the position
+indicated.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>ShellCheck does not understand <a
+href="https://www.gnu.org/software/bash/manual/html_node/History-Interaction.html">Bash
+History Expansion</a>, an interactive shell feature also using
+<code>!</code> (such as <code>!!</code> to expand to the previous
+command).</p>
+<p>These features are disabled by default in shells and very rarely used
+in scripts, but may occasionally be found in interactively sourced files
+like <code>.bashrc</code>. Please ignore the error in these cases.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

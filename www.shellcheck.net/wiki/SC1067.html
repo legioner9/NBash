@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1067 – For indirection, use arrays, `declare "var$n=value"`, or (for sh) `read`/`eval`</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1067 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1067">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="for-indirection-use-arrays-declare-varnvalue-or-for-sh-readeval">For
+indirection, use arrays, <code>declare "var$n=value"</code>, or (for sh)
+<code>read</code>/<code>eval</code></h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1067.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span>1</span>
+<span id="cb1-2"><a href="SC1067.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">var</span><span class="va">$n</span><span class="ex">=</span><span class="st">&quot;hello&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>For integer indexing in ksh/bash, consider using an indexed
+array:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1067.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span>1</span>
+<span id="cb2-2"><a href="SC1067.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">[</span>n<span class="op">]=</span><span class="st">&quot;hello&quot;</span></span>
+<span id="cb2-3"><a href="SC1067.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${var</span><span class="op">[</span>n<span class="op">]</span><span class="va">}</span><span class="st">&quot;</span></span></code></pre></div>
+<p>For string indexing in ksh/bash, use an associative array:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC1067.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">typeset</span> <span class="at">-A</span> <span class="va">var</span></span>
+<span id="cb3-2"><a href="SC1067.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span><span class="st">&quot;greeting&quot;</span></span>
+<span id="cb3-3"><a href="SC1067.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">[</span><span class="va">$n</span><span class="op">]=</span><span class="st">&quot;hello&quot;</span></span>
+<span id="cb3-4"><a href="SC1067.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${var</span><span class="op">[</span><span class="va">$n</span><span class="op">]</span><span class="va">}</span><span class="st">&quot;</span></span></code></pre></div>
+<p>If you actually need a variable with the constructed name in bash,
+use <code>declare</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC1067.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span><span class="st">&quot;Foo&quot;</span></span>
+<span id="cb4-2"><a href="SC1067.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="st">&quot;var</span><span class="va">$n</span><span class="st">=42&quot;</span></span>
+<span id="cb4-3"><a href="SC1067.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$varFoo</span><span class="st">&quot;</span></span></code></pre></div>
+<p>For <code>sh</code>, with single line contents, consider
+<code>read</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="SC1067.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span><span class="st">&quot;Foo&quot;</span></span>
+<span id="cb5-2"><a href="SC1067.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="at">-r</span> <span class="st">&quot;var</span><span class="va">$n</span><span class="st">&quot;</span> <span class="op">&lt;&lt; EOF</span></span>
+<span id="cb5-3"><a href="SC1067.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">hello</span></span>
+<span id="cb5-4"><a href="SC1067.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">EOF</span></span>
+<span id="cb5-5"><a href="SC1067.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$varFoo</span><span class="st">&quot;</span></span></code></pre></div>
+<p>or with careful escaping, <code>eval</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="SC1067.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span>Foo</span>
+<span id="cb6-2"><a href="SC1067.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="st">&quot;var</span><span class="va">$n</span><span class="st">=&#39;hello&#39;&quot;</span></span>
+<span id="cb6-3"><a href="SC1067.html#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$varFoo</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><code>var$n=value</code> is not a valid way of assigning to a
+dynamically created variable name in any shell. Please use one of the
+other methods to assign to names via expanded strings. <a
+href="https://mywiki.wooledge.org/BashFAQ/006">Wooledge BashFaq #6</a>
+has significantly more information on the subject.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/006">Wooledge BashFaq
+#6</a>: How can I use variable variables (indirect variables, pointers,
+references) or associative arrays?</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

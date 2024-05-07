@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1128 – The shebang must be on the first line. Delete blanks and move comments.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1128 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1128">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="the-shebang-must-be-on-the-first-line-delete-blanks-and-move-comments">The
+shebang must be on the first line. Delete blanks and move comments.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1128.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Copyright 2018 Foobar, All rights reserved</span></span>
+<span id="cb1-2"><a href="SC1128.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1128.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="SC1128.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Copyright 2018 Foobar, All rights reserved</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>A shebang only has an effect when it appears as the first line in a
+script. Specifically, the first two bytes of the file must be
+<code>#!</code>.</p>
+<p>Adding comments, copyright notices or simply an accidental blank line
+before it will turn a shebang into an ineffectual comment. This means
+that the script is no longer in charge of its own interpreter, and may
+fail to run or produce different results depending on the context it's
+run (e.g. it may work from <code>bash</code> but not from
+<code>zsh</code> or via <code>sudo</code>).</p>
+<p>Delete any leading blank lines, and move all comments after the
+shebang.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2180 – Bash does not support multidimensional arrays. Use 1D or associative arrays.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2180 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2180">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="bash-does-not-support-multidimensional-arrays-use-1d-or-associative-arrays">Bash
+does not support multidimensional arrays. Use 1D or associative
+arrays.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2180.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">foo</span><span class="op">[</span><span class="dv">1</span><span class="op">][</span><span class="dv">2</span><span class="op">]=</span>bar</span>
+<span id="cb1-2"><a href="SC2180.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${foo</span><span class="op">[</span><span class="dv">1</span><span class="op">][</span><span class="dv">2</span><span class="op">]</span><span class="va">}</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>In bash4, consider using associative arrays:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2180.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-A</span> <span class="va">foo</span></span>
+<span id="cb2-2"><a href="SC2180.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">foo</span><span class="op">[</span><span class="dv">1</span>,2<span class="op">]=</span>bar</span>
+<span id="cb2-3"><a href="SC2180.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${foo</span><span class="op">[</span><span class="dv">1</span>,2<span class="op">]</span><span class="va">}</span><span class="st">&quot;</span></span></code></pre></div>
+<p>Otherwise, do your own index arithmetic:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2180.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">size</span><span class="op">=</span>10</span>
+<span id="cb3-2"><a href="SC2180.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">foo</span><span class="op">[</span><span class="dv">1</span><span class="pp">*</span>size+2<span class="op">]=</span>bar</span>
+<span id="cb3-3"><a href="SC2180.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${foo</span><span class="op">[</span><span class="dv">1</span><span class="pp">*</span>size+2<span class="op">]</span><span class="va">}</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Bash does not support multidimensional arrays. Rewrite it to use 1D
+arrays. Associative arrays map arbitrary strings to values, and are
+therefore useful since you can construct keys like <code>"1,2,3"</code>
+or <code>"val1;val2;val3"</code> to index them.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

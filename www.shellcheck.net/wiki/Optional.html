@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: Optional – Optional checks</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>Optional – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/Optional">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="optional-checks">Optional checks</h2>
+<p>ShellCheck supports additional checks that are not enabled by
+default. These are generally subjective or stylistic.</p>
+<h3 id="enabling-an-optional-check">Enabling an optional check</h3>
+<p>Checks can be enabled with flags or an <code>enable</code> <a
+href="directive.html">directive</a> in the file or
+<code>.shellcheckrc</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="Optional.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb1-2"><a href="Optional.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck enable=require-variable-braces</span></span>
+<span id="cb1-3"><a href="Optional.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$RANDOM</span><span class="st">&quot;</span>  <span class="co"># Will emit a suggestion to use `${RANDOM}`</span></span></code></pre></div>
+<p>or put <code>enable=require-variable-braces</code> in a
+<code>.shellcheckrc</code> in your home directory or project root.</p>
+<p>They can also be enabled on the command-line with
+<code>-o</code>:</p>
+<pre class="console"><code>$ shellcheck -o require-variable-braces myscript</code></pre>
+<h3 id="enabling-all-checks">Enabling all checks</h3>
+<p>It's a good idea to enable all warnings with <code>-Wall</code> in C,
+but this is not the case in ShellCheck. Optional checks are more
+subjective rather than more comprehensive, and may conflict with each
+other.</p>
+<p>However, if you for debugging or evaluation purposes want to see
+what's available, you can enable them with <code>-o all</code> or
+<code>enable=all</code> as above.</p>
+<h3 id="available-checks">Available checks</h3>
+<p>To see which checks are available in your version of ShellCheck, use
+the <code>--list-optional</code> flag.</p>
+<p>Optional checks as of version 0.9.0:</p>
+<pre class="console"><code>$ shellcheck --list-optional
+name:    add-default-case
+desc:    Suggest adding a default case in `case` statements
+example: case $? in 0) echo &#39;Success&#39;;; esac
+fix:     case $? in 0) echo &#39;Success&#39;;; *) echo &#39;Fail&#39; ;; esac
+
+name:    avoid-nullary-conditions
+desc:    Suggest explicitly using -n in `[ $var ]`
+example: [ &quot;$var&quot; ]
+fix:     [ -n &quot;$var&quot; ]
+
+name:    check-extra-masked-returns
+desc:    Check for additional cases where exit codes are masked
+example: rm -r &quot;$(get_chroot_dir)/home&quot;
+fix:     set -e; dir=&quot;$(get_chroot_dir)&quot;; rm -r &quot;$dir/home&quot;
+
+name:    check-set-e-suppressed
+desc:    Notify when set -e is suppressed during function invocation
+example: set -e; func() { cp *.txt ~/backup; rm *.txt; }; func &amp;&amp; echo ok
+fix:     set -e; func() { cp *.txt ~/backup; rm *.txt; }; func; echo ok
+
+name:    check-unassigned-uppercase
+desc:    Warn when uppercase variables are unassigned
+example: echo $VAR
+fix:     VAR=hello; echo $VAR
+
+name:    deprecate-which
+desc:    Suggest &#39;command -v&#39; instead of &#39;which&#39;
+example: which javac
+fix:     command -v javac
+
+name:    quote-safe-variables
+desc:    Suggest quoting variables without metacharacters
+example: var=hello; echo $var
+fix:     var=hello; echo &quot;$var&quot;
+
+name:    require-double-brackets
+desc:    Require [[ and warn about [ in Bash/Ksh
+example: [ -e /etc/issue ]
+fix:     [[ -e /etc/issue ]]
+
+name:    require-variable-braces
+desc:    Suggest putting braces around all variable references
+example: var=hello; echo $var
+fix:     var=hello; echo ${var}</code></pre>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2082 – To expand via indirection, use `name="foo$n"; echo "${!name}"`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2082 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2082">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="to-expand-via-indirection-use-namefoon-echo-name">To expand via
+indirection, use <code>name="foo$n"; echo "${!name}"</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2082.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">var_1</span><span class="op">=</span><span class="st">&quot;hello world&quot;</span></span>
+<span id="cb1-2"><a href="SC2082.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span>1</span>
+<span id="cb1-3"><a href="SC2082.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${var_</span><span class="er">$n</span><span class="va">}</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>Bash/ksh:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2082.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use arrays instead of dynamic names</span></span>
+<span id="cb2-2"><a href="SC2082.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-a</span> <span class="va">var</span></span>
+<span id="cb2-3"><a href="SC2082.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">[</span><span class="dv">1</span><span class="op">]=</span><span class="st">&quot;hello world&quot;</span></span>
+<span id="cb2-4"><a href="SC2082.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span>1</span>
+<span id="cb2-5"><a href="SC2082.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${var</span><span class="op">[</span>n<span class="op">]</span><span class="va">}</span><span class="st">&quot;</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2082.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Expand variable names dynamically</span></span>
+<span id="cb3-2"><a href="SC2082.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">var_1</span><span class="op">=</span><span class="st">&quot;hello world&quot;</span></span>
+<span id="cb3-3"><a href="SC2082.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span>1</span>
+<span id="cb3-4"><a href="SC2082.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="va">name</span><span class="op">=</span><span class="st">&quot;var_</span><span class="va">$n</span><span class="st">&quot;</span></span>
+<span id="cb3-5"><a href="SC2082.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${</span><span class="op">!</span><span class="va">name}</span><span class="st">&quot;</span></span></code></pre></div>
+<p>POSIX sh:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2082.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Expand dynamically with eval</span></span>
+<span id="cb4-2"><a href="SC2082.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">var_1</span><span class="op">=</span><span class="st">&quot;hello world&quot;</span></span>
+<span id="cb4-3"><a href="SC2082.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span>1</span>
+<span id="cb4-4"><a href="SC2082.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="st">&quot;tmp=</span><span class="dt">\$</span><span class="st">var_</span><span class="va">$n</span><span class="st">&quot;</span></span>
+<span id="cb4-5"><a href="SC2082.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${tmp}</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You can expand a variable <code>var_1</code> with
+<code>${var_1}</code>, but you can not generate the string
+<code>var_1</code> with an embedded expansion, like
+<code>${var_$n}</code>.</p>
+<p>Instead, if at all possible, you should use an array. Bash and ksh
+support both numerical and associative arrays, and an example is shown
+above.</p>
+<p>If you can't use arrays, you can indirectly reference variables by
+creating a temporary variable with its name, e.g.
+<code>myvar="var_$n"</code> and then expanding it indirectly with
+<code>${!myvar}</code>. This will give the contents of the variable
+<code>var_1</code>.</p>
+<p>If using POSIX sh, where neither arrays nor <code>${!var}</code> is
+available, <code>eval</code> can be used. You must be careful in
+sanitizing the data used to construct the variable name to avoid
+arbitrary code execution.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/006">BashFaq: How can I
+use variable variables (indirect variables, pointers, references) or
+associative arrays?</a></li>
+<li><a
+href="https://stackoverflow.com/questions/16553089/dynamic-variable-names-in-bash">StackOverflow:
+Dynamic variable names in Bash</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2096 – On most OS, shebangs can only specify a single parameter.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2096 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2096">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="on-most-os-shebangs-can-only-specify-a-single-parameter">On most
+OS, shebangs can only specify a single parameter.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2096.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash -x</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2096.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb2-2"><a href="SC2096.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-x</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Most operating systems, including POSIX, Linux and FreeBSD, allow
+only a single parameter in the shebang. The example is equivalent to
+calling <code>env 'bash -x'</code> instead of
+<code>env 'bash' '-x'</code>, and it will therefore fail.</p>
+<p>The shebang should be rewritten to use at most one parameter. Shell
+options can instead be set in the body of the script.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>macOS X currently allows multiple words in the shebang. Scripts
+running on OSX exclusively can ignore this warning.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

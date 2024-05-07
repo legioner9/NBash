@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1135 – Prefer escape over ending quote to make `$` literal. Instead of `"It costs $"5`, use `"It costs \$5"`</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1135 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1135">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="prefer-escape-over-ending-quote-to-make--literal-instead-of-it-costs-5-use-it-costs-5">Prefer
+escape over ending quote to make <code>$</code> literal. Instead of
+<code>"It costs $"5</code>, use <code>"It costs \$5"</code></h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1135.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;The apples are $&quot;&quot;1 each&quot;</span></span>
+<span id="cb1-2"><a href="SC1135.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="st">&quot;var=$&quot;</span>name</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1135.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;The apples are </span><span class="dt">\$</span><span class="st">1 each&quot;</span></span>
+<span id="cb2-2"><a href="SC1135.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="st">&quot;var=</span><span class="dt">\$</span><span class="st">name&quot;</span></span>
+<span id="cb2-3"><a href="SC1135.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># or better yet: var=&quot;${!name}&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>The script appears to be closing a double quoted string for the sole
+purpose of making a dollar sign <code>$</code> literal.</p>
+<p>While this happens to work, the better solution is instead to escape
+it with a backslash. This allows the double quoted string to continue
+uninterrupted, thereby reducing the visual noise of stopping and
+starting quotes in the middle of a shell word.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

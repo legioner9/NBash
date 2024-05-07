@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1088 – Parsing stopped here. Invalid use of parentheses?</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1088 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1088">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="parsing-stopped-here-invalid-use-of-parentheses">Parsing stopped
+here. Invalid use of parentheses?</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1088.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> ^<span class="er">(</span><span class="bu">.</span><span class="pp">*</span><span class="kw">)</span><span class="ex">\1$</span> file</span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1088.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span>myfunction<span class="kw">(</span><span class="ex">value</span><span class="kw">)</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC1088.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">&#39;^(.*)\1$&#39;</span> file</span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC1088.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span><span class="va">$(</span><span class="ex">myfunction</span> value<span class="va">)</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Parentheses are shell syntax and must be used correctly.</p>
+<p>For commands that expect literal parentheses, such as
+<code>grep</code> or <code>find</code>, the parentheses need to be
+quoted or escaped so the shell does not interpret them, but instead
+passes them to the command.</p>
+<p>For shell syntax, the shell does not use them the way most other
+languages do, so avoid guessing at syntax based on previous experience.
+In particular:</p>
+<ul>
+<li><p>Parentheses are NOT used to call functions.</p></li>
+<li><p>Parentheses are NOT used to group expressions, except in
+arithmetic contexts.</p></li>
+<li><p>Parentheses are NOT used in conditional statements or
+loops.</p></li>
+<li><p>Parentheses are used differently in different contexts.
+<code>( .. )</code>, <code>$( .. )</code>, <code>$(( .. ))</code> and
+<code>var=(..)</code> are completely separate and independent structures
+with different meanings, and can not be broken down into operations on
+expressions in parentheses.</p>
+<p>In C-like languages, <code>++</code> can't be broken down into two
+<code>+</code> operations, so you can't e.g. use <code>+ +</code> or
+<code>+(+)</code>. In the same way, all of the above are completely
+unrelated so that you can't do <code>$(1+1)</code> or
+<code>$( (1+1) )</code> in place of <code>$(( 1+1 ))</code>.</p></li>
+</ul>
+<p>If you are trying to use parentheses for shell syntax, look up the
+actual syntax of the statement you are trying to use.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

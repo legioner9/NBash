@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: checkstyle2text – </title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>checkstyle2text – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/checkstyle2text">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <p>Shellcheck can generate <code>checkstyle</code> reports or
+<code>tty</code> outputs, but not both simultaneously. For CI purposes,
+it might be needed to generate both types however, one for the report,
+one for the logging output. By using the following xlst, we can
+translate the checkstyle output to text-based output.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode xslt"><code class="sourceCode xslt"><span id="cb1-1"><a href="checkstyle2text.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">&lt;?</span><span class="kw">xml</span><span class="ot"> version=</span><span class="st">&quot;1.0&quot;</span><span class="ot"> encoding=</span><span class="st">&quot;UTF-8&quot;</span><span class="fu">?&gt;</span></span>
+<span id="cb1-2"><a href="checkstyle2text.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;</span><span class="bu">xsl:stylesheet</span><span class="ot"> version=</span><span class="st">&quot;1.0&quot;</span><span class="ot"> xmlns:xsl=</span><span class="st">&quot;http://www.w3.org/1999/XSL/Transform&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb1-3"><a href="checkstyle2text.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;</span><span class="bu">xsl:output</span><span class="ot"> encoding=</span><span class="st">&quot;UTF-8&quot;</span><span class="ot"> method=</span><span class="st">&quot;text&quot;</span><span class="kw">/&gt;</span></span>
+<span id="cb1-4"><a href="checkstyle2text.html#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="checkstyle2text.html#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;</span><span class="bu">xsl:template</span><span class="ot"> match=</span><span class="va">&quot;/&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb1-6"><a href="checkstyle2text.html#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:apply-templates</span><span class="ot"> select=</span><span class="va">&quot;//file&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb1-7"><a href="checkstyle2text.html#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;/</span><span class="bu">xsl:template</span><span class="kw">&gt;</span></span>
+<span id="cb1-8"><a href="checkstyle2text.html#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="checkstyle2text.html#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;</span><span class="bu">xsl:template</span><span class="ot"> match=</span><span class="va">&quot;file&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb1-10"><a href="checkstyle2text.html#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:variable</span><span class="ot"> name=</span><span class="st">&quot;filename&quot;</span><span class="ot"> select=</span><span class="va">&quot;@name&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb1-11"><a href="checkstyle2text.html#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:variable</span><span class="ot"> name=</span><span class="st">&quot;errorcount&quot;</span><span class="ot"> select=</span><span class="va">&quot;count(error)&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb1-12"><a href="checkstyle2text.html#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="checkstyle2text.html#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;$filename&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb1-14"><a href="checkstyle2text.html#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:text</span><span class="kw">&gt;</span> - <span class="kw">&lt;/</span><span class="bu">xsl:text</span><span class="kw">&gt;</span></span>
+<span id="cb1-15"><a href="checkstyle2text.html#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;$errorcount&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb1-16"><a href="checkstyle2text.html#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:text</span><span class="kw">&gt;</span> failure(s)<span class="kw">&lt;/</span><span class="bu">xsl:text</span><span class="kw">&gt;</span></span>
+<span id="cb1-17"><a href="checkstyle2text.html#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:text</span><span class="kw">&gt;</span><span class="dv">&amp;#10;</span><span class="kw">&lt;/</span><span class="bu">xsl:text</span><span class="kw">&gt;</span></span>
+<span id="cb1-18"><a href="checkstyle2text.html#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="checkstyle2text.html#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:apply-templates</span><span class="ot"> select=</span><span class="va">&quot;error&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb1-20"><a href="checkstyle2text.html#cb1-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;</span><span class="bu">xsl:with-param</span><span class="ot"> name=</span><span class="st">&quot;filename&quot;</span><span class="ot"> select=</span><span class="va">&quot;$filename&quot;</span><span class="kw">/&gt;</span></span>
+<span id="cb1-21"><a href="checkstyle2text.html#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;/</span><span class="bu">xsl:apply-templates</span><span class="kw">&gt;</span></span>
+<span id="cb1-22"><a href="checkstyle2text.html#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="checkstyle2text.html#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:text</span><span class="kw">&gt;</span><span class="dv">&amp;#10;&amp;#10;</span><span class="kw">&lt;/</span><span class="bu">xsl:text</span><span class="kw">&gt;</span></span>
+<span id="cb1-24"><a href="checkstyle2text.html#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;/</span><span class="bu">xsl:template</span><span class="kw">&gt;</span></span>
+<span id="cb1-25"><a href="checkstyle2text.html#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="checkstyle2text.html#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;</span><span class="bu">xsl:template</span><span class="ot"> match=</span><span class="va">&quot;error&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb1-27"><a href="checkstyle2text.html#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:param</span><span class="ot"> name=</span><span class="st">&quot;filename&quot;</span><span class="kw">/&gt;</span></span>
+<span id="cb1-28"><a href="checkstyle2text.html#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;$filename&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb1-29"><a href="checkstyle2text.html#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:text</span><span class="kw">&gt;</span><span class="dv">&amp;#58;</span> <span class="kw">&lt;/</span><span class="bu">xsl:text</span><span class="kw">&gt;</span></span>
+<span id="cb1-30"><a href="checkstyle2text.html#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;@source&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb1-31"><a href="checkstyle2text.html#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:text</span><span class="kw">&gt;</span> (<span class="kw">&lt;/</span><span class="bu">xsl:text</span><span class="kw">&gt;</span></span>
+<span id="cb1-32"><a href="checkstyle2text.html#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;@severity&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb1-33"><a href="checkstyle2text.html#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:text</span><span class="kw">&gt;</span>) line <span class="kw">&lt;/</span><span class="bu">xsl:text</span><span class="kw">&gt;</span></span>
+<span id="cb1-34"><a href="checkstyle2text.html#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;@line&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb1-35"><a href="checkstyle2text.html#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:text</span><span class="kw">&gt;</span>, column <span class="kw">&lt;/</span><span class="bu">xsl:text</span><span class="kw">&gt;</span></span>
+<span id="cb1-36"><a href="checkstyle2text.html#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;@column&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb1-37"><a href="checkstyle2text.html#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:text</span><span class="kw">&gt;</span> - <span class="kw">&lt;/</span><span class="bu">xsl:text</span><span class="kw">&gt;</span></span>
+<span id="cb1-38"><a href="checkstyle2text.html#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;@message&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb1-39"><a href="checkstyle2text.html#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:text</span><span class="kw">&gt;</span><span class="dv">&amp;#10;</span><span class="kw">&lt;/</span><span class="bu">xsl:text</span><span class="kw">&gt;</span></span>
+<span id="cb1-40"><a href="checkstyle2text.html#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:text</span><span class="kw">&gt;</span> - <span class="kw">&lt;/</span><span class="bu">xsl:text</span><span class="kw">&gt;</span></span>
+<span id="cb1-41"><a href="checkstyle2text.html#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;@message&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb1-42"><a href="checkstyle2text.html#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;</span><span class="bu">xsl:text</span><span class="kw">&gt;</span><span class="dv">&amp;#10;</span><span class="kw">&lt;/</span><span class="bu">xsl:text</span><span class="kw">&gt;</span></span>
+<span id="cb1-43"><a href="checkstyle2text.html#cb1-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;/</span><span class="bu">xsl:template</span><span class="kw">&gt;</span></span>
+<span id="cb1-44"><a href="checkstyle2text.html#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/</span><span class="bu">xsl:stylesheet</span><span class="kw">&gt;</span></span></code></pre></div>
+<p>Since the XSLT cannot show the original line, some sed magic can be
+used.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="checkstyle2text.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">xmlstarlet</span> tr <span class="st">&#39;/tmp/checkstyle2text.xslt&#39;</span> <span class="st">&#39;/path/to/file&#39;</span> <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb2-2"><a href="checkstyle2text.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="st">&#39;s|&quot;|\\&quot;|g&#39;</span> <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb2-3"><a href="checkstyle2text.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-n</span> <span class="dt">\</span></span>
+<span id="cb2-4"><a href="checkstyle2text.html#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">-e</span> <span class="st">&quot;s|^\(.*\) - \([0-9]\+\) failure.*$|echo &#39;=========&#39;\n </span><span class="dt">\</span></span>
+<span id="cb2-5"><a href="checkstyle2text.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">        echo &#39;Found \2 failure(s) in \1&#39;\n </span><span class="dt">\</span></span>
+<span id="cb2-6"><a href="checkstyle2text.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">        echo &#39;---------&#39;|p&quot;</span> <span class="dt">\</span></span>
+<span id="cb2-7"><a href="checkstyle2text.html#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">-e</span> <span class="st">&quot;s|^\(.*\): \(ShellCheck\.\)\?\(\(..\)[0-9]\{4\}\) (\(.*\)) line \([0-9]\+\), column \([0-9]\+\) - \(.*\)$|echo &#39;In \1 line \6:&#39;\n </span><span class="dt">\</span></span>
+<span id="cb2-8"><a href="checkstyle2text.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="st">        sed -n &#39;\6p&#39; \1\n </span><span class="dt">\</span></span>
+<span id="cb2-9"><a href="checkstyle2text.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="st">        printf </span><span class="dt">\&quot;</span><span class="st">%</span><span class="dt">\$</span><span class="st">((\7 - 1\))s^ </span><span class="dt">\&quot;</span><span class="st">\n </span><span class="dt">\</span></span>
+<span id="cb2-10"><a href="checkstyle2text.html#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="st">        printf &#39;https://www.shellcheck.net/wiki/&#39; </span><span class="dt">\</span></span>
+<span id="cb2-11"><a href="checkstyle2text.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="st">        echo </span><span class="dt">\&quot;</span><span class="st">\3 (\5): \8</span><span class="dt">\&quot;</span><span class="st">\n </span><span class="dt">\</span></span>
+<span id="cb2-12"><a href="checkstyle2text.html#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="st">        echo\n|p&quot;</span> <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb2-13"><a href="checkstyle2text.html#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span> <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb2-14"><a href="checkstyle2text.html#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">tee</span> <span class="at">-a</span> <span class="st">&#39;/path/to/file.log&#39;</span></span></code></pre></div>
+<p>The generated output is similar to the original <code>tty</code>
+output format.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2324 – var+=1 will append, not increment. Use (( var += 1 )), declare -i var, or quote number to silence.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2324 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2324">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="var1-will-append-not-increment-use--var--1--declare--i-var-or-quote-number-to-silence">var+=1
+will append, not increment. Use (( var += 1 )), declare -i var, or quote
+number to silence.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2324.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span>2 <span class="va">n</span><span class="op">=</span>3</span>
+<span id="cb1-2"><a href="SC2324.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">+=</span><span class="va">$n</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>In bash/ksh, use an <code>(( arithmetic context ))</code></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2324.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">((</span> <span class="va">var</span> <span class="op">+=</span> <span class="va">n</span> <span class="kw">))</span></span></code></pre></div>
+<p>or declare the variable as an integer type:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2324.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-i</span> <span class="va">var</span><span class="op">=</span>2</span>
+<span id="cb3-2"><a href="SC2324.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span>4</span>
+<span id="cb3-3"><a href="SC2324.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">+=</span><span class="va">$n</span></span></code></pre></div>
+<p>For POSIX sh, use an <code>$((arithmetic expansion))</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2324.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span><span class="va">$((var</span><span class="op">+</span><span class="va">n))</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>The problematic code attempts to add 2 and 3 to get 5.</p>
+<p>Instead, <code>+=</code> on a string variable will concatenate, so
+the result is 23.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you <em>do</em> want to concatenate a number, for example to
+append trailing zeroes, you can silence the warning by quoting the
+number:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="SC2324.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">+=</span><span class="st">&quot;000&quot;</span></span></code></pre></div>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

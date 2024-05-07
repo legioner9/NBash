@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC3049 – In POSIX sh, using lower/mixed case for signal names is undefined.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC3049 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC3049">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="in-posix-sh-using-lowermixed-case-for-signal-names-is-undefined">In
+POSIX sh, using lower/mixed case for signal names is undefined.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC3049.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">&#39;handle_sigint&#39;</span> int</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC3049.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">&#39;handle_sigint&#39;</span> INT</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>POSIX requires that signal names <a
+href="https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_28">be
+given in uppercase</a>:</p>
+<blockquote>
+<p>The condition can be EXIT, 0 (equivalent to EXIT), or a signal
+specified using a symbolic name, without the SIG prefix, as listed in
+the tables of signal names in the &lt;signal.h&gt; header defined in XBD
+Headers; for example, HUP, INT, QUIT, TERM. Implementations may permit
+names with the SIG prefix or ignore case in signal names as an
+extension.</p>
+</blockquote>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

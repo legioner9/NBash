@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1040 – When using `<<-`, you can only indent with tabs.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1040 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1040">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="when-using---you-can-only-indent-with-tabs">When using
+<code>&lt;&lt;-</code>, you can only indent with tabs.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<p>Any code using <code>&lt;&lt;-</code> that is indented with spaces.
+<code>cat -T script</code> shows</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1040.html#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span> <span class="op">&lt;&lt;- foo</span></span>
+<span id="cb1-2"><a href="SC1040.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="st">        Hello world</span></span>
+<span id="cb1-3"><a href="SC1040.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">    foo</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>Code using <code>&lt;&lt;-</code> must be indented with tabs.
+<code>cat -T script</code> shows</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1040.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">^Icat</span> <span class="op">&lt;&lt;- foo</span></span>
+<span id="cb2-2"><a href="SC1040.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="st">^I^IHello world</span></span>
+<span id="cb2-3"><a href="SC1040.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">^Ifoo</span></span></code></pre></div>
+<p>Or simply don't indent the end token:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC1040.html#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span> <span class="op">&lt;&lt;- foo</span></span>
+<span id="cb3-2"><a href="SC1040.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">      Hello World</span></span>
+<span id="cb3-3"><a href="SC1040.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">foo</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><code>&lt;&lt;-</code>, by design, only strips tabs. Not spaces.</p>
+<p>Your editor may be automatically replacing tabs with spaces, either
+when you type them or when you save the file or both. If you're unable
+to make it stop, just don't indent the end token.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>None. But note that copy-pasting code to <a
+href="../index.html">shellcheck.net</a> may also turn
+correct tabs into spaces on some OS.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

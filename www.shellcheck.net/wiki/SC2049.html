@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2049 – `=~` is for regex, but this looks like a glob. Use `=` instead.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2049 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2049">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="-is-for-regex-but-this-looks-like-a-glob-use--instead"><code>=~</code>
+is for regex, but this looks like a glob. Use <code>=</code>
+instead.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2049.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="va">$file</span> <span class="ot">=~</span> <span class="pp">*.</span><span class="ss">txt</span> <span class="kw">]]</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2049.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="va">$file</span> <span class="ot">=</span> <span class="pp">*</span>.txt <span class="kw">]]</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You are using <code>=~</code> to match against a regex --
+specifically a Extended Regular Expression (ERE) -- but the right-hand
+side looks more like a glob:</p>
+<ul>
+<li>It may have a leading <code>*</code>, like in <code>*.txt</code>
+<ul>
+<li>In a glob, this matches strings ending in <code>.txt</code>, like
+<code>readme.txt</code> but not <code>foo.sh</code></li>
+<li>In an ERE, this matches a literal asterisk, followed by any
+character, and then <code>txt</code>, such as <code>*itxt</code> but not
+<code>test.txt</code></li>
+</ul></li>
+<li>It may be a single letter followed by a <code>*</code>, like in
+<code>s*</code>.
+<ul>
+<li>In a glob, this matches strings starting with <code>s</code>, such
+as <code>shell</code> and <code>set</code>.</li>
+<li>In an ERE, this matches zero or more <code>s</code>s, such as
+<code>dog</code> (because it does in fact contain zero or more
+<code>s</code>'s)</li>
+</ul></li>
+</ul>
+<p>Please ensure that the pattern is correct as an ERE, or switch to
+glob matching if that's what you intended.</p>
+<p>This is similar to <a href="SC2063.html">SC2063</a>, where
+<code>grep "*foo*"</code> produces an equivalent warning.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you are aware of the difference, you can <a
+href="ignore.html">ignore</a> this message, but this warning is not emitted
+for the more probable EREs <code>\*.txt</code>, <code>\.txt$</code>,
+<code>^s</code> or <code>s+</code>, so it should rarely be
+necessary.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

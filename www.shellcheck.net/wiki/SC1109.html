@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1109 – This is an unquoted HTML entity. Replace with corresponding character.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1109 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1109">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this-is-an-unquoted-html-entity-replace-with-corresponding-character">This
+is an unquoted HTML entity. Replace with corresponding character.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1109.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">foo</span> <span class="kw">&amp;</span><span class="ex">amp</span><span class="kw">;&amp;</span><span class="ex">amp</span><span class="kw">;</span> <span class="ex">bar</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1109.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">foo</span> <span class="kw">&amp;&amp;</span> <span class="ex">bar</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>There is an unquoted HTML entity, such as <code>&amp;amp;</code>,
+<code>&amp;gt;</code> or <code>&amp;lt;</code> (instead of
+<code>&amp;</code>, <code>&gt;</code> and <code>&lt;</code>) in your
+code. This usually happens when copy-pasting from a web site that has
+mismanaged its code formatting.</p>
+<p>You should go through the entire script and replace HTML entities
+with their corresponding characters.</p>
+<p>Don't rely on ShellCheck to detect all of them. ShellCheck only warns
+about certain cases in certain contexts, while this issue tends to
+affect the entire script.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you want to run a command called <code>amp</code> after
+backgrounding another command, add a space:
+<code>foo &amp; amp;</code>.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

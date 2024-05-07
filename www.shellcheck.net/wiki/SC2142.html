@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2142 – Aliases can't use positional parameters. Use a function.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2142 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2142">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="aliases-cant-use-positional-parameters-use-a-function">Aliases
+can't use positional parameters. Use a function.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2142.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> archive=<span class="st">&#39;mv &quot;$@&quot; /backup&#39;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2142.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">archive()</span> <span class="kw">{</span> <span class="fu">mv</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span> /backup<span class="kw">;</span> <span class="kw">}</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Aliases just substitute the start of a command with something else.
+They therefore can't use positional parameters, such as <code>$1</code>.
+Rewrite your alias as a function.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>If your alias ends up quoting the value, e.g.
+<code>alias cut_first="awk '{print \$1}'"</code>, you can technically <a
+href="ignore.html">ignore</a> this error. However, you should consider
+turning this alias into a more readable function instead:
+<code>cut_first() { awk '{print $1}' "$@"; }</code></p>
+<p>You can also <a href="ignore.html">ignore</a> this warning if you
+intentionally referenced the positional parameters of its relevant
+context, knowing that it won't refer to the parameters of the alias
+itself. For example,
+<code>alias whatisthis='echo "This is $0 -$-" #'</code> will show the
+shell name with flags, i.e. <code>This is dash -smi</code> or
+<code>This is bash -himBs</code>, and is correct usage because it does
+not intend for <code>$0</code> to reflect anything related to the
+<code>whatisthis</code> alias or its invocation.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/080">BashFaq: How can I
+make an alias that takes an argument?</a></li>
+<li><a
+href="https://stackoverflow.com/questions/7131670/make-a-bash-alias-that-takes-a-parameter">StackOverflow:
+Make a Bash alias that takes a parameter?</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

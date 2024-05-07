@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2241 – The exit status can only be one integer 0-255. Use stdout for other data.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2241 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2241">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="the-exit-status-can-only-be-one-integer-0-255-use-stdout-for-other-data">The
+exit status can only be one integer 0-255. Use stdout for other
+data.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2241.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span> foo bar</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2241.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> foo</span>
+<span id="cb2-2"><a href="SC2241.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> bar</span>
+<span id="cb2-3"><a href="SC2241.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>In bash, <code>exit</code> can only be used to signal success or
+failure (0 = success, 1-255 = failure).</p>
+<p>To exit with textual or multiple values from a function, write them
+to stdout and capture them with command substitution instead.</p>
+<p>See <a href="SC2242.html">SC2242</a> for more information.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

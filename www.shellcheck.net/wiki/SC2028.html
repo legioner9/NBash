@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2028 – `echo` won't expand escape sequences. Consider `printf`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2028 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2028">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="echo-wont-expand-escape-sequences-consider-printf"><code>echo</code>
+won't expand escape sequences. Consider <code>printf</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2028.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Name:\t</span><span class="va">$value</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2028.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">&#39;Name:\t%s\n&#39;</span> <span class="st">&quot;</span><span class="va">$value</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Backslash escapes like <code>\t</code> and <code>\n</code> are not
+expanded by echo, and become literal backslash-t, backslash-n.</p>
+<p><code>printf</code> does expand these sequences, and should be used
+instead.</p>
+<p>Other, non-portable methods include <code>echo -e '\t'</code> and
+<code>echo $'\t'</code>. ShellCheck will warn if this is used in a
+script with shebang <code>#!/bin/sh</code>.</p>
+<p>If you actually wanted a literal backslash-t, use</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2028.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="dt">\\</span><span class="st">t&quot;</span></span></code></pre></div>
+<h3 id="exceptions">Exceptions</h3>
+<p>None</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

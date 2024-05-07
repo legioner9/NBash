@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2232 – Can't use `sudo` with builtins like `cd`. Did you want `sudo sh -c ..` instead?</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2232 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2232">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="cant-use-sudo-with-builtins-like-cd-did-you-want-sudo-sh--c--instead">Can't
+use <code>sudo</code> with builtins like <code>cd</code>. Did you want
+<code>sudo sh -c ..</code> instead?</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2232.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> cd /root</span>
+<span id="cb1-2"><a href="SC2232.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2232.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> sh <span class="at">-c</span> <span class="st">&#39;cd /root &amp;&amp; pwd&#39;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Due to the Unix process model, <code>sudo</code> can only change the
+privileges of a new, external process. It can not grant privileges to a
+currently running process.</p>
+<p>This means that shell builtins -- commands that are interpreted by
+the current shell rather than through program invocation -- cannot be
+run with <code>sudo</code>. This includes <code>cd</code>,
+<code>source</code>, <code>read</code>, and others.</p>
+<p>Instead you can run a shell with <code>sudo</code>, and have that
+shell run the builtins you want. Just be aware that what happens in that
+shell stays in that shell:</p>
+<pre><code>sudo sh -c &#39;cd /root &amp;&amp; pwd&#39;  # This shows /root
+pwd                           # This shows the original directory</code></pre>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><a
+href="https://superuser.com/questions/241129/why-wont-sudo-cd-work">SuperUser</a>:
+Why won't “sudo cd” work?</li>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

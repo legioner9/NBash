@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2195 – This pattern will never match the case statement's word. Double check them.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2195 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2195">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this-pattern-will-never-match-the-case-statements-word-double-check-them">This
+pattern will never match the case statement's word. Double check
+them.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2195.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">&quot;</span><span class="va">$var</span><span class="st"> &quot;</span> <span class="kw">in</span>      <span class="co"># Trailing space</span></span>
+<span id="cb1-2"><a href="SC2195.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="ss">value</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&quot;Match&quot;</span></span>
+<span id="cb1-3"><a href="SC2195.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">esac</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2195.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">&quot;</span><span class="va">${var}</span><span class="st">&quot;</span> <span class="kw">in</span>     <span class="co"># No trailing space</span></span>
+<span id="cb2-2"><a href="SC2195.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="ss">value</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&quot;Match&quot;</span></span>
+<span id="cb2-3"><a href="SC2195.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">esac</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck has detected that one of the patterns in a
+<code>case</code> statement will never match.</p>
+<p>Often, this is due to mistakes in the case statement word that
+results in unintended literal characters. In the problematic code,
+there's a trailing space that will prevent the match from ever
+succeeding.</p>
+<p>For more examples of when this could happen, see <a
+href="https://github.com/koalaman/shellcheck/wiki/SC2193">SC2193</a> for
+the equivalent warning for <code>[[ .. ]]</code> statements.</p>
+<p>Note that ShellCheck warns about individual patterns in a branch, and
+will flag <code>*.png</code> in this example even though the branch is
+not dead:</p>
+<pre><code>case &quot;${img}.jpg&quot; in
+  *.png | *.jpg) echo &quot;It&#39;s an image&quot;
+esac</code></pre>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None. If you encounter a bug and wish to <a href="ignore.html">ignore</a>
+this warning, make sure the directive goes in front of the
+<code>case</code> and not the individual branch.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

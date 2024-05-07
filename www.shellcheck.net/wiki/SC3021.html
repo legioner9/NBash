@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC3021 – In POSIX sh, `>& filename` (as opposed to `>& fd`) is undefined.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC3021 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC3021">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="in-posix-sh--filename-as-opposed-to--fd-is-undefined">In POSIX
+sh, <code>&gt;&amp; filename</code> (as opposed to
+<code>&gt;&amp; fd</code>) is undefined.</h2>
+<p>Note: ShellCheck 0.8.0 and below would trigger this warning on the
+perfectly POSIX compatible construct <code>&gt;&amp; fd</code>. If you
+are using <code>&gt;&amp;</code> to copy an integer file descriptor,
+please ignore this warning.</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC3021.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Writing to a filename</span></span>
+<span id="cb1-2"><a href="SC3021.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mycommand</span> <span class="op">&gt;&amp;</span> log.txt</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC3021.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mycommand</span> <span class="op">&gt;</span> log.txt <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span></code></pre></div>
+<p>The following construct is also fine, as it uses an integer file
+descriptor instead of a filename:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC3021.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">fd</span><span class="op">=</span>3</span>
+<span id="cb3-2"><a href="SC3021.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mycommand</span> <span class="op">&gt;&amp;</span> <span class="va">$fd</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>There are two forms of the <code>&gt;&amp;</code> file descriptor
+operator:</p>
+<ul>
+<li><code>&gt;&amp; integer</code> such as <code>&gt;&amp; 3</code> is a
+POSIX compatible synonym for <code>1&gt;&amp;3</code></li>
+<li><code>&gt;&amp; filename</code> such as
+<code>&gt;&amp; log.txt</code> is a Bash specific synonym for
+<code>&gt; log.txt 2&gt;&amp;1</code></li>
+</ul>
+<p>If (and only if) you are using the latter form, write it out as shown
+in the correct example to ensure portability.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>ShellCheck 0.8.0 and below incorrectly emits this warning for
+constructs like <code>&gt;&amp; $var</code>, even though this would be
+POSIX compatible when <code>$var</code> is an integer. In such cases,
+please ignore this warning.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><a
+href="https://github.com/koalaman/shellcheck/issues/2520">Shellcheck
+issue #2520</a></li>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

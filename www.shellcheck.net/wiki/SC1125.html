@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1125 – Invalid `key=value` pair in directive</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1125 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1125">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="invalid-keyvalue-pair-in-directive">Invalid
+<code>key=value</code> pair in directive</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1125.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=SC2153 (variable not a misspelling)</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1125.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=SC2153 # variable not a misspelling</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>A comment at the end of a directive must be preceded by a
+<code>#</code> to avoid it being interpreted as an instruction. The <a
+href="Directive.html#documenting-directive-use">directive page</a> contains
+more guidance about commenting style.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

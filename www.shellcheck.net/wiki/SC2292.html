@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2292 – Prefer `[[ ]]` over `[ ]` for tests in Bash/Ksh.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2292 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2292">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="prefer---over---for-tests-in-bashksh">Prefer <code>[[ ]]</code>
+over <code>[ ]</code> for tests in Bash/Ksh.</h2>
+<p>This is an <a href="optional.html">optional</a> suggestion. It must be
+explicitly enabled with a <a href="directive.html">directive</a>
+<code>enable=require-double-brackets</code> in a
+<code># shellcheck</code> comment or <code>.shellcheckrc</code></p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2292.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="ot">-e</span> /etc/issue <span class="bu">]</span> </span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2292.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="ot">-e</span> /etc/issue <span class="kw">]]</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck has been explicitly asked to warn about uses of
+<code>[ .. ]</code> in favor of the extended Bash/Ksh test
+<code>[[ .. ]]</code>.</p>
+<p><code>[[ .. ]]</code> suppresses word splitting and globbing,
+supports a wider variety of tests, and is generally safer and better
+defined than <code>[ .. ]</code>. For an in-depth list of differences,
+see the Related Resources.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>This check is not enabled by default, and may have been turned on for
+your current project by someone who wants it enforced. You can still <a
+href="ignore.html">ignore</a> it with a directive.</p>
+<p>This suggestion does not trigger for Sh or Dash scripts, even when
+explicitly enabled, as these shells don't support
+<code>[[ .. ]]</code>.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>BashFAQ 031: <a href="https://mywiki.wooledge.org/BashFAQ/031">What
+is the difference between test, [ and [[ ?</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

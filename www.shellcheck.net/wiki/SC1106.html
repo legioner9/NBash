@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1106 – In arithmetic contexts, use `<` instead of `-lt`</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1106 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1106">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="in-arithmetic-contexts-use--instead-of--lt">In arithmetic
+contexts, use <code>&lt;</code> instead of <code>-lt</code></h2>
+<p>Similarly, <code>&gt;</code> instead of <code>-gt</code>,
+<code>&lt;=</code> instead of <code>-le</code>, <code>&gt;=</code>
+instead of <code>-ge</code>, <code>==</code> instead of
+<code>-eq</code>, <code>!=</code> instead of <code>-ne</code>.</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1106.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">((</span> <span class="dv">2</span> <span class="op">-</span><span class="va">lt</span> <span class="dv">3</span> <span class="kw">))</span></span>
+<span id="cb1-2"><a href="SC1106.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb1-3"><a href="SC1106.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;True&quot;</span></span>
+<span id="cb1-4"><a href="SC1106.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1106.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">((</span> <span class="dv">2</span> <span class="op">&lt;</span> <span class="dv">3</span> <span class="kw">))</span></span>
+<span id="cb2-2"><a href="SC1106.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb2-3"><a href="SC1106.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;True&quot;</span></span>
+<span id="cb2-4"><a href="SC1106.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>The comparators <code>-lt</code>, <code>-ge</code>, <code>-eq</code>
+and friends are flags for the <code>test</code> command aka
+<code>[</code>. You are instead using it in an arithmetic context, such
+as <code>(( .. ))</code> or <code>$(( .. ))</code>, where you should be
+using <code>&lt;</code>, <code>&gt;=</code>, <code>==</code> etc
+instead.</p>
+<p>In arithmetic contexts, <code>-lt</code> is simply interpreted as
+"subtract the value of <code>$lt</code>", which is clearly not the
+intention.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you do want to subtract <code>$lt</code> you can add a space to
+make this clear to ShellCheck: <code>echo $((3 - lt))</code></p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

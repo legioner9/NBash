@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2245 – -d only applies to the first expansion of this glob. Use a loop to check any/all.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2245 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2245">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="-d-only-applies-to-the-first-expansion-of-this-glob-use-a-loop-to-check-anyall">-d
+only applies to the first expansion of this glob. Use a loop to check
+any/all.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2245.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-f</span> ksh<span class="pp">*</span> <span class="bu">]</span></span>
+<span id="cb1-2"><a href="SC2245.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb1-3"><a href="SC2245.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;The file exists&quot;</span></span>
+<span id="cb1-4"><a href="SC2245.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2245.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> ksh<span class="pp">*</span></span>
+<span id="cb2-2"><a href="SC2245.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb2-3"><a href="SC2245.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="st">&quot;</span><span class="va">$f</span><span class="st">&quot;</span> <span class="bu">]</span></span>
+<span id="cb2-4"><a href="SC2245.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">then</span></span>
+<span id="cb2-5"><a href="SC2245.html#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Found a matching file: </span><span class="va">$f</span><span class="st">&quot;</span></span>
+<span id="cb2-6"><a href="SC2245.html#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span>
+<span id="cb2-7"><a href="SC2245.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Ksh has the curious behavior of ignoring anything after an
+unrecognized flag to <code>test</code>/<code>[</code>, which means that
+file checking operators against globs will effectively apply the
+operator to the first expansion:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2245.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="ot">-f</span> ksh<span class="pp">*</span> <span class="bu">]</span>                              <span class="co"># This</span></span>
+<span id="cb3-2"><a href="SC2245.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="ot">-f</span> ksh93u ksh93u.tar <span class="er">ksh93u.tar.gz</span> <span class="ex">]</span>   <span class="co"># Becomes this</span></span>
+<span id="cb3-3"><a href="SC2245.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="ot">-f</span> ksh93u <span class="bu">]</span>                            <span class="co"># And is interpreted like this</span></span></code></pre></div>
+<p>This is an issue when you have multiple matches for a glob. Instead
+of checking some or all, it only checks the first result and ignores the
+rest. To ensure that all results are considered (either to check that
+<em>any</em> or <em>all</em> results match the operator), use a loop
+explicitly.</p>
+<p>If you really only want to match the first result of the glob
+expansion as sorted alphabetically in the current locale, you can make
+this intention explicit:</p>
+<pre><code>matches=( ksh* )
+if [ -f &quot;${matches[0]}&quot; ]
+then
+  echo &quot;The first result is a file&quot;
+fi</code></pre>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you only care that entries exists, use <code>-e</code>. ShellCheck
+does not warn in this case, since all files resulting from glob
+expansion necessarily exist.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

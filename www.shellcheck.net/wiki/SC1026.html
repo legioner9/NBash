@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1026 – If grouping expressions inside `[[..]]`, use `( .. )`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1026 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1026">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="if-grouping-expressions-inside--use---">If grouping expressions
+inside <code>[..](..)</code>, use <code>( .. )</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1026.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> [ a <span class="kw">||</span> b ] <span class="kw">&amp;&amp;</span> c <span class="kw">]]</span></span>
+<span id="cb1-2"><a href="SC1026.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> [ a -o <span class="er">b</span> <span class="ex">]</span> <span class="at">-a</span> c ]]</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1026.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="op">(</span> a <span class="kw">||</span> b <span class="op">)</span> <span class="kw">&amp;&amp;</span> c <span class="kw">]]</span></span>
+<span id="cb2-2"><a href="SC1026.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="dt">\(</span> a -o <span class="er">b</span> <span class="ex">\)</span> <span class="at">-a</span> c ]]  <span class="co"># or  { [ a ] || [ b ]; } &amp;&amp; [ c ]</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><code>[ .. ]</code> should not be used to group subexpressions inside
+<code>[[ .. ]]</code> or <code>[ .. ]</code> statements.</p>
+<p>For <code>[[ .. ]]</code>, use regular parentheses.</p>
+<p>For <code>[ .. ]</code>, either use escaped parentheses, or
+preferably rewrite the expression into multiple <code>[ .. ]</code>
+joined with <code>&amp;&amp;</code>, <code>||</code> and
+<code>{ ..; }</code> groups. The latter is preferred because
+<code>[ .. ]</code> is undefined for more than 4 arguments in POSIX.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashPitfalls#pf11">Bash
+Pitfalls:
+<code>if [ [ a = b ] &amp;&amp; [ c = d ] ]; then ...</code></a></li>
+<li><a
+href="http://pubs.opengroup.org/onlinepubs/9699919799/utilities/test.html">POSIX
+<code>test</code></a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

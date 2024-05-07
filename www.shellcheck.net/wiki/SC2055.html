@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2055 – You probably wanted `&&` here, otherwise it's always true.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2055 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2055">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="you-probably-wanted--here-otherwise-its-always-true">You
+probably wanted <code>&amp;&amp;</code> here, otherwise it's always
+true.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2055.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="va">$1</span> <span class="ot">!=</span> foo <span class="kw">||</span> <span class="va">$1</span> <span class="ot">!=</span> bar <span class="kw">]]</span></span>
+<span id="cb1-2"><a href="SC2055.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb1-3"><a href="SC2055.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st"> is not foo or bar&quot;</span></span>
+<span id="cb1-4"><a href="SC2055.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2055.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="va">$1</span> <span class="ot">!=</span> foo <span class="kw">&amp;&amp;</span> <span class="va">$1</span> <span class="ot">!=</span> bar <span class="kw">]]</span></span>
+<span id="cb2-2"><a href="SC2055.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb2-3"><a href="SC2055.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st"> is not foo or bar&quot;</span></span>
+<span id="cb2-4"><a href="SC2055.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>This is not a bash issue, but a simple, common logical mistake
+applicable to all languages.</p>
+<p><code>[[ $1 != foo || $1 != bar ]]</code> is always true (when
+<code>foo != bar</code>):</p>
+<ul>
+<li>If <code>$1 = foo</code> then <code>$1 != bar</code> is true, so the
+statement is true.</li>
+<li>If <code>$1 = bar</code> then <code>$1 != foo</code> is true, so the
+statement is true.</li>
+<li>If <code>$1 = cow</code> then <code>$1 != foo</code> is true, so the
+statement is true.</li>
+</ul>
+<p><code>[[ $1 != foo &amp;&amp; $1 != bar ]]</code> matches when
+<code>$1</code> is neither <code>foo</code> nor <code>bar</code>:</p>
+<ul>
+<li>If <code>$1 = foo</code>, then <code>$1 != foo</code> is false, so
+the statement is false.</li>
+<li>If <code>$1 = bar</code>, then <code>$1 != bar</code> is false, so
+the statement is false.</li>
+<li>If <code>$1 = cow</code>, then both <code>$1 != foo</code> and
+<code>$1  != bar</code> is true, so the statement is true.</li>
+</ul>
+<p>This statement is identical to
+<code>! [[ $1 = foo || $1 = bar ]]</code>, which also works
+correctly.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>Rare.</p>
+<ul>
+<li>If I want to check that $FOO, $BAR and $COW are all equal:</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2055.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="va">$FOO</span> <span class="ot">!=</span> <span class="va">$BAR</span> <span class="kw">||</span> <span class="va">$FOO</span> <span class="ot">!=</span> <span class="va">$COW</span> <span class="kw">]]</span></span>
+<span id="cb3-2"><a href="SC2055.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb3-3"><a href="SC2055.html#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$FOO</span><span class="st"> and </span><span class="va">$BAR</span><span class="st"> and </span><span class="va">$COW</span><span class="st"> are not all equal&quot;</span></span>
+<span id="cb3-4"><a href="SC2055.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

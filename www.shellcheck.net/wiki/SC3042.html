@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC3042 – In POSIX sh, set flag `--default` is undefined</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC3042 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC3042">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="in-posix-sh-set-flag---default-is-undefined">In POSIX sh, set
+flag <code>--default</code> is undefined</h2>
+<p>(or any other option)</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC3042.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/ksh</span></span>
+<span id="cb1-2"><a href="SC3042.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">--default</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>Switch to a shell that supports these options, such as Ksh:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC3042.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/ksh</span></span>
+<span id="cb2-2"><a href="SC3042.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">--default</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Your script uses a shell feature not supported by the shebang. Either
+rewrite the script to be portable, or change the shebang to explicitly
+require a shell like Ksh.</p>
+<p>Most shell specific <code>set</code> flags are hard to emulate in
+POSIX, so use your best judgement as to whether you can make do without
+them, or if you should require a shell that supports them.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

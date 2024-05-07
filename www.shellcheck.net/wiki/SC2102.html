@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2102 – Ranges can only match single chars (mentioned due to duplicates).</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2102 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2102">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="ranges-can-only-match-single-chars-mentioned-due-to-duplicates">Ranges
+can only match single chars (mentioned due to duplicates).</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2102.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> [100-999].txt</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2102.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> [1-9][0-9][0-9].txt</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a glob range expression (such as <code>[a-z]</code>)
+that contains multiple of the same character.</p>
+<p>Range expressions can only be used to match a single character in a
+given set, so <code>[ab]</code> and <code>[abba]</code> will both match
+the same thing: either one <code>a</code> or one <code>b</code>.</p>
+<p>Having multiple of the same character often means you're trying to
+match more than one character, such as in the problematic example where
+someone tried to match any number from 100 to 999. Instead, it matches a
+single digit just like <code>[0-9].txt</code>, and specifies 0, 1 and 9
+multiple times.</p>
+<p>In Bash, most uses can be rewritten using <a
+href="https://mywiki.wooledge.org/glob#extglob">extglob</a> and/or <a
+href="https://mywiki.wooledge.org/BraceExpansion">brace expansion</a>.
+For example:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2102.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="pp">*</span>.[dev,prod,test].conf   <span class="co"># Doesn&#39;t work</span></span>
+<span id="cb3-2"><a href="SC2102.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="pp">*</span>.<span class="dt">{dev</span><span class="op">,</span><span class="dt">prod</span><span class="op">,</span><span class="dt">test}</span>.conf   <span class="co"># Works in bash</span></span>
+<span id="cb3-3"><a href="SC2102.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="pp">*</span>.<span class="pp">@(</span>dev<span class="pp">|</span>prod<span class="pp">|</span>test<span class="pp">)</span>.conf  <span class="co"># Works in bash with `shopt -s extglob`</span></span></code></pre></div>
+<p>In POSIX sh, you may have to write multiple globs, one after the
+other:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2102.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="pp">*</span>.dev.conf <span class="pp">*</span>.prod.conf <span class="pp">*</span>.test.conf</span></code></pre></div>
+<h3 id="exceptions">Exceptions:</h3>
+<p>There is currently a bug in which a range expression whose contents
+is a variable gets parsed verbatim, e.g. <code>[$foo]</code>. In this
+case, either ignore the warning or make the square brackets part of the
+variable contents instead.</p>
+<p>v0.7.2 and below would unintentionally show this warning for
+subscripts in arrays in <code>[[ -v array[xx] ]]</code> and other
+dereferencing operators. In these versions, you can either <a
+href="ignore.html">ignore</a> the message or quote the word (as in
+<code>[[ -v 'array[xx]' ]]</code>)</p>
+<p>Note that IPv6 URLs trigger this warning, but the correct solution in
+this case is to quote them:</p>
+<pre><code>curl &#39;http://[2607:f8b0:4002:c0c::65]/&#39;</code></pre>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

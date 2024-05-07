@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2306 – Escape glob characters in arguments to expr to avoid pathname expansion.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2306 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2306">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="escape-glob-characters-in-arguments-to-expr-to-avoid-pathname-expansion">Escape
+glob characters in arguments to expr to avoid pathname expansion.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2306.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">f</span><span class="op">=</span><span class="va">$(</span><span class="fu">expr</span> <span class="st">&quot;</span><span class="va">$c</span><span class="st">&quot;</span> <span class="pp">*</span> 9 / 5 + 32<span class="va">)</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>Prefer rewriting to a modern style (see <a
+href="SC2003.html">SC2003</a>):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2306.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">f</span><span class="op">=</span><span class="va">$((c</span> <span class="op">*</span> <span class="dv">9</span> <span class="op">/</span> <span class="dv">5</span> <span class="op">+</span> <span class="dv">32</span><span class="va">))</span></span></code></pre></div>
+<p>If you do not wish to do so, at least escape the glob characters when
+passing them to <code>expr</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2306.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">f</span><span class="op">=</span><span class="va">$(</span><span class="fu">expr</span> <span class="st">&quot;</span><span class="va">$c</span><span class="st">&quot;</span> <span class="dt">\*</span> 9 / 5 + 32<span class="va">)</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><code>expr</code> is a command so <code>expr 2 * 2</code> will
+consider <code>*</code> to mean "all files in the current directory".
+This causes the expression to fail to evaluate unless you are in an
+empty directory with the <code>failglob</code> and <code>nullglob</code>
+options turned off.</p>
+<p>Prefer rewriting it using the modern, POSIX standard arithmetic
+expansion <code>$((..))</code>. If you do not wish to do so, you can
+escape any characters like <code>*</code> to avoid the shell performing
+pathname expansion on them.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

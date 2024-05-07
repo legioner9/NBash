@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2057 – Unknown binary operator.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2057 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2057">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="unknown-binary-operator">Unknown binary operator.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2057.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$var</span><span class="st">&quot;</span> -leq 42 <span class="bu">]</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2057.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$var</span><span class="st">&quot;</span> <span class="ot">-le</span> 42 <span class="bu">]</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You are using an unknown binary operator in a <code>test</code>
+expression. Choose one that exists.</p>
+<p>In bash, use <code>help test</code> to see a list of supported
+operators:</p>
+<pre><code>  FILE1 -nt FILE2  True if file1 is newer than file2 (according to
+                   modification date).
+
+  FILE1 -ot FILE2  True if file1 is older than file2.
+
+  FILE1 -ef FILE2  True if file1 is a hard link to file2.
+
+  STRING1 = STRING2
+                 True if the strings are equal.
+  STRING1 != STRING2
+                 True if the strings are not equal.
+  STRING1 &lt; STRING2
+                 True if STRING1 sorts before STRING2 lexicographically.
+  STRING1 &gt; STRING2
+                 True if STRING1 sorts after STRING2 lexicographically.
+
+  arg1 OP arg2   Arithmetic tests.  OP is one of -eq, -ne,
+                 -lt, -le, -gt, or -ge.
+
+Arithmetic binary operators return true if ARG1 is equal, not-equal,
+less-than, less-than-or-equal, greater-than, or greater-than-or-equal
+than ARG2.</code></pre>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None. If you've tested and verified that the operator works but the
+latest version of ShellCheck says it's unknown, please <a
+href="https://github.com/koalaman/shellcheck/issues">submit a bug
+report</a>.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><a href="http://wiki.bash-hackers.org/commands/classictest">The
+classic test command</a> on the Bash Hackers wiki.</li>
+<li><a
+href="http://wiki.bash-hackers.org/syntax/ccmd/conditional_expression">The
+conditional expression</a> on the Bash Hackers wiki.</li>
+<li><a
+href="https://mywiki.wooledge.org/BashGuide/TestsAndConditionals">Tests
+and conditionals</a> on the Wooledge BashGuide.</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

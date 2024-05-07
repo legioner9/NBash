@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2088 – Tilde does not expand in quotes. Use `$HOME`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2088 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2088">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="tilde-does-not-expand-in-quotes-use-home">Tilde does not expand
+in quotes. Use <code>$HOME</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2088.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="st">&quot;~/Desktop/</span><span class="va">$filename</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2088.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">/Desktop/</span><span class="va">$filename</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Tilde does not expand to the user's home directory when it's single
+or double quoted. Use double quotes and <code>$HOME</code> instead.</p>
+<p>Alternatively, the <code>~/</code> can be left unquoted, as in
+<code>rm ~/"Desktop/$filename"</code>.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you don't want the tilde to be expanded, you can ignore this
+message.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>StackOverflow: <a
+href="https://stackoverflow.com/questions/41871596/why-isnt-tilde-expanding-inside-double-quotes">Why
+isn't tilde (~) expanding inside double quotes?</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2076 – Don't quote rhs of `=~`, it'll match literally rather than as a regex.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2076 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2076">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="dont-quote-rhs-of--itll-match-literally-rather-than-as-a-regex">Don't
+quote rhs of <code>=~</code>, it'll match literally rather than as a
+regex.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2076.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="va">$foo</span> <span class="ot">=~</span> <span class="st">&quot;^fo+ bar$&quot;</span> <span class="kw">]]</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2076.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="va">$foo</span> <span class="ot">=~</span> <span class="pp">^</span><span class="ss">fo</span><span class="pp">+</span><span class="dt">\ </span><span class="ss">bar</span><span class="op">$</span> <span class="kw">]]</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Quotes on the right hand side of <code>=~</code> can be used to match
+literally, so that <code>[[ $1 =~ ^"$2".* ]]</code> works even if
+<code>$2</code> contains regex metacharacters. This mirrors the behavior
+of globs, <code>[[ $1 = "$2"* ]]</code>.</p>
+<p>This also means that the problematic code tries to match literal
+carets and plus signs instead of interpreting them as regular expression
+matchers. To match as a regex, the regex metacharacters it must be
+unquoted. Literal parts of the expression can be quoted with double or
+single quotes, or escaped.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you do want to match literally just to do a plain substring
+search, e.g. <code>[[ $foo =~ "bar" ]]</code>, you could ignore this
+message, but consider using a more canonical glob match instead:
+<code>[[ $foo == *"bar"* ]]</code>.</p>
+<h3 id="compatibility">Compatibility:</h3>
+<ul>
+<li>In Bash 3.2 and newer with shopt <code>compat31</code> <em>disabled
+(the default)</em>, quoted patterns are literal whereas unquoted
+patterns are parsed for regex metacharacters.</li>
+<li>In Bash 3.2 and newer with shopt <code>compat31</code>
+<em>enabled</em>, quoted and unquoted patterns match identically.</li>
+<li>In Bash 3.1 quoted and unquoted patterns match identically.</li>
+</ul>
+<p>See <a
+href="http://stackoverflow.com/questions/218156/bash-regex-with-quotes"
+class="uri">http://stackoverflow.com/questions/218156/bash-regex-with-quotes</a></p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

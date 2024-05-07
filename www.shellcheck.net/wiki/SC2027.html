@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2027 – The surrounding quotes actually unquote this. Remove or escape them.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2027 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2027">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="the-surrounding-quotes-actually-unquote-this-remove-or-escape-them">The
+surrounding quotes actually unquote this. Remove or escape them.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2027.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;You enter &quot;</span><span class="va">$HOSTNAME</span><span class="st">&quot;. You can smell the wumpus.&quot;</span> <span class="op">&gt;&gt;</span> /etc/issue</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2027.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;You enter </span><span class="va">$HOSTNAME</span><span class="st">. You can smell the wumpus.&quot;</span> <span class="op">&gt;&gt;</span> /etc/issue</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Always quoting variables and command expansions is good practice, but
+blindly putting quotes left and right of them is not.</p>
+<p>In this case, ShellCheck has noticed that the quotes around the
+expansion are unquoting it, because the left quote is terminating an
+existing double quoted string, while the right quote starts a new
+one:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2027.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;You enter &quot;</span><span class="va">$HOSTNAME</span><span class="st">&quot;. You can smell the wumpus.&quot;</span></span>
+<span id="cb3-2"><a href="SC2027.html#cb3-2" aria-hidden="true" tabindex="-1"></a>     <span class="kw">|</span><span class="ex">----------</span><span class="kw">|</span>         <span class="kw">|</span><span class="ex">---------------------------</span><span class="kw">|</span></span>
+<span id="cb3-3"><a href="SC2027.html#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="ex">Quoted</span>   No quotes           Quoted</span></code></pre></div>
+<p>If the quotes were supposed to be literal, they should be escaped. If
+the quotes were supposed to quote an expansion (as in the example), they
+should be removed because this is already a double quoted string.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2064 – Use single quotes, otherwise this expands now rather than when signalled.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2064 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2064">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="use-single-quotes-otherwise-this-expands-now-rather-than-when-signalled">Use
+single quotes, otherwise this expands now rather than when
+signalled.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2064.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">&quot;echo </span><span class="dt">\&quot;</span><span class="st">Finished on </span><span class="va">$(</span><span class="fu">date</span><span class="va">)</span><span class="dt">\&quot;</span><span class="st">&quot;</span> EXIT</span>
+<span id="cb1-2"><a href="SC2064.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">&quot;rm -fr &#39;</span><span class="va">$testdir1</span><span class="st">&#39; &#39;</span><span class="va">$testdir2</span><span class="st">&#39;&quot;</span> <span class="va">$TRAP_SIGNALS</span></span>
+<span id="cb1-3"><a href="SC2064.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">&quot;rm </span><span class="va">$tmp</span><span class="st">&quot;</span> <span class="va">$TRAP_SIGNALS</span></span>
+<span id="cb1-4"><a href="SC2064.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">&quot;</span><span class="va">${remove_aar_temp}</span><span class="st">&quot;</span> SIGKILL SIGTERM SIGQUIT EXIT</span>
+<span id="cb1-5"><a href="SC2064.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">&quot;</span><span class="va">$(</span><span class="bu">shopt</span> <span class="at">-p</span> extglob<span class="va">)</span><span class="st">&quot;</span> RETURN</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2064.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">&#39;echo &quot;Finished on $(date)&quot;&#39;</span> EXIT</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>With double quotes, all parameter and command expansions will expand
+when the trap is defined rather than when it's executed.</p>
+<p>In the example with the Problematic code, the message will contain
+the date on which the trap was declared, and not the date on which the
+script exits.</p>
+<p>Using single quotes will prevent expansion at declaration time, and
+save it for execution time.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you don't care that the trap code is expanded early because the
+commands/variables won't change during execution of the script, or
+because you want to use the current and not the future values, then you
+can ignore this message.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

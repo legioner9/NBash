@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2106 – This only exits the subshell caused by the pipeline.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2106 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2106">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="this-only-exits-the-subshell-caused-by-the-pipeline">This only
+exits the subshell caused by the pipeline.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2106.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> a b c<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb1-2"><a href="SC2106.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> hi <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-q</span> bye <span class="kw">|</span> <span class="cf">break</span></span>
+<span id="cb1-3"><a href="SC2106.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2106.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> a b c<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb2-2"><a href="SC2106.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> hi <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-q</span> bye <span class="kw">||</span> <span class="cf">break</span></span>
+<span id="cb2-3"><a href="SC2106.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>The most common cause of this issue is probably using a single
+<code>|</code> when <code>||</code> was intended. The reason this
+message appears, though, is that a construction like this, intended to
+surface a failure inside of a loop:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2106.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> a b c<span class="kw">;</span> <span class="cf">do</span> <span class="fu">false</span> <span class="kw">|</span> <span class="cf">break</span><span class="kw">;</span> <span class="cf">done</span><span class="kw">;</span> <span class="bu">echo</span> <span class="va">${PIPESTATUS</span><span class="op">[@]</span><span class="va">}</span></span></code></pre></div>
+<p>may appear to work:</p>
+<pre><code>$ for i in a b c; do false | break; done; echo ${PIPESTATUS[@]}
+1 0</code></pre>
+<p>What's actually happening, though, becomes clear if we add some
+<code>echo</code>s; the entire loop completes, and the
+<code>break</code> has no effect.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="SC2106.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> for i in a b c<span class="kw">;</span> <span class="cf">do</span> <span class="bu">echo</span> <span class="va">$i</span><span class="kw">;</span> <span class="fu">false</span> <span class="kw">|</span> <span class="cf">break</span><span class="kw">;</span> <span class="cf">done</span><span class="kw">;</span> <span class="bu">echo</span> <span class="va">${PIPESTATUS</span><span class="op">[@]</span><span class="va">}</span></span>
+<span id="cb5-2"><a href="SC2106.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">a</span></span>
+<span id="cb5-3"><a href="SC2106.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">b</span></span>
+<span id="cb5-4"><a href="SC2106.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">c</span></span>
+<span id="cb5-5"><a href="SC2106.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span> 0</span>
+<span id="cb5-6"><a href="SC2106.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> for i in a b c<span class="kw">;</span> <span class="cf">do</span> <span class="fu">false</span> <span class="kw">|</span> <span class="cf">break</span><span class="kw">;</span> <span class="bu">echo</span> <span class="va">$i</span><span class="kw">;</span> <span class="cf">done</span><span class="kw">;</span> <span class="bu">echo</span> <span class="va">${PIPESTATUS</span><span class="op">[@]</span><span class="va">}</span></span>
+<span id="cb5-7"><a href="SC2106.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">a</span></span>
+<span id="cb5-8"><a href="SC2106.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">b</span></span>
+<span id="cb5-9"><a href="SC2106.html#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">c</span></span>
+<span id="cb5-10"><a href="SC2106.html#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">0</span></span></code></pre></div>
+<p>Because bash processes pipelines by creating subshells, control
+statements like <code>break</code> only take effect in the subshell.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><p>Contrast with the related, but different, problem in <a
+href="https://unix.stackexchange.com/questions/166546/bash-cannot-break-out-of-piped-while-read-loop-process-substitution-works">this
+link</a>.</p></li>
+<li><p><a
+href="https://www.gnu.org/software/bash/manual/bash.html#Pipelines">Bash
+Reference Manual: Pipelines</a>, esp.:</p>
+<blockquote>
+<p>Each command in a pipeline is executed in its own subshell.</p>
+</blockquote></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

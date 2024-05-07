@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1048 – Can't have empty then clauses (use `true` as a no-op).</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1048 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1048">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="cant-have-empty-then-clauses-use-true-as-a-no-op">Can't have
+empty then clauses (use <code>true</code> as a no-op).</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1048.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-e</span> foo <span class="bu">]</span></span>
+<span id="cb1-2"><a href="SC1048.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb1-3"><a href="SC1048.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span><span class="al">TODO</span><span class="co">: handle this</span></span>
+<span id="cb1-4"><a href="SC1048.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1048.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-e</span> foo <span class="bu">]</span></span>
+<span id="cb2-2"><a href="SC1048.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb2-3"><a href="SC1048.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span><span class="al">TODO</span><span class="co">: handle this</span></span>
+<span id="cb2-4"><a href="SC1048.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">true</span></span>
+<span id="cb2-5"><a href="SC1048.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb2-6"><a href="SC1048.html#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="SC1048.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Or use the no-op colon operator &quot;:&quot;</span></span>
+<span id="cb2-8"><a href="SC1048.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-e</span> foo <span class="bu">]</span></span>
+<span id="cb2-9"><a href="SC1048.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb2-10"><a href="SC1048.html#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span><span class="al">TODO</span><span class="co">: handle this</span></span>
+<span id="cb2-11"><a href="SC1048.html#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="bu">:</span></span>
+<span id="cb2-12"><a href="SC1048.html#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Shells do not allow empty <code>then</code> clauses. They need at
+least one command (and comments are not commands).</p>
+<p>If you want a <code>then</code> clause that does nothing, use a dummy
+command like <code>true</code>.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

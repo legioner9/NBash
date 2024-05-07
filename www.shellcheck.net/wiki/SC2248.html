@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2248 – Prefer double quoting even when variables don't contain special characters.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2248 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2248">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h1
+id="prefer-double-quoting-even-when-variables-dont-contain-special-characters">Prefer
+double quoting even when variables don't contain special
+characters.</h1>
+<p>This is an <a href="optional.html">optional</a> suggestion. It must be
+explicitly enabled with a <a href="directive.html">directive</a>
+<code>enable=quote-safe-variables</code> in a <code># shellcheck</code>
+comment or <code>.shellcheckrc</code></p>
+<h2 id="problematic-code">Problematic code:</h2>
+<pre class="shell"><code>subdir=&#39;example&#39;
+
+cd ${subdir}</code></pre>
+<h2 id="correct-code">Correct code:</h2>
+<pre class="shell"><code>subdir=&#39;example&#39;
+
+cd &quot;${subdir}&quot;</code></pre>
+<h2 id="rationale">Rationale:</h2>
+<p>Shellcheck normally warns about unquoted variable use due to
+potential globbing or word splitting issues. See <a
+href="SC2086.html">SC2086</a> for details. However if it is determined that a
+variable does not have have spaces or special characters it will omit
+that warning. This optional warning exists to suggest that quotes be
+used even in this scenario. If the code is later changed such that
+special characters can appear in the variable, having its use already
+quoted will prevent issues.</p>
+<p>This optional warning is also helpful if shellcheck's analysis of the
+variable contents is wrong because of indirect modification of the
+variable or because unknown commands implemented as shell functions have
+modified the variable.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2207 – Prefer `mapfile` or `read -a` to split command output (or quote to avoid splitting).</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2207 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2207">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="prefer-mapfile-or-read--a-to-split-command-output-or-quote-to-avoid-splitting">Prefer
+<code>mapfile</code> or <code>read -a</code> to split command output (or
+quote to avoid splitting).</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2207.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">array</span><span class="op">=</span><span class="va">(</span> <span class="va">$(</span><span class="ex">mycommand</span><span class="va">)</span> <span class="va">)</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>If it outputs multiple lines, each of which should be an element:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2207.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For bash 4.4+, must not be in posix mode, may use temporary files</span></span>
+<span id="cb2-2"><a href="SC2207.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mapfile</span> <span class="at">-t</span> array <span class="op">&lt;</span> <span class="op">&lt;(</span><span class="ex">mycommand</span><span class="op">)</span></span>
+<span id="cb2-3"><a href="SC2207.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="SC2207.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># For bash 3.x+, must not be in posix mode, may use temporary files</span></span>
+<span id="cb2-5"><a href="SC2207.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="va">array</span><span class="op">=</span><span class="va">()</span></span>
+<span id="cb2-6"><a href="SC2207.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">IFS</span><span class="op">=</span><span class="st">&#39;&#39;</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">line</span><span class="kw">;</span> <span class="cf">do</span> <span class="va">array</span><span class="op">+=</span><span class="va">(</span><span class="st">&quot;</span><span class="va">$line</span><span class="st">&quot;</span><span class="va">)</span><span class="kw">;</span> <span class="cf">done</span> <span class="op">&lt;</span> <span class="op">&lt;(</span><span class="ex">mycommand</span><span class="op">)</span></span>
+<span id="cb2-7"><a href="SC2207.html#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="SC2207.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># For ksh, and bash 4.2+ with the lastpipe option enabled (may require disabling monitor mode)</span></span>
+<span id="cb2-9"><a href="SC2207.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="va">array</span><span class="op">=</span><span class="va">()</span></span>
+<span id="cb2-10"><a href="SC2207.html#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">mycommand</span> <span class="kw">|</span> <span class="cf">while</span> <span class="va">IFS</span><span class="op">=</span><span class="st">&quot;&quot;</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">line</span><span class="kw">;</span> <span class="cf">do</span> <span class="va">array</span><span class="op">+=</span><span class="va">(</span><span class="st">&quot;</span><span class="va">$line</span><span class="st">&quot;</span><span class="va">)</span><span class="kw">;</span> <span class="cf">done</span></span></code></pre></div>
+<p>If it outputs a line with multiple words (separated by spaces), other
+delimiters can be chosen with IFS, each of which should be an
+element:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2207.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For bash, uses temporary files</span></span>
+<span id="cb3-2"><a href="SC2207.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">IFS</span><span class="op">=</span><span class="st">&quot; &quot;</span> <span class="bu">read</span> <span class="at">-r</span> <span class="at">-a</span> <span class="va">array</span> <span class="op">&lt;&lt;&lt;</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">mycommand</span><span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb3-3"><a href="SC2207.html#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="SC2207.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># For bash 4.2+ with the lastpipe option enabled (may require disabling monitor mode)</span></span>
+<span id="cb3-5"><a href="SC2207.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="va">array</span><span class="op">=</span><span class="va">()</span></span>
+<span id="cb3-6"><a href="SC2207.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">mycommand</span> <span class="kw">|</span> <span class="va">IFS</span><span class="op">=</span><span class="st">&quot; &quot;</span> <span class="bu">read</span> <span class="at">-r</span> <span class="at">-a</span> <span class="va">array</span></span>
+<span id="cb3-7"><a href="SC2207.html#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="SC2207.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># For ksh</span></span>
+<span id="cb3-9"><a href="SC2207.html#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="va">IFS</span><span class="op">=</span><span class="st">&quot; &quot;</span> <span class="bu">read</span> <span class="at">-r</span> <span class="at">-A</span> <span class="va">array</span> <span class="op">&lt;&lt;&lt;</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">mycommand</span><span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
+<p>If the output should be a single element:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2207.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">array</span><span class="op">=</span><span class="va">(</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">mycommand</span><span class="va">)</span><span class="st">&quot;</span> <span class="va">)</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You are doing unquoted command expansion in an array. This will
+invoke the shell's sloppy word splitting and glob expansion.</p>
+<p>Instead, prefer explicitly splitting (or not splitting):</p>
+<ul>
+<li>If you want to split the output into lines or words, use
+<code>mapfile</code>, <code>read -ra</code> and/or <code>while</code>
+loops as appropriate.</li>
+<li>If the command output should become a single array element, quote
+it.</li>
+</ul>
+<p>This prevents the shell from doing unwanted splitting and glob
+expansion, and therefore avoiding problems with output containing spaces
+or special characters.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you have already taken care (through setting IFS and
+<code>set -f</code>) to have word splitting work the way you intend, you
+can ignore this warning.</p>
+<p>Another exception is the wish for error handling:
+<code>array=( $(mycommand) ) || die-with-error</code> works the way it
+looks while a similar <code>mapfile</code> construct like
+<code>mapfile -t array &lt; &lt;(mycommand)</code> <strong>doesn't
+fail</strong> and you will have to write more code for error
+handling.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

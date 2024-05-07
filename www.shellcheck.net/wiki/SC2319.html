@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2319 – This `$?` refers to a condition, not a command. Assign to a variable to avoid it being overwritten.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2319 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2319">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this--refers-to-a-condition-not-a-command-assign-to-a-variable-to-avoid-it-being-overwritten">This
+<code>$?</code> refers to a condition, not a command. Assign to a
+variable to avoid it being overwritten.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2319.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mycommand</span></span>
+<span id="cb1-2"><a href="SC2319.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$?</span> <span class="ot">-ne</span> 0 <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">[</span> <span class="va">$?</span> <span class="ot">-ne</span> 14 <span class="bu">]</span></span>
+<span id="cb1-3"><a href="SC2319.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb1-4"><a href="SC2319.html#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Command failed&quot;</span></span>
+<span id="cb1-5"><a href="SC2319.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2319.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mycommand</span></span>
+<span id="cb2-2"><a href="SC2319.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="va">$?</span> <span class="ot">-gt</span> 0 <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">exit</span> <span class="va">$?</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2319.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mycommand</span></span>
+<span id="cb3-2"><a href="SC2319.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">ret</span><span class="op">=</span><span class="va">$?</span></span>
+<span id="cb3-3"><a href="SC2319.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$ret</span> <span class="ot">-ne</span> 0 <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">[</span> <span class="va">$ret</span> <span class="ot">-ne</span> 14 <span class="bu">]</span></span>
+<span id="cb3-4"><a href="SC2319.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb3-5"><a href="SC2319.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Command failed&quot;</span></span>
+<span id="cb3-6"><a href="SC2319.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2319.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mycommand</span> <span class="kw">||</span> <span class="bu">exit</span> <span class="va">$?</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a <code>$?</code> that always refers to a condition
+like <code>[ .. ]</code>, <code>[[ .. ]]</code>, or
+<code>test</code>.</p>
+<p>This most commonly happens when trying to inspect <code>$?</code>
+before doing something with it, such as inspecting it again or exiting
+with it, without realizing that any such inspection will also overwrite
+<code>$?</code>.</p>
+<p>In the first problematic example, <code>[ $? -ne 14 ]</code> will
+never be true because it only runs after <code>[ $? -ne 0 ]</code> has
+modified $? to be 0. The solution is to assign <code>$?</code> from
+<code>mycommand</code> to a variable so that the variable can be
+inspected repeatedly.</p>
+<p>In the second problematic example, <code>exit $?</code> will always
+<code>exit 0</code>, because it only runs if <code>[ $? -gt 0 ]</code>
+returns success and sets <code>$?</code> to 0. The solution could again
+be to assign <code>$?</code> to a variable first, or (as shown) use
+<code>mycommand || exit $?</code> as there is no condition to overwrite
+<code>$?</code>.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None. Note that ShellCheck does not warn if the usage of
+<code>$?</code> after <code>[ .. ]</code> is unconditional, as in
+<code>[ -d dir ]; return $?</code>.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

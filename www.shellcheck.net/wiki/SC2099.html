@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2099 – Use `$((..))` for arithmetics, e.g. `i=$((i + 2))`</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2099 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2099">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="use--for-arithmetics-eg-ii--2">Use <code>$((..))</code> for
+arithmetics, e.g. <code>i=$((i + 2))</code></h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2099.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">i</span><span class="op">=</span>3</span>
+<span id="cb1-2"><a href="SC2099.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">i</span><span class="op">=</span>i <span class="ex">+</span> 2</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2099.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">i</span><span class="op">=</span>3</span>
+<span id="cb2-2"><a href="SC2099.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">i</span><span class="op">=</span><span class="va">$((i</span> <span class="op">+</span> <span class="dv">2</span><span class="va">))</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Unlike most languages, variable assignments in shell scripts are
+space sensitive and (almost) always assign strings.</p>
+<p>To evaluate a mathematical expressions, use <code>$((..))</code> as
+in the correct code:</p>
+<pre><code>i=$((i + 2))   # Spaces are fine inside $((...))</code></pre>
+<p>In the problematic code, <code>i=i + 2</code> will give an error
+<code>+: command not found</code> because the expression is interpreted
+similar to something like <code>LC_ALL=C wc -c</code> instead of
+numerical addition:</p>
+<pre><code> Prefix assignment    Command  Argument
+ LC_ALL=C             wc       -c
+ i=i                  +        2</code></pre>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you wanted to assign a literal string, quote it:</p>
+<pre><code>game_score=&quot;0 - 2&quot;</code></pre>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

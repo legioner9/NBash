@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1118 – Delete whitespace after the here-doc end token.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1118 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1118">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="delete-whitespace-after-the-here-doc-end-token">Delete
+whitespace after the here-doc end token.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<p>"▭" below indicates an otherwise invisible space:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1118.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&lt;&lt; &quot;eof&quot;</span></span>
+<span id="cb1-2"><a href="SC1118.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="st">Hello</span></span>
+<span id="cb1-3"><a href="SC1118.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">eof▭   </span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1118.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&lt;&lt; &quot;eof&quot;</span></span>
+<span id="cb2-2"><a href="SC1118.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="st">Hello</span></span>
+<span id="cb2-3"><a href="SC1118.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="op">eof</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>The end token of your here document has trailing whitespace. This is
+invisible to the naked eye, but shells do not accept it.</p>
+<p>Remove the trailing whitespace.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

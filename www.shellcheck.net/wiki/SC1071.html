@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1071 – ShellCheck only supports sh/bash/dash/ksh scripts. Sorry!</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1071 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1071">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="shellcheck-only-supports-shbashdashksh-scripts-sorry">ShellCheck
+only supports sh/bash/dash/ksh scripts. Sorry!</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1071.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/python</span></span>
+<span id="cb1-2"><a href="SC1071.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">print</span> <span class="st">&quot;Hello&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You have specified the shebang of an unsupported language or shell
+dialect.</p>
+<p>ShellCheck only supports a limited number of Bourne-based Unix
+shells: bash, ksh, dash and POSIX sh.</p>
+<p>It does not support scripts written for other shells like Zsh, Csh,
+Tcsh or PowerShell, and it does not support other scripting languages
+like PHP, Python, JavaScript or SQL.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

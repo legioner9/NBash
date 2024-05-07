@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2072 – Decimals are not supported. Either use integers only, or use `bc` or `awk` to compare.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2072 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2072">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="decimals-are-not-supported-either-use-integers-only-or-use-bc-or-awk-to-compare">Decimals
+are not supported. Either use integers only, or use <code>bc</code> or
+<code>awk</code> to compare.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2072.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> 2 <span class="ot">-lt</span> 3.14 <span class="kw">]]</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2072.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> 200 <span class="ot">-lt</span> 314 <span class="kw">]]</span>                   <span class="co"># Use fixed point math</span></span>
+<span id="cb2-2"><a href="SC2072.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="va">$(</span><span class="bu">echo</span> <span class="st">&quot;2 &lt; 3.14&quot;</span> <span class="kw">|</span> <span class="fu">bc</span><span class="va">)</span> <span class="ot">==</span> 1 <span class="kw">]]</span>  <span class="co"># Use bc</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Bash and Posix sh does not support decimals in numbers. Decimals
+should either be avoided, or compared using a tool that does support
+them.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>If the strings happen to be version numbers and you're using
+<code>&lt;</code>, or <code>&gt;</code> to compare them as strings, and
+you consider this an acceptable thing to do, then you can ignore this
+warning.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2242 – Can only exit with status 0-255. Other data should be written to stdout/stderr.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2242 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2242">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="can-only-exit-with-status-0-255-other-data-should-be-written-to-stdoutstderr">Can
+only exit with status 0-255. Other data should be written to
+stdout/stderr.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2242.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span> <span class="st">&quot;Bad filename&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2242.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Bad filename&quot;</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb2-2"><a href="SC2242.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span> 1</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><code>exit</code> can only be used to signal success or failure (0 =
+success, 1-255 = failure). It can not be used to return string data, and
+it can not be used to print error messages.</p>
+<p>String data should be written stdout, before an <code>exit 0</code>
+to exit with success.</p>
+<p>Errors should instead be written to stderr, with an
+<code>exit 1</code> (or higher) to exit with failure:</p>
+<pre><code>if [ ! -f &quot;$1&quot; ]
+then
+   echo &quot;$1 is not a regular file&quot; &gt;&amp;2
+   exit 1
+fi</code></pre>
+<p>Note in particular that <code>exit -1</code> is equivalent to
+<code>exit 255</code>, but that <code>exit 1</code> is the more
+canonical way of expressing the first possible error code.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2216 – Piping to `rm`, a command that doesn't read stdin. Wrong command or missing `xargs`?</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2216 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2216">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="piping-to-rm-a-command-that-doesnt-read-stdin-wrong-command-or-missing-xargs">Piping
+to <code>rm</code>, a command that doesn't read stdin. Wrong command or
+missing <code>xargs</code>?</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2216.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="kw">|</span> <span class="bu">echo</span>                      <span class="co"># Want to print result</span></span>
+<span id="cb1-2"><a href="SC2216.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> files <span class="kw">|</span> <span class="fu">rm</span>                 <span class="co"># Want to delete items from a file</span></span>
+<span id="cb1-3"><a href="SC2216.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-type</span> f <span class="kw">|</span> <span class="fu">cp</span> dir        <span class="co"># Want to process &#39;find&#39; output</span></span>
+<span id="cb1-4"><a href="SC2216.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> file <span class="kw">|</span> <span class="fu">true</span>                 <span class="co"># Want to ignore errors</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2216.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span>
+<span id="cb2-2"><a href="SC2216.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> files <span class="kw">|</span> <span class="cf">while</span> <span class="va">IFS</span><span class="op">=</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">file</span><span class="kw">;</span> <span class="cf">do</span> <span class="fu">rm</span> <span class="at">--</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">done</span></span>
+<span id="cb2-3"><a href="SC2216.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-type</span> f <span class="at">-exec</span> cp {} dir <span class="dt">\;</span></span>
+<span id="cb2-4"><a href="SC2216.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> file <span class="kw">||</span> <span class="fu">true</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You are piping to one of several commands that don't read from
+stdin.</p>
+<p>This may happen when:</p>
+<ul>
+<li>Confusing one command for another, e.g. using <code>echo</code>
+where <code>cat</code> was intended.</li>
+<li>Incorrectly refactoring, leaving a <code>|</code> on the previous
+line.</li>
+<li>Missing <code>xargs</code>, because stdin should be passed as
+positional parameters instead (use <code>xargs -0</code> if at all
+possible).</li>
+<li>Intending to use <code>||</code> instead of <code>|</code></li>
+</ul>
+<p>Check your logic, and rewrite the command so data is passed
+correctly.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you've overridden a command to return output, you can either
+rename it to make this obvious, or <a href="ignore.html">ignore</a> this
+message.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

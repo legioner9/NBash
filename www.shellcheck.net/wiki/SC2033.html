@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2033 – Shell functions can't be passed to external commands. Use separate script or sh -c.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2033 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2033">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h1
+id="shell-functions-cant-be-passed-to-external-commands-use-separate-script-or-sh--c">Shell
+functions can't be passed to external commands. Use separate script or
+sh -c.</h1>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2033.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">foo()</span> <span class="kw">{</span> <span class="ex">bar</span> <span class="at">--baz</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span><span class="kw">;</span> <span class="ex">frob</span> <span class="at">--baz</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span><span class="kw">;</span> <span class="kw">};</span></span>
+<span id="cb1-2"><a href="SC2033.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-exec</span> foo {} +</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2033.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-exec</span> sh <span class="at">-c</span> <span class="st">&#39;bar --baz &quot;$@&quot;; frob --baz &quot;$@&quot;;&#39;</span> <span class="at">--</span> {} +</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Shell functions are only known to the shell. External commands like
+<code>find</code>, <code>xargs</code>, <code>su</code> and
+<code>sudo</code> do not recognize shell functions.</p>
+<p>Instead, the function contents can be executed in a shell, either
+through <code>sh -c</code> or by creating a separate shell script as an
+executable file.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you're intentionally passing a word that happens to have the same
+name as a declared function, you can quote it to make shellcheck ignore
+it, e.g.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2033.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nobody()</span> <span class="kw">{</span></span>
+<span id="cb3-2"><a href="SC2033.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sudo</span> <span class="at">-u</span> <span class="st">&quot;nobody&quot;</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span></span>
+<span id="cb3-3"><a href="SC2033.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

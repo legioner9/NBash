@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1043 – Found EOF further down, but with wrong casing.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1043 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1043">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="found-eof-further-down-but-with-wrong-casing">Found EOF further
+down, but with wrong casing.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1043.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&lt;&lt; EOF</span></span>
+<span id="cb1-2"><a href="SC1043.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="st">Hello World</span></span>
+<span id="cb1-3"><a href="SC1043.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">Eof</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1043.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&lt;&lt; EOF</span></span>
+<span id="cb2-2"><a href="SC1043.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="st">Hello World</span></span>
+<span id="cb2-3"><a href="SC1043.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="op">EOF</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a here document (<code>&lt;&lt;</code>) where the
+end token is missing. However, the end token appears with different case
+further down. If this was meant to be the end of the here document, make
+sure the case matches.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None. This error is only emitted when the here document is
+incomplete.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

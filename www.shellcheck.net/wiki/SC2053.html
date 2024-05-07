@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2053 – Quote the rhs of `=` in `[[ ]]` to prevent glob matching.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2053 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2053">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="quote-the-rhs-of--in---to-prevent-glob-matching">Quote the rhs
+of <code>=</code> in <code>[[ ]]</code> to prevent glob matching.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2053.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="va">$a</span> <span class="ot">=</span> <span class="va">$b</span> <span class="kw">]]</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2053.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="va">$a</span> <span class="ot">=</span> <span class="st">&quot;</span><span class="va">$b</span><span class="st">&quot;</span> <span class="kw">]]</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>When the right-hand side of <code>=</code>, <code>==</code> or
+<code>!=</code> is unquoted in <code>[[ .. ]]</code>, it will be treated
+like a glob.</p>
+<p>This has some unexpected consequences like
+<code>[[ $var = $var ]]</code> being false (for <code>var='[a]'</code>),
+or <code>[[ $foo = $bar ]]</code> giving a different result from
+<code>[[ $bar = $foo ]]</code>.</p>
+<p>The most common intention is to compare one variable to another as
+strings, in which case the right-hand side must be quoted.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you explicitly want to match against a pattern, you can <a
+href="ignore.html">ignore</a> this warning.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2328 – This redirection takes output away from the command substitution.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2328 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2328">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this-redirection-takes-output-away-from-the-command-substitution">This
+redirection takes output away from the command substitution.</h2>
+<p>(and companion warning "This command substitution will be empty
+because the command's output gets redirected away" which points to the
+relevant command substitution)</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2328.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span><span class="va">$(</span><span class="fu">tr</span> <span class="at">-d</span> <span class="st">&#39;:&#39;</span> <span class="op">&lt;</span> input.txt <span class="op">&gt;</span> output.txt<span class="va">)</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2328.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If the output should be captured INSTEAD OF being written to file</span></span>
+<span id="cb2-2"><a href="SC2328.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span><span class="va">$(</span><span class="fu">tr</span> <span class="at">-d</span> <span class="st">&#39;:&#39;</span> <span class="op">&lt;</span> input.txt<span class="va">)</span></span>
+<span id="cb2-3"><a href="SC2328.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="SC2328.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># If the output should be captured IN ADDITION to being written to file</span></span>
+<span id="cb2-5"><a href="SC2328.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span><span class="va">$(</span><span class="fu">tr</span> <span class="at">-d</span> <span class="st">&#39;:&#39;</span> <span class="op">&lt;</span> input.txt <span class="kw">|</span> <span class="fu">tee</span> output.txt<span class="va">)</span></span>
+<span id="cb2-6"><a href="SC2328.html#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="SC2328.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># If the output should NOT BE captured at all</span></span>
+<span id="cb2-8"><a href="SC2328.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tr</span> <span class="at">-d</span> <span class="st">&#39;:&#39;</span> <span class="op">&lt;</span> input.txt <span class="op">&gt;</span> output.txt</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck has found a command substitution (<code>$(..)</code>,
+<code>`..`</code>) that appears to never capture any output because the
+command's output is being redirected.</p>
+<p>Decide whether you want the output to be captured (by removing the
+redirection), to go into wherever it's redirected (by not running the
+command in a command substitution), or both (by using <code>tee</code>
+to copy the output to both file and stdout).</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

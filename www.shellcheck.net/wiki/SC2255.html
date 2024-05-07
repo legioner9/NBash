@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2255 – `[ ]` does not apply arithmetic evaluation. Evaluate with `$((..))` for numbers, or use string comparator for strings.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2255 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2255">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="--does-not-apply-arithmetic-evaluation-evaluate-with--for-numbers-or-use-string-comparator-for-strings"><code>[ ]</code>
+does not apply arithmetic evaluation. Evaluate with <code>$((..))</code>
+for numbers, or use string comparator for strings.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2255.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> 2<span class="pp">*</span>3 <span class="ot">-eq</span> array[i] <span class="bu">]</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2255.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="va">$((</span><span class="dv">2</span><span class="op">*</span><span class="dv">3</span><span class="va">))</span> <span class="ot">-eq</span> <span class="va">$((array</span><span class="op">[</span>i<span class="op">]</span><span class="va">))</span> <span class="bu">]</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>When using <code>[[ .. ]]</code> with numerical comparators
+(<code>-eq</code>, <code>-lt</code>, etc), the value on either side will
+be evaluated as an arithmetic expression. This means that
+<code>2*3</code> will be evaluated to <code>6</code>, and <code>x</code>
+will be evaluated to the contents of the variable <code>$x</code>.</p>
+<p>When using <code>[ .. ]</code>, this does not happen.
+<code>2*3</code> and <code>x</code> will both be considered invalid
+numbers. Instead, use e.g. <code>$((2*3))</code> to evaluate the
+expression before passing it to <code>[ .. ]</code>.</p>
+<p>Alternatively, if the expression should be considered a string, quote
+the expression and use a string comparison operator like <code>=</code>
+and <code>!=</code>.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

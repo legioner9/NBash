@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2189 – You can't have `|` between this redirection and the command it should apply to.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2189 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2189">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="you-cant-have--between-this-redirection-and-the-command-it-should-apply-to">You
+can't have <code>|</code> between this redirection and the command it
+should apply to.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2189.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span> file.txt <span class="kw">|</span> <span class="fu">grep</span> foo</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2189.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span> file.txt <span class="fu">grep</span> foo   <span class="co"># or more canonically: grep foo &lt; file.txt</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck has found a stage in a pipeline that consists of a
+redirection but no command. This doesn't make sense because a
+redirection without a command will not read or write any data.</p>
+<p>This is most likely to occur when deleting a command that had a
+redirection, but leaving a <code>|</code> behind instead of moving the
+redirection to a different command:</p>
+<pre><code># Match lines with line numbers
+nl &lt; foo.txt | grep bar
+
+# Incorrect attempt at removing line numbers. grep now has no input:
+&lt; foo.txt | grep bar
+
+# Line numbers correctly removed. grep now reads foo.txt as intended.
+grep bar &lt; foo.txt</code></pre>
+<h3 id="exceptions">Exceptions:</h3>
+<p>It's technically valid to do e.g.
+<code>echo foo | &gt; "$(cat)"</code> to truncate a file called "foo",
+but please consider rewriting such code.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

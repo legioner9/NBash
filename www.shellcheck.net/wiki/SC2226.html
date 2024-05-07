@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2226 – This `ln` has no destination. Check the arguments, or specify `.` explicitly.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2226 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2226">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this-ln-has-no-destination-check-the-arguments-or-specify--explicitly">This
+<code>ln</code> has no destination. Check the arguments, or specify
+<code>.</code> explicitly.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2226.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st"> </span><span class="va">$dir</span><span class="st">&quot;</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2226.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> /foo/bar/baz</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2226.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="st">&quot;</span><span class="va">$dir</span><span class="st">&quot;</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2226.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> /foo/bar/baz .</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a <code>ln</code> command with a single parameter.
+This may be because the source and destination was accidentally merged
+into a single argument, because the line was broken in an invalid way,
+or because you're using a non-standard invocation of <code>ln</code>
+that defaults to linking the argument into the current directory.</p>
+<p>If you wanted to specify both source and destination, fix the
+<code>ln</code> statement.</p>
+<p>If you wanted to link a file into the current directory, prefer using
+the more explicit and POSIX standard invocation
+<code>ln /your/file .</code></p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

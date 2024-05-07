@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: Contrib – </title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>Contrib – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/Contrib">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <p>This page lists various tips, tricks and user contributions. Feel
+free to add to it!</p>
+<ul>
+<li><a href="Recursiveness.html">Recursiveness</a>: Tips for running
+ShellCheck on all scripts in a directory</li>
+<li><a href="CentOS6.html">CentOS6</a> and <a
+href="More-Installation-Guides.html">More-Installation-Guides</a> for
+installing ShellCheck on CentOS 6</li>
+</ul>
+<h3 id="docker-wrapper-script">Docker wrapper script</h3>
+<p><a href="https://github.com/koalaman/shellcheck/issues/1126">@jrupp
+says</a>:</p>
+<p>I wrote a script to add ShellCheck to any system running Docker,
+without actually installing anything. I put this into
+<code>/usr/local/bin/shellcheck</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="Contrib.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash -</span></span>
+<span id="cb1-2"><a href="Contrib.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> last<span class="kw">;</span> <span class="cf">do</span> <span class="fu">true</span><span class="kw">;</span> <span class="cf">done</span></span>
+<span id="cb1-3"><a href="Contrib.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-iv</span> <span class="st">&quot;</span><span class="va">$(</span> <span class="bu">cd</span> <span class="st">&quot;</span><span class="va">$(</span> <span class="fu">dirname</span> <span class="at">--</span> <span class="st">&quot;</span><span class="va">${last}</span><span class="st">&quot;</span> <span class="va">)</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="bu">pwd</span> <span class="va">)</span><span class="st">&quot;</span>:/mnt koalaman/shellcheck <span class="st">&quot;</span><span class="va">${@</span><span class="op">:</span><span class="dv">1</span><span class="op">:</span><span class="va">$(($#</span><span class="op">-</span><span class="dv">1</span><span class="va">))}</span><span class="st">&quot;</span> <span class="st">&quot;</span><span class="va">$(</span><span class="fu">basename</span> <span class="at">--</span> <span class="st">&quot;</span><span class="va">${last}</span><span class="st">&quot;</span><span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
+<p>This works on Docker for Mac as well as a Linux system running
+Docker. I have tested it when calling <code>shellcheck</code> in any of
+these forms:</p>
+<ul>
+<li><code>shellcheck filename.sh</code></li>
+<li><code>shellcheck ../../filename.sh</code></li>
+<li><code>cat filename.sh | shellcheck -</code></li>
+<li><code>shellcheck -V</code></li>
+</ul>
+<p>No modification of my editor settings was needed for this to
+integrate (I checked Vim through syntastic and VSCode).</p>
+<h3 id="windows-git-bash-docker-wrapper-script">Windows Git-bash Docker
+wrapper script</h3>
+<p><a href="https://github.com/koalaman/shellcheck/issues/1978">@pletnes
+says</a>:</p>
+<blockquote>
+<p>I'd like to have a documented how-to for beginners on Windows.
+Personally, I use Docker in git-bash. I don't know if this is a "common
+setup". I came up with this first attempt, which could go into the
+wiki:</p>
+</blockquote>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="Contrib.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="Contrib.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">exec</span> docker run <span class="at">--rm</span> <span class="at">-v</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">cygpath</span> <span class="at">-aw</span> .<span class="va">)</span><span class="st">:/mnt&quot;</span> koalaman/shellcheck:stable <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="emacs-auto-fix-script">Emacs auto-fix script</h3>
+<p>By <a
+href="https://github.com/matthewpersico">@matthewpersico</a></p>
+<p>This function and keymap add the ability to auto-insert the
+appropriate <code>shellcheck disable=</code> directive in your script.
+With thanks to <a
+href="https://github.com/flycheck/flycheck/issues/1436"
+class="uri">https://github.com/flycheck/flycheck/issues/1436</a></p>
+<pre class="elisp"><code>;; The following is thanks to https://github.com/flycheck/flycheck/issues/1436
+(defun shellcheck-disable-error-at-point (&amp;optional pos)
+  &quot;Insert a shellcheck disable directive at the current error in the code.&quot;
+  (interactive)
+  (-when-let* ((error (tabulated-list-get-id pos))
+               (buffer (flycheck-error-buffer error))
+               (id (flycheck-error-id error))
+               ;;(message (flycheck-error-message error))
+               )
+    (when (buffer-live-p buffer)
+      (if (eq (window-buffer) (get-buffer flycheck-error-list-buffer))
+          ;; When called from within the error list, keep the error list,
+          ;; otherwise replace the current buffer.
+          (pop-to-buffer buffer &#39;other-window)
+        (switch-to-buffer buffer))
+      (let ((pos (flycheck-error-pos error)))
+        (unless (eq (goto-char pos) (point))
+          ;; If widening gets in the way of moving to the right place, remove it
+          ;; and try again
+          (widen)
+          (goto-char pos))
+
+        ;; Move to start of line with error position.
+        (beginning-of-line-text)
+
+        ;; The only error I know of where the disable directive is AFTER the
+        ;; error position, not before.
+        (when (string-equal id &quot;SC2148&quot;)
+              (forward-line)
+              )
+        ;; Insert the disable line
+        (insert (format &quot;# shellcheck disable=%s\n&quot; id))
+        ;; Indent it
+        (indent-for-tab-command))
+
+      ;; Re-highlight the errors
+      (flycheck-error-list-highlight-errors &#39;preserve-pos))))
+
+(define-key flycheck-error-list-mode-map (kbd &quot;d&quot;) #&#39;shellcheck-disable-error-at-point)</code></pre>
+<h3 id="jetbrains-webstorm-integration">JetBrains Webstorm
+Integration</h3>
+<p>Scroll to the bottom of <a
+href="https://github.com/koalaman/shellcheck/issues/360">Issue #360</a>
+for both a plugin and a native external command solution.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

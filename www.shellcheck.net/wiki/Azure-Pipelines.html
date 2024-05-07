@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: Azure-Pipelines – </title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>Azure-Pipelines – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/Azure-Pipelines">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <p>ShellCheck is installed by default on the <code>ubuntu-latest</code>
+host in Azure Pipelines. To see all installed software, consult the <a
+href="https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops#use-a-microsoft-hosted-agent">Azure
+documentation</a>.</p>
+<h2 id="caveats">Caveats</h2>
+<p>Trying to run ShellCheck as usual within the pipeline will produce an
+error:</p>
+<pre class="console"><code>$ shellcheck myscripts/*.sh
+myscripts/*.sh: myscripts/*.sh: openBinaryFile: does not exist (No such file or directory)</code></pre>
+<p>The recommended approach is to use <code>find</code> to search the
+files and pass a list of those to ShellCheck:</p>
+<pre class="console"><code>$ shellcheck $(find $(pwd)/myscripts/ -name &quot;*.sh&quot;)</code></pre>
+<h2 id="example-pipeline">Example pipeline</h2>
+<p>Copy the following YAML to run ShellCheck in Azure Pipelines against
+all <code>*.sh</code> files in the current directory:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="Azure-Pipelines.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">trigger</span><span class="kw">:</span></span>
+<span id="cb3-2"><a href="Azure-Pipelines.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> master</span></span>
+<span id="cb3-3"><a href="Azure-Pipelines.html#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="Azure-Pipelines.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb3-5"><a href="Azure-Pipelines.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">job</span><span class="kw">:</span><span class="at"> shellcheck</span></span>
+<span id="cb3-6"><a href="Azure-Pipelines.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">displayName</span><span class="kw">:</span><span class="at"> ShellCheck</span></span>
+<span id="cb3-7"><a href="Azure-Pipelines.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pool</span><span class="kw">:</span></span>
+<span id="cb3-8"><a href="Azure-Pipelines.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">vmImage</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;ubuntu-latest&#39;</span></span>
+<span id="cb3-9"><a href="Azure-Pipelines.html#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="Azure-Pipelines.html#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb3-11"><a href="Azure-Pipelines.html#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">script</span><span class="kw">:</span><span class="at"> shellcheck $(find $(pwd) -name &quot;*.sh&quot;)</span></span>
+<span id="cb3-12"><a href="Azure-Pipelines.html#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">displayName</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;Running ShellCheck&#39;</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1036 – `(` is invalid here. Did you forget to escape it?</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1036 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1036">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="-is-invalid-here-did-you-forget-to-escape-it"><code>(</code> is
+invalid here. Did you forget to escape it?</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1036.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="er">(</span><span class="ex">foo</span><span class="kw">)</span> <span class="ex">bar</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>Depends on your intention:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1036.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;(foo) bar&quot;</span>  <span class="co"># Literal parentheses</span></span>
+<span id="cb2-2"><a href="SC1036.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">foo</span><span class="va">)</span><span class="st"> bar&quot;</span> <span class="co"># Command expansion</span></span>
+<span id="cb2-3"><a href="SC1036.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;foo bar&quot;</span>    <span class="co"># Tried to use parentheses for grouping or function invocation</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck expected an ordinary shell word but found an opening
+parenthesis instead.</p>
+<p>Determine what you intended the parenthesis to do and rewrite
+accordingly. Common issues include:</p>
+<ul>
+<li>Wanting them to be literal, as in
+<code>echo (FAIL) Some tests failed</code>. In this case, it requires
+quoting.</li>
+<li>Wanting command expansion, as in <code>echo Today is (date)</code>.
+Add the missing <code>$</code>:
+<code>echo "Today is $(date)"</code></li>
+<li>Adding parentheses because other languages need them in that
+context, such as <code>foo (bar, 42)</code> to call a function. This
+should be <code>foo bar 42</code>. Also, shells do not support tuples or
+passing arrays as single parameters.</li>
+</ul>
+<h3 id="exceptions">Exceptions:</h3>
+<p>Bash allows some parentheses as part of assignment-like tokens to
+certain commands, including <code>export</code> and <code>eval</code>.
+This is a workaround in Bash to allow commands that normally would not
+be valid:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC1036.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> foo=<span class="er">(</span><span class="ex">bar</span><span class="kw">)</span>       <span class="co"># Valid command</span></span>
+<span id="cb3-2"><a href="SC1036.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> foo=<span class="er">(</span><span class="ex">bar</span><span class="kw">)</span>       <span class="co"># Invalid syntax</span></span>
+<span id="cb3-3"><a href="SC1036.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="va">f</span><span class="op">=</span>foo<span class="kw">;</span> <span class="bu">eval</span> <span class="va">$f</span>=<span class="er">(</span><span class="ex">bar</span><span class="kw">)</span> <span class="co"># Also invalid</span></span></code></pre></div>
+<p>In these cases, please quote the command, such as
+<code>eval "foo=(bar)"</code>. This does not change the behavior, but
+stops relying on Bash-specific parsing quirks.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

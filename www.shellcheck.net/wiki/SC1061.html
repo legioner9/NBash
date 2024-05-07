@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1061 – Couldn't find `done` for this `do`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1061 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1061">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="couldnt-find-done-for-this-do">Couldn't find <code>done</code>
+for this <code>do</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1061.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">yes()</span> <span class="kw">{</span></span>
+<span id="cb1-2"><a href="SC1061.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> <span class="bu">echo</span> <span class="st">&quot;y&quot;</span></span>
+<span id="cb1-3"><a href="SC1061.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">do</span></span>
+<span id="cb1-4"><a href="SC1061.html#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">true</span></span>
+<span id="cb1-5"><a href="SC1061.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1061.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">yes()</span> <span class="kw">{</span></span>
+<span id="cb2-2"><a href="SC1061.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> <span class="bu">echo</span> <span class="st">&quot;y&quot;</span></span>
+<span id="cb2-3"><a href="SC1061.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">do</span></span>
+<span id="cb2-4"><a href="SC1061.html#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">true</span></span>
+<span id="cb2-5"><a href="SC1061.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">done</span></span>
+<span id="cb2-6"><a href="SC1061.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a <code>do</code> without a corresponding
+<code>done</code>.</p>
+<p>Double check that the <code>done</code> exists, and that it correctly
+matches the indicated <code>do</code>. A companion warning <a
+href="SC1062.html">SC1062</a> is emitted where ShellCheck first noticed it
+was missing.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

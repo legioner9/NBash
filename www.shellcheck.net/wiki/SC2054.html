@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2054 – Use spaces, not commas, to separate array elements.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2054 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2054">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="use-spaces-not-commas-to-separate-array-elements">Use spaces,
+not commas, to separate array elements.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2054.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">flags</span><span class="op">=</span><span class="va">(</span><span class="st">&quot;-l&quot;</span>, <span class="st">&quot;-d&quot;</span>, <span class="st">&quot;--sort=size&quot;</span><span class="va">)</span></span>
+<span id="cb1-2"><a href="SC2054.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="st">&quot;</span><span class="va">${flags</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2054.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">flags</span><span class="op">=</span><span class="va">(</span><span class="st">&quot;-l&quot;</span> <span class="st">&quot;-d&quot;</span> <span class="st">&quot;--sort=size&quot;</span><span class="va">)</span></span>
+<span id="cb2-2"><a href="SC2054.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="st">&quot;</span><span class="va">${flags</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You appear to have used commas to separate array elements in an array
+assignment. Other languages require this, but bash instead treats the
+commas as literal strings.</p>
+<p>In the problematic code, the first element is <code>-l,</code> with
+the trailing comma, and the executed command ends up being
+<code>ls -l, -d, --sort=size</code>.</p>
+<p>In the correct code, the trailing commas have been removed, and the
+command will be <code>ls -l -d --sort=size</code> as expected.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None (if you actually want a trailing comma in your strings, move
+them inside the quotes).</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

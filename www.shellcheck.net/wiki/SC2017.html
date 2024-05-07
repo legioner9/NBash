@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2017 – Increase precision by replacing `a/b*c` with `a*c/b`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2017 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2017">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="increase-precision-by-replacing-abc-with-acb">Increase precision
+by replacing <code>a/b*c</code> with <code>a*c/b</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2017.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">percent</span><span class="op">=</span><span class="va">$((count</span><span class="op">/</span><span class="va">total</span><span class="op">*</span><span class="dv">100</span><span class="va">))</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2017.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">percent</span><span class="op">=</span><span class="va">$((count</span><span class="op">*</span><span class="dv">100</span><span class="op">/</span><span class="va">total))</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>If integer division is performed before multiplication, the
+intermediate result will be truncated causing a loss of precision.</p>
+<p>In this case, if <code>count=1</code> and <code>total=2</code>, then
+the problematic code results in <code>percent=0</code>, while the
+correct code gives <code>percent=50</code>.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you want and expect truncation you can ignore this message.</p>
+<p>ShellCheck doesn't warn when <code>b</code> and <code>c</code> are
+identical expressions, e.g. <code>a/10*10</code>, under the assumption
+that the intent is to rounded to the nearest 10 rather than the no-op of
+multiply by <code>1</code>.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

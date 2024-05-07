@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2037 – To assign the output of a command, use `var=$(cmd)` .</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2037 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2037">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="to-assign-the-output-of-a-command-use-varcmd-">To assign the
+output of a command, use <code>var=$(cmd)</code> .</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2037.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span>grep <span class="ex">-c</span> pattern file</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2037.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span><span class="va">$(</span><span class="fu">grep</span> <span class="at">-c</span> pattern file<span class="va">)</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>To assign the output of a command to a variable, use
+<code>$(command substitution)</code>. Just typing a command after the
+<code>=</code> sign does not work.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+<p>This warning triggers generally for <code>var=value -flag</code> and
+<code>var=value *glob*</code>. See related warning <a
+href="SC2209.html">SC2209</a> which matches
+<code>var=commonCommand</code>.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

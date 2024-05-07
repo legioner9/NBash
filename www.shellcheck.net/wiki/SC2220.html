@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2220 – Invalid flags are not handled. Add a `*)` case.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2220 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2220">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="invalid-flags-are-not-handled-add-a--case">Invalid flags are not
+handled. Add a <code>*)</code> case.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2220.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb1-2"><a href="SC2220.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">getopts</span> <span class="st">&quot;vr&quot;</span> <span class="va">f</span></span>
+<span id="cb1-3"><a href="SC2220.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb1-4"><a href="SC2220.html#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="st">&quot;</span><span class="va">$f</span><span class="st">&quot;</span> <span class="kw">in</span></span>
+<span id="cb1-5"><a href="SC2220.html#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">v</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&quot;verbose&quot;</span> <span class="cf">;;</span></span>
+<span id="cb1-6"><a href="SC2220.html#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">r</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&quot;recursive&quot;</span> <span class="cf">;;</span></span>
+<span id="cb1-7"><a href="SC2220.html#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">esac</span></span>
+<span id="cb1-8"><a href="SC2220.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2220.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb2-2"><a href="SC2220.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">getopts</span> <span class="st">&quot;vr&quot;</span> <span class="va">f</span></span>
+<span id="cb2-3"><a href="SC2220.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb2-4"><a href="SC2220.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="st">&quot;</span><span class="va">$f</span><span class="st">&quot;</span> <span class="kw">in</span></span>
+<span id="cb2-5"><a href="SC2220.html#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">v</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&quot;verbose&quot;</span> <span class="cf">;;</span></span>
+<span id="cb2-6"><a href="SC2220.html#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">r</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&quot;recursive&quot;</span> <span class="cf">;;</span></span>
+<span id="cb2-7"><a href="SC2220.html#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="pp">*</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&quot;usage: </span><span class="va">$0</span><span class="st"> [-v] [-r]&quot;</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb2-8"><a href="SC2220.html#cb2-8" aria-hidden="true" tabindex="-1"></a>       <span class="bu">exit</span> 1 <span class="cf">;;</span></span>
+<span id="cb2-9"><a href="SC2220.html#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">esac</span></span>
+<span id="cb2-10"><a href="SC2220.html#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>The <code>case</code> statement handling <code>getopts</code>
+arguments does not have a default branch to handle unknown flags.</p>
+<p>When a flag is not recognized, such as if passing <code>-Z</code> to
+the example code, <code>getopts</code> will set the variable to a
+literal question mark <code>?</code>. This should be handled along with
+all the valid flags, usually by printing a usage message and exiting
+with failure.</p>
+<p>Using a <code>\?)</code> or <code>?)</code> case will also match
+invalid flags, but<code>*)</code> would additionally match things like
+the empty string if the variable name was misspelled.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If your script's logic handles unrecognized flags in another way,
+e.g. after the <code>case</code> statement, you can ignore this
+warning.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

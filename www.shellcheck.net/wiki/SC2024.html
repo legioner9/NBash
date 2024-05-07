@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2024 – `sudo` doesn't affect redirects. Use `..| sudo tee file`</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2024 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2024">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="sudo-doesnt-affect-redirects-use--sudo-tee-file"><code>sudo</code>
+doesn't affect redirects. Use <code>..| sudo tee file</code></h2>
+<p>or "Use <code>..| sudo tee -a file</code>" instead of
+<code>&gt;&gt;</code> to append.</p>
+<p>or "Use <code>sudo cat file | ..</code>" instead of <code>&lt;</code>
+to read.</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<pre><code># Write to a file
+sudo echo 3 &gt; /proc/sys/vm/drop_caches
+
+# Append to a file
+sudo echo &#39;export FOO=bar&#39; &gt;&gt; /etc/profile
+
+# Read from a file
+sudo wc -l &lt; /etc/shadow</code></pre>
+<h3 id="correct-code">Correct code:</h3>
+<pre><code># Write to a file
+echo 3 | sudo tee /proc/sys/vm/drop_caches &gt; /dev/null
+
+# Append to a file
+echo &#39;export FOO=bar&#39; | sudo tee -a /etc/profile &gt; /dev/null
+
+# Read from a file
+sudo cat /etc/shadow | wc -l</code></pre>
+<h3 id="rationale">Rationale:</h3>
+<p>Redirections are performed by the current shell before
+<code>sudo</code> is started. This means that it will use the current
+shell's user and permissions to open and read from or write to the
+file.</p>
+<ul>
+<li>To <em>read</em> from a file that requires additional privileges,
+you can replace <code>sudo command &lt; file</code> with
+<code>sudo cat file | command</code>.</li>
+<li>To <em>write</em> to a file that requires additional privileges, you
+can replace <code>sudo command &gt; file</code> with
+<code>command | sudo tee file &gt; /dev/null</code></li>
+<li>To <em>append</em> to a file, use the above with
+<code>tee -a</code>.</li>
+<li>If the file does <em>not</em> require special privileges but the
+command <em>does</em>, then you are already doing the right thing:
+please <a href="ignore.html">ignore</a> the message.</li>
+</ul>
+<p>The substitutions work by having a command open the file for reading
+or writing, instead of relying on the current shell. Since the command
+is run with elevated privileges, it will have access to files that the
+current user does not.</p>
+<p>Note: there is nothing special about <code>tee</code>. It's just the
+simplest command that can both truncate and append to files without help
+from the shell. Here are equivalent alternatives:</p>
+<p>Truncating:</p>
+<pre><code>echo &#39;data&#39; | sudo dd of=file
+echo &#39;data&#39; | sudo sed &#39;w file&#39;</code></pre>
+<p>Appending:</p>
+<pre><code>echo &#39;data&#39; | sudo awk &#39;{ print $0 &gt;&gt; &quot;file&quot; }&#39;
+echo &#39;data&#39; | sudo sh -c &#39;cat &gt;&gt; file&#39;</code></pre>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you want to run a command as root but redirect as the normal user,
+you can <a href="ignore.html">ignore</a> this message.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

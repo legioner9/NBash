@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2318 – This assignment is used again in this `declare`, but won't have taken effect. Use two `declare`s.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2318 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2318">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this-assignment-is-used-again-in-this-declare-but-wont-have-taken-effect-use-two-declares">This
+assignment is used again in this <code>declare</code>, but won't have
+taken effect. Use two <code>declare</code>s.</h2>
+<p>(or <code>local</code>, <code>typeset</code>, <code>readonly</code>,
+<code>export</code>)</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2318.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-i</span> <span class="va">first</span><span class="op">=</span><span class="va">$1</span> <span class="va">current</span><span class="op">=</span><span class="va">$first</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2318.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-i</span> <span class="va">first</span><span class="op">=</span><span class="va">$1</span></span>
+<span id="cb2-2"><a href="SC2318.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-i</span> <span class="va">current</span><span class="op">=</span><span class="va">$first</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>When assigning variables via a command, such as <code>declare</code>,
+<code>typeset</code>, <code>local</code> etc, the expansion of all
+arguments happen before all assignments. This means that you can't have
+a variable assigned and then referenced in the same command.</p>
+<p>In the example, if <code>$1</code> is 42, the arguments will first be
+expanded in the current environment into
+<code>-i first=42 current=</code>. They will then be passed to
+<code>declare</code> which will perform the assignments.</p>
+<p>To correctly set <code>current=$first</code> so that it uses the new
+value of <code>first</code>, use two separate commands as shown.</p>
+<p>Note that this only applies when assigning via commands, because
+arguments are always expanded before commands are invoked. If assigning
+without a command, as in <code>first=$1 current=$first</code>, it will
+work as expected.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you want to reference the value as it existed before the command,
+e.g. if swapping variables with <code>declare x=$y y=$x</code>, you can
+ignore this message. However, consider rewriting it anyways for the
+benefit of any humans reading the code.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

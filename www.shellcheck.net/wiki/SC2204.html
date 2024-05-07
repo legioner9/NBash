@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2204 – `(..)` is a subshell. Did you mean `[ .. ]`, a test expression?</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2204 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2204">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="-is-a-subshell-did-you-mean----a-test-expression"><code>(..)</code>
+is a subshell. Did you mean <code>[ .. ]</code>, a test expression?</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2204.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">(</span> <span class="ex">-d</span> mydir <span class="kw">)</span></span>
+<span id="cb1-2"><a href="SC2204.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb1-3"><a href="SC2204.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;It&#39;s a directory&quot;</span></span>
+<span id="cb1-4"><a href="SC2204.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2204.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-d</span> mydir <span class="bu">]</span></span>
+<span id="cb2-2"><a href="SC2204.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb2-3"><a href="SC2204.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;It&#39;s a directory&quot;</span></span>
+<span id="cb2-4"><a href="SC2204.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Tests like <code>-d</code> to see if something is a directory or
+<code>-z</code> to see if it's non-empty are actually flags to the
+<code>test</code> command, and only work as tests in that context.
+<code>[</code> is an alias for <code>test</code>, so you'll frequently
+see them written as <code>[ -d mydir ]</code>.</p>
+<p><code>( .. )</code> is completely unrelated, and is a subshell mostly
+used to scope shell modifications. They should not be used in
+<code>if</code> or <code>while</code> statements in shell scripts.</p>
+<p>If you wanted to test a condition, rewrite the <code>( .. )</code> to
+<code>[ .. ]</code>.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+<p>This error is triggered by having a unary test operator as the first
+command name in a subshell, which won't normally happen. Note that
+there's a similar warning <a href="SC2205.html">SC2205</a> with a higher
+false positive rate.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

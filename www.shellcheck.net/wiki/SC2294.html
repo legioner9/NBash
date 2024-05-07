@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2294 – eval negates the benefit of arrays. Drop eval to preserve whitespace/symbols (or eval as string).</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2294 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2294">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="eval-negates-the-benefit-of-arrays-drop-eval-to-preserve-whitespacesymbols-or-eval-as-string">eval
+negates the benefit of arrays. Drop eval to preserve whitespace/symbols
+(or eval as string).</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2294.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check()</span> <span class="kw">{</span></span>
+<span id="cb1-2"><a href="SC2294.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">eval</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span> <span class="kw">||</span> <span class="bu">exit</span></span>
+<span id="cb1-3"><a href="SC2294.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2294.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check()</span> <span class="kw">{</span></span>
+<span id="cb2-2"><a href="SC2294.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span> <span class="kw">||</span> <span class="bu">exit</span></span>
+<span id="cb2-3"><a href="SC2294.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found <code>eval</code> used on an array (or equivalently,
+<code>"$@"</code>). This is problematic because it effectively throws
+away all boundary information and rebuilds it from shell words.</p>
+<p>Let's say you invoke
+<code>check sed -i '$d' "my file.txt"</code>:</p>
+<p><code>eval "$@"</code> will:</p>
+<ol>
+<li>Join the elements on spaces: <code>sed -i $d my file.txt</code></li>
+<li>Split the string on shell word boundaries: <code>sed</code>,
+<code>-i</code>, <code>$d</code>, <code>my</code>
+<code>file.txt</code></li>
+<li>Perform shell expansions (assuming <code>$d</code> is unset):
+<code>sed</code>, <code>-i</code>, <code>my</code>,
+<code>file.txt</code></li>
+<li>Execute the first element as the command and the rest as its
+arguments, as if running <code>sed -i 'my' 'file.txt'</code></li>
+</ol>
+<p><code>"$@"</code> will</p>
+<ol>
+<li>Execute the first element as the command and the rest as its
+arguments, as if running <code>sed -i '$d' 'my file.txt'</code></li>
+</ol>
+<p>Note that while <code>"$@"</code> is essentially always better than
+<code>eval "$@"</code>, it's easy to unintentionally introduce a
+dependency on bad behavior through the shell debugging anti-strategy of
+"adding quotes until it works":</p>
+<pre><code># Works with problematic example because of double-escaping, fails with correct example
+check ls -l &quot;&#39;My File.txt&#39;&quot; 
+
+# Works with correct example the way it was always intended:
+check ls -l &quot;My File.txt&quot; </code></pre>
+<p>The correct example is still better, but the function invocation has
+to be tweaked as well.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If each of the array elements is a carefully escaped shell command or
+word, use <code>*</code> instead of <code>@</code> to explicitly join
+the elements on spaces which is what would happen anyways:</p>
+<pre><code>on_exit=(
+  &#39;rm /tmp/myfile; &#39;
+  &#39;echo &quot;Finished on $(date)&quot; &gt; log.txt; &#39;
+)
+
+# Equivalent to `eval &quot;${on_exit[@]}&quot;`, but more explicit
+eval &quot;${on_exit[*]}&quot;
+
+# Even better in this case, as it does not require
+# semicolons and commands don&#39;t interfere:
+for cmd in &quot;${on_exit[@]}&quot;
+do
+  eval &quot;$cmd&quot;
+done</code></pre>
+<p>If you require <code>eval</code> for another part of the command,
+explicitly transform the array into a series of escaped shell words.
+This ensures that the array elements will <code>eval</code> back to
+themselves:</p>
+<pre><code># Assumed to be outside of our control, 
+# otherwise we would output this in an array as well:
+COMMAND=&#39;dialog --menu &quot;Choose file:&quot; 15 40 4&#39;
+
+# Our array:
+array=(
+  1 &quot;My File.txt&quot;
+  2 &quot;My Other File.txt&quot;
+)
+eval &quot;$COMMAND ${array[*]@Q}&quot;                     # Bash 4+
+eval &quot;$COMMAND $(printf &quot;%q &quot; &quot;${array[@]}&quot;)&quot;     # Bash 1+</code></pre>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: JUnit – Getting JUnit XML from ShellCheck</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>JUnit – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/JUnit">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="getting-junit-xml-from-shellcheck">Getting JUnit XML from
+ShellCheck</h2>
+<p>ShellCheck does not have a JUnit XML formatter, but <a
+href="JUnit.html#checkstyle2junitxslt">at the end of this article</a> you can find
+<code>checkstyle2junit.xslt</code>, an XSLT program that converts from
+CheckStyle's XML output to JUnit's XML.</p>
+<p>Here's ShellCheck's (CheckStyle-compatible) XML output:</p>
+<pre class="console"><code>$ shellcheck -f checkstyle foo.bash bar.bash
+
+&lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39;?&gt;
+&lt;checkstyle version=&#39;4.3&#39;&gt;
+&lt;file name=&#39;foo.bash&#39; &gt;
+&lt;error line=&#39;1&#39; column=&#39;1&#39; severity=&#39;error&#39; message=&#39;Tips depend on target shell and yours is unknown. Add a shebang.&#39; source=&#39;ShellCheck.SC2148&#39; /&gt;
+&lt;error line=&#39;1&#39; column=&#39;6&#39; severity=&#39;info&#39; message=&#39;Double quote to prevent globbing and word splitting.&#39; source=&#39;ShellCheck.SC2086&#39; /&gt;
+&lt;/file&gt;
+&lt;file name=&#39;bar.bash&#39;&gt;
+&lt;/file&gt;
+&lt;/checkstyle&gt;</code></pre>
+<p>Here it is with the XSLT applied using <code>xmlstarlet</code>:</p>
+<pre class="console"><code>$ shellcheck -f checkstyle foo.bash bar.bash | xmlstarlet tr checkstyle2junit.xslt
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;testsuite tests=&quot;2&quot; failures=&quot;2&quot;&gt;
+&lt;testcase classname=&quot;foo.bash&quot; name=&quot;foo.bash&quot;&gt;
+&lt;failure type=&quot;ShellCheck.SC2148&quot;&gt;Line 1: Tips depend on target shell and yours is unknown. Add a shebang. See https://www.shellcheck.net/wiki/SC2148&lt;/failure&gt;
+&lt;failure type=&quot;ShellCheck.SC2086&quot;&gt;Line 1: Double quote to prevent globbing and word splitting. See https://www.shellcheck.net/wiki/SC2086&lt;/failure&gt;
+&lt;/testcase&gt;
+&lt;testcase classname=&quot;bar.bash&quot; name=&quot;bar.bash&quot;&gt;
+&lt;/testcase&gt;
+&lt;/testsuite&gt;</code></pre>
+<h3 id="checkstyle2junitxslt"><code>checkstyle2junit.xslt</code></h3>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode xslt"><code class="sourceCode xslt"><span id="cb3-1"><a href="JUnit.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">&lt;?</span><span class="kw">xml</span><span class="ot"> version=</span><span class="st">&quot;1.0&quot;</span><span class="ot"> encoding=</span><span class="st">&quot;UTF-8&quot;</span><span class="fu">?&gt;</span></span>
+<span id="cb3-2"><a href="JUnit.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;</span><span class="bu">xsl:stylesheet</span><span class="ot"> version=</span><span class="st">&quot;1.0&quot;</span><span class="ot"> xmlns:xsl=</span><span class="st">&quot;http://www.w3.org/1999/XSL/Transform&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb3-3"><a href="JUnit.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;</span><span class="bu">xsl:output</span><span class="ot"> encoding=</span><span class="st">&quot;UTF-8&quot;</span><span class="ot"> method=</span><span class="st">&quot;xml&quot;</span><span class="kw">&gt;&lt;/</span><span class="bu">xsl:output</span><span class="kw">&gt;</span></span>
+<span id="cb3-4"><a href="JUnit.html#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="JUnit.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;</span><span class="bu">xsl:template</span><span class="ot"> match=</span><span class="va">&quot;/&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb3-6"><a href="JUnit.html#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;testsuite&gt;</span></span>
+<span id="cb3-7"><a href="JUnit.html#cb3-7" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;</span><span class="bu">xsl:attribute</span><span class="ot"> name=</span><span class="st">&quot;tests&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb3-8"><a href="JUnit.html#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;count(.//file)&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb3-9"><a href="JUnit.html#cb3-9" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;/</span><span class="bu">xsl:attribute</span><span class="kw">&gt;</span></span>
+<span id="cb3-10"><a href="JUnit.html#cb3-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;</span><span class="bu">xsl:attribute</span><span class="ot"> name=</span><span class="st">&quot;failures&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb3-11"><a href="JUnit.html#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;count(.//error)&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb3-12"><a href="JUnit.html#cb3-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;/</span><span class="bu">xsl:attribute</span><span class="kw">&gt;</span></span>
+<span id="cb3-13"><a href="JUnit.html#cb3-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;</span><span class="bu">xsl:for-each</span><span class="ot"> select=</span><span class="va">&quot;//checkstyle&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb3-14"><a href="JUnit.html#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">&lt;</span><span class="bu">xsl:apply-templates</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb3-15"><a href="JUnit.html#cb3-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;/</span><span class="bu">xsl:for-each</span><span class="kw">&gt;</span></span>
+<span id="cb3-16"><a href="JUnit.html#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;/testsuite&gt;</span></span>
+<span id="cb3-17"><a href="JUnit.html#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;/</span><span class="bu">xsl:template</span><span class="kw">&gt;</span></span>
+<span id="cb3-18"><a href="JUnit.html#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="JUnit.html#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;</span><span class="bu">xsl:template</span><span class="ot"> match=</span><span class="va">&quot;file&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb3-20"><a href="JUnit.html#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;testcase&gt;</span></span>
+<span id="cb3-21"><a href="JUnit.html#cb3-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;</span><span class="bu">xsl:attribute</span><span class="ot"> name=</span><span class="st">&quot;classname&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb3-22"><a href="JUnit.html#cb3-22" aria-hidden="true" tabindex="-1"></a>        <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;@name&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb3-23"><a href="JUnit.html#cb3-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;/</span><span class="bu">xsl:attribute</span><span class="kw">&gt;</span></span>
+<span id="cb3-24"><a href="JUnit.html#cb3-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;</span><span class="bu">xsl:attribute</span><span class="ot"> name=</span><span class="st">&quot;name&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb3-25"><a href="JUnit.html#cb3-25" aria-hidden="true" tabindex="-1"></a>        <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;@name&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb3-26"><a href="JUnit.html#cb3-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;/</span><span class="bu">xsl:attribute</span><span class="kw">&gt;</span></span>
+<span id="cb3-27"><a href="JUnit.html#cb3-27" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;</span><span class="bu">xsl:apply-templates</span><span class="ot"> select=</span><span class="va">&quot;node()&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb3-28"><a href="JUnit.html#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;/testcase&gt;</span></span>
+<span id="cb3-29"><a href="JUnit.html#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;/</span><span class="bu">xsl:template</span><span class="kw">&gt;</span></span>
+<span id="cb3-30"><a href="JUnit.html#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="JUnit.html#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;</span><span class="bu">xsl:template</span><span class="ot"> match=</span><span class="va">&quot;error&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb3-32"><a href="JUnit.html#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;failure&gt;</span></span>
+<span id="cb3-33"><a href="JUnit.html#cb3-33" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;</span><span class="bu">xsl:attribute</span><span class="ot"> name=</span><span class="st">&quot;type&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb3-34"><a href="JUnit.html#cb3-34" aria-hidden="true" tabindex="-1"></a>        <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;@source&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb3-35"><a href="JUnit.html#cb3-35" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;/</span><span class="bu">xsl:attribute</span><span class="kw">&gt;</span></span>
+<span id="cb3-36"><a href="JUnit.html#cb3-36" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;</span><span class="bu">xsl:text</span><span class="kw">&gt;</span>Line <span class="kw">&lt;/</span><span class="bu">xsl:text</span><span class="kw">&gt;</span></span>
+<span id="cb3-37"><a href="JUnit.html#cb3-37" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;@line&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb3-38"><a href="JUnit.html#cb3-38" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;</span><span class="bu">xsl:text</span><span class="kw">&gt;</span>: <span class="kw">&lt;/</span><span class="bu">xsl:text</span><span class="kw">&gt;</span></span>
+<span id="cb3-39"><a href="JUnit.html#cb3-39" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;@message&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb3-40"><a href="JUnit.html#cb3-40" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;</span><span class="bu">xsl:text</span><span class="kw">&gt;</span> See https://www.shellcheck.net/wiki/<span class="kw">&lt;/</span><span class="bu">xsl:text</span><span class="kw">&gt;</span></span>
+<span id="cb3-41"><a href="JUnit.html#cb3-41" aria-hidden="true" tabindex="-1"></a>      <span class="kw">&lt;</span><span class="bu">xsl:value-of</span><span class="ot"> select=</span><span class="va">&quot;substring(@source, </span><span class="st">&#39;12&#39;</span><span class="va">)&quot;</span><span class="ot"> </span><span class="kw">/&gt;</span></span>
+<span id="cb3-42"><a href="JUnit.html#cb3-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;/failure&gt;</span></span>
+<span id="cb3-43"><a href="JUnit.html#cb3-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;/</span><span class="bu">xsl:template</span><span class="kw">&gt;</span></span>
+<span id="cb3-44"><a href="JUnit.html#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/</span><span class="bu">xsl:stylesheet</span><span class="kw">&gt;</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

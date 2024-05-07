@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2198 – Arrays don't work as operands in `[ ]`. Use a loop (or concatenate with `*` instead of `@`).</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2198 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2198">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="arrays-dont-work-as-operands-in---use-a-loop-or-concatenate-with--instead-of-">Arrays
+don't work as operands in <code>[ ]</code>. Use a loop (or concatenate
+with <code>*</code> instead of <code>@</code>).</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2198.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">ext</span><span class="op">=</span>png</span>
+<span id="cb1-2"><a href="SC2198.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">allowedExt</span><span class="op">=</span><span class="va">(</span>jpg bmp png<span class="va">)</span></span>
+<span id="cb1-3"><a href="SC2198.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$ext</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;</span><span class="va">${allowedExt</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span> <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">&quot;Extension is valid&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2198.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">ext</span><span class="op">=</span>png</span>
+<span id="cb2-2"><a href="SC2198.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">allowedExt</span><span class="op">=</span><span class="va">(</span>jpg bmp png<span class="va">)</span></span>
+<span id="cb2-3"><a href="SC2198.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> value <span class="kw">in</span> <span class="st">&quot;</span><span class="va">${allowedExt</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span></span>
+<span id="cb2-4"><a href="SC2198.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb2-5"><a href="SC2198.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$ext</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;</span><span class="va">$value</span><span class="st">&quot;</span> <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">&quot;Extension is valid&quot;</span></span>
+<span id="cb2-6"><a href="SC2198.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Array expansions become a series of words in <code>[ .. ]</code>.
+Operators expect single words only.</p>
+<p>The problematic code is equivalent to
+<code>[ "$ext" = jpg bmp png ]</code>, which is invalid syntax. A
+typical error message is <code>bash: [: too many arguments</code> or
+<code>dash: somefile: unexpected operator</code>.</p>
+<p>Instead, use a <code>for</code> loop to iterate over values, and
+apply your condition to each.</p>
+<p>Alternatively, if you want to concatenate all the values in the array
+into a single string for your test, use <code>"$*"</code> or
+<code>"${array[*]}"</code>.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you are dynamically building an a test expression, make your array
+the only thing in the test expression. ShellCheck will not emit a
+warning for: <code>set -- 1 -lt 2; [ "$@" ]</code></p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

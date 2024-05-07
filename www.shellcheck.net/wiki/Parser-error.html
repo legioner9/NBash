@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: Parser-error – </title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>Parser-error – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/Parser-error">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <p>This page is about how ShellCheck reports parser errors, to aid you
+in finding problems. If you're getting a parser error for code you know
+or think is correct, you should <a
+href="https://github.com/koalaman/shellcheck/issues/new">submit a
+bug</a> with an example!</p>
+<p>When ShellCheck is unable to parse a file, it'll output several
+errors to help pinpoint the problem:</p>
+<p>Consider this script, with a missing double quote on line 1:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="Parser-error.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> host <span class="st">&quot;</span><span class="va">$cmd</span></span>
+<span id="cb1-2"><a href="Parser-error.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="st">echo &quot;</span>Finished<span class="st">&quot;</span></span></code></pre></div>
+<p>Bash says:</p>
+<pre><code>file: line 2: unexpected EOF while looking for matching `&quot;&#39;
+file: line 3: syntax error: unexpected end of file</code></pre>
+<p>ShellCheck says:</p>
+<pre><code>In file line 1:
+ssh host &quot;$cmd
+^-- SC1009: The mentioned parser error was in this simple command.
+
+In file line 2:
+echo &quot;Finished&quot;
+              ^-- SC1073: Couldn&#39;t parse this double quoted string.
+               ^-- SC1072: Unexpected eof. Fix any mentioned problems and try again.</code></pre>
+<ol>
+<li>One error showing the direct problem (SC1072, unexpected eof)
+<em>(Note: see <a href="https://www.shellcheck.net/issues/1036">#1036</a>)</em></li>
+<li>One error showing the construct being parsed (SC1073)</li>
+<li>One info showing the outer construct being parsed (SC1009)</li>
+<li>Potentially some specific suggestions, such as when missing an
+<code>fi</code>.</li>
+</ol>
+<p>Here, ShellCheck says that the command on line 1 is faulty, which
+makes it easier to find and fix the actual problem.</p>
+<p>Most of ShellCheck's functionality (specifically, any checks with
+code &gt;= SC2000) only applies to scripts that parse successfully, so
+make sure to rerun ShellCheck after fixing any syntax errors.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

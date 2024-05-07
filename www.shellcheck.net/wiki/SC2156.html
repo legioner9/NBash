@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2156 – Injecting filenames is fragile and insecure. Use parameters.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2156 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2156">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="injecting-filenames-is-fragile-and-insecure-use-parameters">Injecting
+filenames is fragile and insecure. Use parameters.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2156.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">&#39;*.mp3&#39;</span> <span class="at">-exec</span> sh <span class="at">-c</span> <span class="st">&#39;i=&quot;{}&quot;; sox &quot;$i&quot; &quot;${i%.mp3}.wav&quot;&#39;</span> <span class="dt">\;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2156.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">&#39;*.mp3&#39;</span> <span class="at">-exec</span> sh <span class="at">-c</span> <span class="st">&#39;i=&quot;$1&quot;; sox &quot;$i&quot; &quot;${i%.mp3}.wav&quot;&#39;</span> shell {} <span class="dt">\;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>In the problematic example, the filename is passed by injecting it
+into a shell string. Any shell metacharacters in the filename will be
+interpreted as part of the script, and not as part of the filename. This
+can break the script and allow arbitrary code execution exploits.</p>
+<p>In the correct example, the filename is passed as a parameter. It
+will be safely treated as literal text. Note that when using the shell
+command with <code>-c</code>, the first parameter to the shell command
+(in the example "shell") becomes <code>$0</code> in the shell command's
+environment, where it is used e.g. in shell error messages (you can set
+it to an arbitrary value, but it makes sense to set it to the shell's
+name). You should not use the first parameter to the shell command as a
+data processing parameter because you cannot, for example, access
+<code>$0</code> via <code>$*</code> in the shell command (because
+<code>$*</code> starts with <code>$1</code>), and as previously
+mentioned, <code>$0</code> is used in the shell command's error
+messages, which would be confusing.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

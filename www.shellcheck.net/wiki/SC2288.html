@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2288 – This is interpreted as a command name ending with apostrophe. Double check syntax.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2288 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2288">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this-is-interpreted-as-a-command-name-ending-with-apostrophe-double-check-syntax">This
+is interpreted as a command name ending with apostrophe. Double check
+syntax.</h2>
+<p>(also applies to multiple other characters like
+<code>.,([{&lt;&gt;}])#"'</code>)</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2288.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span><span class="va">$(</span><span class="st">&quot;wget &#39;http://www.shellcheck.net/&#39;&quot;</span><span class="va">)</span></span>
+<span id="cb1-2"><a href="SC2288.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> Usage: <span class="va">$0</span> {start<span class="kw">|</span><span class="ex">stop</span><span class="kw">|</span><span class="ex">restart}</span></span>
+<span id="cb1-3"><a href="SC2288.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">array</span><span class="op">=</span>val1, <span class="ex">val2,</span> val3</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2288.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$(</span><span class="fu">wget</span> <span class="st">&#39;http://www.shellcheck.net/&#39;</span><span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb2-2"><a href="SC2288.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Usage: </span><span class="va">$0</span><span class="st"> {start|stop|restart}&quot;</span></span>
+<span id="cb2-3"><a href="SC2288.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">array</span><span class="op">=</span><span class="va">(</span>val1 val2 val3<span class="va">)</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a command name ending with a symbol, such as a
+comma, parenthesis, quote, or similar. This is almost always due to a
+syntax issue in the script.</p>
+<p>In the examples, bad quoting and invalid array syntax caused the
+shell to try to run commands ending in apostrophe, curly brace, and
+comma, respectively.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you have a command that <em>does</em> end in a symbol, you can
+ignore this message.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

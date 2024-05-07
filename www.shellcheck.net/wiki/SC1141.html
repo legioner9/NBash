@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1141 – Unexpected tokens after compound command. Bad redirection or missing `;`/`&&`/`||`/`|`?</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1141 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1141">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="unexpected-tokens-after-compound-command-bad-redirection-or-missing-">Unexpected
+tokens after compound command. Bad redirection or missing
+<code>;</code>/<code>&amp;&amp;</code>/<code>||</code>/<code>|</code>?</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1141.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$2</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">do</span> <span class="fu">true</span><span class="kw">;</span> <span class="cf">done</span> <span class="dt">\</span></span>
+<span id="cb1-2"><a href="SC1141.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span> <span class="at">-n</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb1-3"><a href="SC1141.html#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="SC1141.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="fu">sleep</span> 1<span class="kw">;</span> <span class="cf">do</span> <span class="fu">date</span><span class="kw">;</span> <span class="cf">done</span> <span class="op">&gt;</span> my <span class="fu">file</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1141.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$2</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">do</span> <span class="fu">true</span><span class="kw">;</span> <span class="cf">done</span> <span class="dt">\</span></span>
+<span id="cb2-2"><a href="SC1141.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb2-3"><a href="SC1141.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="SC1141.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="fu">sleep</span> 1<span class="kw">;</span> <span class="cf">do</span> <span class="fu">date</span><span class="kw">;</span> <span class="cf">done</span> <span class="op">&gt;</span> <span class="st">&quot;my file&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found unexpected trailing characters after a compound
+command.</p>
+<p>The only things allowed after compound commands are redirections,
+shell keywords, and the various command separators (<code>;</code>,
+<code>&amp;</code>, <code>|</code>, <code>&amp;&amp;</code>,
+<code>||</code>).</p>
+<p>In the first example, a <code>|</code> was missing, causing
+<code>head</code> to appear as an unexpected trailing word, instead of
+being piped to. In the second example, a lack of quoting caused
+<code>file</code> to appear as an unexpected trailing word, instead of
+being part of the redirection.</p>
+<p>Examine your statement and correct the problem.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

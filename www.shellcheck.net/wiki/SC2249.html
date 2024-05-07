@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2249 – Consider adding a default `*)` case, even if it just exits with error.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2249 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2249">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="consider-adding-a-default--case-even-if-it-just-exits-with-error">Consider
+adding a default <code>*)</code> case, even if it just exits with
+error.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2249.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="kw">in</span></span>
+<span id="cb1-2"><a href="SC2249.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="ss">start</span><span class="kw">)</span> <span class="ex">start_service</span> <span class="cf">;;</span></span>
+<span id="cb1-3"><a href="SC2249.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="ss">stop</span><span class="kw">)</span>  <span class="ex">stop_service</span> <span class="cf">;;</span></span>
+<span id="cb1-4"><a href="SC2249.html#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="ss">restart</span><span class="kw">|</span><span class="ss">reload</span><span class="kw">|</span><span class="ss">force-reload</span><span class="kw">)</span></span>
+<span id="cb1-5"><a href="SC2249.html#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">stop_service</span><span class="kw">;</span></span>
+<span id="cb1-6"><a href="SC2249.html#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">start_service</span><span class="cf">;;</span></span>
+<span id="cb1-7"><a href="SC2249.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">esac</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2249.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="kw">in</span></span>
+<span id="cb2-2"><a href="SC2249.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="ss">start</span><span class="kw">)</span> <span class="ex">start_service</span> <span class="cf">;;</span></span>
+<span id="cb2-3"><a href="SC2249.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="ss">stop</span><span class="kw">)</span>  <span class="ex">stop_service</span> <span class="cf">;;</span></span>
+<span id="cb2-4"><a href="SC2249.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="ss">restart</span><span class="kw">|</span><span class="ss">reload</span><span class="kw">|</span><span class="ss">force-reload</span><span class="kw">)</span></span>
+<span id="cb2-5"><a href="SC2249.html#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">stop_service</span><span class="kw">;</span></span>
+<span id="cb2-6"><a href="SC2249.html#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">start_service</span><span class="cf">;;</span></span>
+<span id="cb2-7"><a href="SC2249.html#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="pp">*</span><span class="kw">)</span></span>
+<span id="cb2-8"><a href="SC2249.html#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="op">&gt;&amp;</span><span class="dv">2</span> <span class="st">&quot;Invalid choice: </span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb2-9"><a href="SC2249.html#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb2-10"><a href="SC2249.html#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="cf">esac</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a <code>case</code> statement that may not be
+considering all possible cases. This may mean that only the <a
+href="https://en.wikipedia.org/wiki/Happy_path">happy paths</a> are
+accounted for.</p>
+<p>Consider adding a default case to handle other values. If you don't
+know what to do or don't believe it'll ever happen, exiting with an
+error is good, fail-fast practice.</p>
+<p>The example is adapted from a real world Debian init script, which
+due to a missing default case reports success on any misspelled command
+(here with underscore instead of dash):</p>
+<pre><code>$ /etc/init.d/screen-cleanup force_reload &amp;&amp; echo success
+success</code></pre>
+<h3 id="exceptions">Exceptions:</h3>
+<p>This suggestion only triggers in verbose mode
+(<code>-S verbose</code>).</p>
+<p>If you don't have a default case because the default should be to
+take no action, consider adding a comment to other humans:</p>
+<pre><code>case &quot;$(uname)&quot; in
+  CYGWIN*) cygwin=1;;
+  MINGW*) mingw=1;;
+  *) ;; # No special workarounds identified
+esac</code></pre>
+<p>If you believe that it's impossible for the expression to have any
+other value, it's considered good practice to add the equivalent of an
+<code>assert(0)</code> to fail fast if this assumption should turn out
+to be incorrect in the current or future versions:</p>
+<pre><code>case &quot;$result&quot; in
+  true)  proceed;;
+  false) cancel;;
+  *) echo &gt;&amp;2 &quot;Submit bug report: &#39;$result&#39; should be true or false.&quot;
+     exit 127
+esac</code></pre>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

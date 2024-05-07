@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2178 – Variable was used as an array but is now assigned a string.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2178 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2178">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="variable-was-used-as-an-array-but-is-now-assigned-a-string">Variable
+was used as an array but is now assigned a string.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2178.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">flags</span><span class="op">[</span><span class="dv">0</span><span class="op">]=</span><span class="st">&quot;-r&quot;</span></span>
+<span id="cb1-2"><a href="SC2178.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">flags</span><span class="op">[</span><span class="dv">1</span><span class="op">]=</span><span class="st">&quot;--delete-after&quot;</span></span>
+<span id="cb1-3"><a href="SC2178.html#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="SC2178.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$dryrun</span><span class="st">&quot;</span> <span class="bu">]</span></span>
+<span id="cb1-5"><a href="SC2178.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb1-6"><a href="SC2178.html#cb1-6" aria-hidden="true" tabindex="-1"></a>   <span class="va">flags</span><span class="op">=</span><span class="st">&quot;--dry-run&quot;</span></span>
+<span id="cb1-7"><a href="SC2178.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2178.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">flags</span><span class="op">[</span><span class="dv">0</span><span class="op">]=</span><span class="st">&quot;-r&quot;</span></span>
+<span id="cb2-2"><a href="SC2178.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">flags</span><span class="op">[</span><span class="dv">1</span><span class="op">]=</span><span class="st">&quot;--delete-after&quot;</span></span>
+<span id="cb2-3"><a href="SC2178.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="SC2178.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$dryrun</span><span class="st">&quot;</span> <span class="bu">]</span></span>
+<span id="cb2-5"><a href="SC2178.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb2-6"><a href="SC2178.html#cb2-6" aria-hidden="true" tabindex="-1"></a>   <span class="va">flags</span><span class="op">=</span><span class="va">(</span> <span class="st">&quot;--dry-run&quot;</span> <span class="va">)</span></span>
+<span id="cb2-7"><a href="SC2178.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck noticed that you have used a variable as an array, but
+then assign it a string. <code>array=foo</code> is equivalent to
+<code>array[0]=foo</code>, and leaves the rest of the elements
+unaffected.</p>
+<p>In the incorrect code, <code>"${flags[@]}"</code> would contain
+<code>--dry-run</code> <code>--delete-after</code>.</p>
+<p>To set an array to only a single, given element, you should use
+<code>array=( foo )</code>.</p>
+<p>In the correct code, <code>"${flags[@]}"</code> will contain
+<code>--dry-run</code> only.</p>
+<p>Another possible cause is accidentally missing the <code>$</code> on
+a previous assignment: <code>var=(my command); var=bar</code> instead of
+<code>var=$(my command); var=bar</code>. If the variable is not intended
+to be an array, ensure that it's never assigned as one.</p>
+<h3 id="bugs">Bugs:</h3>
+<p>There is a <a
+href="https://github.com/koalaman/shellcheck/issues/1309">known
+issue</a> with this check's handling of <code>local</code> variables,
+causing ShellCheck to flag variables that were previously declared as
+arrays, even if they are in different scopes.</p>
+<p>The easiest workaround is to simply use different variable names.
+Alternatively, you can <a href="ignore.html">ignore</a> the check.</p>
+<p>It is also possible to satisfy ShellCheck by declaring the
+<code>local</code> variable separately from assigning to it, e.g.:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2178.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">foo ()</span> <span class="kw">{</span></span>
+<span id="cb3-2"><a href="SC2178.html#cb3-2" aria-hidden="true" tabindex="-1"></a>   <span class="bu">local</span> <span class="at">-a</span> <span class="va">baz</span></span>
+<span id="cb3-3"><a href="SC2178.html#cb3-3" aria-hidden="true" tabindex="-1"></a>   <span class="va">baz</span><span class="op">+=</span><span class="va">(</span><span class="st">&quot;foo&quot;</span> <span class="st">&quot;bar&quot;</span><span class="va">)</span></span>
+<span id="cb3-4"><a href="SC2178.html#cb3-4" aria-hidden="true" tabindex="-1"></a>   <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${baz</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span></span>
+<span id="cb3-5"><a href="SC2178.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb3-6"><a href="SC2178.html#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="SC2178.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">bar ()</span> <span class="kw">{</span></span>
+<span id="cb3-8"><a href="SC2178.html#cb3-8" aria-hidden="true" tabindex="-1"></a>   <span class="bu">local</span> <span class="va">baz</span> <span class="co"># ShellCheck gets confused if these lines are merged as local baz=&quot;qux&quot;</span></span>
+<span id="cb3-9"><a href="SC2178.html#cb3-9" aria-hidden="true" tabindex="-1"></a>   <span class="va">baz</span><span class="op">=</span><span class="st">&quot;qux&quot;</span></span>
+<span id="cb3-10"><a href="SC2178.html#cb3-10" aria-hidden="true" tabindex="-1"></a>   <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$baz</span><span class="st">&quot;</span></span>
+<span id="cb3-11"><a href="SC2178.html#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

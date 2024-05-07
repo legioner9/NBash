@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1039 – Remove indentation before end token (or use `<<-` and indent with tabs).</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1039 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1039">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="remove-indentation-before-end-token-or-use---and-indent-with-tabs">Remove
+indentation before end token (or use <code>&lt;&lt;-</code> and indent
+with tabs).</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1039.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="pp">*</span>.png</span>
+<span id="cb1-2"><a href="SC1039.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb1-3"><a href="SC1039.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span> <span class="op">&lt;&lt; HTML</span></span>
+<span id="cb1-4"><a href="SC1039.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="st">     &lt;img src=&quot;</span><span class="va">$f</span><span class="st">&quot; /&gt;&lt;br/&gt;</span></span>
+<span id="cb1-5"><a href="SC1039.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">  HTML</span></span>
+<span id="cb1-6"><a href="SC1039.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="st">done &gt; index.html</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1039.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="pp">*</span>.png</span>
+<span id="cb2-2"><a href="SC1039.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb2-3"><a href="SC1039.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span> <span class="op">&lt;&lt; HTML</span></span>
+<span id="cb2-4"><a href="SC1039.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">     &lt;img src=&quot;</span><span class="va">$f</span><span class="st">&quot; /&gt;&lt;br/&gt;</span></span>
+<span id="cb2-5"><a href="SC1039.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="op">HTML</span></span>
+<span id="cb2-6"><a href="SC1039.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="op">&gt;</span> index.html</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>The here document delimiter will not be recognized if it is
+indented.</p>
+<p>You can fix it in one of two ways:</p>
+<ol>
+<li>Simply remove the indentation, even though this may break
+formatting.</li>
+<li>Use <code>&lt;&lt;-</code> instead of <code>&lt;&lt;</code>, and
+indent the script with tabs only (spaces will not be recognized).</li>
+</ol>
+<p>Removing the indentation is preferred, since the script won't
+suddenly break if it's reformatted, copy-pasted, or saved with a
+different editor.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If the line was supposed to be a literal part of the here document,
+consider choosing a less ambiguous token.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

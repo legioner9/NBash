@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2272 – Command name contains `==`. For comparison, use `[ "$var" = value ]`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2272 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2272">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="command-name-contains--for-comparison-use--var--value-">Command
+name contains <code>==</code>. For comparison, use
+<code>[ "$var" = value ]</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2272.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$a</span><span class="ex">/</span><span class="va">$b</span><span class="ex">==foo/bar</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2272.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$a</span><span class="st">/</span><span class="va">$b</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;foo/bar&quot;</span> <span class="bu">]</span> </span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a command name that contains a <code>==</code>. Most
+likely, this was intended as a kind of comparison.</p>
+<p>To compare two values, use <code>[ value1 = value2 ]</code>. Both the
+brackets and the spaces around the <code>=</code> are relevant.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None, though you can quote the <code>==</code> to suppress the
+warning.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

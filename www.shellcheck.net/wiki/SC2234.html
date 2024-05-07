@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2234 – Remove superfluous `(..)` around test command to avoid subshell overhead.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2234 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2234">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="remove-superfluous--around-test-command-to-avoid-subshell-overhead">Remove
+superfluous <code>(..)</code> around test command to avoid subshell
+overhead.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2234.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$x</span><span class="st">&quot;</span> <span class="ot">-gt</span> 0 <span class="bu">]</span><span class="kw">)</span> <span class="kw">&amp;&amp;</span> <span class="ex">foo</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2234.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$x</span><span class="st">&quot;</span> <span class="ot">-gt</span> 0 <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="ex">foo</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You are wrapping a single test command in <code>(..)</code>, creating
+an unnecessary subshell. This serves no purpose, but is significantly
+slower:</p>
+<pre><code>$ i=0; time while ( [ &quot;$i&quot; -lt 10000 ] ); do i=$((i+1)); done
+real    0m6.998s
+user    0m3.453s
+sys     0m3.464s
+
+$ i=0; time while [ &quot;$i&quot; -lt 10000 ]; do i=$((i+1)); done
+real    0m0.055s
+user    0m0.054s
+sys     0m0.001s</code></pre>
+<p>Just delete the surrounding <code>(..)</code> since they serve no
+purpose and only slows the script down.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>This issue only affects performance, not correctness, and can be <a
+href="ignore.html">ignore</a>d for stylistic reasons.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1101 – Delete trailing spaces after `\` to break line (or use quotes for literal space).</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1101 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1101">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="delete-trailing-spaces-after--to-break-line-or-use-quotes-for-literal-space">Delete
+trailing spaces after <code>\</code> to break line (or use quotes for
+literal space).</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1101.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># There are spaces after the backslash:</span></span>
+<span id="cb1-2"><a href="SC1101.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> hello <span class="dt">\ </span> </span>
+<span id="cb1-3"><a href="SC1101.html#cb1-3" aria-hidden="true" tabindex="-1"></a>     <span class="ex">world</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1101.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># No spaces after the backslash:</span></span>
+<span id="cb2-2"><a href="SC1101.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> hello <span class="dt">\</span></span>
+<span id="cb2-3"><a href="SC1101.html#cb2-3" aria-hidden="true" tabindex="-1"></a>     world</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>To break a line you can use <code>\</code> before the line break.
+However, if there are spaces after the backslash, the escape will apply
+to them instead of the line break, and the command will not continue on
+the next line.</p>
+<p>Delete the trailing spaces to make the line break work correctly.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you do want a literal escaped space at the end of a line you can
+ignore this error, but please reconsider and use quotes instead.
+Trailing whitespace is invisible and frequently stripped on purpose (by
+editor settings / precommits) or accident (copy-paste), and so should
+not be relied upon for correctness.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

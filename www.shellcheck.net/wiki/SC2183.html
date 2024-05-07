@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2183 – This format string has 2 variables, but is passed 1 arguments.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2183 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2183">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this-format-string-has-2-variables-but-is-passed-1-arguments">This
+format string has 2 variables, but is passed 1 arguments.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2183.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">&quot;Hello %s, welcome to %s.\n&quot;</span> <span class="st">&quot;</span><span class="va">$USER</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2183.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">&quot;Hello %s, welcome to %s.\n&quot;</span> <span class="st">&quot;</span><span class="va">$USER</span><span class="st">&quot;</span> <span class="st">&quot;</span><span class="va">$HOSTNAME</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck has noticed that you're using a <code>printf</code> format
+string with more <code>%s</code> variables than arguments to fill
+them.</p>
+<p>In the problematic example case, the last <code>%s</code> will just
+become an empty string every time.</p>
+<p>Either remove the unused variables from the format string, or add
+enough arguments to fill them.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>When using the Ksh/Bash <code>%T</code> timestamp extension, such as
+<code>printf 'The time is %(%H:%M)T\n'</code>, an argument of
+<code>-1</code> and no argument are both taken to mean the current time.
+In these cases, consider specifying <code>-1</code> explicitly.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

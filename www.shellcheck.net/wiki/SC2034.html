@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2034 – foo appears unused. Verify it or export it.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2034 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2034">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h1 id="foo-appears-unused-verify-it-or-export-it">foo appears unused.
+Verify it or export it.</h1>
+<h2 id="problematic-code">Problematic code:</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2034.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">foo</span><span class="op">=</span>42</span>
+<span id="cb1-2"><a href="SC2034.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$FOO</span><span class="st">&quot;</span></span></code></pre></div>
+<h2 id="correct-code">Correct code:</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2034.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">foo</span><span class="op">=</span>42</span>
+<span id="cb2-2"><a href="SC2034.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$foo</span><span class="st">&quot;</span></span></code></pre></div>
+<h2 id="rationale">Rationale:</h2>
+<p>Variables not used for anything are often associated with bugs, so
+ShellCheck warns about them.</p>
+<p>Also note that something like <code>local let foo=42</code> does not
+make a <code>let</code> statement local -- it instead declares an
+additional local variable named <code>let</code>.</p>
+<h2 id="exceptions">Exceptions</h2>
+<p>This warning may be falsely emitted when a variable is only
+referenced indirectly, and for variables that are intentionally
+unused.</p>
+<h3 id="indirection">Indirection</h3>
+<p>It's ShellCheck's intended behavior to emit this warning for any
+variable that is only referenced though indirection:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2034.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># foo generates a warning, even though it has five indirect references</span></span>
+<span id="cb3-2"><a href="SC2034.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">foo</span><span class="op">=</span>42</span>
+<span id="cb3-3"><a href="SC2034.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="va">name</span><span class="op">=</span>foo</span>
+<span id="cb3-4"><a href="SC2034.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${</span><span class="op">!</span><span class="va">name}</span><span class="st"> </span><span class="va">$((name))</span><span class="st">&quot;</span></span>
+<span id="cb3-5"><a href="SC2034.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="st">&quot;</span><span class="va">$name</span><span class="st">&quot;</span><span class="kw">;</span> <span class="bu">eval</span> <span class="st">&quot;echo </span><span class="va">$name</span><span class="st">&quot;</span></span>
+<span id="cb3-6"><a href="SC2034.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-n</span> <span class="va">name</span><span class="kw">;</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$name</span><span class="st">&quot;</span></span></code></pre></div>
+<p>This is an intentional design decision and not a bug. If you have
+variables that will not have direct references, consider using an
+associative array in bash, or just <a href="Ignore.html">Ignore</a> the
+warning.</p>
+<p>Tracking indirect references is a common problem for compilers and
+static analysis tool, and it is known to be unsolvable in the most
+general case. There are two ways to handle unresolved indirections
+(which in a realistic program will essentially be all of them):</p>
+<ul>
+<li>Avoid false positives by assuming all variables may potentially be
+used (disable all unused variable warnings)</li>
+<li>Keep true positives by allowing some false positives (emit unused
+variable warnings that may be incorrect)</li>
+</ul>
+<p>Compilers are forced to do the former, but static analysis tools
+generally do the latter. This includes <code>pylint</code>,
+<code>jshint</code> and <code>shellcheck</code> itself. This is a design
+decision meant to make the tools more helpful at the expense of some
+noise. For consistency and to avoid giving the impression that it should
+work more generally, ShellCheck does not attempt to resolve even trivial
+indirections.</p>
+<h4 id="intentionally-unused-variables">Intentionally unused
+variables</h4>
+<p>For throwaway variables, consider using <code>_</code> as a
+dummy:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2034.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="va">_</span> <span class="va">last</span> <span class="va">_</span> <span class="va">zip</span> <span class="va">_</span> <span class="va">_</span> <span class="op">&lt;&lt;&lt;</span> <span class="st">&quot;</span><span class="va">$str</span><span class="st">&quot;</span></span>
+<span id="cb4-2"><a href="SC2034.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$last</span><span class="st">, </span><span class="va">$zip</span><span class="st">&quot;</span></span></code></pre></div>
+<p>Or optionally as a prefix for dummy variables (ShellCheck
+&gt;0.7.2).</p>
+<p><code>sh ​ read _first last _email zip _lat _lng &lt;&lt;&lt; "$str" echo "$last, $zip"</code></p>
+<p>For versions &lt;= 0.7.2, the message can optionally be <a
+href="ignore.html">ignore</a>d with a directive:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="SC2034.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=SC2034  # Unused variables left for readability</span></span>
+<span id="cb5-2"><a href="SC2034.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="va">first</span> <span class="va">last</span> <span class="va">email</span> <span class="va">zip</span> <span class="va">lat</span> <span class="va">lng</span> <span class="op">&lt;&lt;&lt;</span> <span class="st">&quot;</span><span class="va">$str</span><span class="st">&quot;</span></span>
+<span id="cb5-3"><a href="SC2034.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$last</span><span class="st">, </span><span class="va">$zip</span><span class="st">&quot;</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

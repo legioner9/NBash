@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1100 – This is a unicode dash. Delete and retype as ASCII minus.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1100 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1100">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="this-is-a-unicode-dash-delete-and-retype-as-ascii-minus">This is
+a unicode dash. Delete and retype as ASCII minus.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1100.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> 3 –gt 2 <span class="kw">]]</span> <span class="co"># Uses unicode en-dash character</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1100.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> 3 <span class="ot">-gt</span> 2 <span class="kw">]]</span> <span class="co"># Uses regular ASCII hyphen-minus character</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>A character that looks similar to <code>-</code> has made its way
+into your code. This is usually due to copy-pasting from blogs and other
+websites that formatted code as text, replacing the ASCII hyphen-minus
+with a Unicode dash character.</p>
+<p>To fix it, simply delete and retype it.</p>
+<p>For a large script, you can use your editor's Search&amp;Replace by
+copy-pasting the bad dash.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None. If you want a literal Unicode dash character, just quote
+it.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

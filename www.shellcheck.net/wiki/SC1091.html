@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1091 – Not following: (error message here)</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1091 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1091">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="not-following-error-message-here">Not following: (error message
+here)</h2>
+<p>Reasons include: file not found, no permissions, not included on the
+command line, not allowing <code>shellcheck</code> to follow files with
+<code>-x</code>, etc.</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1091.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> somefile</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>In case you have access to the file, e.g. if it is included in your
+source code repository:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1091.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck source=somefile</span></span>
+<span id="cb2-2"><a href="SC1091.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> somefile</span></code></pre></div>
+<p>In case you do not have access to the file:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC1091.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck source=/dev/null</span></span>
+<span id="cb3-2"><a href="SC1091.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> somefile</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck, for whichever reason, is not able to access the source
+file.</p>
+<p>This could be because:</p>
+<ul>
+<li>you did not include it on the command line,</li>
+<li>did not use <code>shellcheck -x</code> (or specified
+<code>external-sources=true</code> in the <a
+href="Directive.html#external-sources">.shellcheckrc</a>) to allow following
+other files</li>
+<li>don't have permissions, or</li>
+<li>a variety of other problems.</li>
+</ul>
+<p>Feel free to ignore the error with a <a
+href="directive.html">directive</a>.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>ShellCheck is unable to follow dynamic paths, such as
+<code>source "$somedir/file"</code>. For these cases, see <a
+href="SC1090.html">SC1090: Can't follow non-constant source. Use a directive
+to specify location</a> instead. You may be seeing SC1091 because
+ShellCheck tried to be helpful and strip a leading dynamic path element
+as described on that page.</p>
+<p>If you're fine with it, ignore the message with a <a
+href="directive.html">directive</a>.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

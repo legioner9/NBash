@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: Integration – Integrating with ShellCheck</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>Integration – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/Integration">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h1 id="integrating-with-shellcheck">Integrating with ShellCheck</h1>
+<p>Are you working on an editor linting plugin, a continuous testing
+tool, a pre-commit hook or similar, and want to use ShellCheck as a part
+of it?</p>
+<p>The easiest way is to just invoke <code>shellcheck</code>, either on
+a file or on stdin, and process the JSON, XML or GCC-style format it
+outputs.</p>
+<p>Here is an integration checklist. Each point is described further
+below:</p>
+<ol>
+<li><a href="Integration.html#machine-parsable-output"><strong>Pick a machine-parsable
+output format:</strong></a>
+<ul>
+<li><a href="Integration.html#json-output">JSON</a></li>
+<li><a href="Integration.html#xml-output">XML</a></li>
+<li><a href="Integration.html#GCC-compatible-error-messages">GCC-style
+diagnostics</a></li>
+<li><a href="Integration.html#unified-diff">Unified diff</a></li>
+</ul></li>
+<li><a href="Integration.html#specifying-a-shell-dialect"><strong>Decide whether you
+want to manually specify a shell dialect</strong></a></li>
+<li><a href="Integration.html#following-inclusions"><strong>Decide whether you want to
+follow <code>source</code>d files that are not specified as
+input</strong></a></li>
+<li><a href="Integration.html#exit-codes"><strong>Examine <code>shellcheck</code>'s exit
+code</strong></a></li>
+<li><a href="Integration.html#environment-variables"><strong>Allow configuration or
+pass-through of the environment variable
+<code>SHELLCHECK_OPTS</code></strong></a></li>
+<li><a href="Integration.html#linking-to-the-wiki"><strong>Consider linking to the wiki
+for more information about individual errors</strong></a></li>
+</ol>
+<h2 id="machine-parsable-output">Machine-parsable output</h2>
+<p>ShellCheck currently has three machine-parseable output formats</p>
+<h3 id="json-output">JSON output</h3>
+<p>ShellCheck can output a simple JSON format consisting of an object
+with a list of comments (formatted for clarity):</p>
+<pre class="console"><code>$ shellcheck -f json1 myscript myotherscript
+{
+  &quot;comments&quot;: [
+    {
+      &quot;file&quot;: &quot;myotherscript&quot;,
+      &quot;line&quot;: 2,
+      &quot;endLine&quot;: 2,
+      &quot;column&quot;: 1,
+      &quot;endColumn&quot;: 2,
+      &quot;level&quot;: &quot;error&quot;,
+      &quot;code&quot;: 1035,
+      &quot;message&quot;: &quot;You need a space after the [ and before the ].&quot;,
+      &quot;fix&quot;: null
+    },
+    {
+      &quot;file&quot;: &quot;myscript&quot;,
+      &quot;line&quot;: 2,
+      &quot;endLine&quot;: 2,
+      &quot;column&quot;: 6,
+      &quot;endColumn&quot;: 8,
+      &quot;level&quot;: &quot;warning&quot;,
+      &quot;code&quot;: 2039,
+      &quot;message&quot;: &quot;In POSIX sh, echo flags are undefined.&quot;,
+      &quot;fix&quot;: null
+    },
+    {
+      &quot;file&quot;: &quot;myscript&quot;,
+      &quot;line&quot;: 2,
+      &quot;endLine&quot;: 2,
+      &quot;column&quot;: 9,
+      &quot;endColumn&quot;: 11,
+      &quot;level&quot;: &quot;info&quot;,
+      &quot;code&quot;: 2086,
+      &quot;message&quot;: &quot;Double quote to prevent globbing and word splitting.&quot;,
+      &quot;fix&quot;: {
+        &quot;replacements&quot;: [
+          {
+            &quot;line&quot;: 2,
+            &quot;endLine&quot;: 2,
+            &quot;precedence&quot;: 7,
+            &quot;insertionPoint&quot;: &quot;afterEnd&quot;,
+            &quot;column&quot;: 9,
+            &quot;replacement&quot;: &quot;\&quot;&quot;,
+            &quot;endColumn&quot;: 9
+          },
+          {
+            &quot;line&quot;: 2,
+            &quot;endLine&quot;: 2,
+            &quot;precedence&quot;: 7,
+            &quot;insertionPoint&quot;: &quot;beforeStart&quot;,
+            &quot;column&quot;: 11,
+            &quot;replacement&quot;: &quot;\&quot;&quot;,
+            &quot;endColumn&quot;: 11
+          }
+        ]
+      }
+    }
+  ]
+}</code></pre>
+<p>In the <code>json1</code> format, <code>line</code> and
+<code>column</code> start at 1, and tabs count as 1.</p>
+<p>The legacy format <code>json</code> consists of just the
+<code>comments</code> array, with a tab stop of 8.</p>
+<h3 id="xml-output">XML output</h3>
+<p>ShellCheck can output a <a
+href="https://checkstyle.sourceforge.io/">CheckStyle</a> compatible XML
+format:</p>
+<pre class="console"><code>$ shellcheck -f checkstyle myscript myotherscript
+&lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39;?&gt;
+&lt;checkstyle version=&#39;4.3&#39;&gt;
+&lt;file name=&#39;myscript&#39;&gt;
+&lt;error line=&#39;2&#39; column=&#39;6&#39; severity=&#39;warning&#39; message=&#39;In POSIX sh&amp;#44; echo flags are undefined.&#39; source=&#39;ShellCheck.SC2039&#39; /&gt;
+&lt;error line=&#39;2&#39; column=&#39;9&#39; severity=&#39;info&#39; message=&#39;Double quote to prevent globbing and word splitting.&#39; source=&#39;ShellCheck.SC2086&#39; /&gt;
+&lt;/file&gt;
+&lt;file name=&#39;myotherscript&#39;&gt;
+&lt;error line=&#39;2&#39; column=&#39;2&#39; severity=&#39;error&#39; message=&#39;You need a space after the &amp;#91; and before the &amp;#93;.&#39; source=&#39;ShellCheck.SC1035&#39; /&gt;
+&lt;/file&gt;
+&lt;/checkstyle&gt;</code></pre>
+<p><code>line</code> and <code>column</code> start at 1, and assume a
+tab size of 8.</p>
+<h3 id="gcc-compatible-error-messages">GCC-compatible error
+messages</h3>
+<p>If your tool already contains a parser for GCC-style error messages,
+you can have ShellCheck output that:</p>
+<pre class="console"><code>$ shellcheck -f gcc myscript myotherscript
+myscript:2:6: warning: In POSIX sh, echo flags are undefined. [SC2039]
+myscript:2:9: note: Double quote to prevent globbing and word splitting. [SC2086]
+myotherscript:2:2: error: You need a space after the [ and before the ]. [SC1035]</code></pre>
+<p><code>line</code> and <code>column</code> start at 1, and assume a
+tab size of 1 (like <code>gcc</code> itself).</p>
+<h3 id="unified-diff">Unified diff</h3>
+<p>While ShellCheck's fix suggestions can be found in the
+<code>json1</code> format, it's not well-documented or easy to deal
+with. With <code>-f diff</code>, you can instead get standard unified
+diff output:</p>
+<pre class="console"><code>$ shellcheck -f diff file 
+--- a/file
++++ b/file
+@@ -1,2 +1,2 @@
+ #!/bin/sh
+-echo $1
++echo &quot;$1&quot;</code></pre>
+<h2 id="specifying-a-shell-dialect">Specifying a shell dialect</h2>
+<p>If unspecified, ShellCheck will read the shebang, e.g.
+<code>#!/bin/sh</code>, to determine whether to treat the script as a
+<code>sh</code> script, or a <code>dash</code> / <code>bash</code> /
+<code>ksh</code> script. If no shebang is specified, an /undefined/
+default will be used.</p>
+<p>Leaving this to ShellCheck is usually the simplest, easiest and best
+option.</p>
+<p>However, if your tool deals with a lot of files that for any reason
+have no shebangs, or if it lets the user explicitly set which shell the
+scripts are intended for, you can specify the dialect with
+<code>-s</code>, e.g. <code>-s dash</code> or <code>-s bash</code>.</p>
+<h2 id="following-inclusions">Following inclusions</h2>
+<p>Shell-scripts can include arbitrary files by way of the
+<code>source</code> and <code>.</code> built-ins. ShellCheck will by
+default not follow such include statements (unless specified on the
+command-line), in case a hostile script tries to
+<code>source /dev/zero</code> to DoS the system, or
+<code>source ~/.ssh/id_rsa</code> to try to crash with an interesting
+message.</p>
+<pre class="console"><code>$ shellcheck foo
+In foo line 2:
+source bar
+^-- SC1091: Not following: bar was not specified as input (see shellcheck -x).</code></pre>
+<p>This is useful for remote services like <a
+href="../index.html">shellcheck.net</a> which accepts
+arbitrary input from untrusted users, but mostly pointless for e.g. a
+local editor plugin.</p>
+<p>Pass <code>-x</code> to <code>shellcheck</code> if you'd like it to
+trust the script and follow all includes. To only follow certain
+includes, add them as file arguments.</p>
+<h2 id="exit-codes">Exit codes</h2>
+<p>ShellCheck returns useful exit codes:</p>
+<ul>
+<li>0: All files successfully scanned with no issues.</li>
+<li>1: All files successfully scanned with some issues.</li>
+<li>2: Some files could not be processed (e.g. file not found, is a
+directory, etc).</li>
+<li>Other: Bad syntax or options, no point in trying again</li>
+</ul>
+<h2 id="environment-variables">Environment variables</h2>
+<p>ShellCheck will prepend to its command-line any spare-separated
+arguments found in the environment variable <code>SHELLCHECK_OPTS</code>
+(if defined). Please allow this variable to be passed through from the
+environment or configured by the user, as it will allow setting
+additional options both now and in the future.</p>
+<h2 id="linking-to-the-wiki">Linking to the Wiki</h2>
+<p>ShellCheck's warnings usually fit on a single line and can therefore
+be terse.</p>
+<p>To provide users with more information, you can construct a wiki link
+given the error code:
+<code>https://www.shellcheck.net/wiki/SC2086</code> for <a
+href="SC2086.html">SC2086</a> about unquoted
+variables. This currently redirects straight to the GitHub wiki.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

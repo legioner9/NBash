@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2095 – Use `ssh -n` to prevent ssh from swallowing stdin.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2095 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2095">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="use-ssh--n-to-prevent-ssh-from-swallowing-stdin">Use
+<code>ssh -n</code> to prevent ssh from swallowing stdin.</h2>
+<p>The same error applies to multiple commands, like
+<code>ffmpeg -nostdin</code> and
+<code>mplayer -noconsolecontrols</code>.</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2095.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">host</span></span>
+<span id="cb1-2"><a href="SC2095.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb1-3"><a href="SC2095.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ssh</span> <span class="st">&quot;</span><span class="va">$host</span><span class="st">&quot;</span> <span class="st">&quot;uptime&quot;</span></span>
+<span id="cb1-4"><a href="SC2095.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="op">&lt;</span> hosts.txt</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2095.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">host</span></span>
+<span id="cb2-2"><a href="SC2095.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb2-3"><a href="SC2095.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ssh</span> <span class="at">-n</span> <span class="st">&quot;</span><span class="va">$host</span><span class="st">&quot;</span> <span class="st">&quot;uptime&quot;</span></span>
+<span id="cb2-4"><a href="SC2095.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="op">&lt;</span> hosts.txt</span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2095.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">host</span></span>
+<span id="cb3-2"><a href="SC2095.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb3-3"><a href="SC2095.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ssh</span> <span class="st">&quot;</span><span class="va">$host</span><span class="st">&quot;</span> <span class="op">&lt;&lt;&#39;EOF&#39;</span></span>
+<span id="cb3-4"><a href="SC2095.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">uptime</span></span>
+<span id="cb3-5"><a href="SC2095.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="op">EOF</span></span>
+<span id="cb3-6"><a href="SC2095.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="op">&lt;</span> hosts.txt</span></code></pre></div>
+<p>or</p>
+<p>By using a pipe and avoiding the use of the stdin file descriptor,
+this ensures that commands in the loop are not interfered with.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2095.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">exec</span> <span class="dv">3</span><span class="op">&lt;</span> hosts.txt</span>
+<span id="cb4-2"><a href="SC2095.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">host</span></span>
+<span id="cb4-3"><a href="SC2095.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb4-4"><a href="SC2095.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ssh</span> <span class="st">&quot;</span><span class="va">$host</span><span class="st">&quot;</span> <span class="st">&quot;uptime&quot;</span></span>
+<span id="cb4-5"><a href="SC2095.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="op">&lt;&amp;</span><span class="dv">3</span></span>
+<span id="cb4-6"><a href="SC2095.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Close the file descriptor</span></span>
+<span id="cb4-7"><a href="SC2095.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">exec</span> <span class="dv">3</span><span class="op">&lt;&amp;</span>-</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Commands that process stdin will compete with the <code>read</code>
+statement for input. This is especially tricky for commands you wouldn't
+expect reads from stdin, like <code>ssh .. uptime</code>,
+<code>ffmpeg</code> and <code>mplayer</code>.</p>
+<p>The most common symptom of this is a <code>while read</code> loop
+only running once, even though the input contains many lines. This is
+because the rest of the lines are swallowed by the offending
+command.</p>
+<p>To refuse such commands input, you can use a command specific option
+like <code>ssh -n</code> or <code>ffmpeg -nostdin</code>.</p>
+<p>More generally, you can also redirect their stdin with
+<code>&lt; /dev/null</code>. This works for all commands with this
+behavior.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/089">BashFaq: I'm
+reading a file line by line and running ssh or ffmpeg, only the first
+line gets processed!</a></li>
+<li><a
+href="https://stackoverflow.com/questions/13800225/shell-script-while-read-line-loop-stops-after-the-first-line">StackOverflow:
+Shell script while read line loop stops after the first line</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

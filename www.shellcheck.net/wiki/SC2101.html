@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2101 – Named class needs outer `[]`, e.g. `[[:digit:]]`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2101 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2101">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="named-class-needs-outer--eg-digitdigit">Named class needs outer
+<code>[]</code>, e.g. <code>[:digit:](:digit:)</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2101.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> file[:digit:]<span class="pp">*</span>.txt</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2101.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> file[:digit:]<span class="er">(</span><span class="ex">:digit:</span><span class="kw">)</span><span class="ex">*.txt</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Predefined character groups are supposed to be used inside character
+ranges. <code>[:digit:]</code> matches one of "digt:" just like
+<code>[abc]</code> matches one of "abc". <code>[:digit:](:digit:)</code>
+matches a digit.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>When passing an argument to <code>tr</code> which parses these by
+itself without relying on globbing, you should quote it instead, e.g.
+<code>tr -d '[:digit:]'</code></p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

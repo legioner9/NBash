@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2235 – Use `{ ..; }` instead of `(..)` to avoid subshell overhead.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2235 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2235">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="use----instead-of--to-avoid-subshell-overhead">Use
+<code>{ ..; }</code> instead of <code>(..)</code> to avoid subshell
+overhead.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2235.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$x</span><span class="st">&quot;</span> <span class="bu">]</span> <span class="kw">||</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$y</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">)</span> <span class="kw">&amp;&amp;</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$z</span><span class="st">&quot;</span> <span class="bu">]</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2235.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$x</span><span class="st">&quot;</span> <span class="bu">]</span> <span class="kw">||</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$y</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="kw">}</span> <span class="kw">&amp;&amp;</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$z</span><span class="st">&quot;</span> <span class="bu">]</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You appear to be using <code>(..)</code> to group test commands. This
+creates a subshell, making it unnecessarily slow. Avoid this by using
+<code>{ ..; }</code> to group.</p>
+<p>Be careful to note that unlike <code>(..)</code>, this requires both
+a space after the <code>{</code> and a semicolon before the
+<code>}</code>.</p>
+<p>For example, <code>(cmd)</code>, <code>(cmd;)</code> and
+<code>( cmd )</code> are all valid, but <code>{cmd}</code>,
+<code>{cmd;}</code> and <code>{ cmd }</code> are all syntax errors
+because they lack either or both of the spaces and semicolon. The
+correct form is <code>{ cmd; }</code></p>
+<p>Here's a small benchmark showing that the subshell version is more
+than 100x slower:</p>
+<pre><code>$ i=0; time for i in {1..10000}; do ([ &quot;$x&quot; ] || [ &quot;$y&quot; ]) &amp;&amp; [ &quot;$z&quot; ]; done
+real    0m7.122s
+user    0m4.204s
+sys     0m2.825s
+
+$ i=0; time for i in {1..10000}; do { [ &quot;$x&quot; ] || [ &quot;$y&quot; ]; } &amp;&amp; [ &quot;$z&quot; ]; done
+real    0m0.055s
+user    0m0.055s
+sys     0m0.000s</code></pre>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

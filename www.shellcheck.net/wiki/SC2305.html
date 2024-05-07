@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2305 – Quote regex argument to expr to avoid it expanding as a glob.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2305 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2305">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="quote-regex-argument-to-expr-to-avoid-it-expanding-as-a-glob">Quote
+regex argument to expr to avoid it expanding as a glob.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2305.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">expr</span> <span class="st">&quot;</span><span class="va">$input</span><span class="st">&quot;</span> : [0-9]<span class="pp">*</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2305.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">expr</span> <span class="st">&quot;</span><span class="va">$input</span><span class="st">&quot;</span> : <span class="st">&quot;[0-9]*&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found an <code>expr</code> command using <code>:</code> to
+match a regex, but the regex is not quoted and therefore being treated
+as a glob.</p>
+<p>This means that if the problematic code is ever executed in a
+directory containing a file matching <code>[0-9]*</code>, such as
+<code>2021-reports</code> or <code>12 Angry Men [1957].mkv</code>, it
+will be replaced be replaced and cause the command to error or
+incorrectly match.</p>
+<p>The regex should be quoted to avoid this, like in the correct
+example.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

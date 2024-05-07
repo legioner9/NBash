@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2191 – The `=` here is literal. To assign by index, use `( [index]=value )` with no spaces. To keep as literal, quote it.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2191 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2191">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="the--here-is-literal-to-assign-by-index-use--indexvalue--with-no-spaces-to-keep-as-literal-quote-it">The
+<code>=</code> here is literal. To assign by index, use
+<code>( [index]=value )</code> with no spaces. To keep as literal, quote
+it.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2191.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">array</span><span class="op">=</span><span class="va">(</span> <span class="op">[</span>index<span class="op">]</span> = value <span class="va">)</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2191.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">array</span><span class="op">=</span><span class="va">(</span> <span class="op">[</span>index<span class="op">]</span><span class="va">=</span>value <span class="va">)</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>The shell doesn't care about the <code>=</code> sign in your array
+assignment because it's not part of a recognized index assignment.
+Instead, it's considered a literal character and becomes part of an
+array element's value.</p>
+<p>In the example problematic code, this is because the <code>=</code>
+was intended to set the index, but the shell will not recognize it when
+it is surrounded by spaces.</p>
+<p>Make sure to remove any spaces around the <code>=</code> when
+assigning by index, such as in the correct code.</p>
+<p>If you wanted the <code>=</code> to be a literal part of the array
+element, add quotes around it, such as <code>env=( "LC_CTYPE=C" )</code>
+or <code>specialChars=( "=" "%" ";" )</code> .</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

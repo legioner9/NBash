@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2115 – Use `"${var:?}"` to ensure this never expands to `/*` .</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2115 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2115">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="use-var-to-ensure-this-never-expands-to--">Use
+<code>"${var:?}"</code> to ensure this never expands to <code>/*</code>
+.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2115.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> <span class="st">&quot;</span><span class="va">$STEAMROOT</span><span class="st">/&quot;</span><span class="pp">*</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2115.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> <span class="st">&quot;</span><span class="va">${STEAMROOT</span><span class="op">:?</span><span class="va">}</span><span class="st">/&quot;</span><span class="pp">*</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>If <code>STEAMROOT</code> is empty, this will <a
+href="https://github.com/ValveSoftware/steam-for-linux/issues/3671">end
+up deleting everything</a> in the system's root directory.</p>
+<p>Using <code>:?</code> will cause the command to fail if the variable
+is null or unset. Similarly, you can use <code>:-</code> to set a
+default value if applicable.</p>
+<p>In the case command substitution, assign to a variable first and then
+use <code>:?</code>. This is relevant even if the command seems simple
+and obviously correct, since forks and execs can fail due to external
+system limits and conditions, resulting in a blank substitution.</p>
+<p>For more details about <code>:?</code> see the "Parameter Expansion"
+section of the Bash man page.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

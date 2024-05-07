@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2188 – This redirection doesn't have a command. Move to its command (or use `true` as no-op).</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2188 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2188">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this-redirection-doesnt-have-a-command-move-to-its-command-or-use-true-as-no-op">This
+redirection doesn't have a command. Move to its command (or use
+<code>true</code> as no-op).</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2188.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> </span>
+<span id="cb1-2"><a href="SC2188.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Report for </span><span class="va">$(</span><span class="fu">date</span> +%F<span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb1-3"><a href="SC2188.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">uptime</span></span>
+<span id="cb1-4"><a href="SC2188.html#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">df</span> <span class="at">-h</span></span>
+<span id="cb1-5"><a href="SC2188.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb1-6"><a href="SC2188.html#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">&gt;</span> report.txt</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2188.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> </span>
+<span id="cb2-2"><a href="SC2188.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Report for </span><span class="va">$(</span><span class="fu">date</span> +%F<span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb2-3"><a href="SC2188.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">uptime</span></span>
+<span id="cb2-4"><a href="SC2188.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">df</span> <span class="at">-h</span></span>
+<span id="cb2-5"><a href="SC2188.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span> <span class="op">&gt;</span> report.txt</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a redirection that doesn't actually redirect from/to
+anything.</p>
+<p>This could indicate a bug, such as in the problematic code where an
+additional linefeed causes <code>report.txt</code> to be truncated
+instead of containing report output, or in
+<code>foo &amp; &gt; bar</code>, where either
+<code>foo &amp;&gt; bar</code> or <code>foo &gt; bar &amp;</code> was
+intended.</p>
+<p>However, it could also be intentionally used to truncate a file or
+check that it's readable. You can make this more explicit for both
+ShellCheck and human readers by using <code>true</code> or
+<code>:</code> as a dummy command, e.g. <code>true &gt; file</code> or
+<code>: &gt; file</code>.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>There are no semantic problems with using <code>&gt; foo</code> over
+<code>true &gt; foo</code>, so if you don't see this as a potential
+source of bugs or confusion, you can <a href="ignore.html">ignore</a> it.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

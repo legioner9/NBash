@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1078 – Did you forget to close this double quoted string?</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1078 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1078">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h1 id="did-you-forget-to-close-this-double-quoted-string">Did you
+forget to close this double quoted string?</h1>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1078.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">greeting</span><span class="op">=</span><span class="st">&quot;hello</span></span>
+<span id="cb1-2"><a href="SC1078.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="st">target=&quot;</span>world<span class="st">&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1078.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">greeting</span><span class="op">=</span><span class="st">&quot;hello&quot;</span></span>
+<span id="cb2-2"><a href="SC1078.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">target</span><span class="op">=</span><span class="st">&quot;world&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>The first line is missing a quote.</p>
+<p>ShellCheck warns when it detects multi-line double quoted, single
+quoted or backticked strings when the character that follows it looks
+out of place (and gives a companion warning <a href="SC1079.html">SC1079</a>
+at that spot).</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you do want a multiline variable, just make sure the character
+after it is a quote, space or line feed.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC1078.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span><span class="st">&#39;multiline</span></span>
+<span id="cb3-2"><a href="SC1078.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;</span>value</span></code></pre></div>
+<p>can be rewritten for readability and to remove the warning:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC1078.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span><span class="st">&#39;multiline</span></span>
+<span id="cb4-2"><a href="SC1078.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="st">value&#39;</span></span></code></pre></div>
+<p>As always <code>`..`</code> should be rewritten to
+<code>$(..)</code>.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

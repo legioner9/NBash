@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2320 – This `$?` refers to echo/printf, not a previous command. Assign to variable to avoid it being overwritten.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2320 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2320">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this--refers-to-echoprintf-not-a-previous-command-assign-to-variable-to-avoid-it-being-overwritten">This
+<code>$?</code> refers to echo/printf, not a previous command. Assign to
+variable to avoid it being overwritten.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2320.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mycommand</span></span>
+<span id="cb1-2"><a href="SC2320.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Command exited with </span><span class="va">$?</span><span class="st">&quot;</span></span>
+<span id="cb1-3"><a href="SC2320.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$?</span> <span class="ot">-ne</span> 0 <span class="bu">]</span></span>
+<span id="cb1-4"><a href="SC2320.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb1-5"><a href="SC2320.html#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Failed&quot;</span></span>
+<span id="cb1-6"><a href="SC2320.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2320.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mycommand</span></span>
+<span id="cb2-2"><a href="SC2320.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">ret</span><span class="op">=</span><span class="va">$?</span></span>
+<span id="cb2-3"><a href="SC2320.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Command exited with </span><span class="va">$ret</span><span class="st">&quot;</span></span>
+<span id="cb2-4"><a href="SC2320.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$ret</span> <span class="ot">-ne</span> 0 <span class="bu">]</span></span>
+<span id="cb2-5"><a href="SC2320.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb2-6"><a href="SC2320.html#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Failed&quot;</span></span>
+<span id="cb2-7"><a href="SC2320.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a <code>$?</code> that always refers to
+<code>echo</code> or <code>printf</code>.</p>
+<p>This most commonly happens when trying to show <code>$?</code> before
+doing something with it, without realizing that any such action will
+also overwrite <code>$?</code>.</p>
+<p>In the problematic example,
+<code>echo "Command exited with $?"</code> was intended to show the exit
+code before acting on it, but the act of showing <code>$?</code> also
+overwrote it, so the condition is always false. The solution is to
+assign <code>$?</code> to a variable first, so that it can be used
+repeatedly.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you intentionally refer to <code>echo</code> to get the result of
+a write, you can ignore this message. Alternatively, write it out as in
+<code>if echo $$ &gt; "$pidfile"; then status=0; else status=1; fi</code></p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

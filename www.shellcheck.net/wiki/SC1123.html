@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1123 – ShellCheck directives are only valid in front of complete compound commands, like `if`, not e.g. individual `elif` branches.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1123 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1123">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="shellcheck-directives-are-only-valid-in-front-of-complete-compound-commands-like-if-not-eg-individual-elif-branches">ShellCheck
+directives are only valid in front of complete compound commands, like
+<code>if</code>, not e.g. individual <code>elif</code> branches.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1123.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$prod</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;true&quot;</span> <span class="bu">]</span></span>
+<span id="cb1-2"><a href="SC1123.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb1-3"><a href="SC1123.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Prod mode&quot;</span></span>
+<span id="cb1-4"><a href="SC1123.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=2154</span></span>
+<span id="cb1-5"><a href="SC1123.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$debug</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;true&quot;</span> <span class="bu">]</span></span>
+<span id="cb1-6"><a href="SC1123.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb1-7"><a href="SC1123.html#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Debug mode&quot;</span></span>
+<span id="cb1-8"><a href="SC1123.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1123.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Applies to entire `if...fi` command</span></span>
+<span id="cb2-2"><a href="SC1123.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=2154</span></span>
+<span id="cb2-3"><a href="SC1123.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$prod</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;true&quot;</span> <span class="bu">]</span></span>
+<span id="cb2-4"><a href="SC1123.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb2-5"><a href="SC1123.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Prod mode&quot;</span></span>
+<span id="cb2-6"><a href="SC1123.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$debug</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;true&quot;</span> <span class="bu">]</span></span>
+<span id="cb2-7"><a href="SC1123.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb2-8"><a href="SC1123.html#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Debug mode&quot;</span></span>
+<span id="cb2-9"><a href="SC1123.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC1123.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$prod</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;true&quot;</span> <span class="bu">]</span></span>
+<span id="cb3-2"><a href="SC1123.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb3-3"><a href="SC1123.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Prod mode&quot;</span></span>
+<span id="cb3-4"><a href="SC1123.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span>  <span class="co"># Applies only to this [ .. ] command</span></span>
+<span id="cb3-5"><a href="SC1123.html#cb3-5" aria-hidden="true" tabindex="-1"></a>      <span class="co"># shellcheck disable=2154</span></span>
+<span id="cb3-6"><a href="SC1123.html#cb3-6" aria-hidden="true" tabindex="-1"></a>      <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$debug</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;true&quot;</span> <span class="bu">]</span></span>
+<span id="cb3-7"><a href="SC1123.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb3-8"><a href="SC1123.html#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Debug mode&quot;</span></span>
+<span id="cb3-9"><a href="SC1123.html#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You appear to have put a directive before a non-command keyword, such
+as <code>elif</code>, <code>else</code>, <code>do</code>,
+<code>;;</code> or similar.</p>
+<p>Unlike many other linters, ShellCheck comment directives apply to the
+next shell command, rather than to the next line of text.</p>
+<p>This means that you can put a directive in front of a
+<code>while</code> loop, <code>if</code> statement or function
+definition, and it will apply to that entire structure.</p>
+<p>However, it also means that you can not apply the directive to
+non-commands like an individual <code>elif</code> or <code>else</code>
+block since these are not commands by themselves, and rather just parts
+of an <code>if</code> compound command.</p>
+<p>Please move the directive in front of the nearest applicable command
+that contains the code you want to apply it to, such as before the
+<code>if</code>.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

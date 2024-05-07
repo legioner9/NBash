@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2020 – `tr` replaces sets of chars, not words (mentioned due to duplicates).</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2020 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2020">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="tr-replaces-sets-of-chars-not-words-mentioned-due-to-duplicates"><code>tr</code>
+replaces sets of chars, not words (mentioned due to duplicates).</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2020.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&#39;hello world&#39;</span> <span class="kw">|</span> <span class="fu">tr</span> <span class="st">&#39;hello&#39;</span> <span class="st">&#39;goodbye&#39;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2020.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&#39;hello world&#39;</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="at">-e</span> <span class="st">&#39;s/hello/goodbye/g&#39;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><code>tr</code> is for <code>tr</code>ansliteration, turning some
+characters into other characters. It doesn't match strings or words,
+only individual characters.</p>
+<p>In this case, it transliterates h-&gt;g, e-&gt;o, l-&gt;d, o-&gt;y,
+resulting in the string "goddb wbrdd" instead of "goodbye world".</p>
+<p>The solution is to use a tool that does string search and replace,
+such as sed.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

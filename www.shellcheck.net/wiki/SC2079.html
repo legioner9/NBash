@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2079 – `(( ))` doesn't support decimals. Use `bc` or `awk`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2079 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2079">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="--doesnt-support-decimals-use-bc-or-awk"><code>(( ))</code>
+doesn't support decimals. Use <code>bc</code> or <code>awk</code>.</h2>
+<p>Bash <a
+href="https://www.tldp.org/LDP/abs/html/comparison-ops.html">arithmetic
+conditional evaluation can only be performed on integers</a>. More
+detail: Bash has limited data types which <a
+href="http://www.tldp.org/LDP/abs/html/declareref.html">include
+integer</a>, but everything is effectively <a
+href="http://www.tldp.org/LDP/abs/html/untyped.html">untyped</a>.</p>
+<p>Suggested workarounds to this constraint use bc or awk, here are <a
+href="https://stackoverflow.com/questions/11237794/how-to-compare-two-decimal-numbers-in-bash-awk">some
+examples</a>.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1092 – Stopping at 100 `source` frames :O</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1092 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1092">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="stopping-at-100-source-frames-o">Stopping at 100
+<code>source</code> frames :O</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<p>An initial file sourcing a second file, which in turn sources a third
+file, which in turn sources a fourth file, ...., which in turn sources a
+100th file.</p>
+<h3 id="correct-code">Correct code:</h3>
+<p>Anything but that.</p>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a chain of 100+ files sourcing each other. It
+assumed there must be some internal bug, so it stopped.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If this is intentional, you can cosmetically <a
+href="ignore.html">ignore</a> this message.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

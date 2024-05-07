@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC3004 – In POSIX sh, $".." is undefined</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC3004 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC3004">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="in-posix-sh--is-undefined">In POSIX sh, $".." is undefined</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC3004.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">$&quot;Hello, %s\n&quot;</span> <span class="st">&quot;</span><span class="va">$USER</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC3004.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if gettext exists</span></span>
+<span id="cb2-2"><a href="SC3004.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ot">! </span><span class="bu">type</span> gettext <span class="op">&gt;</span> /dev/null <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span>
+<span id="cb2-3"><a href="SC3004.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb2-4"><a href="SC3004.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># If not, create a dummy function that returns the input verbatim</span></span>
+<span id="cb2-5"><a href="SC3004.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gettext()</span> <span class="kw">{</span> <span class="bu">printf</span> <span class="st">&#39;%s&#39;</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span><span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb2-6"><a href="SC3004.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb2-7"><a href="SC3004.html#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="SC3004.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Use gettext to get a translated version of the string</span></span>
+<span id="cb2-9"><a href="SC3004.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">&quot;</span><span class="va">$(</span><span class="fu">gettext</span> <span class="st">&#39;Hello, %s\n&#39;</span><span class="va">)</span><span class="st">&quot;</span> <span class="st">&quot;</span><span class="va">$USER</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Bash allows using <code>$"..."</code> to easily get a translated
+string according to the current locale. This is powered by the gettext
+infrastructure.</p>
+<p>Neither <code>$".."</code> nor the gettext infrastructure or the
+<code>gettext</code> command is POSIX. A script targeting
+<code>sh</code> may choose to invoke <code>gettext</code> if the system
+has it (such as GNU or Solaris), or use the translated string verbatim
+if it doesn't (such as macOS or FreeBSD).</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

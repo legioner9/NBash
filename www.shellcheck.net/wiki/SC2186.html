@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2186 – tempfile is deprecated. Use mktemp instead.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2186 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2186">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="tempfile-is-deprecated-use-mktemp-instead">tempfile is
+deprecated. Use mktemp instead.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2186.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">tmp</span><span class="op">=</span><span class="va">$(</span><span class="fu">tempfile</span><span class="va">)</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2186.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">tmp</span><span class="op">=</span><span class="va">$(</span><span class="fu">mktemp</span><span class="va">)</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><code>tempfile</code> is a Debian specific utility for creating
+temporary files. Its man page notes:</p>
+<blockquote>
+<p>tempfile is deprecated; you should use mktemp(1) instead.</p>
+</blockquote>
+<p>Neither <code>tempfile</code> nor <code>mktemp</code> are POSIX, but
+<code>tempfile</code> is Debian specific while <code>mktemp</code> works
+on GNU, OSX, BusyBox, *BSD and Solaris.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>ShellCheck will not recognize when a function overrides this
+name.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

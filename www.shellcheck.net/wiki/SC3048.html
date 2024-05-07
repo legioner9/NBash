@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC3048 – In POSIX sh, prefixing signal names with 'SIG' is undefined.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC3048 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC3048">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="in-posix-sh-prefixing-signal-names-with-sig-is-undefined">In
+POSIX sh, prefixing signal names with 'SIG' is undefined.</h2>
+<p>(or "In dash, ... is not supported." when using
+<code>dash</code>)</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC3048.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">&#39;handle_interrupt&#39;</span> SIGINT</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC3048.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">&#39;handle_interrupt&#39;</span> INT</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>POSIX does not allow specifying the "SIG" prefix of a signal name
+like "INT". Bash and Ksh supports this as an extension.</p>
+<p>Simply remove the "SIG" from the signal name.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

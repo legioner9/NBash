@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2302 – This loops over values. To loop over keys, use `"${!array[@]}"`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2302 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2302">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="this-loops-over-values-to-loop-over-keys-use-array">This loops
+over values. To loop over keys, use <code>"${!array[@]}"</code>.</h2>
+<p>Plus companion warning <a href="SC2303.html">SC2303</a>:
+<code>i is an array value, not a key. Use directly or loop over keys instead.</code></p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2302.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">array</span><span class="op">=</span><span class="va">(</span>foo bar<span class="va">)</span></span>
+<span id="cb1-2"><a href="SC2302.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v <span class="kw">in</span> <span class="st">&quot;</span><span class="va">${array</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span></span>
+<span id="cb1-3"><a href="SC2302.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb1-4"><a href="SC2302.html#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Value is </span><span class="va">${array</span><span class="op">[</span><span class="va">$v</span><span class="op">]</span><span class="va">}</span><span class="st">&quot;</span></span>
+<span id="cb1-5"><a href="SC2302.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>Either loop over values</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2302.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v <span class="kw">in</span> <span class="st">&quot;</span><span class="va">${array</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span></span>
+<span id="cb2-2"><a href="SC2302.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb2-3"><a href="SC2302.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Value is </span><span class="va">$v</span><span class="st">&quot;</span></span>
+<span id="cb2-4"><a href="SC2302.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>or loop over keys:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2302.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="st">&quot;</span><span class="va">${</span><span class="op">!</span><span class="va">array</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span>  <span class="co"># Note `!`</span></span>
+<span id="cb3-2"><a href="SC2302.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb3-3"><a href="SC2302.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Key is </span><span class="va">$k</span><span class="st">&quot;</span></span>
+<span id="cb3-4"><a href="SC2302.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Value is </span><span class="va">${array</span><span class="op">[</span><span class="va">$k</span><span class="op">]</span><span class="va">}</span><span class="st">&quot;</span></span>
+<span id="cb3-5"><a href="SC2302.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a <code>for</code> loop over array <em>values</em>,
+where the variable is used as an array <em>key</em>.</p>
+<p>In the problematic example, the loop will print
+<code>Value is foo</code> twice. On the second iteration,
+<code>v=bar</code>, and <code>bar</code> is unset and considered zero,
+so <code>${array[$v]}</code> becomes <code>${array[bar]}</code> becomes
+<code>${array[0]}</code> becomes <code>foo</code>.</p>
+<p>If you don't care about the key, simply loop over array values and
+use <code>$v</code> to refer to the array value, like in the first
+correct example.</p>
+<p>If you do want the key, loop over array keys with
+<code>"${!array[@]}"</code>, use <code>$k</code> to refer to the array
+key, and <code>${array[$k]}</code> to refer to the array value.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you do want to use values from the arrays as keys in the same
+array, you can <a href="ignore.html">ignore</a> these messages with a
+directive:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2302.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-A</span> <span class="va">fatherOf</span><span class="op">=</span><span class="va">(</span></span>
+<span id="cb4-2"><a href="SC2302.html#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span><span class="st">&quot;Eric Bloodaxe&quot;</span><span class="op">]</span><span class="va">=</span><span class="st">&quot;Harald Fairhair&quot;</span></span>
+<span id="cb4-3"><a href="SC2302.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span><span class="st">&quot;Harald Fairhair&quot;</span><span class="op">]</span><span class="va">=</span><span class="st">&quot;Halfdan the Black&quot;</span></span>
+<span id="cb4-4"><a href="SC2302.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span><span class="st">&quot;Halfdan the Black&quot;</span><span class="op">]</span><span class="va">=</span><span class="st">&quot;Gudrød the Hunter&quot;</span></span>
+<span id="cb4-5"><a href="SC2302.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span><span class="st">&quot;Gudrød the Hunter&quot;</span><span class="op">]</span><span class="va">=</span><span class="st">&quot;Halfdan the Mild&quot;</span></span>
+<span id="cb4-6"><a href="SC2302.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="va">)</span></span>
+<span id="cb4-7"><a href="SC2302.html#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="SC2302.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=SC2302,SC23203</span></span>
+<span id="cb4-9"><a href="SC2302.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="st">&quot;</span><span class="va">${fatherOf</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span> </span>
+<span id="cb4-10"><a href="SC2302.html#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb4-11"><a href="SC2302.html#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${fatherOf</span><span class="op">[</span><span class="va">$i</span><span class="op">]:-</span>(missing)<span class="va">}</span><span class="st"> begat </span><span class="va">$i</span><span class="st">&quot;</span></span>
+<span id="cb4-12"><a href="SC2302.html#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

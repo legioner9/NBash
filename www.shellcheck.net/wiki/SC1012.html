@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1012 – `\t` is just literal `t` here. For tab, use `"$(printf '\t')"` instead.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1012 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1012">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="t-is-just-literal-t-here-for-tab-use-printf-t-instead"><code>\t</code>
+is just literal <code>t</code> here. For tab, use
+<code>"$(printf '\t')"</code> instead.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1012.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Want tab</span></span>
+<span id="cb1-2"><a href="SC1012.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span>foo<span class="dt">\t</span>bar</span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1012.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Want linefeed</span></span>
+<span id="cb2-2"><a href="SC1012.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span>foo<span class="dt">\n</span>bar</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC1012.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span><span class="st">&quot;foo</span><span class="va">$(</span><span class="bu">printf</span> <span class="st">&#39;\t&#39;</span><span class="va">)</span><span class="st">bar&quot;</span>  <span class="co"># As suggested in warning</span></span>
+<span id="cb3-2"><a href="SC1012.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$(</span><span class="bu">printf</span> <span class="st">&#39;foo\tbar&#39;</span><span class="va">)</span><span class="st">&quot;</span>  <span class="co"># Equivalent alternative</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC1012.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Literal, quoted linefeed</span></span>
+<span id="cb4-2"><a href="SC1012.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">line</span><span class="op">=</span><span class="st">&quot;foo</span></span>
+<span id="cb4-3"><a href="SC1012.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="st">bar&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck has found a <code>\t</code>, <code>\n</code> or
+<code>\r</code> in a context where they just become regular letters
+<code>t</code>, <code>n</code> or <code>r</code>. Most likely, it was
+intended as a tab, linefeed or carriage return.</p>
+<p>To generate such characters (plus other less common ones including
+<code>\a</code>, <code>\f</code> and octal escapes) , use
+<code>printf</code> as in the example. The exception is for linefeeds
+that would be stripped by command substitution; in these cases, use a
+literal quoted linefeed instead.</p>
+<p>Other characters like <code>\z</code> generate a <a
+href="SC1001.html">SC1001</a> info message, as the intent is less
+certain.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

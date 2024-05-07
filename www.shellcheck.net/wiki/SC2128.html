@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2128 – Expanding an array without an index only gives the element in the index 0.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2128 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2128">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="expanding-an-array-without-an-index-only-gives-the-element-in-the-index-0">Expanding
+an array without an index only gives the element in the index 0.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2128.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">myarray</span><span class="op">=</span><span class="va">(</span>foo bar<span class="va">)</span></span>
+<span id="cb1-2"><a href="SC2128.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="va">$myarray</span></span>
+<span id="cb1-3"><a href="SC2128.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb1-4"><a href="SC2128.html#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span> <span class="st">&quot;</span><span class="va">$f</span><span class="st">&quot;</span></span>
+<span id="cb1-5"><a href="SC2128.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2128.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">myarray</span><span class="op">=</span><span class="va">(</span>foo bar<span class="va">)</span></span>
+<span id="cb2-2"><a href="SC2128.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="st">&quot;</span><span class="va">${myarray</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span></span>
+<span id="cb2-3"><a href="SC2128.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb2-4"><a href="SC2128.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span> <span class="st">&quot;</span><span class="va">$f</span><span class="st">&quot;</span></span>
+<span id="cb2-5"><a href="SC2128.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>When referencing arrays, <code>$myarray</code> is equivalent to
+<code>${myarray[0]}</code> -- which is usually the first of multiple
+elements. This is also true for associative arrays. Therefore, if 0
+(zero) is not a valid key, <code>$myarray</code> expands to an empty
+string.</p>
+<p>To get all elements as separate parameters, use the index
+<code>@</code> (and make sure to double quote). In the example,
+<code>echo "${myarray[@]}"</code> is equivalent to
+<code>echo "foo" "bar"</code>.</p>
+<p>To get all elements as a single parameter, concatenated by the first
+character in <code>IFS</code>, use the index <code>*</code>. In the
+example, <code>echo "${myarray[*]}"</code> is equivalent to
+<code>echo "foo bar"</code>.</p>
+<h3 id="bugs">Bugs:</h3>
+<p>There is a <a
+href="https://github.com/koalaman/shellcheck/issues/1309">known
+issue</a> with this check's handling of <code>local</code> variables,
+causing ShellCheck to flag variables that were previously declared as
+arrays, even if they are in different scopes.</p>
+<p>The easiest workaround is to simply use different variable names.
+Alternatively, you can <a href="ignore.html">ignore</a> the check.</p>
+<p>It is also possible to satisfy ShellCheck by declaring the
+<code>local</code> variable separately from assigning to it, e.g.:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2128.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">foo ()</span> <span class="kw">{</span></span>
+<span id="cb3-2"><a href="SC2128.html#cb3-2" aria-hidden="true" tabindex="-1"></a>   <span class="bu">local</span> <span class="at">-a</span> <span class="va">baz</span></span>
+<span id="cb3-3"><a href="SC2128.html#cb3-3" aria-hidden="true" tabindex="-1"></a>   <span class="va">baz</span><span class="op">+=</span><span class="va">(</span><span class="st">&quot;foo&quot;</span> <span class="st">&quot;bar&quot;</span><span class="va">)</span></span>
+<span id="cb3-4"><a href="SC2128.html#cb3-4" aria-hidden="true" tabindex="-1"></a>   <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${baz</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span></span>
+<span id="cb3-5"><a href="SC2128.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb3-6"><a href="SC2128.html#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="SC2128.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">bar ()</span> <span class="kw">{</span></span>
+<span id="cb3-8"><a href="SC2128.html#cb3-8" aria-hidden="true" tabindex="-1"></a>   <span class="bu">local</span> <span class="va">baz</span> <span class="co"># ShellCheck gets confused if these lines are merged as local baz=&quot;qux&quot;</span></span>
+<span id="cb3-9"><a href="SC2128.html#cb3-9" aria-hidden="true" tabindex="-1"></a>   <span class="va">baz</span><span class="op">=</span><span class="st">&quot;qux&quot;</span></span>
+<span id="cb3-10"><a href="SC2128.html#cb3-10" aria-hidden="true" tabindex="-1"></a>   <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$baz</span><span class="st">&quot;</span></span>
+<span id="cb3-11"><a href="SC2128.html#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

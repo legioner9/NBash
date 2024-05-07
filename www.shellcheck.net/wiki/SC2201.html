@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2201 – Brace expansion doesn't happen in `[[ ]]`. Use a loop.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2201 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2201">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="brace-expansion-doesnt-happen-in---use-a-loop">Brace expansion
+doesn't happen in <code>[[ ]]</code>. Use a loop.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2201.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="ot">=</span> index.<span class="dt">{htm</span><span class="op">,</span><span class="dt">html</span><span class="op">,</span><span class="dt">php}</span> <span class="kw">]]</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">&quot;This is the main file&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2201.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> main <span class="kw">in</span> index.<span class="dt">{htm</span><span class="op">,</span><span class="dt">html</span><span class="op">,</span><span class="dt">php}</span></span>
+<span id="cb2-2"><a href="SC2201.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb2-3"><a href="SC2201.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">[[</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;</span><span class="va">$main</span><span class="st">&quot;</span> <span class="kw">]]</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">&quot;This is the main file&quot;</span></span>
+<span id="cb2-4"><a href="SC2201.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Brace expansions doesn't happen in <code>[[ ]]</code>. They will just
+be interpreted literally.</p>
+<p>Instead, use a <code>for</code> loop to iterate over values, and
+apply your condition to each.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

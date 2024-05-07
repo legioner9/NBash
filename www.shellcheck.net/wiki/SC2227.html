@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2227 – Redirection applies to the find command itself. Rewrite to work per action (or move to end).</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2227 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2227">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="redirection-applies-to-the-find-command-itself-rewrite-to-work-per-action-or-move-to-end">Redirection
+applies to the find command itself. Rewrite to work per action (or move
+to end).</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2227.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">&#39;*.ppm&#39;</span> <span class="at">-exec</span> pnmtopng {} <span class="op">&gt;</span> {}.png <span class="dt">\;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2227.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">&#39;*.ppm&#39;</span> <span class="at">-exec</span> sh <span class="at">-c</span> <span class="st">&#39;pnmtopng &quot;$1&quot; &gt; &quot;$1.png&quot;&#39;</span> _ {} <span class="dt">\;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck detected a <code>find</code> command with a redirection in
+the middle.</p>
+<p>This redirection may have been intended to apply only to a specific
+action like <code>-exec</code> or <code>-print</code>, but it does in
+fact apply to the entire <code>find</code> command:</p>
+<pre><code># This command
+find . -name &#39;*.ppm&#39; -exec pnmtopng {} &gt; {}.png \;
+
+# Is the same as this
+{
+   find . -name &#39;*.ppm&#39; -exec pnmtopng {} \;
+} &gt; {}.png </code></pre>
+<p>To perform a redirection per action, rewrite it with e.g.
+<code>-exec sh -c '...' _ {} \;</code></p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If the redirection is something like <code>&gt; /dev/null</code>
+where you don't mind it applying to the whole <code>find</code> and not
+individual results, you can move the redirection to the end of command
+to make it clear to ShellCheck (and humans) that it's not meant per
+command:</p>
+<pre><code>find . -exec foo {} &gt; /dev/null \;     # Ambiguous syntax. Is it per -exec or not?
+find . -exec foo {} \;  &gt; /dev/null    # Identical command with clear intent.</code></pre>
+<p>There is no difference in behavior between the two.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

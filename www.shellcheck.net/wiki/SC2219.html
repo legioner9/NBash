@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2219 – Instead of `let expr`, prefer `(( expr ))` .</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2219 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2219">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="instead-of-let-expr-prefer--expr--">Instead of
+<code>let expr</code>, prefer <code>(( expr ))</code> .</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2219.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">let</span> <span class="va">a</span><span class="op">++</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2219.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">((</span> <span class="va">a</span><span class="op">++</span> <span class="kw">))</span> <span class="kw">||</span> <span class="fu">true</span></span></code></pre></div>
+<blockquote>
+<p>Note, <code>|| true</code> bits ignore error status code when
+incrementing from <code>0</code> to <code>1</code></p>
+</blockquote>
+<h3 id="rationale">Rationale:</h3>
+<p>The <code>(( .. ))</code> arithmetic compound command evaluates
+expressions in the same way as <code>let</code>, except it's not subject
+to glob expansion and therefore requires no additional quoting or
+escaping.</p>
+<p>This warning only triggers in Bash/Ksh scripts. In Sh/Dash, neither
+<code>let</code> nor <code>(( .. ))</code> are defined, but can be
+simulated with <code>[ $(( expr )) -ne 0 ]</code> to retain exit code,
+or <code>: $(( expr ))</code> to ignore it.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+<h3 id="more-information">More information</h3>
+<ul>
+<li>Bash Hacker's Wiki: <a
+href="http://wiki.bash-hackers.org/commands/builtin/let">The let builtin
+command</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

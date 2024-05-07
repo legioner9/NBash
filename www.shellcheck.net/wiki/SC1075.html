@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1075 – Use `elif` instead of `else if`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1075 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1075">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="use-elif-instead-of-else-if">Use <code>elif</code> instead of
+<code>else if</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1075.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$#</span><span class="st">&quot;</span> <span class="ot">-eq</span> 0 <span class="bu">]</span></span>
+<span id="cb1-2"><a href="SC1075.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb1-3"><a href="SC1075.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Usage: ...&quot;</span></span>
+<span id="cb1-4"><a href="SC1075.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span> <span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$#</span><span class="st">&quot;</span> <span class="ot">-lt</span> 2 <span class="bu">]</span></span>
+<span id="cb1-5"><a href="SC1075.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb1-6"><a href="SC1075.html#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Missing operand&quot;</span></span>
+<span id="cb1-7"><a href="SC1075.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb1-8"><a href="SC1075.html#cb1-8" aria-hidden="true" tabindex="-1"></a>  </span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1075.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$#</span><span class="st">&quot;</span> <span class="ot">-eq</span> 0 <span class="bu">]</span></span>
+<span id="cb2-2"><a href="SC1075.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb2-3"><a href="SC1075.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Usage: ...&quot;</span></span>
+<span id="cb2-4"><a href="SC1075.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$#</span><span class="st">&quot;</span> <span class="ot">-lt</span> 2 <span class="bu">]</span></span>
+<span id="cb2-5"><a href="SC1075.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb2-6"><a href="SC1075.html#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Missing operand&quot;</span></span>
+<span id="cb2-7"><a href="SC1075.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Many languages allow alternate branches with <code>else if</code>,
+but <code>sh</code> is not one of them. Use <code>elif</code>
+instead.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p><code>else if</code> is a valid (though confusing) way of nesting an
+<code>if</code> statement in a parent's <code>else</code>. If this is
+your intention, consider using canonical formatting by putting a
+linefeed between <code>else</code> and <code>if</code>.</p>
+<p>This does not change the behavior of the script, but merely makes it
+more obvious to ShellCheck (and other humans) that you didn't expect the
+<code>else if</code> to behave the way it does in C. Alternatively, you
+can <a href="ignore.html">ignore</a> it with no ill effects.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC1075.html#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="SC1075.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ex">x</span></span>
+<span id="cb3-3"><a href="SC1075.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb3-4"><a href="SC1075.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;x&quot;</span></span>
+<span id="cb3-5"><a href="SC1075.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>     <span class="co"># line break here</span></span>
+<span id="cb3-6"><a href="SC1075.html#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="ex">y</span></span>
+<span id="cb3-7"><a href="SC1075.html#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">then</span></span>
+<span id="cb3-8"><a href="SC1075.html#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;y&quot;</span></span>
+<span id="cb3-9"><a href="SC1075.html#cb3-9" aria-hidden="true" tabindex="-1"></a>   <span class="cf">fi</span> </span>
+<span id="cb3-10"><a href="SC1075.html#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

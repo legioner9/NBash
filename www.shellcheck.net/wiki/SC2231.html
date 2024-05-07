@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2231 – Quote expansions in this `for` loop glob to prevent wordsplitting, e.g. `"$dir"/*.txt` .</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2231 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2231">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="quote-expansions-in-this-for-loop-glob-to-prevent-wordsplitting-eg-dirtxt-">Quote
+expansions in this <code>for</code> loop glob to prevent wordsplitting,
+e.g. <code>"$dir"/*.txt</code> .</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2231.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> <span class="va">$dir</span>/<span class="pp">*</span>.txt</span>
+<span id="cb1-2"><a href="SC2231.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb1-3"><a href="SC2231.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Found </span><span class="va">$file</span><span class="st">&quot;</span></span>
+<span id="cb1-4"><a href="SC2231.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2231.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> <span class="st">&quot;</span><span class="va">$dir</span><span class="st">&quot;</span>/<span class="pp">*</span>.txt</span>
+<span id="cb2-2"><a href="SC2231.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb2-3"><a href="SC2231.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Found </span><span class="va">$file</span><span class="st">&quot;</span></span>
+<span id="cb2-4"><a href="SC2231.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>When iterating over globs containing expansions, you can still quote
+all expansions in the path to better handle whitespace and special
+characters.</p>
+<p>Just make sure glob characters are outside quotes.
+<code>"$dir/*.txt"</code> will not glob expand, but
+<code>"$dir"/*.txt</code> or <code>"$dir"/*."$ext"</code> will.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>Exceptions similar to <a href="SC2086.html">SC2086</a> apply. If the
+variable is expected to contain globs, such as if
+<code>dir="tmp/**"</code> in the example, you can ignore this
+message.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

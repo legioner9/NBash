@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2116 – Useless echo? Instead of `cmd $(echo foo)`, just use `cmd foo`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2116 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2116">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="useless-echo-instead-of-cmd-echo-foo-just-use-cmd-foo">Useless
+echo? Instead of <code>cmd $(echo foo)</code>, just use
+<code>cmd foo</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2116.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">greeting</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">&quot;Hello, </span><span class="va">$name</span><span class="st">&quot;</span><span class="va">)</span></span>
+<span id="cb1-2"><a href="SC2116.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or</span></span>
+<span id="cb1-3"><a href="SC2116.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> czf <span class="st">&quot;</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$(</span><span class="fu">date</span> +%F<span class="va">)</span><span class="st">.tar.gz&quot;</span><span class="va">)</span><span class="st">&quot;</span> <span class="pp">*</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2116.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">greeting</span><span class="op">=</span><span class="st">&quot;Hello, </span><span class="va">$name</span><span class="st">&quot;</span></span>
+<span id="cb2-2"><a href="SC2116.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or</span></span>
+<span id="cb2-3"><a href="SC2116.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> czf <span class="st">&quot;</span><span class="va">$(</span><span class="fu">date</span> +%F<span class="va">)</span><span class="st">.tar.gz&quot;</span> <span class="pp">*</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You appear to be using <code>echo</code> to write a value to stdout,
+and then using <code>$(..)</code> or <code>`..`</code> to capture the
+value again. This is as pointless as mailing yourself a postcard: you
+already have what you want, so there's no need to send it on a round
+trip.</p>
+<p>You can just replace <code>$(echo myvalue)</code> with
+<code>myvalue</code>.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>Sometimes this pattern is used because of side effect of
+<code>echo</code> or expansions. For example, here
+<code>$(echo ..)</code> is used to expand a glob.</p>
+<pre><code>glob=&quot;*.png&quot;
+files=&quot;$(echo $var)&quot;</code></pre>
+<p>The <code>echo</code> is not useless, but this code is problematic
+because it concatenates filenames by spaces. This will break filenames
+containing spaces and other characters later when the list is split
+again. Better options are:</p>
+<ul>
+<li>Arrays, if supported by the shell:
+<code>files=( $glob ); echo "The first file is ${files[0]}"</code></li>
+<li>Positional parameters when possible:
+<code>set -- $glob; echo "The first file is $1"</code></li>
+<li>Delaying expansion until it's needed:
+<code>for file in $glob; do ...</code></li>
+</ul>
+<p>All three methods will let you avoid issues with special characters
+in filenames.</p>
+<p>As another example, here <code>$(echo ..)</code> is used to expand
+escape sequences:</p>
+<pre><code>unexpanded=&#39;var\tvalue&#39;
+expanded=&quot;$(echo &quot;$var&quot;)&quot;</code></pre>
+<p>In this case, use <code>printf</code> instead. It's well defined with
+regard to escape sequences.</p>
+<p>Finally, if you really do want to concatenate a series of elements by
+a character like space, consider doing it explicitly with
+<code>for</code> or <code>printf</code> (e.g.
+<code>printf '%s\n' $glob</code>).</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2073 – Escape `\<` to prevent it redirecting (or switch to `[[ .. ]]`).</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2073 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2073">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="escape--to-prevent-it-redirecting-or-switch-to---">Escape
+<code>\&lt;</code> to prevent it redirecting (or switch to
+<code>[[ .. ]]</code>).</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2073.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;aardvark&quot;</span> <span class="er">&lt;</span> <span class="st">&quot;zebra&quot;</span> <span class="bu">]</span></span>
+<span id="cb1-2"><a href="SC2073.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb1-3"><a href="SC2073.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Alphabetical!&quot;</span></span>
+<span id="cb1-4"><a href="SC2073.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2073.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;aardvark&quot;</span> <span class="dt">\&lt;</span> <span class="st">&quot;zebra&quot;</span> <span class="bu">]</span></span>
+<span id="cb2-2"><a href="SC2073.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb2-3"><a href="SC2073.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Alphabetical!&quot;</span></span>
+<span id="cb2-4"><a href="SC2073.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>or optionally in Bash/Ksh:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2073.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="st">&quot;aardvark&quot;</span> <span class="ot">&lt;</span> <span class="st">&quot;zebra&quot;</span> <span class="kw">]]</span></span>
+<span id="cb3-2"><a href="SC2073.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb3-3"><a href="SC2073.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Alphabetical!&quot;</span></span>
+<span id="cb3-4"><a href="SC2073.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You are using the operator <code>&lt;</code> or <code>&gt;</code> in
+a <code>[</code> test expression.</p>
+<p>In this context, it will be considered a file redirection operator
+instead, so <code>[ "aardvark" &lt; "zebra" ]</code> is equivalent to
+<code>[ "aardvark" ] &lt; ./zebra</code>, which is true if there exists
+a readable file <code>zebra</code> in the current directory.</p>
+<p>If you wanted to compare two strings lexicographically
+(alphabetically), escape the <code>&lt;</code> or <code>&gt;</code> with
+a backslash as in the correct example.</p>
+<p>If you want to compare two numbers numerically, use <code>-lt</code>
+or <code>-ge</code> instead.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

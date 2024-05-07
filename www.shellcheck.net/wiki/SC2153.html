@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2153 – Possible Misspelling: MYVARIABLE may not be assigned. Did you mean MY_VARIABLE?</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2153 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2153">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="possible-misspelling-myvariable-may-not-be-assigned-did-you-mean-my_variable">Possible
+Misspelling: MYVARIABLE may not be assigned. Did you mean
+MY_VARIABLE?</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2153.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">MY_VARIABLE</span><span class="op">=</span><span class="st">&quot;hello world&quot;</span></span>
+<span id="cb1-2"><a href="SC2153.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$MYVARIABLE</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2153.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">MY_VARIABLE</span><span class="op">=</span><span class="st">&quot;hello world&quot;</span></span>
+<span id="cb2-2"><a href="SC2153.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$MY_VARIABLE</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck has noticed that you reference a variable that is not
+assigned in the script, but which has a name similar to another known
+variable. You should verify that the variable name is spelled
+correctly.</p>
+<p>Note: This error only triggers for environment variables (all
+uppercase variables), and only when they have names similar to another
+known variable in the script. If the variable is script-local, it should
+by convention have a lowercase name, and will in that case be caught by
+[SC2154] whether or not it resembles another name.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you've double checked and ensured that you did not intend to
+reference the specified variable, you can disable this message with a <a
+href="directive.html">directive</a>. The message will also not appear for
+guarded references like <code>${ENVVAR:-default}</code> or
+<code>${ENVVAR:?Unset error message here}</code>.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

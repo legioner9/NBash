@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: Ignore – Ignoring errors</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>Ignore – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/Ignore">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="ignoring-errors">Ignoring errors</h2>
+<p>To ignore a ShellCheck error, you can do one of three things:</p>
+<h3 id="ignoring-one-specific-instance-in-a-file">Ignoring one specific
+instance in a file</h3>
+<p>Use a <a href="directive.html">directive</a> to disable a certain
+instance:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="Ignore.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hexToAscii()</span> <span class="kw">{</span></span>
+<span id="cb1-2"><a href="Ignore.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># shellcheck disable=SC2059</span></span>
+<span id="cb1-3"><a href="Ignore.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">printf</span> <span class="st">&quot;\x</span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb1-4"><a href="Ignore.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<p>You can pass multiple errors to <a
+href="directive.html">directive</a>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="Ignore.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=SC2116,SC2086</span></span>
+<span id="cb2-2"><a href="Ignore.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">hash</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="va">${hash})</span>    <span class="co"># trim spaces</span></span></code></pre></div>
+<h3 id="ignoring-errors-in-one-specific-run">Ignoring errors in one
+specific run</h3>
+<p>Use a <code>-e</code> flag to disable a specific error when running
+<code>shellcheck</code>:</p>
+<pre class="console"><code>$ shellcheck -e SC2059 myscript</code></pre>
+<h3 id="ignoring-one-or-more-types-of-errors-forever">Ignoring one or
+more types of errors forever</h3>
+<p>As of v0.7.0 you can create a file <code>.shellcheckrc</code> in your
+home directory (or your project's base directory), and add
+<code>disable</code> directives to it:</p>
+<pre class="shellcheckrc"><code># ~/.shellcheckrc
+disable=SC2059,SC2034 # Disable individual error codes
+disable=SC1090-SC1100 # Disable a range of error codes</code></pre>
+<p>In earlier versions, you can set the environment variable
+<code>SHELLCHECK_OPTS</code> in your <code>.bashrc</code>,
+<code>/etc/profile</code> or equivalent:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="Ignore.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">SHELLCHECK_OPTS</span><span class="op">=</span><span class="st">&quot;-e SC2059 -e SC2034 -e SC1090&quot;</span></span></code></pre></div>
+<h3
+id="ignoring-one-or-more-types-of-error-with-shellcheck-in-docker">Ignoring
+one or more types of error with ShellCheck in Docker</h3>
+<p>Pass it to Docker directly:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="Ignore.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-e</span> SHELLCHECK_OPTS=<span class="st">&quot;-e SC2059 -e SC2034 -e SC1090&quot;</span> <span class="at">-v</span> <span class="st">&quot;</span><span class="va">$PWD</span><span class="st">:/mnt&quot;</span> koalaman/shellcheck myscript</span></code></pre></div>
+<p>Optionally you can set the <code>SHELLCHECK_OPTS</code> variable in
+shell:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="Ignore.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">SHELLCHECK_OPTS</span><span class="op">=</span><span class="st">&quot;-e SC2059 -e SC2034 -e SC1090&quot;</span></span></code></pre></div>
+<p>and then pass it to Docker:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="Ignore.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-e</span> SHELLCHECK_OPTS <span class="at">-v</span> <span class="st">&quot;</span><span class="va">$PWD</span><span class="st">:/mnt&quot;</span> koalaman/shellcheck myscript</span></code></pre></div>
+<h3 id="ignoring-all-instances-in-a-file-044">Ignoring all instances in
+a file (0.4.4+)</h3>
+<p>Add a <a href="directive.html">directive</a> at the top of the file:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="Ignore.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb9-2"><a href="Ignore.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=SC2059</span></span></code></pre></div>
+<p>Note that the <a href="directive.html">directive</a> must be on the first
+line after the shebang with versions before 0.4.6. As of 0.4.6 comments
+and whitespace are allowed before file-wide directives.</p>
+<h3 id="ignoring-all-errors-in-a-file-08">Ignoring all errors in a file
+(0.8+)</h3>
+<p>Add a <a href="directive.html">directive</a> at the top of the file:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="Ignore.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb10-2"><a href="Ignore.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=all</span></span></code></pre></div>
+<p>Note that the <a href="directive.html">directive</a> must be on the first
+non-commented/non-whitespace line after the shebang with versions after
+0.4.6.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

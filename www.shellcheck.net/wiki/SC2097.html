@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2097 – This assignment is only seen by the forked process.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2097 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2097">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="this-assignment-is-only-seen-by-the-forked-process">This
+assignment is only seen by the forked process.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2097.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">name</span><span class="op">=</span>World <span class="ex">cmd</span> <span class="at">-m</span> <span class="st">&quot;Hello </span><span class="va">$name</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2097.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">name</span><span class="op">=</span>World</span>
+<span id="cb2-2"><a href="SC2097.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cmd</span> <span class="at">-m</span> <span class="st">&quot;Hello </span><span class="va">$name</span><span class="st">&quot;</span></span></code></pre></div>
+<p>If the original goal was to limit the scope of the variable, this can
+also be done in a subshell:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2097.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span></span>
+<span id="cb3-2"><a href="SC2097.html#cb3-2" aria-hidden="true" tabindex="-1"></a>   <span class="va">name</span><span class="op">=</span>World</span>
+<span id="cb3-3"><a href="SC2097.html#cb3-3" aria-hidden="true" tabindex="-1"></a>   <span class="ex">cmd</span> <span class="at">-m</span> <span class="st">&quot;Hello </span><span class="va">$name</span><span class="st">&quot;</span></span>
+<span id="cb3-4"><a href="SC2097.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">)</span> <span class="co"># &#39;name&#39; does not leave this subshell</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>In <code>name=World cmd "$name"</code>, <code>name=World</code> is
+passed in as part of the environment to <code>cmd</code> (i.e., in the
+<code>envp</code> parameter to <a
+href="http://linux.die.net/man/2/execve">execve(2)</a>). This means that
+<code>cmd</code> and its children will see the parameter, but no other
+processes will.</p>
+<p>However, <code>"$name"</code> is not expanded by <code>cmd</code>.
+<code>"$name"</code> is expanded by the shell before <code>cmd</code> is
+ever executed, and thus it will not use the new value.</p>
+<p>The solution is to set the variable first, then use it as a
+parameter. If limited scope is desired, a <code>( subshell )</code> can
+be used.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>In the strange and fabricated scenarios where the script and a
+program uses a variable name for two different purposes, you can ignore
+this message. This is hard to conceive, since scripts should use
+lowercase variable names specifically to avoid collisions with the
+environment.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/104">BashFaq: Why
+doesn't foo=bar echo "$foo" print bar?</a></li>
+<li><a
+href="https://stackoverflow.com/questions/36380569/prefixing-variable-assignment-doesnt-work-with-echo?rq=1">StackOverflow:
+Prefixing variable assignment doesn't work with echo</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

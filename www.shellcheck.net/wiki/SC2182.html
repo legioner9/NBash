@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2182 – This printf format string has no variables. Other arguments are ignored.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2182 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2182">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this-printf-format-string-has-no-variables-other-arguments-are-ignored">This
+printf format string has no variables. Other arguments are ignored.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2182.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">place</span><span class="op">=</span><span class="st">&quot;world&quot;</span></span>
+<span id="cb1-2"><a href="SC2182.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> hello <span class="va">$place</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2182.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">place</span><span class="op">=</span><span class="st">&quot;world&quot;</span></span>
+<span id="cb2-2"><a href="SC2182.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">&quot;hello %s\n&quot;</span> <span class="st">&quot;</span><span class="va">$place</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck has noticed that you're using a <code>printf</code> with
+multiple arguments, but where the first argument has no <code>%s</code>
+or equivalent variable placeholders.</p>
+<p><code>echo</code> accepts zero or more strings to write, e.g.
+<code>echo hello world</code>.</p>
+<p><code>printf</code> instead accepts one pattern/template with zero or
+more <code>%s</code>-style placeholders, and one argument for each
+placeholder.</p>
+<p>Rewrite your command using the right semantics, otherwise all
+arguments after the first one will be ignored:</p>
+<pre><code>$ printf hello world\\n
+hello
+
+$ printf &quot;hello world\n&quot;
+hello world
+
+$ printf &quot;hello %s\n&quot; &quot;world&quot;
+hello world</code></pre>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you wanted a no-op, use <code>:</code> instead.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2182.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">:</span> <span class="va">${place</span><span class="op">=</span>world<span class="va">}</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

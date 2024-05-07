@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2154 – var is referenced but not assigned.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2154 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2154">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="var-is-referenced-but-not-assigned">var is referenced but not
+assigned.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2154.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span>name</span>
+<span id="cb1-2"><a href="SC2154.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span>42</span>
+<span id="cb1-3"><a href="SC2154.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$var_$n</span><span class="st">.jpg&quot;</span>   <span class="co"># overextended</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2154.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">target</span><span class="op">=</span><span class="st">&quot;world&quot;</span></span>
+<span id="cb2-2"><a href="SC2154.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;hello </span><span class="va">$tagret</span><span class="st">&quot;</span>  <span class="co"># misspelled</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2154.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Result: </span><span class="va">${mycmd</span><span class="er"> -a myfile</span><span class="va">}</span><span class="st">&quot;</span>  <span class="co"># trying to execute commands</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2154.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span>name</span>
+<span id="cb4-2"><a href="SC2154.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span>42</span>
+<span id="cb4-3"><a href="SC2154.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${var}</span><span class="st">_</span><span class="va">${n}</span><span class="st">.jpg&quot;</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="SC2154.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">target</span><span class="op">=</span><span class="st">&quot;world&quot;</span></span>
+<span id="cb5-2"><a href="SC2154.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;hello </span><span class="va">$target</span><span class="st">&quot;</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="SC2154.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Result: </span><span class="va">$(</span><span class="ex">mycmd</span> <span class="at">-a</span> myfile<span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck has noticed that you reference a variable that is not
+assigned. Double check that the variable is indeed assigned, and that
+the name is not misspelled.</p>
+<p>Note: This message only triggers for variables with lowercase
+characters in their name (<code>foo</code> and <code>kFOO</code> but not
+<code>FOO</code>) due to the standard convention of using lowercase
+variable names for unexported, local variables.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>ShellCheck intentionally does not attempt to figure out runtime or
+dynamic assignments like with <code>source "$(date +%F).sh"</code> or
+<code>eval var=value</code>. See <a href="SC2034.html">SC2034</a> for an
+extended discussion of why this is the case.</p>
+<p>If you know for a fact that the variable is set, you can use
+<code>${var:?}</code> to fail if the variable is unset (or empty),
+initialize it to a default value if uninitialized with
+<code>: "${var:=}"</code>, or explicitly initialize/declare it with
+<code>var=""</code> or <code>declare var</code>. You can also disable
+the message with a <a href="directive.html">directive</a>.</p>
+<hr />
+<h2 id="read-more">Read more:</h2>
+<p>POSIX - Parameter expansion:</p>
+<ul>
+<li><a href="https://stackoverflow.com/a/16753536/2309247"
+class="uri">https://stackoverflow.com/a/16753536/2309247</a></li>
+<li><a
+href="http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_06_02"
+class="uri">http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_06_02</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

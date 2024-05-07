@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2120 – foo references arguments, but none are ever passed.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2120 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2120">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h1 id="foo-references-arguments-but-none-are-ever-passed">foo
+references arguments, but none are ever passed.</h1>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2120.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sayhello()</span> <span class="kw">{</span></span>
+<span id="cb1-2"><a href="SC2120.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Hello </span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb1-3"><a href="SC2120.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb1-4"><a href="SC2120.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">sayhello</span></span></code></pre></div>
+<p><code>./myscript World</code> just prints "Hello " instead of "Hello
+World".</p>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2120.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sayhello()</span> <span class="kw">{</span></span>
+<span id="cb2-2"><a href="SC2120.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Hello </span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb2-3"><a href="SC2120.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb2-4"><a href="SC2120.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">sayhello</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span></span></code></pre></div>
+<p><code>./myscript World</code> now prints "Hello World".</p>
+<h3 id="rationale">Rationale:</h3>
+<p>In a function, <code>$1</code> and up refers to the function's
+parameters, not the script's parameters.</p>
+<p>If you want to process your script's parameters in a function, you
+have to explicitly pass them. You can do this with
+<code>myfunction "$@"</code>.</p>
+<p>Note that <code>"$@"</code> refers to the current context's
+positional parameters, so if you call a function from a function, you
+have to pass in <code>"$@"</code> to both of them:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2120.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">first()</span> <span class="kw">{</span> <span class="ex">second</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span><span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb3-2"><a href="SC2120.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">second()</span> <span class="kw">{</span> <span class="bu">echo</span> <span class="st">&quot;The first script parameter is: </span><span class="va">$1</span><span class="st">&quot;</span><span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb3-3"><a href="SC2120.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">first</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="exceptions">Exceptions</h3>
+<p>If the parameters are optional and you currently just don't want to
+use them, you can ignore this message. In versions strictly greater than
+v0.6.0, ignoring SC2120 on a function will also disable SC2119 on each
+of the call sites.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

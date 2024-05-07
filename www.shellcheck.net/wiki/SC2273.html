@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2273 – Sequence of `===`s found. Merge conflict or intended as a commented border?</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2273 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2273">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="sequence-of-s-found-merge-conflict-or-intended-as-a-commented-border">Sequence
+of <code>===</code>s found. Merge conflict or intended as a commented
+border?</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2273.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">=======</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>Either resolve the merge conflict, or use <code># =======</code> for
+a border</p>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a series of <code>=======</code>s. If this was
+supposed to be a border or separator, use a comment.</p>
+<p>However, it could also be left behind from a source control merge
+conflict:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2273.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span> HEAD</span>
+<span id="cb2-2"><a href="SC2273.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Goodbye World&quot;</span></span>
+<span id="cb2-3"><a href="SC2273.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">=======</span></span>
+<span id="cb2-4"><a href="SC2273.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Hello World!&quot;</span></span>
+<span id="cb2-5"><a href="SC2273.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span> mybranch</span></code></pre></div>
+<p>In this case, make sure the merge conflict is correctly resolved, and
+all the markers removed.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

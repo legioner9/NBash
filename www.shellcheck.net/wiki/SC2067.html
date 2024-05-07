@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2067 – Missing `;` or `+` terminating `-exec`. You can't use `|`/`||`/`&&`, and `;` has to be a separate, quoted argument.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2067 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2067">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="missing--or--terminating--exec-you-cant-use--and--has-to-be-a-separate-quoted-argument">Missing
+<code>;</code> or <code>+</code> terminating <code>-exec</code>. You
+can't use <code>|</code>/<code>||</code>/<code>&amp;&amp;</code>, and
+<code>;</code> has to be a separate, quoted argument.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2067.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-type</span> f <span class="at">-exec</span> shellcheck {} <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span> <span class="dt">\;</span></span>
+<span id="cb1-2"><a href="SC2067.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-exec</span> echo {} <span class="kw">;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2067.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-type</span> f <span class="at">-exec</span> sh <span class="at">-c</span> <span class="st">&#39;shellcheck &quot;$1&quot; | wc -l&#39;</span> <span class="at">--</span> {} <span class="dt">\;</span></span>
+<span id="cb2-2"><a href="SC2067.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-exec</span> echo {} <span class="dt">\;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><code>find -exec</code> is still subject to all normal shell rules,
+so all shell features like <code>|</code>, <code>||</code>,
+<code>&amp;</code> and <code>&amp;&amp;</code> will apply to the
+<code>find</code> command itself, and not to the command you are trying
+to construct with <code>-exec</code>.</p>
+<p><code>find . -exec foo {} &amp;&amp; bar {} \;</code> means run the
+command <code>find . -exec foo {}</code>, and if find is successful, run
+the command <code>bar "{}" ";"</code>.</p>
+<p>To instead go through each file and run
+<code>foo file &amp;&amp; bar file</code> on it, invoke a shell that can
+interpret <code>&amp;&amp;</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2067.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-exec</span> sh <span class="st">&#39;foo &quot;$1&quot; &amp;&amp; bar &quot;$1&quot;&#39;</span> <span class="at">--</span> {} <span class="dt">\;</span></span></code></pre></div>
+<p>You can also use find <code>-a</code> instead of shell
+<code>&amp;&amp;</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2067.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-exec</span> foo {} <span class="dt">\;</span> <span class="at">-a</span> <span class="at">-exec</span> bar {} <span class="dt">\;</span></span></code></pre></div>
+<p>This will have the same effect (<code>-a</code> is also the default
+when two commands are specified, and can therefore be omitted).</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>None</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

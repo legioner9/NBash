@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1037 – Braces are required for positionals over 9, e.g. `${10}`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1037 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1037">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="braces-are-required-for-positionals-over-9-eg-10">Braces are
+required for positionals over 9, e.g. <code>${10}</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1037.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Ninth parameter: </span><span class="va">$9</span><span class="st">&quot;</span></span>
+<span id="cb1-2"><a href="SC1037.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Tenth parameter: </span><span class="va">$1</span><span class="st">0&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1037.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Ninth parameter: </span><span class="va">$9</span><span class="st">&quot;</span></span>
+<span id="cb2-2"><a href="SC1037.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Tenth parameter: </span><span class="va">${10}</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>For legacy reasons, <code>$10</code> is interpreted as the variable
+<code>$1</code> followed by the literal string <code>0</code>.</p>
+<p>Curly braces are needed to tell the shell that both digits are part
+of the parameter expansion.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you wanted the trailing digits to be literal, <code>${1}0</code>
+will make this clear to both humans and ShellCheck.</p>
+<p>In <code>dash</code>, <code>$10</code> is (<a
+href="https://gnu.org/s/autoconf/manual/html_node/Shell-Substitutions.html">wrongly</a>)
+interpreted as <code>${10}</code>, so some 'reversed' care should also
+be taken:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC1037.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> <span class="at">-c</span> <span class="st">&#39;set a b c d e f g h i j; echo $10 ${1}0&#39;</span> <span class="co"># POSIX: a0 a0</span></span>
+<span id="cb3-2"><a href="SC1037.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dash</span> <span class="at">-c</span> <span class="st">&#39;set a b c d e f g h i j; echo $10 ${1}0&#39;</span> <span class="co"># WRONG: j a0</span></span></code></pre></div>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/025">BashFaq: How can I
+access positional parameters after $9?</a></li>
+<li><a href="https://stackoverflow.com/q/4912733">StackOverflow: How to
+handle more than 10 parameters in shell</a></li>
+<li><a
+href="https://www.gnu.org/savannah-checkouts/gnu/autoconf/manual/html_node/Shell-Substitutions.html">Autoconf
+Manual: Shell Substitutions</a> - documents some non-POSIX older shells
+too</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

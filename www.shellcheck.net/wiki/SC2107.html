@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2107 – Instead of `[ a && b ]`, use `[ a ] && [ b ]`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2107 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2107">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="instead-of--a--b--use--a----b-">Instead of
+<code>[ a &amp;&amp; b ]</code>, use
+<code>[ a ] &amp;&amp; [ b ]</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2107.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;-v&quot;</span> <span class="er">&amp;&amp;</span> <span class="ex">-z</span> <span class="st">&quot;</span><span class="va">$2</span><span class="st">&quot;</span> ]</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2107.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;-v&quot;</span> <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">[</span> <span class="ot">-z</span> <span class="st">&quot;</span><span class="va">$2</span><span class="st">&quot;</span> <span class="bu">]</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><code>&amp;&amp;</code> can not be used in a <code>[ .. ]</code> test
+expression. Instead, make two <code>[ .. ]</code> expressions and put
+the <code>&amp;&amp;</code> between them.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashPitfalls#pf6">Bash
+Pitfalls: [ "$foo" = bar &amp;&amp; "$bar" = foo ]</a></li>
+<li><a
+href="https://stackoverflow.com/questions/16396146/using-and-operator-in-if-statement-bash-script/16396181">StackOverflow:
+using and (&amp;&amp;) operator in if statement bash script</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

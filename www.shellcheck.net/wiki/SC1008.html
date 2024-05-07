@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1008 – This shebang was unrecognized. ShellCheck only supports sh/bash/dash/ksh. Add a 'shell' directive to specify.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1008 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1008">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this-shebang-was-unrecognized-shellcheck-only-supports-shbashdashksh-add-a-shell-directive-to-specify">This
+shebang was unrecognized. ShellCheck only supports sh/bash/dash/ksh. Add
+a 'shell' directive to specify.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1008.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/mywrapper</span></span>
+<span id="cb1-2"><a href="SC1008.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Hello World&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1008.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/mywrapper</span></span>
+<span id="cb2-2"><a href="SC1008.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck shell=bash</span></span>
+<span id="cb2-3"><a href="SC1008.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Hello World&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You have specified a shebang that ShellCheck doesn't recognize. This
+can be due to invoking the script via a wrapper, specifying a dummy like
+<code>#!/bin/false</code> to prevent execution, or trying to check a
+script for a non-Bourne shell or tool.</p>
+<p>If this really is a sh/bash/dash/ksh script, please add a
+<code>shell</code> directive after the shebang to tell ShellCheck how to
+interpret the script, as in the example. You can also specify the shell
+with the <code>-s</code> flag.</p>
+<p>If this is a script in some other language, like
+<code>#!/bin/sed</code> for a <code>sed</code> script, then sorry --
+ShellCheck does not support <code>sed</code>, <code>awk</code>,
+<code>expect</code> scripts. It only supports Bourne style shell
+scripts.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

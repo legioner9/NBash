@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: Recursiveness – </title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>Recursiveness – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/Recursiveness">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <p>By default, <code>shellcheck</code> does not support a
+<code>-r</code> option. The reason for this is that there are different
+matching patterns for different files.</p>
+<p>Script could have a <code>.sh</code> extension, no extension and have
+a range of shebang lines (which have their own testing format):</p>
+<ul>
+<li><code>#!/bin/bash</code></li>
+<li><code>#!/bin/sh</code></li>
+<li><code>#!/usr/bin/env bash</code></li>
+<li><code>#!/usr/bin/env sh</code></li>
+<li>etc...</li>
+</ul>
+<p>The solution for this problem is to use <code>shellcheck</code> in
+combination with the <code>find</code> or <code>grep</code> command.</p>
+<h2 id="by-file-extension">By file extension</h2>
+<p>To check files with one of multiple extensions:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="Recursiveness.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bash 4+</span></span>
+<span id="cb1-2"><a href="Recursiveness.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># nullglob will prevent one of the extension patterns from appearing in the arg list</span></span>
+<span id="cb1-3"><a href="Recursiveness.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># if they don&#39;t match.</span></span>
+<span id="cb1-4"><a href="Recursiveness.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># dotglob will match shell scripts in hidden directories.</span></span>
+<span id="cb1-5"><a href="Recursiveness.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">shopt</span> <span class="at">-s</span> nullglob dotglob</span>
+<span id="cb1-6"><a href="Recursiveness.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">shellcheck</span> /path/to/scripts/<span class="pp">**</span>.<span class="dt">{sh</span><span class="op">,</span><span class="dt">bash</span><span class="op">,</span><span class="dt">ksh</span><span class="op">,</span><span class="dt">bashrc</span><span class="op">,</span><span class="dt">bash_profile</span><span class="op">,</span><span class="dt">bash_login</span><span class="op">,</span><span class="dt">bash_logout}</span></span>
+<span id="cb1-7"><a href="Recursiveness.html#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="Recursiveness.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># POSIX</span></span>
+<span id="cb1-9"><a href="Recursiveness.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> /path/to/scripts <span class="at">-type</span> f <span class="dt">\(</span> <span class="at">-name</span> <span class="st">&#39;*.sh&#39;</span> <span class="at">-o</span> <span class="at">-name</span> <span class="st">&#39;*.bash&#39;</span> <span class="at">-o</span> <span class="at">-name</span> <span class="st">&#39;*.ksh&#39;</span> <span class="at">-o</span> <span class="at">-name</span> <span class="st">&#39;*.bashrc&#39;</span> <span class="at">-o</span> <span class="at">-name</span> <span class="st">&#39;*.bash_profile&#39;</span> <span class="at">-o</span> <span class="at">-name</span> <span class="st">&#39;*.bash_login&#39;</span> <span class="at">-o</span> <span class="at">-name</span> <span class="st">&#39;*.bash_logout&#39;</span> <span class="dt">\)</span> <span class="dt">\</span></span>
+<span id="cb1-10"><a href="Recursiveness.html#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">xargs</span> shellcheck</span></code></pre></div>
+<h2 id="by-shebang">By shebang</h2>
+<p>To check files whose shebang indicate that they are
+<code>sh</code>/<code>bash</code>/<code>ksh</code> scripts:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="Recursiveness.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># POSIX</span></span>
+<span id="cb2-2"><a href="Recursiveness.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> /path/to/scripts <span class="at">-type</span> f <span class="at">-exec</span> grep <span class="at">-Eq</span> <span class="st">&#39;^#!(.*/|.*env +)(sh|bash|ksh)&#39;</span> {} <span class="dt">\;</span> <span class="dt">\</span></span>
+<span id="cb2-3"><a href="Recursiveness.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">xargs</span> shellcheck</span></code></pre></div>
+<h2 id="with-docker">With Docker</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="Recursiveness.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--volume</span> /path/to/scripts:/mnt koalaman/shellcheck-alpine sh <span class="at">-c</span> <span class="st">&quot;find /mnt -name &#39;*.sh&#39; | xargs shellcheck&quot;</span></span></code></pre></div>
+<h2 id="to-exclude-filedirectory">To exclude file/directory</h2>
+<p>To exclude files or directories from the search(<code>find</code>)
+results use <code>! -path</code>. To exclude <code>vendor</code>
+directory for example:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="Recursiveness.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> /path/to/scripts <span class="at">-type</span> f <span class="dt">\(</span> <span class="at">-name</span> <span class="st">&#39;*.sh&#39;</span> <span class="dt">\)</span> ! <span class="at">-path</span> <span class="st">&#39;*/vendor/*&#39;</span> <span class="kw">|</span> <span class="fu">xargs</span> shellcheck <span class="at">-x</span> <span class="at">-s</span> sh</span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

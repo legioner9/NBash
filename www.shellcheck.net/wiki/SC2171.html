@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2171 – Found trailing `]` outside test. Add missing `[` or quote if intentional.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2171 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2171">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="found-trailing--outside-test-add-missing--or-quote-if-intentional">Found
+trailing <code>]</code> outside test. Add missing <code>[</code> or
+quote if intentional.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2171.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ex">foo</span> <span class="at">-eq</span> bar ]<span class="kw">;</span> <span class="cf">then</span> <span class="fu">true</span><span class="kw">;</span> <span class="cf">fi</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2171.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tr</span> <span class="at">-d</span> ]</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2171.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> foo <span class="ot">-eq</span> bar <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span> <span class="fu">true</span><span class="kw">;</span> <span class="cf">fi</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2171.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tr</span> <span class="at">-d</span> <span class="st">&#39;]&#39;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a non-test command that ends with <code>]</code> or
+<code>]]</code>.</p>
+<p>If this was intended to be a test expression like in the first
+example, add the missing <code>[</code> or <code>[[</code>.</p>
+<p>If the <code>]</code> was intended to be literal, like in
+<code>tr -d ]</code>, you can quote to make this obvious.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p><code>tr -d ]</code> is valid and not different from
+<code>tr -d ']'</code>, so in these cases you can ignore the error
+instead.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

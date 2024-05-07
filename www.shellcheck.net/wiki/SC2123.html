@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2123 – `PATH` is the shell search path. Use another name.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2123 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2123">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="path-is-the-shell-search-path-use-another-name"><code>PATH</code> is
+the shell search path. Use another name.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2123.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">PATH</span><span class="op">=</span>/my/dir</span>
+<span id="cb1-2"><a href="SC2123.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">&quot;</span><span class="va">$PATH</span><span class="st">/myfile&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>Good practice: always use lowercase for unexported variables.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2123.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">path</span><span class="op">=</span>/my/dir</span>
+<span id="cb2-2"><a href="SC2123.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">&quot;</span><span class="va">$path</span><span class="st">/myfile&quot;</span></span></code></pre></div>
+<p>Bad practice: use another uppercase name.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2123.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">MYPATH</span><span class="op">=</span>/my/dir</span>
+<span id="cb3-2"><a href="SC2123.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">&quot;</span><span class="va">$MYPATH</span><span class="st">/myfile&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><code>PATH</code> is where the shell looks for the commands it
+executes. By inadvertently overwriting it, the shell will be unable to
+find commands (like <code>cat</code> in this case).</p>
+<p>You get this warning when ShellCheck suspects that you didn't meant
+to overwrite it (because it's a single path with no path
+separators).</p>
+<p>Best shell scripting practice is to always use lowercase variable
+names to avoid accidentally overwriting exported and internal
+variables.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you're aware of the above and really do want to set your shell
+search path to <code>/my/dir</code>, you can ignore this warning.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

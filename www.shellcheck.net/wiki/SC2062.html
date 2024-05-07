@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2062 – Quote the grep pattern so the shell won't interpret it.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2062 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2062">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h1 id="quote-the-grep-pattern-so-the-shell-wont-interpret-it">Quote the
+grep pattern so the shell won't interpret it.</h1>
+<h3 id="problematic-code">Problematic code</h3>
+<pre><code>grep foo* file</code></pre>
+<h3 id="correct-code">Correct code</h3>
+<pre><code>grep &quot;foo*&quot; file</code></pre>
+<h3 id="rationale">Rationale</h3>
+<p>The regex passed to grep frequently contains characters that collide
+with globs. The code above is supposed to match "f followed by 1 or more
+o's", but if the directory contains a file called "foo.txt", an unquoted
+pattern will cause it to become <code>grep foo.txt file</code>.</p>
+<p>To prevent this, always quote the regex passed to grep, especially
+when it contains one or more glob character.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

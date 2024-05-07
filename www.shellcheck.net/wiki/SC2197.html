@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2197 – `fgrep` is non-standard and deprecated. Use `grep -F` instead.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2197 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2197">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="fgrep-is-non-standard-and-deprecated-use-grep--f-instead"><code>fgrep</code>
+is non-standard and deprecated. Use <code>grep -F</code> instead.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2197.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fgrep</span> <span class="st">&#39;*.*&#39;</span> file</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2197.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-F</span> <span class="st">&#39;*.*&#39;</span> file</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><code>fgrep</code> is a non-standard command. Its functionality is
+provided in POSIX by <code>grep -F</code>. <a
+href="http://pubs.opengroup.org/onlinepubs/9699919799/utilities/grep.html">POSIX
+grep</a> says:</p>
+<blockquote>
+<p>This grep has been enhanced in an upwards-compatible way to provide
+the exact functionality of the historical egrep and fgrep commands as
+well. It was the clear intention of the standard developers to
+consolidate the three greps into a single command.</p>
+</blockquote>
+<p>man grep for GNU says:</p>
+<blockquote>
+<p>Direct invocation as either egrep or fgrep is deprecated</p>
+</blockquote>
+<h3 id="exceptions">Exceptions:</h3>
+<p>ShellCheck will fail to recognize when functions override
+<code>fgrep</code>. Consider giving it a different name or <a
+href="ignore.html">ignore</a> this error.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

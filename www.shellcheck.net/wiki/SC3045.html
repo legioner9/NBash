@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC3045 – In POSIX sh, some-command-with-flag is undefined.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC3045 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC3045">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="in-posix-sh-some-command-with-flag-is-undefined">In POSIX sh,
+some-command-with-flag is undefined.</h2>
+<p>(or "In dash, ... is not supported." when using
+<code>dash</code>)</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<p>ShellCheck has noticed you're using flags for commands that don't
+necessarily support them. Some examples:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC3045.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb1-2"><a href="SC3045.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span>   <span class="at">-e</span>   <span class="co"># Using libreadline</span></span>
+<span id="cb1-3"><a href="SC3045.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="at">-f</span>   <span class="co"># Exporting functions</span></span>
+<span id="cb1-4"><a href="SC3045.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">ulimit</span> <span class="at">-v</span>   <span class="co"># Setting vspace limits</span></span>
+<span id="cb1-5"><a href="SC3045.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">wait</span>   <span class="at">-n</span>   <span class="co"># Waiting for a single process</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>There are generally no simple rewrites. The easiest solution is
+instead to change the shebang and switch to a shell that <em>does</em>
+support the features you want, such as <code>bash</code>.</p>
+<p>Alternatively, look up how to do what you want to do in POSIX sh.</p>
+<h3 id="rationale">Rationale:</h3>
+<p>External commands (<code>grep</code>, <code>ls</code>,
+<code>find</code>) invoke a binary on the system and therefore accept
+the same flags from all shells.</p>
+<p>However, some commands are instead built into the shell and therefore
+accept different flags depending on which shell is running them.</p>
+<p>You have specified <code>sh</code> or <code>dash</code> in the
+shebang, but the flags you are using only works when it's executed in
+e.g. <code>bash</code>. You should either explicitly declare that the
+script requires <code>bash</code> to run, or you should only use
+features that work on all shells.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If the code is gated on a check of the current shell, you can <a
+href="ignore.html">ignore</a> this warning.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

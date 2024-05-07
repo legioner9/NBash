@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2089 – Quotes/backslashes will be treated literally. Use an array.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2089 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2089">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h1
+id="quotesbackslashes-will-be-treated-literally-use-an-array">Quotes/backslashes
+will be treated literally. Use an array.</h1>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2089.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">args</span><span class="op">=</span><span class="st">&#39;-lh &quot;My File.txt&quot;&#39;</span></span>
+<span id="cb1-2"><a href="SC2089.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="va">$args</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>In Bash/Ksh with arrays:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2089.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">args</span><span class="op">=</span><span class="va">(</span>-lh <span class="st">&quot;My File.txt&quot;</span><span class="va">)</span></span>
+<span id="cb2-2"><a href="SC2089.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="st">&quot;</span><span class="va">${args</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span></span></code></pre></div>
+<p>or in POSIX overwriting <code>"$@"</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2089.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">--</span> <span class="at">-lh</span> <span class="st">&quot;My File.txt&quot;</span></span>
+<span id="cb3-2"><a href="SC2089.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span></span></code></pre></div>
+<p>or in POSIX via functions:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2089.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">myls()</span> <span class="kw">{</span> <span class="fu">ls</span> <span class="st">&quot;-lh&quot;</span> <span class="st">&quot;My File.txt&quot;</span><span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb4-2"><a href="SC2089.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">myls</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Bash does not interpret data as code. Consider almost any other
+languages, such as Python:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="SC2089.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span> <span class="dv">1</span><span class="op">+</span><span class="dv">1</span>   <span class="co"># prints 2</span></span>
+<span id="cb5-2"><a href="SC2089.html#cb5-2" aria-hidden="true" tabindex="-1"></a>a<span class="op">=</span><span class="st">&quot;1+1&quot;</span></span>
+<span id="cb5-3"><a href="SC2089.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span> a     <span class="co"># prints 1+1, not 2</span></span></code></pre></div>
+<p>Here, <code>1+1</code> is Python syntax for adding numbers. However,
+passing a literal string containing this expression does not cause
+Python to interpret it, see the <code>+</code> and produce the
+calculated result.</p>
+<p>Similarly, <code>"My File.txt"</code> is Bash syntax for a single
+word with a space in it. However, passing a literal string containing
+this expression does not cause Bash to interpret it, see the quotes and
+produce the tokenized result.</p>
+<p>The solution is to use an array instead, whenever possible.</p>
+<p>If due to <code>sh</code> compatibility you can't use arrays, you can
+sometimes use functions instead. Instead of trying to create a set of
+arguments that has to be passed to a command, create a function that
+calls the function with arguments plus some more:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="SC2089.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ffmpeg_with_args()</span> <span class="kw">{</span></span>
+<span id="cb6-2"><a href="SC2089.html#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">ffmpeg</span> <span class="at">-filter_complex</span> <span class="st">&#39;[#0x2ef] setpts=PTS+1/TB [sub] ; [#0x2d0] [sub] overlay&#39;</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span></span>
+<span id="cb6-3"><a href="SC2089.html#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb6-4"><a href="SC2089.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">ffmpeg_with_args</span> <span class="at">-i</span> <span class="st">&quot;My File.avi&quot;</span> <span class="st">&quot;Output.avi&quot;</span></span></code></pre></div>
+<p>In other cases, you may have to use <code>eval</code> instead, though
+this is often fragile and insecure. If you get it wrong, it'll appear to
+work great in all test cases, and may still lead to various forms of
+security vulnerabilities and breakage:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="SC2089.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quote()</span> <span class="kw">{</span> <span class="bu">local</span> <span class="va">q</span><span class="op">=</span><span class="va">${1</span><span class="op">//</span><span class="dt">\&#39;</span><span class="op">/</span><span class="dt">\&#39;\\\&#39;\&#39;</span><span class="va">}</span><span class="kw">;</span> <span class="bu">echo</span> <span class="st">&quot;&#39;</span><span class="va">$q</span><span class="st">&#39;&quot;</span><span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb7-2"><a href="SC2089.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="va">args</span><span class="op">=</span><span class="st">&quot;-lh </span><span class="va">$(</span><span class="ex">quote</span> <span class="st">&quot;My File.txt&quot;</span><span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb7-3"><a href="SC2089.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> ls <span class="st">&quot;</span><span class="va">$args</span><span class="st">&quot;</span> <span class="co"># Do not use unless you understand implications</span></span></code></pre></div>
+<p>If you ever accidentally forget to use proper quotes, such as
+with:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="SC2089.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="pp">*</span>.txt<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb8-2"><a href="SC2089.html#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="va">args</span><span class="op">=</span><span class="st">&quot;-lh &#39;</span><span class="va">$1</span><span class="st">&#39;&quot;</span> <span class="co"># Example security exploit</span></span>
+<span id="cb8-3"><a href="SC2089.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">eval</span> ls <span class="st">&quot;</span><span class="va">$args</span><span class="st">&quot;</span> <span class="co"># Do not copy and use</span></span>
+<span id="cb8-4"><a href="SC2089.html#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Then you can use <code>touch "'; rm -rf \$'\x2F'; '.txt"</code> (or
+someone can trick you into downloading a file with this name, or create
+a zip file or git repo containing it, or changing their nick and have
+your chat client create the file for a chat log, or...), and running the
+script to list your files will run the command
+<code>rm -rf /</code>.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>Few and far between, such as, prompt variables. This from
+<code>man bash</code> "PROMPTING":</p>
+<blockquote>
+<pre><code>  After the string is decoded, it is expanded via parameter expansion, command
+  substitution, arithmetic expansion, and quote removal, subject to the value of the promptvars shell
+  option (see the description of the shopt command under SHELL BUILTIN COMMANDS below).  This can have
+  unwanted side effects if escaped portions of the string appear within command substitution or contain
+  characters special to word expansion.</code></pre>
+</blockquote>
+<h3 id="additional-resources">Additional resources</h3>
+<ul>
+<li><a href="http://mywiki.wooledge.org/BashFAQ/050">Wooledge BashFAQ
+#50</a>: I'm trying to put a command in a variable, but the complex
+cases always fail!</li>
+<li><a
+href="https://stackoverflow.com/questions/12136948/in-bash-why-do-shell-commands-ignore-quotes-in-arguments-when-the-arguments-are">StackOverflow:
+In bash, why do shell commands ignore quotes in arguments when the
+arguments are passed to them as a variable?</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

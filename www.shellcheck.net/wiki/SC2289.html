@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2289 – This is interpreted as a command name containing a linefeed. Double check syntax.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2289 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2289">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this-is-interpreted-as-a-command-name-containing-a-linefeed-double-check-syntax">This
+is interpreted as a command name containing a linefeed. Double check
+syntax.</h2>
+<p>(or tab)</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2289.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;&#39;&#39;</span></span>
+<span id="cb1-2"><a href="SC2289.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="st">This script greets the planet</span></span>
+<span id="cb1-3"><a href="SC2289.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;&#39;&#39;</span></span>
+<span id="cb1-4"><a href="SC2289.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Hello World&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2289.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This script greets the planet</span></span>
+<span id="cb2-2"><a href="SC2289.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Hello World&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a command name containing an especially unusual
+character like a tab or linefeed. This is most likely due to a syntax
+issue.</p>
+<p>In the example, this was due to a Python style documentation string,
+which a shell will merely interpreted as a multi-line command name
+sandwiched between two empty strings.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you have a command name that <em>does</em> contain a tab or
+linefeed you can ignore this message, but... wow.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

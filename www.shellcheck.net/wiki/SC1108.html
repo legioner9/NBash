@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1108 – You need a space before and after the `=` .</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1108 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1108">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="you-need-a-space-before-and-after-the--">You need a space before
+and after the <code>=</code> .</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1108.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$var</span><span class="st">&quot;</span>= 2 <span class="bu">]</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1108.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$var</span><span class="st">&quot;</span> <span class="ot">=</span> 2 <span class="bu">]</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You appear to be missing the space on the left side of the operator.
+Shell in general, and <code>[</code> in particular, is space sensitive.
+Operators and operands must be separate tokens.</p>
+<p>Please ensure that the operator, like the <code>=</code> in the
+example, has a space both before and after it.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None. If you're comparing values in C style reverse order like
+<code>[ -eq == $1 ]</code>, use quotes: <code>[ "-eq" == "$1" ]</code>.
+Also, it's pointless since <code>[ a = b ]</code> doesn't assign.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

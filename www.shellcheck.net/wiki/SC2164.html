@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2164 – Use `cd ... || exit` in case `cd` fails.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2164 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2164">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="use-cd---exit-in-case-cd-fails">Use <code>cd ... || exit</code>
+in case <code>cd</code> fails.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2164.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> generated_files</span>
+<span id="cb1-2"><a href="SC2164.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> <span class="pp">*</span>.c</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2164.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">func()</span><span class="kw">{</span></span>
+<span id="cb2-2"><a href="SC2164.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> foo</span>
+<span id="cb2-3"><a href="SC2164.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">do_something</span></span>
+<span id="cb2-4"><a href="SC2164.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2164.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> generated_files <span class="kw">||</span> <span class="bu">exit</span></span>
+<span id="cb3-2"><a href="SC2164.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> <span class="pp">*</span>.c</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2164.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For functions, you may want to use return:</span></span>
+<span id="cb4-2"><a href="SC2164.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">func()</span><span class="kw">{</span></span>
+<span id="cb4-3"><a href="SC2164.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> foo <span class="kw">||</span> <span class="cf">return</span></span>
+<span id="cb4-4"><a href="SC2164.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">do_something</span></span>
+<span id="cb4-5"><a href="SC2164.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><code>cd</code> can fail for a variety of reasons: misspelled paths,
+missing directories, missing permissions, broken symlinks and more.</p>
+<p>If/when it does, the script will keep going and do all its operations
+in the wrong directory. This can be messy, especially if the operations
+involve creating or deleting a lot of files.</p>
+<p>To avoid this, make sure you handle the cases when <code>cd</code>
+fails. Ways to do this include</p>
+<ul>
+<li><code>cd foo || exit</code> as suggested to abort immediately, using
+exit code from failed <code>cd</code> command</li>
+<li><code>cd foo || { echo "Failure"; exit 1; }</code> abort with custom
+message</li>
+<li><code>cd foo || ! echo "Failure"</code> omitting "abort with custom
+message"</li>
+<li><code>if cd foo; then echo "Ok"; else echo "Fail"; fi</code> for
+custom handling</li>
+<li><code>&lt;(cd foo &amp;&amp; cmd)</code> as an alternative to
+<code>&lt;(cd foo || exit; cmd)</code> in <code>&lt;(..)</code>,
+<code>$(..)</code> or <code>( )</code></li>
+</ul>
+<h3 id="exceptions">Exceptions:</h3>
+<p>ShellCheck does not give this warning when <code>cd</code> is on the
+left of a <code>||</code> or <code>&amp;&amp;</code>, or the condition
+of a <code>if</code>, <code>while</code> or <code>until</code> loop.
+Having a <code>set -e</code> command anywhere in the script will disable
+this message, even though it won't necessarily prevent the issue.</p>
+<p>If you are accounting for <code>cd</code> failures in a way
+shellcheck doesn't realize, you can disable this message with a <a
+href="directive.html">directive</a>.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

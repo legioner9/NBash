@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2013 – To read lines rather than words, pipe/redirect to a `while read` loop.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2013 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2013">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="to-read-lines-rather-than-words-piperedirect-to-a-while-read-loop">To
+read lines rather than words, pipe/redirect to a <code>while read</code>
+loop.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2013.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> line <span class="kw">in</span> <span class="va">$(</span><span class="fu">cat</span> file <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^ *#&#39;</span><span class="va">)</span></span>
+<span id="cb1-2"><a href="SC2013.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb1-3"><a href="SC2013.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Line: </span><span class="va">$line</span><span class="st">&quot;</span></span>
+<span id="cb1-4"><a href="SC2013.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2013.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^ *#&#39;</span> <span class="op">&lt;</span> file <span class="kw">|</span> <span class="cf">while</span> <span class="va">IFS</span><span class="op">=</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">line</span></span>
+<span id="cb2-2"><a href="SC2013.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb2-3"><a href="SC2013.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Line: </span><span class="va">$line</span><span class="st">&quot;</span></span>
+<span id="cb2-4"><a href="SC2013.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>or without a subshell (bash, zsh, ksh):</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2013.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">IFS</span><span class="op">=</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">line</span></span>
+<span id="cb3-2"><a href="SC2013.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb3-3"><a href="SC2013.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Line: </span><span class="va">$line</span><span class="st">&quot;</span></span>
+<span id="cb3-4"><a href="SC2013.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="op">&lt;</span> <span class="op">&lt;(</span><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^ *#&#39;</span> <span class="op">&lt;</span> file<span class="op">)</span></span></code></pre></div>
+<p>or without a subshell, with a pipe (more portable, but write a file
+on the filesystem):</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2013.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkfifo</span> mypipe</span>
+<span id="cb4-2"><a href="SC2013.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^ *#&#39;</span> <span class="op">&lt;</span> file <span class="op">&gt;</span> mypipe <span class="kw">&amp;</span></span>
+<span id="cb4-3"><a href="SC2013.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">IFS</span><span class="op">=</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">line</span></span>
+<span id="cb4-4"><a href="SC2013.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb4-5"><a href="SC2013.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Line: </span><span class="va">$line</span><span class="st">&quot;</span></span>
+<span id="cb4-6"><a href="SC2013.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="op">&lt;</span> mypipe</span>
+<span id="cb4-7"><a href="SC2013.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> mypipe</span></code></pre></div>
+<p>NOTE: <code>grep -v '^ *#'</code> is a placeholder example and not
+needed. To just loop through a file:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="SC2013.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">IFS</span><span class="op">=</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">line</span></span>
+<span id="cb5-2"><a href="SC2013.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb5-3"><a href="SC2013.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Line: </span><span class="va">$line</span><span class="st">&quot;</span></span>
+<span id="cb5-4"><a href="SC2013.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="op">&lt;</span> file</span>
+<span id="cb5-5"><a href="SC2013.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or: done &lt;&lt;&lt; &quot;$variable&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>For loops by default (subject to <code>$IFS</code>) read word by
+word. Additionally, glob expansion will occur.</p>
+<p>Given this text file:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="SC2013.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">foo</span> <span class="pp">*</span></span>
+<span id="cb6-2"><a href="SC2013.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bar</span></span></code></pre></div>
+<p>The for loop will print:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="SC2013.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Line:</span> foo</span>
+<span id="cb7-2"><a href="SC2013.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Line:</span> aardwark.jpg</span>
+<span id="cb7-3"><a href="SC2013.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Line:</span> bullfrog.jpg</span>
+<span id="cb7-4"><a href="SC2013.html#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span></span></code></pre></div>
+<p>The while loop will print:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="SC2013.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Line:</span> foo <span class="pp">*</span></span>
+<span id="cb8-2"><a href="SC2013.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Line:</span> bar</span></code></pre></div>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you do want to read word by word, you can set <code>$IFS</code>
+appropriately and disable globbing with <code>set -f</code>, and then <a
+href="ignore.html">ignore</a> this warning. Alternatively, you can pipe
+through <code>tr ' ' '\n'</code> to turn words into lines, and then use
+<code>while read</code>. In Bash/Ksh, you can also use a
+<code>while read -a</code> loop to get an array of words per line.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

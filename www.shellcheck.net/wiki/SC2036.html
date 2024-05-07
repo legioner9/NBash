@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2036 – If you wanted to assign the output of the pipeline, use `a=$(b | c)` .</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2036 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2036">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="if-you-wanted-to-assign-the-output-of-the-pipeline-use-ab--c-">If
+you wanted to assign the output of the pipeline, use
+<code>a=$(b | c)</code> .</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2036.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">sum</span><span class="op">=</span>find <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2036.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">sum</span><span class="op">=</span><span class="va">$(</span><span class="fu">find</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span><span class="va">)</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>The intention in this code was that <code>sum</code> would in some
+way get the value of the command <code>find | wc -l</code>.</p>
+<p>However, <code>|</code> has precedence over the <code>=</code>, so
+the command is a two stage pipeline consisting of <code>sum=find</code>
+and <code>wc -l</code>.</p>
+<p><code>sum=find</code> is a plain string assignment. Since it happens
+by itself in an independent pipeline stage, it has no effect: it
+produces no output, and the variable disappears when the pipeline stage
+finishes. Because the assignment produces no output, <code>wc -l</code>
+will count 0 lines.</p>
+<p>To instead actually assign a variable with the output of a command,
+command substitution <code>$(..)</code> can be used.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None. This warning is triggered whenever the first stage of a
+pipeline is a single assignment, which is never correct.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

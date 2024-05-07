@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: Phabricator – Installation</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>Phabricator – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/Phabricator">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="installation">Installation</h2>
+<p>The default path for libraries extending Phabricator and Arcanist is
+at the same level as Phabricator or Arcanist folders:</p>
+<pre class="console"><code>$ cd /path/to/arcanist
+$ cd ..
+$ git clone https://github.com/dereckson/shellcheck-linter.git</code></pre>
+<h3 id="configuration-to-load-the-linter">Configuration to load the
+linter</h3>
+<p>When you need to use this plugin in a project, in your
+<code>.arcconfig</code> file, add a load block, for example:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="Phabricator.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="Phabricator.html#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;phabricator.uri&quot;</span><span class="fu">:</span> <span class="st">&quot;https://devcentral.nasqueron.org/&quot;</span><span class="fu">,</span></span>
+<span id="cb2-3"><a href="Phabricator.html#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;repository.callsign&quot;</span><span class="fu">:</span> <span class="st">&quot;OPS&quot;</span><span class="fu">,</span></span>
+<span id="cb2-4"><a href="Phabricator.html#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;load&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb2-5"><a href="Phabricator.html#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;shellcheck-linter&quot;</span></span>
+<span id="cb2-6"><a href="Phabricator.html#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span></span>
+<span id="cb2-7"><a href="Phabricator.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>The <code>load</code> array is a collection of strings, and each
+string match a folder name to load.</p>
+<h3 id="configuration-for-arclint">Configuration for
+<code>.arclint</code></h3>
+<p>Provide a block with the <code>"shellcheck"</code> linter type and
+the patterns you wish to lint.</p>
+<p>For example to lint all <code>.sh</code> files:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb3-1"><a href="Phabricator.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb3-2"><a href="Phabricator.html#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;linters&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb3-3"><a href="Phabricator.html#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;shell&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb3-4"><a href="Phabricator.html#cb3-4" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;shellcheck&quot;</span><span class="fu">,</span></span>
+<span id="cb3-5"><a href="Phabricator.html#cb3-5" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&quot;include&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb3-6"><a href="Phabricator.html#cb3-6" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;(</span><span class="ch">\\</span><span class="st">.sh$)&quot;</span></span>
+<span id="cb3-7"><a href="Phabricator.html#cb3-7" aria-hidden="true" tabindex="-1"></a>            <span class="ot">]</span></span>
+<span id="cb3-8"><a href="Phabricator.html#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span></span>
+<span id="cb3-9"><a href="Phabricator.html#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb3-10"><a href="Phabricator.html#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

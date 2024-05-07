@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2139 – This expands when defined, not when used. Consider escaping.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2139 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2139">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="this-expands-when-defined-not-when-used-consider-escaping">This
+expands when defined, not when used. Consider escaping.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2139.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> whereami=<span class="st">&quot;echo </span><span class="va">$PWD</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2139.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> whereami=<span class="st">&#39;echo $PWD&#39;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>With double quotes, this particular alias will be defined as
+<code>echo /home/me</code>, so it will always print the same path. This
+is rarely intended.</p>
+<p>By using single quotes or escaping any expansions, we define the
+alias as <code>echo $PWD</code>, which will be expanded when we use the
+alias. This is the far more common use case.</p>
+<p>Note that even if you expect that the variable will never change, it
+may still be better to quote it. This prevents a second round of
+evaluation later:</p>
+<pre><code>default=&quot;Can&#39;t handle failure, aborting&quot;
+trap &quot;echo $default; exit 1&quot; err
+false </code></pre>
+<p>The trap now has a syntax error, because instead of running
+<code>echo $default</code>, it runs <code>echo Can't handle ..</code>
+which has an unmatched single quote. Avoid early expansion unless you're
+equally comfortable putting <code>eval</code> in there.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you don't mind that your alias definition is expanded at define
+time (and its result expanded again at evaluation time), you can ignore
+this warning.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

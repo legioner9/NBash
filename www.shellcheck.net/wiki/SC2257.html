@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2257 – Arithmetic modifications in command redirections may be discarded. Do them separately.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2257 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2257">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="arithmetic-modifications-in-command-redirections-may-be-discarded-do-them-separately">Arithmetic
+modifications in command redirections may be discarded. Do them
+separately.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2257.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&quot;</span><span class="va">$URL</span><span class="st">&quot;</span> <span class="op">&gt;</span> <span class="st">&quot;image</span><span class="va">$((i</span><span class="op">++</span><span class="va">))</span><span class="st">.jpg&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2257.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">i</span><span class="op">=</span><span class="va">$((i</span><span class="op">+</span><span class="dv">1</span><span class="va">))</span></span>
+<span id="cb2-2"><a href="SC2257.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&quot;</span><span class="va">$URL</span><span class="st">&quot;</span> <span class="op">&gt;</span> <span class="st">&quot;image</span><span class="va">$i</span><span class="st">.jpg&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You are using an arithmetic expression that modifies a variable, e.g.
+<code>$((x+=1))</code> or <code>$((x++))</code>, in the name of a file
+to redirect from/to, in a here document, or in a here string.</p>
+<p>The scope of these modifications depends on whether the command
+itself will fork:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2257.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> foo <span class="op">&gt;</span> <span class="va">$((var</span><span class="op">++</span><span class="va">))</span>.txt  <span class="co"># Updates in BusyBox and Bash</span></span>
+<span id="cb3-2"><a href="SC2257.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>  foo <span class="op">&gt;</span> <span class="va">$((var</span><span class="op">++</span><span class="va">))</span>.txt  <span class="co"># Updates in Busybox, not in Bash</span></span>
+<span id="cb3-3"><a href="SC2257.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">gcc</span>  foo <span class="op">&gt;</span> <span class="va">$((var</span><span class="op">++</span><span class="va">))</span>.txt  <span class="co"># Does not update in either</span></span>
+<span id="cb3-4"><a href="SC2257.html#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="SC2257.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">gcc()</span> <span class="kw">{</span> <span class="ex">/opt/usr/bin/gcc</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span><span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb3-6"><a href="SC2257.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">gcc</span>  foo <span class="op">&gt;</span> <span class="va">$((var</span><span class="op">++</span><span class="va">))</span>.txt  <span class="co"># Now suddenly updates in both</span></span></code></pre></div>
+<p>Rather than rely on knowing which commands do and don't fork, or are
+and aren't overridden, simply do the updates in a separate command as in
+the correct code.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you know your variable is scoped the way you want it, you can
+ignore this warning.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+<li><a
+href="https://stackoverflow.com/questions/62783161/arithmetic-expression-in-redirection/62964890#62964890"
+class="uri">https://stackoverflow.com/questions/62783161/arithmetic-expression-in-redirection/62964890#62964890</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

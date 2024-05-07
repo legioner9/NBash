@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2086 – Double quote to prevent globbing and word splitting.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2086 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2086">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="double-quote-to-prevent-globbing-and-word-splitting">Double
+quote to prevent globbing and word splitting.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2086.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$1</span></span>
+<span id="cb1-2"><a href="SC2086.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="va">$*</span><span class="kw">;</span> <span class="cf">do</span> <span class="bu">:</span><span class="kw">;</span> <span class="cf">done</span> <span class="co"># this one and the next one also apply to expanding arrays.</span></span>
+<span id="cb1-3"><a href="SC2086.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="va">$@</span><span class="kw">;</span> <span class="cf">do</span> <span class="bu">:</span><span class="kw">;</span> <span class="cf">done</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2086.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb2-2"><a href="SC2086.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">do</span> <span class="bu">:</span><span class="kw">;</span> <span class="cf">done</span> <span class="co"># or, &#39;for i; do&#39;</span></span></code></pre></div>
+<h3 id="rationale">Rationale</h3>
+<p>The first code looks like "print the first argument". It's actually
+"Split the first argument by IFS (spaces, tabs and line feeds). Expand
+each of them as if it was a glob. Join all the resulting strings and
+filenames with spaces. Print the result."</p>
+<p>The second one looks like "iterate through all arguments". It's
+actually "join all the arguments by the first character of IFS (space),
+split them by IFS and expand each of them as globs, and iterate on the
+resulting list". The third one skips the joining part.</p>
+<p>Quoting variables prevents word splitting and glob expansion, and
+prevents the script from breaking when input contains spaces, line
+feeds, glob characters and such.</p>
+<p>Strictly speaking, only expansions themselves need to be quoted, but
+for stylistic reasons, entire arguments with multiple variable and
+literal parts are often quoted as one:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2086.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">$HOME</span><span class="ex">/</span><span class="va">$dir</span><span class="ex">/dist/bin/</span><span class="va">$file</span>        <span class="co"># Unquoted (bad)</span></span>
+<span id="cb3-2"><a href="SC2086.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span><span class="va">$HOME</span><span class="st">&quot;</span><span class="ex">/</span><span class="st">&quot;</span><span class="va">$dir</span><span class="st">&quot;</span><span class="ex">/dist/bin/</span><span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span>  <span class="co"># Minimal quoting (good)</span></span>
+<span id="cb3-3"><a href="SC2086.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span><span class="va">$HOME</span><span class="st">/</span><span class="va">$dir</span><span class="st">/dist/bin/</span><span class="va">$file</span><span class="st">&quot;</span>      <span class="co"># Canonical quoting (good)</span></span></code></pre></div>
+<p>When quoting composite arguments, make sure to exclude globs and
+brace expansions, which lose their special meaning in double quotes:
+<code>"$HOME/$dir/src/*.c"</code> will not expand, but
+<code>"$HOME/$dir/src"/*.c</code> will.</p>
+<p>Note that <code>$( )</code> starts a new context, and variables in it
+have to be quoted independently:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2086.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;This </span><span class="va">$variable</span><span class="st"> is quoted </span><span class="va">$(</span><span class="ex">but</span> this <span class="va">$variable</span> is not<span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb4-2"><a href="SC2086.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;This </span><span class="va">$variable</span><span class="st"> is quoted </span><span class="va">$(</span><span class="ex">and</span> now this <span class="st">&quot;</span><span class="va">$variable</span><span class="st">&quot;</span> is too<span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
+<h2 id="exceptions">Exceptions</h2>
+<p>Sometimes you want to split on spaces, like when building a command
+line:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="SC2086.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">options</span><span class="op">=</span><span class="st">&quot;-j 5 -B&quot;</span></span>
+<span id="cb5-2"><a href="SC2086.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="va">$debug</span> <span class="ot">==</span> <span class="st">&quot;yes&quot;</span> <span class="kw">]]</span> <span class="kw">&amp;&amp;</span> <span class="va">options</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$options</span><span class="st"> -d&quot;</span></span>
+<span id="cb5-3"><a href="SC2086.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="va">$options</span> file</span></code></pre></div>
+<p>Just quoting this doesn't work. Instead, you should have used an
+array (bash, ksh, zsh):</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="SC2086.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">options</span><span class="op">=</span><span class="va">(</span>-j 5 -B<span class="va">)</span> <span class="co"># ksh88: set -A options -- -j 5 -B</span></span>
+<span id="cb6-2"><a href="SC2086.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="va">$debug</span> <span class="ot">==</span> <span class="st">&quot;yes&quot;</span> <span class="kw">]]</span> <span class="kw">&amp;&amp;</span> <span class="va">options</span><span class="op">=</span><span class="va">(</span><span class="st">&quot;</span><span class="va">${options</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span> -d<span class="va">)</span></span>
+<span id="cb6-3"><a href="SC2086.html#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="st">&quot;</span><span class="va">${options</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span> file</span></code></pre></div>
+<p>or a function (POSIX):</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="SC2086.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make_with_flags()</span> <span class="kw">{</span></span>
+<span id="cb7-2"><a href="SC2086.html#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$debug</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;yes&quot;</span> <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">set</span> <span class="at">--</span> <span class="at">-d</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span></span>
+<span id="cb7-3"><a href="SC2086.html#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">make</span> <span class="at">-j</span> 5 <span class="at">-B</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span></span>
+<span id="cb7-4"><a href="SC2086.html#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb7-5"><a href="SC2086.html#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">make_with_flags</span> file</span></code></pre></div>
+<p>To split on spaces but not perform glob expansion, POSIX has a
+<code>set -f</code> to disable globbing. You can disable word splitting
+by setting <code>IFS=''</code>.</p>
+<p>Similarly, you might want an optional argument:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="SC2086.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">debug</span><span class="op">=</span><span class="st">&quot;&quot;</span></span>
+<span id="cb8-2"><a href="SC2086.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="va">$1</span> <span class="ot">==</span> <span class="st">&quot;--trace-commands&quot;</span> <span class="kw">]]</span> <span class="kw">&amp;&amp;</span> <span class="va">debug</span><span class="op">=</span><span class="st">&quot;-x&quot;</span></span>
+<span id="cb8-3"><a href="SC2086.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> <span class="va">$debug</span> script</span></code></pre></div>
+<p>Quoting this doesn't work, since in the default case,
+<code>"$debug"</code> would expand to one empty argument while
+<code>$debug</code> would expand into zero arguments. In this case, you
+can use an array with zero or one elements as outlined above, or you can
+use an unquoted expansion with an alternate value:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="SC2086.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="va">debug</span><span class="op">=</span><span class="st">&quot;&quot;</span></span>
+<span id="cb9-2"><a href="SC2086.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="va">$1</span> <span class="ot">==</span> <span class="st">&quot;--trace-commands&quot;</span> <span class="kw">]]</span> <span class="kw">&amp;&amp;</span> <span class="va">debug</span><span class="op">=</span><span class="st">&quot;yes&quot;</span></span>
+<span id="cb9-3"><a href="SC2086.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> <span class="va">${debug</span><span class="op">:+</span><span class="st">&quot;-x&quot;</span><span class="va">}</span> script</span></code></pre></div>
+<p>This is better than an unquoted value because the alternative value
+can be properly quoted, e.g.
+<code>wget ${output:+ -o "$output"}</code>.</p>
+<p>Here are two common cases where this warning seems unnecessary but
+may still be beneficial:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="SC2086.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cmd</span> <span class="op">&lt;&lt;&lt;</span> <span class="va">$var</span>         <span class="co"># Requires quoting on Bash 3 (but not 4+)</span></span>
+<span id="cb10-2"><a href="SC2086.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">:</span> <span class="va">${var</span><span class="op">=</span>default<span class="va">}</span>     <span class="co"># Should be quoted to avoid DoS when var=&#39;*/*/*/*/*/*&#39;</span></span></code></pre></div>
+<p>As always, this warning can be <a
+href="ignore.html">ignored</a> on a
+case-by-case basis.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

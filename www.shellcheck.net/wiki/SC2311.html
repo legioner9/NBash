@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2311 – Bash implicitly disabled set -e for this function invocation because it's inside a command substitution. Add set -e; before it or enable inherit_errexit.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2311 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2311">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="bash-implicitly-disabled-set--e-for-this-function-invocation-because-its-inside-a-command-substitution-add-set--e-before-it-or-enable-inherit_errexit">Bash
+implicitly disabled set -e for this function invocation because it's
+inside a command substitution. Add set -e; before it or enable
+inherit_errexit.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2311.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb1-2"><a href="SC2311.html#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="SC2311.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#shellcheck enable=check-set-e-suppressed</span></span>
+<span id="cb1-4"><a href="SC2311.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-e</span></span>
+<span id="cb1-5"><a href="SC2311.html#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="SC2311.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">deploy()</span> <span class="kw">{</span></span>
+<span id="cb1-7"><a href="SC2311.html#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">make</span> <span class="at">-j</span> <span class="st">&quot;</span><span class="va">$(</span><span class="fu">nproc</span><span class="va">)</span><span class="st">&quot;</span> foo test</span>
+<span id="cb1-8"><a href="SC2311.html#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cp</span> ./foo /var/www/example.com/cgi-bin</span>
+<span id="cb1-9"><a href="SC2311.html#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">./foo</span> <span class="at">--version</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span>
+<span id="cb1-10"><a href="SC2311.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb1-11"><a href="SC2311.html#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="SC2311.html#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="va">version</span><span class="op">=</span><span class="va">$(</span><span class="ex">deploy</span><span class="va">)</span></span>
+<span id="cb1-13"><a href="SC2311.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Successfully deployed </span><span class="va">$version</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2311.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="SC2311.html#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="SC2311.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#shellcheck enable=check-set-e-suppressed</span></span>
+<span id="cb2-4"><a href="SC2311.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-e</span></span>
+<span id="cb2-5"><a href="SC2311.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="bu">shopt</span> <span class="at">-s</span> inherit_errexit</span>
+<span id="cb2-6"><a href="SC2311.html#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="SC2311.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">deploy()</span> <span class="kw">{</span></span>
+<span id="cb2-8"><a href="SC2311.html#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">make</span> <span class="at">-j</span> <span class="st">&quot;</span><span class="va">$(</span><span class="fu">nproc</span><span class="va">)</span><span class="st">&quot;</span> foo test</span>
+<span id="cb2-9"><a href="SC2311.html#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cp</span> ./foo /var/www/example.com/cgi-bin</span>
+<span id="cb2-10"><a href="SC2311.html#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">./foo</span> <span class="at">--version</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span>
+<span id="cb2-11"><a href="SC2311.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb2-12"><a href="SC2311.html#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="SC2311.html#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="va">version</span><span class="op">=</span><span class="va">$(</span><span class="ex">deploy</span><span class="va">)</span></span>
+<span id="cb2-14"><a href="SC2311.html#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Successfully deployed </span><span class="va">$version</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a Bash function invoked in a command substitution
+with <code>set -e</code> enabled.</p>
+<p>Unlike other shells, Bash disables <code>set -e</code> in command
+substitution by default. This means that the function will not exit on
+error.</p>
+<p>In the problematic code, the hope was that the function (and
+therefore the script) would fail if the build and test suite failed.
+Instead, the deployment continues even if the tests fail.</p>
+<p>This can be fixed by either using
+<code>version=$(set -e; deploy)</code> or by enabling
+<code>inherit_errexit</code> as in the correct example.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you don't care that the function runs without <code>set -e</code>,
+you can <a href="ignore.html">ignore</a> this warning.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

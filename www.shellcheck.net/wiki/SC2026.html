@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2026 – This word is outside of quotes. Did you intend to `'nest '"'single quotes'"'` instead'?</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2026 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2026">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this-word-is-outside-of-quotes-did-you-intend-to-nest-single-quotes-instead">This
+word is outside of quotes. Did you intend to
+<code>'nest '"'single quotes'"'</code> instead'?</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2026.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> server_uptime=<span class="st">&#39;ssh $host &#39;</span>uptime <span class="at">-p</span><span class="st">&#39;&#39;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2026.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> server_uptime=<span class="st">&#39;ssh $host &#39;&quot;&#39;uptime -p&#39;&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>In the first case, the user has four single quotes on a line,
+wishfully hoping that the shell will match them up as outer quotes
+around a string with literal single quotes:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2026.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#                   v--------match--------v</span></span>
+<span id="cb3-2"><a href="SC2026.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> server_uptime=<span class="st">&#39;ssh $host &#39;</span>uptime <span class="at">-p</span><span class="st">&#39;&#39;</span></span>
+<span id="cb3-3"><a href="SC2026.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#                              ^--match--^</span></span></code></pre></div>
+<p>The shell, meanwhile, always terminates single quoted strings at the
+first possible single quote:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2026.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#                   v---match--v</span></span>
+<span id="cb4-2"><a href="SC2026.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> server_uptime=<span class="st">&#39;ssh $host &#39;</span>uptime <span class="at">-p</span><span class="st">&#39;&#39;</span></span>
+<span id="cb4-3"><a href="SC2026.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#                                        ^^</span></span></code></pre></div>
+<p>Which is the same thing as
+<code>alias server_uptime='ssh $host uptime' -p</code>.</p>
+<p>There is no way to nest single quotes. However, single quotes can be
+placed literally in double quotes, so we can instead concatenate a
+single quoted string and a double quoted string:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="SC2026.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#                   v--match---v</span></span>
+<span id="cb5-2"><a href="SC2026.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> server_uptime=<span class="st">&#39;ssh $host &#39;&quot;&#39;uptime -p&#39;&quot;</span></span>
+<span id="cb5-3"><a href="SC2026.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#                               ^---match---^</span></span></code></pre></div>
+<p>This results in an alias with embedded single quotes.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

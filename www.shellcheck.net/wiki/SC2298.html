@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2298 – `${$x}` is invalid. For expansion, use ${x}. For indirection, use arrays, ${!x} or (for sh) eval.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2298 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2298">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="x-is-invalid-for-expansion-use-x-for-indirection-use-arrays-x-or-for-sh-eval"><code>${$x}</code>
+is invalid. For expansion, use ${x}. For indirection, use arrays, ${!x}
+or (for sh) eval.</h2>
+<p>(or <code>${${x}}</code> is invalid)</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2298.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Expecting $RETRIES or 3 if unset</span></span>
+<span id="cb1-2"><a href="SC2298.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">retries</span><span class="op">=</span><span class="va">${$</span><span class="er">RETRIES:-3</span><span class="va">}</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2298.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">mypath</span><span class="op">=</span><span class="st">&quot;/tmp/foo.txt&quot;</span></span>
+<span id="cb2-2"><a href="SC2298.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span>mypath</span>
+<span id="cb2-3"><a href="SC2298.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">result</span><span class="op">=</span><span class="va">${$</span><span class="er">var##*/</span><span class="va">}</span>  <span class="co"># Expecting ${mypath##*/}, i.e. &#39;foo.txt&#39;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2298.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">retries</span><span class="op">=</span><span class="va">${RETRIES</span><span class="op">:-</span>3<span class="va">}</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2298.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">mypath</span><span class="op">=</span><span class="st">&quot;/tmp/foo.txt&quot;</span></span>
+<span id="cb4-2"><a href="SC2298.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span>mypath</span>
+<span id="cb4-3"><a href="SC2298.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="va">result</span><span class="op">=</span><span class="va">${</span><span class="op">!</span><span class="va">var}</span></span>
+<span id="cb4-4"><a href="SC2298.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="va">result</span><span class="op">=</span><span class="va">${result</span><span class="op">##</span><span class="pp">*</span>/<span class="va">}</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found a parameter expansion <code>${..}</code> where the
+first element was a second parameter expansion, either
+<code>${$x..}</code> or <code>${${x}..}</code>. This is not valid.</p>
+<p>In the first example, the extra <code>$</code> was unintentional and
+should simply be deleted.</p>
+<p>In the second example, <code>${$var##*/}</code> was used in the hopes
+that it would expand to <code>${myvar##*/}</code> and subsequently strip
+the path. This is not possible, and <code>var</code> must instead be
+expanded indirectly in a separate step, before the path can be stripped
+as usual. More information and other approaches can be found in the
+description of <a href="SC2082.html">SC2082</a>.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

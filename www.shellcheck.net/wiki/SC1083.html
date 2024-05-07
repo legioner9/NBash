@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1083 – This `{`/`}` is literal. Check if `;` is missing or quote the expression.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1083 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1083">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this--is-literal-check-if--is-missing-or-quote-the-expression">This
+<code>{</code>/<code>}</code> is literal. Check if <code>;</code> is
+missing or quote the expression.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1083.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rmf()</span> <span class="kw">{</span> <span class="fu">rm</span> <span class="at">-f</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span> }</span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1083.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> echo <span class="dt">\$</span>{foo}</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC1083.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rmf()</span> <span class="kw">{</span> <span class="fu">rm</span> <span class="at">-f</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span><span class="kw">;</span> <span class="kw">}</span></span></code></pre></div>
+<p>and</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC1083.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="st">&quot;echo </span><span class="dt">\$</span><span class="st">{foo}&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Curly brackets are normally used as syntax in parameter expansion,
+command grouping and brace expansion.</p>
+<p>However, if they don't appear alone at the start of an expression or
+as part of a parameter or brace expansion, the shell silently treats
+them as literals. This frequently indicates a bug, so ShellCheck warns
+about it.</p>
+<p>In the example function, the <code>}</code> is literal because it's
+not at the start of an expression. We fix it by adding a <code>;</code>
+before it.</p>
+<p>In the example eval, the code works fine. However, we can quiet the
+warning and follow good practice by adding quotes around the literal
+data.</p>
+<p>ShellCheck does not warn about <code>{}</code>, since this is
+frequently used with <code>find</code> and rarely indicates a bug.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>This error is harmless when the curly brackets are supposed to be
+literal, in e.g. <code>awk {'print $1'}</code>. However, it's cleaner
+and less error prone to simply include them inside the quotes:
+<code>awk '{print $1}'</code>.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

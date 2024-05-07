@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2000 – See if you can use `${#variable}` instead</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2000 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2000">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h1 id="see-if-you-can-use-variable-instead">See if you can use
+<code>${#variable}</code> instead</h1>
+<p><code>${#variable}</code> will be equal to the number of characters
+in <code>"${variable}"</code></p>
+<p>This is the same result as
+<code>"$( echo "$variable" | wc -m )"</code> When "$variable" only
+contains single-byte characters, it's also the same as
+<code>"$( echo "$variable" | wc -c )"</code></p>
+<h2 id="example-code">example code</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2000.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env  bash</span></span>
+<span id="cb1-2"><a href="SC2000.html#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="SC2000.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$(</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-c</span> <span class="va">)</span><span class="st">&quot;</span> <span class="ot">-gt</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb1-4"><a href="SC2000.html#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;greater than 1&quot;</span></span>
+<span id="cb1-5"><a href="SC2000.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb1-6"><a href="SC2000.html#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="SC2000.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$(</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-m</span> <span class="va">)</span><span class="st">&quot;</span> <span class="ot">-gt</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb1-8"><a href="SC2000.html#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;greater than 1&quot;</span></span>
+<span id="cb1-9"><a href="SC2000.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb1-10"><a href="SC2000.html#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="SC2000.html#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">${</span><span class="op">#</span><span class="va">1}</span><span class="st">&quot;</span> <span class="ot">-gt</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb1-12"><a href="SC2000.html#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;greater than 1&quot;</span></span>
+<span id="cb1-13"><a href="SC2000.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

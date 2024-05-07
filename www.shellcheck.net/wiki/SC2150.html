@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2150 – `-exec` does not automatically invoke a shell. Use `-exec sh -c ..` for that.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2150 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2150">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="-exec-does-not-automatically-invoke-a-shell-use--exec-sh--c--for-that"><code>-exec</code>
+does not automatically invoke a shell. Use <code>-exec sh -c ..</code>
+for that.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2150.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-type</span> f <span class="at">-exec</span> <span class="st">&#39;cat {} | wc -l&#39;</span> <span class="dt">\;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2150.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-type</span> f <span class="at">-exec</span> sh <span class="at">-c</span> <span class="st">&#39;cat {} | wc -l&#39;</span> <span class="dt">\;</span>         <span class="co"># Insecure</span></span>
+<span id="cb2-2"><a href="SC2150.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-type</span> f <span class="at">-exec</span> sh <span class="at">-c</span> <span class="st">&#39;cat &quot;$1&quot; | wc -l&#39;</span> _ {} <span class="dt">\;</span>  <span class="co"># Secure</span></span></code></pre></div>
+<p>Sometimes the command can also be rewritten to not require
+<code>find</code> to invoke a shell:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2150.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-type</span> f <span class="at">-exec</span> wc <span class="at">-l</span> {} <span class="dt">\;</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">&#39; &#39;</span> <span class="at">-f</span> 1</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>find <code>-exec</code> and <code>-execdir</code> uses
+<code>execve(2)</code> style semantics, meaning it expects an executable
+and zero or more arguments that should be passed to it.</p>
+<p>It does not use <code>system(3)</code> style semantics, meaning it
+does not accept a shell command as a string, to be parsed and evaluated
+by the system's command interpreter.</p>
+<p>If you want <code>find</code> to execute a shell command, you have to
+specify <code>sh</code> (or <code>bash</code>) as the executable,
+<code>-c</code> as first argument and your shell command as the
+second.</p>
+<p>To prevent command injection, the filename can be passed as a
+separate argument to sh and referenced as a positional parameter.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>This warning would trigger falsely if executing a program with spaces
+in the path, if no other arguments were specified.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

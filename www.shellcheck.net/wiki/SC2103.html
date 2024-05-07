@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2103 – Use a `( subshell )` to avoid having to `cd` back.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2103 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2103">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="use-a--subshell--to-avoid-having-to-cd-back">Use a
+<code>( subshell )</code> to avoid having to <code>cd</code> back.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2103.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dir <span class="kw">in</span> <span class="pp">*</span>/</span>
+<span id="cb1-2"><a href="SC2103.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb1-3"><a href="SC2103.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> <span class="st">&quot;</span><span class="va">$dir</span><span class="st">&quot;</span></span>
+<span id="cb1-4"><a href="SC2103.html#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">convert</span> index.png index.jpg</span>
+<span id="cb1-5"><a href="SC2103.html#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> ..</span>
+<span id="cb1-6"><a href="SC2103.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2103.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dir <span class="kw">in</span> <span class="pp">*</span>/</span>
+<span id="cb2-2"><a href="SC2103.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb2-3"><a href="SC2103.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">(</span></span>
+<span id="cb2-4"><a href="SC2103.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> <span class="st">&quot;</span><span class="va">$dir</span><span class="st">&quot;</span> <span class="kw">||</span> <span class="bu">exit</span></span>
+<span id="cb2-5"><a href="SC2103.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">convert</span> index.png index.jpg</span>
+<span id="cb2-6"><a href="SC2103.html#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">)</span></span>
+<span id="cb2-7"><a href="SC2103.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2103.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dir <span class="kw">in</span> <span class="pp">*</span>/</span>
+<span id="cb3-2"><a href="SC2103.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb3-3"><a href="SC2103.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> <span class="st">&quot;</span><span class="va">$dir</span><span class="st">&quot;</span> <span class="kw">||</span> <span class="bu">exit</span></span>
+<span id="cb3-4"><a href="SC2103.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">convert</span> index.png index.jpg</span>
+<span id="cb3-5"><a href="SC2103.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> ..</span>
+<span id="cb3-6"><a href="SC2103.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>When doing <code>cd dir; somestuff; cd ..</code>, <code>cd dir</code>
+can fail when permissions are lacking, if the dir was deleted, or if
+<code>dir</code> is actually a file.</p>
+<p>In this case, <code>somestuff</code> will run in the wrong directory
+and <code>cd ..</code> will take you to an even more wrong directory. In
+a loop, this will likely cause the next <code>cd</code> to fail as well,
+propagating this error and running these commands far away from the
+intended directories.</p>
+<p>Check <code>cd</code>s exit status and/or use subshells to limit the
+effects of <code>cd</code>.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you set variables you can't use a subshell. In that case, you
+should definitely check the exit status of <code>cd</code>, which will
+also silence this suggestion.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

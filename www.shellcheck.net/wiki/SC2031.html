@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2031 – var was modified in a subshell. That change might be lost.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2031 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2031">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h1 id="var-was-modified-in-a-subshell-that-change-might-be-lost">var
+was modified in a subshell. That change might be lost.</h1>
+<h3 id="problematic-code">Problematic code:</h3>
+<p>There are many ways of accidentally creating subshells, but a common
+one is piping to a loop:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2031.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span>0</span>
+<span id="cb1-2"><a href="SC2031.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">&quot;%s\n&quot;</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">10</span><span class="dt">}</span> <span class="kw">|</span> <span class="cf">while</span> <span class="bu">read</span> <span class="va">i</span><span class="kw">;</span> <span class="cf">do</span> <span class="kw">((</span> <span class="va">n</span><span class="op">+=</span><span class="va">i</span> <span class="kw">));</span> <span class="cf">done</span></span>
+<span id="cb1-3"><a href="SC2031.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$n</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2031.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bash specific: process substitution. Also try shopts like lastpipe.</span></span>
+<span id="cb2-2"><a href="SC2031.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span>0</span>
+<span id="cb2-3"><a href="SC2031.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">read</span> <span class="va">i</span><span class="kw">;</span> <span class="cf">do</span> <span class="kw">((</span> <span class="va">n</span><span class="op">+=</span><span class="va">i</span> <span class="kw">));</span> <span class="cf">done</span> <span class="op">&lt;</span> <span class="op">&lt;(</span><span class="bu">printf</span> <span class="st">&quot;%s\n&quot;</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">10</span><span class="dt">}</span><span class="op">)</span></span>
+<span id="cb2-4"><a href="SC2031.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$n</span></span></code></pre></div>
+<p>In <code>sh</code>, temporary files, FIFOs or file descriptors can be
+used instead. When the output of the command can be stored to a variable
+before entering the loop, here documents are a preferable
+alternative.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2031.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span>0</span>
+<span id="cb3-2"><a href="SC2031.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">SUMMANDS</span><span class="op">=</span><span class="st">&quot;1</span></span>
+<span id="cb3-3"><a href="SC2031.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">2</span></span>
+<span id="cb3-4"><a href="SC2031.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">3</span></span>
+<span id="cb3-5"><a href="SC2031.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">4</span></span>
+<span id="cb3-6"><a href="SC2031.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="st">5</span></span>
+<span id="cb3-7"><a href="SC2031.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st">6</span></span>
+<span id="cb3-8"><a href="SC2031.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="st">7</span></span>
+<span id="cb3-9"><a href="SC2031.html#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="st">8</span></span>
+<span id="cb3-10"><a href="SC2031.html#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="st">9</span></span>
+<span id="cb3-11"><a href="SC2031.html#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="st">10</span></span>
+<span id="cb3-12"><a href="SC2031.html#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span></span>
+<span id="cb3-13"><a href="SC2031.html#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">read</span> <span class="va">i</span><span class="kw">;</span> <span class="cf">do</span> <span class="va">n</span><span class="op">=</span><span class="va">$((</span> <span class="va">n</span> <span class="op">+</span> <span class="va">i</span> <span class="va">))</span><span class="kw">;</span> <span class="cf">done</span> <span class="op">&lt;&lt;SUMMANDS_HEREDOC_INPUT</span></span>
+<span id="cb3-14"><a href="SC2031.html#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="va">$SUMMANDS</span></span>
+<span id="cb3-15"><a href="SC2031.html#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="op">SUMMANDS_HEREDOC_INPUT</span></span>
+<span id="cb3-16"><a href="SC2031.html#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$n</span></span></code></pre></div>
+<p>With Bash 4.2+ you can also use <code>shopt -s lastpipe</code> which
+will change the pipe behaviour to be similar to Ksh and Zsh (see
+Rationale below) <a
+href="https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html">as
+long as job control is not active</a> (e.g. inside a script):</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2031.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb4-2"><a href="SC2031.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">shopt</span> <span class="at">-s</span> lastpipe</span>
+<span id="cb4-3"><a href="SC2031.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span>0</span>
+<span id="cb4-4"><a href="SC2031.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">&quot;%s\n&quot;</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">10</span><span class="dt">}</span> <span class="kw">|</span> <span class="cf">while</span> <span class="bu">read</span> <span class="va">i</span><span class="kw">;</span> <span class="cf">do</span> <span class="kw">((</span> <span class="va">n</span><span class="op">+=</span><span class="va">i</span> <span class="kw">));</span> <span class="cf">done</span></span>
+<span id="cb4-5"><a href="SC2031.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$n</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Variables set in subshells are not available outside the subshell.
+This is a wide topic, and better described on the <a
+href="http://mywiki.wooledge.org/BashFAQ/024">Wooledge Bash
+Wiki</a>.</p>
+<p>Here are some constructs that cause subshells (shellcheck may not
+warn about all of them). In each case, you can replace
+<code>subshell1</code> by a command or function that sets a variable,
+e.g. simply <code>var=foo</code>, and the variable will appear to be
+unset after the command is run. Similarly, you can replace
+<code>regular</code> with <code>var=foo</code>, and it will be set
+afterwards:</p>
+<p>Pipelines:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="SC2031.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">subshell1</span> <span class="kw">|</span> <span class="ex">subshell2</span> <span class="kw">|</span> <span class="ex">subshell3</span>    <span class="co"># Dash, Ash, Bash (default)</span></span>
+<span id="cb5-2"><a href="SC2031.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">subshell1</span> <span class="kw">|</span> <span class="ex">subshell2</span> <span class="kw">|</span> <span class="ex">regular</span>      <span class="co"># Ksh, Zsh, Bash (with lastpipe=on and no job control)</span></span></code></pre></div>
+<p>Command substitution:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="SC2031.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">regular</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">subshell1</span><span class="va">)</span><span class="st">&quot;</span> <span class="st">&quot;</span><span class="kw">`</span><span class="ex">subshell2</span><span class="kw">`</span><span class="st">&quot;</span></span></code></pre></div>
+<p>Process substitution:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="SC2031.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">regular</span> <span class="op">&lt;(</span><span class="ex">subshell1</span><span class="op">)</span> <span class="op">&gt;(</span><span class="ex">subshell2</span><span class="op">)</span></span></code></pre></div>
+<p>Some forms of grouping:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="SC2031.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span> <span class="ex">subshell</span> <span class="kw">)</span></span>
+<span id="cb8-2"><a href="SC2031.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="ex">regular</span><span class="kw">;</span> <span class="kw">}</span></span></code></pre></div>
+<p>Backgrounding:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="SC2031.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">subshell1</span> <span class="kw">&amp;</span></span>
+<span id="cb9-2"><a href="SC2031.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">subshell2</span> <span class="kw">&amp;</span></span></code></pre></div>
+<p>Anything executed by external processes:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="SC2031.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-exec</span> subshell1 {} <span class="dt">\;</span></span>
+<span id="cb10-2"><a href="SC2031.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-print0</span> <span class="kw">|</span> <span class="fu">xargs</span> <span class="at">-0</span> subshell2</span>
+<span id="cb10-3"><a href="SC2031.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> subshell3</span>
+<span id="cb10-4"><a href="SC2031.html#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">su</span> <span class="at">-c</span> subshell4</span></code></pre></div>
+<p>This applies not only to setting variables, but also setting shell
+options and changing directories.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>You can ignore this error if you don't care that the changes aren't
+reflected, because work on the value branches and shouldn't be
+recombined.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/024">BashFaq: I set
+variables in a loop that's in a pipeline. Why do they disappear after
+the loop terminates?</a></li>
+<li><a href="https://mywiki.wooledge.org/BashPitfalls#pf8">Bash
+Pitfalls: grep foo bar | while read -r; do ((count++)); done</a></li>
+<li><a
+href="https://stackoverflow.com/questions/16854280/a-variable-modified-inside-a-while-loop-is-not-remembered">StackOverflow:
+A variable modified inside a while loop is not remembered</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

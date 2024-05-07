@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2038 – Use `-print0`/`-0` or `find -exec +` to allow for non-alphanumeric filenames.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2038 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2038">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="use--print0-0-or-find--exec--to-allow-for-non-alphanumeric-filenames">Use
+<code>-print0</code>/<code>-0</code> or <code>find -exec +</code> to
+allow for non-alphanumeric filenames.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2038.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-type</span> f <span class="kw">|</span> <span class="fu">xargs</span> md5sum</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2038.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-type</span> f <span class="at">-print0</span> <span class="kw">|</span> <span class="fu">xargs</span> <span class="at">-0</span> md5sum</span>
+<span id="cb2-2"><a href="SC2038.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-type</span> f <span class="at">-exec</span> md5sum {} +</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>By default, <code>xargs</code> interprets spaces and quotes in an
+unsafe and unexpected way. Whenever it's used, it should be used with
+<code>-0</code> or <code>--null</code> to split on <code>\0</code>
+bytes, and <code>find</code> should be made to output <code>\0</code>
+separated filenames.</p>
+<p>POSIX does not require find or xargs to support null terminators, so
+you can also use <code>find -exec +</code>.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

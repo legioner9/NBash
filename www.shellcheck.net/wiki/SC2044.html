@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2044 – For loops over find output are fragile. Use `find -exec` or a `while read` loop.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2044 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2044">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="for-loops-over-find-output-are-fragile-use-find--exec-or-a-while-read-loop">For
+loops over find output are fragile. Use <code>find -exec</code> or a
+<code>while read</code> loop.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2044.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> <span class="va">$(</span><span class="fu">find</span> mydir <span class="at">-mtime</span> <span class="at">-7</span> <span class="at">-name</span> <span class="st">&#39;*.mp3&#39;</span><span class="va">)</span></span>
+<span id="cb1-2"><a href="SC2044.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb1-3"><a href="SC2044.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">((</span> <span class="va">count</span><span class="op">++</span> <span class="kw">))</span></span>
+<span id="cb1-4"><a href="SC2044.html#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Playing file no. </span><span class="va">$count</span><span class="st">&quot;</span></span>
+<span id="cb1-5"><a href="SC2044.html#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">play</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span></span>
+<span id="cb1-6"><a href="SC2044.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb1-7"><a href="SC2044.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Played </span><span class="va">$count</span><span class="st"> files&quot;</span></span></code></pre></div>
+<p>This will fail for filenames containing spaces and similar, such as
+<code>My File.mp3</code>, and has a series of potential globbing issues
+depending on other filenames in the directory like (if you have
+<code>MyFile2.mp3</code> and <code>MyFile[2014].mp3</code>, the former
+file will play twice and the latter will not play at all).</p>
+<h3 id="correct-code">Correct code:</h3>
+<p>There are many possible fixes, each with its pros and cons.</p>
+<p>The most general fix (that requires the least amount of thinking to
+apply) is having <code>find</code> output a <code>\0</code> separated
+list of files and consuming them in a <code>while read</code> loop:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2044.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">IFS</span><span class="op">=</span> <span class="bu">read</span> <span class="at">-r</span> <span class="at">-d</span> <span class="st">&#39;&#39;</span> <span class="va">file</span></span>
+<span id="cb2-2"><a href="SC2044.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb2-3"><a href="SC2044.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">((</span> <span class="va">count</span><span class="op">++</span> <span class="kw">))</span></span>
+<span id="cb2-4"><a href="SC2044.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Playing file no. </span><span class="va">$count</span><span class="st">&quot;</span></span>
+<span id="cb2-5"><a href="SC2044.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">play</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span></span>
+<span id="cb2-6"><a href="SC2044.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="op">&lt;</span>   <span class="op">&lt;(</span><span class="fu">find</span> mydir <span class="at">-mtime</span> <span class="at">-7</span> <span class="at">-name</span> <span class="st">&#39;*.mp3&#39;</span> <span class="at">-print0</span><span class="op">)</span></span>
+<span id="cb2-7"><a href="SC2044.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Played </span><span class="va">$count</span><span class="st"> files&quot;</span></span></code></pre></div>
+<p>In usage it's very similar to the <code>for</code> loop: it gets its
+output from a <code>find</code> statement, it executes a shell script
+body, it allows updating/aggregating variables, and the variables are
+available when the loop ends.</p>
+<p>It requires Bash, and works with GNU, Busybox, OS X, FreeBSD and
+OpenBSD find, but not POSIX find.</p>
+<h5 id="if-find-is-just-matching-globs-recursively">If <code>find</code>
+is just matching globs recursively</h5>
+<p>If you don't need <code>find</code> logic like <code>-mtime -7</code>
+and just use it to match globs recursively (all <code>*.mp3</code> files
+under a directory), you can instead use <code>globstar</code> and
+<code>nullglob</code> instead of <code>find</code>, and still use a
+<code>for</code> loop:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2044.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">shopt</span> <span class="at">-s</span> globstar nullglob</span>
+<span id="cb3-2"><a href="SC2044.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> mydir/<span class="pp">**</span>/<span class="pp">*</span>.mp3</span>
+<span id="cb3-3"><a href="SC2044.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb3-4"><a href="SC2044.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">((</span> <span class="va">count</span><span class="op">++</span> <span class="kw">))</span></span>
+<span id="cb3-5"><a href="SC2044.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Playing file no. </span><span class="va">$count</span><span class="st">&quot;</span></span>
+<span id="cb3-6"><a href="SC2044.html#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">play</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span></span>
+<span id="cb3-7"><a href="SC2044.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb3-8"><a href="SC2044.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Played </span><span class="va">$count</span><span class="st"> files&quot;</span></span></code></pre></div>
+<p>This is bash 4 specific.</p>
+<h5 id="for-posix">For POSIX</h5>
+<p>If you need POSIX compliance, this is a fair approach:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2044.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> mydir ! <span class="at">-name</span> <span class="st">&quot;</span><span class="va">$(</span><span class="bu">printf</span> <span class="st">&quot;*\n*&quot;</span><span class="va">)</span><span class="st">&quot;</span> <span class="at">-name</span> <span class="st">&#39;*.mp3&#39;</span> <span class="op">&gt;</span> tmp</span>
+<span id="cb4-2"><a href="SC2044.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">IFS</span><span class="op">=</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">file</span></span>
+<span id="cb4-3"><a href="SC2044.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb4-4"><a href="SC2044.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">let</span> <span class="va">count</span><span class="op">++</span></span>
+<span id="cb4-5"><a href="SC2044.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Playing file #</span><span class="va">$count</span><span class="st">&quot;</span></span>
+<span id="cb4-6"><a href="SC2044.html#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">play</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span></span>
+<span id="cb4-7"><a href="SC2044.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="op">&lt;</span> tmp</span>
+<span id="cb4-8"><a href="SC2044.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> tmp</span>
+<span id="cb4-9"><a href="SC2044.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Played </span><span class="va">$count</span><span class="st"> files&quot;</span></span></code></pre></div>
+<p>The only problem is for filenames containing line feeds. A
+<code>! -name "$(printf "*\n*")"</code> has been added to simply skip
+these files, just in case there are any.</p>
+<p>If you don't need variables to be available after the loop (here, if
+you don't need to print the final play count at the end), you can skip
+the <code>tmp</code> file and just pipe from <code>find</code> to
+<code>while</code>.</p>
+<h5 id="for-simple-commands-with-no-aggregation">For simple commands
+with no aggregation</h5>
+<p>If you don't need a shell script loop body or any form of variable
+like if we only wanted to play the file, we can dramatically simplify
+while maintaining POSIX compatibility:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="SC2044.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simple and POSIX</span></span>
+<span id="cb5-2"><a href="SC2044.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> mydir <span class="at">-name</span> <span class="st">&#39;*.mp3&#39;</span> <span class="at">-exec</span> play {} <span class="dt">\;</span></span></code></pre></div>
+<p>This does not allow things like <code>let counter++</code> because
+<code>let</code> is a shell builtin, not an external command.</p>
+<h5 id="for-shell-commands-with-no-aggregation">For shell commands with
+no aggregation</h5>
+<p>If we do need a shell script body but no aggregation, you can do the
+above but invoking <code>sh</code> (this is still POSIX):</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="SC2044.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> mydir <span class="at">-name</span> <span class="st">&#39;*.mp3&#39;</span> <span class="at">-exec</span> sh <span class="at">-c</span> <span class="st">&#39;</span></span>
+<span id="cb6-2"><a href="SC2044.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="st">    echo &quot;Playing ${1%.mp3}&quot;</span></span>
+<span id="cb6-3"><a href="SC2044.html#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">    play &quot;$1&quot;</span></span>
+<span id="cb6-4"><a href="SC2044.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">  &#39;</span> sh {} <span class="dt">\;</span></span></code></pre></div>
+<p>This would not be possible without <code>sh</code>, because
+<code>${1%.mp3}</code> is a shell construct that <code>find</code> can't
+evaluate by itself. If we had tried to <code>let counter++</code> in
+this loop, we would have found that the value never changes.</p>
+<p>Note that using <code>+</code> instead of <code>\;</code>, and using
+an embedded <code>for file in "$@"</code> loop rather than
+<code>"$1"</code>, will not allow aggregating variables. This is because
+for large lists, <code>find</code> will invoke the command multiple
+times, each time with some chunk of the input.</p>
+<h3 id="rationale">Rationale:</h3>
+<p><code>for var in $(find ...)</code> loops rely on word splitting and
+will evaluate globs, which will wreck havoc with filenames containing
+whitespace or glob characters.</p>
+<p><code>find -exec</code> <code>for i in glob</code> and
+<code>find</code>+<code>while</code> do not rely on word splitting, so
+they avoid this problem.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you know about and carefully apply <code>IFS=$'\n'</code> and
+<code>set -f</code>, you could choose to ignore this message.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

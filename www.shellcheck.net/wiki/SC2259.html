@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2259 – This redirection overrides piped input. To use both, merge or pass filenames.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2259 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2259">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this-redirection-overrides-piped-input-to-use-both-merge-or-pass-filenames">This
+redirection overrides piped input. To use both, merge or pass
+filenames.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2259.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gzcat</span> yesterday.log.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;</span><span class="va">$USER</span><span class="st">&quot;</span> <span class="op">&lt;</span> today.log</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2259.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify non-piped inputs as filenames</span></span>
+<span id="cb2-2"><a href="SC2259.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gzcat</span> yesterday.log.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;</span><span class="va">$USER</span><span class="st">&quot;</span> <span class="at">-</span> today.log</span>
+<span id="cb2-3"><a href="SC2259.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="SC2259.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Or merge multiple inputs into a single stream</span></span>
+<span id="cb2-5"><a href="SC2259.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="ex">gzcat</span> yesterday.log.gz<span class="kw">;</span> <span class="fu">cat</span> today.log<span class="kw">;</span> <span class="kw">}</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;</span><span class="va">$USER</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>A process only has a single standard input stream. Pipes and input
+redirections both overwrite it, so you can't use both at the same time.
+If you try, the redirection takes precedence and the input pipe is
+closed.</p>
+<p>Many commands support specifying multiple filenames, where one can be
+stdin (canonically by specifying <code>-</code> as a filename, or
+alternatively by using <code>/dev/stdin</code>). In these cases, you can
+rewrite the command to use one piped input, and as many extra files (or
+process substitutions) as you want.</p>
+<p>For commands that only process a single input stream (like
+<code>tr</code>), you can also concatenate multiple commands or files
+into a single stream using a <code>{ command group; }</code> as in the
+example.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

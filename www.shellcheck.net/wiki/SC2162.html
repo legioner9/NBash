@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2162 – `read` without `-r` will mangle backslashes.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2162 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2162">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="read-without--r-will-mangle-backslashes"><code>read</code>
+without <code>-r</code> will mangle backslashes.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2162.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Enter name:&quot;</span></span>
+<span id="cb1-2"><a href="SC2162.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="va">name</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2162.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Enter name:&quot;</span></span>
+<span id="cb2-2"><a href="SC2162.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="at">-r</span> <span class="va">name</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2162.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Enter name:&quot;</span></span>
+<span id="cb3-2"><a href="SC2162.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">IFS</span><span class="op">=</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">name</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>By default, <code>read</code> will interpret backslashes before
+spaces and line feeds (i.e. you can use backslashes in your string as an
+escape character). This is rarely expected or desired.</p>
+<p>Normally you just want to read data <em>including backslashes</em>
+which are part of the input string and have no special escape meaning,
+which is what <code>read -r</code> does. You should always use
+<code>-r</code> unless you have a good reason not to:</p>
+<blockquote>
+<p>-r</p>
+<p>If this option is given, backslash does not act as an escape
+character.</p>
+</blockquote>
+<h4 id="trimming-whitespace">Trimming whitespace</h4>
+<p>Even with <code>read -r</code>, leading and trailing whitespace will
+be stripped from the input. Although this may sometimes be desirable or
+harmless it is often surprising and difficult to catch. Clearing the
+<code>IFS</code> disables this behavior, so <code>IFS= read -r</code> is
+generally safest.</p>
+<h3 id="see-also">See Also</h3>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/001">Bash FAQ
+001</a></li>
+</ul>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you want backslashes to affect field splitting and line
+terminators instead of being read, you can disable this message with a
+<a href="directive.html">directive</a>.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

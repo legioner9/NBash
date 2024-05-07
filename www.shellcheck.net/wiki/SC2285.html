@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2285 – Remove spaces around `+=` to assign (or quote `'+='` if literal).</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2285 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2285">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="remove-spaces-around--to-assign-or-quote--if-literal">Remove
+spaces around <code>+=</code> to assign (or quote <code>'+='</code> if
+literal).</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2285.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">var</span> += <span class="st">&quot;my text&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2285.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">+=</span><span class="st">&quot;my text&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found an unquoted <code>+=</code> after a word. To append
+text to a variable, remove spaces around <code>+=</code> as in the
+example.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If the <code>+=</code> was supposed to be literal, you can quote it
+to make ShellCheck ignore it:</p>
+<pre><code>grep &#39;+=&#39; files..</code></pre>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

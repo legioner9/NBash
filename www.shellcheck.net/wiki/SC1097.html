@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1097 – Unexpected `==`. For assignment, use `=`. For comparison, use `[`/`[[`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1097 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1097">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="unexpected--for-assignment-use--for-comparison-use-">Unexpected
+<code>==</code>. For assignment, use <code>=</code>. For comparison, use
+<code>[</code>/<code>[[</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1097.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span>=value</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>Assignment:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1097.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span>value</span></code></pre></div>
+<p>Comparison:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC1097.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$var</span><span class="st">&quot;</span> <span class="ot">=</span> value <span class="bu">]</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck has noticed that you're using <code>==</code> in an
+unexpected way. The two most common reasons for this is:</p>
+<ul>
+<li><p>You wanted to assign a value but accidentally used
+<code>==</code> instead of <code>=</code>.</p></li>
+<li><p>You wanted to compare two values, but neglected to use
+<code>[ .. ]</code> or <code>[[ .. ]]</code>.</p></li>
+</ul>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you wanted to assign a literal equals sign, use quotes to make
+this clear:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC1097.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span><span class="st">&quot;=sum(A1:A10)&quot;</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

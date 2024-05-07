@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2075 – Escaping `\<` is required in `[..]`, but invalid in `[[..]]`</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2075 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2075">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="escaping--is-required-in--but-invalid-in-">Escaping
+<code>\&lt;</code> is required in <code>[..]</code>, but invalid in
+<code>[..](..)</code></h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2075.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> aardvark <span class="dt">\&lt;</span> zebra <span class="kw">]]</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2075.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> aardvark <span class="ot">&lt;</span> zebra <span class="kw">]]</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Grammatically speaking, <code>[</code> is considered a normal command
+name, so <code>&lt;</code> and <code>&gt;</code> are interpreted as
+redirections. When using the lexicographical string operators
+<code>&lt;</code> and <code>&gt;</code> in <code>[ .. ]</code>, they
+must be escaped (e.g. <code>\&lt;</code> or <code>"&lt;"</code>).</p>
+<p><code>[[</code> is considered its own grammatical construct, and
+therefore it does not require (nor does it allow) escaping
+<code>&lt;</code> or <code>&gt;</code>.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

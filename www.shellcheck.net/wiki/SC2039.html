@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2039 – In POSIX sh, *something* is undefined.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2039 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2039">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="in-posix-sh-something-is-undefined">In POSIX sh,
+<em>something</em> is undefined.</h2>
+<p><em>Note: This warning has been retired in favor of individual SC3xxx
+warnings for each individual issue.</em></p>
+<p>You have declared that your script works with <code>/bin/sh</code>,
+but you are using features that have undefined behavior according to the
+POSIX specification.</p>
+<p>It may currently work for you, but it can or will fail on other OS,
+the same OS with different configurations, from different contexts (like
+initramfs/chroot), or in different versions of the same OS, including
+future updates to your current system.</p>
+<p>Either declare that your script requires a specific shell like
+<code>#!/bin/bash</code> or <code>#!/bin/dash</code>, or rewrite the
+script in a portable way.</p>
+<p>For help with rewrites, the Ubuntu wiki has <a
+href="https://wiki.ubuntu.com/DashAsBinSh">a list of portability
+issues</a> that broke people's <code>#!/bin/sh</code> scripts when
+Ubuntu switched from Bash to Dash. See also <a
+href="http://mywiki.wooledge.org/Bashism">Bashism</a> on wooledge's
+wiki. ShellCheck may not warn about all these issues.</p>
+<h3 id="c-style-escapes"><code>$'c-style-escapes'</code></h3>
+<p>bash, ksh:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2039.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">a</span><span class="op">=</span><span class="st">$&#39; </span><span class="dt">\t\n</span><span class="st">&#39;</span></span></code></pre></div>
+<p>POSIX:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2039.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">a</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$(</span><span class="bu">printf</span> <span class="st">&#39;%b_&#39;</span> <span class="st">&#39; \t\n&#39;</span><span class="va">)</span><span class="st">&quot;</span><span class="kw">;</span> <span class="va">a</span><span class="op">=</span><span class="st">&quot;</span><span class="va">${a</span><span class="op">%</span>_<span class="va">}</span><span class="st">&quot;</span> <span class="co"># protect trailing \n</span></span></code></pre></div>
+<p>Want some good news? See <a
+href="http://austingroupbugs.net/view.php?id=249#c590"
+class="uri">http://austingroupbugs.net/view.php?id=249#c590</a>.</p>
+<h3 id="testing-equality">Testing Equality</h3>
+<p><code>==</code> operator is not supported in POSIX
+<code>sh</code></p>
+<p>Bash:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2039.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$a</span><span class="st">&quot;</span> <span class="ot">==</span> <span class="st">&quot;</span><span class="va">$b</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb3-2"><a href="SC2039.html#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;equal&quot;</span></span>
+<span id="cb3-3"><a href="SC2039.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>POSIX:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2039.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$a</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;</span><span class="va">$b</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb4-2"><a href="SC2039.html#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;equal&quot;</span></span>
+<span id="cb4-3"><a href="SC2039.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="msgid"><code>$"msgid"</code></h3>
+<p>Bash:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="SC2039.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">$&quot;foo </span><span class="va">$(</span><span class="ex">bar</span><span class="va">)</span><span class="st"> baz&quot;</span></span></code></pre></div>
+<p>POSIX:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="SC2039.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span> gettext.sh <span class="co"># GNU Gettext sh library</span></span>
+<span id="cb6-2"><a href="SC2039.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span>
+<span id="cb6-3"><a href="SC2039.html#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="va">barout</span><span class="op">=</span><span class="va">$(</span><span class="ex">bar</span><span class="va">)</span></span>
+<span id="cb6-4"><a href="SC2039.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">eval_gettext</span> <span class="st">&#39;foo $barout baz&#39;</span> <span class="co"># See GNU Gettext doc for more info.</span></span></code></pre></div>
+<p>Or you can change them to normal double quotes so you go without
+<code>gettext</code>.</p>
+<h3 id="var1-substring-expansion"><code>${var:1}</code> (substring
+expansion)</h3>
+<p><a href="https://wiki.ubuntu.com/DashAsBinSh#A.24.7Bfoo:3.5B:1.5D.7D"
+class="uri">https://wiki.ubuntu.com/DashAsBinSh#A.24.7Bfoo:3.5B:1.5D.7D</a></p>
+<h3 id="arithmetic-for-loops">Arithmetic <code>for</code> loops</h3>
+<p>Bash:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="SC2039.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="kw">((</span><span class="va">init</span><span class="kw">;</span> <span class="va">test</span><span class="kw">;</span> <span class="va">next</span><span class="kw">));</span> <span class="cf">do</span> <span class="ex">foo</span><span class="kw">;</span> <span class="cf">done</span></span></code></pre></div>
+<p>POSIX:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="SC2039.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">:</span> <span class="va">$((init))</span></span>
+<span id="cb8-2"><a href="SC2039.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">[</span> <span class="va">$((test))</span> <span class="ot">-ne</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">do</span> <span class="ex">foo</span><span class="kw">;</span> <span class="bu">:</span> <span class="va">$((next))</span><span class="kw">;</span> <span class="cf">done</span></span></code></pre></div>
+<h3 id="arithmetic-exponentiation">Arithmetic exponentiation</h3>
+<p>Bash:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="SC2039.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">&quot;%s\n&quot;</span> <span class="st">&quot;</span><span class="va">$((</span> <span class="dv">2</span><span class="op">**</span><span class="dv">63</span> <span class="va">))</span><span class="st">&quot;</span></span></code></pre></div>
+<p>POSIX:</p>
+<p>The POSIX standard does not allow for exponents. However, you can
+replicate them completely built-in using a POSIX compatible function. As
+an example, the <code>pow</code> function from <a
+href="http://unix.stackexchange.com/a/7925">here</a>.</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="SC2039.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pow()</span> <span class="kw">{</span></span>
+<span id="cb10-2"><a href="SC2039.html#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">set</span> <span class="at">--</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="st">&quot;</span><span class="va">$2</span><span class="st">&quot;</span> 1</span>
+<span id="cb10-3"><a href="SC2039.html#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$2</span><span class="st">&quot;</span> <span class="ot">-gt</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb10-4"><a href="SC2039.html#cb10-4" aria-hidden="true" tabindex="-1"></a>      <span class="bu">set</span> <span class="at">--</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="va">$(($2</span><span class="op">-</span><span class="dv">1</span><span class="va">))</span> <span class="va">$(($1</span><span class="op">*</span><span class="va">$3))</span></span>
+<span id="cb10-5"><a href="SC2039.html#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span></span>
+<span id="cb10-6"><a href="SC2039.html#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># %d = signed decimal, %u = unsigned decimal</span></span>
+<span id="cb10-7"><a href="SC2039.html#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Either should overflow to 0</span></span>
+<span id="cb10-8"><a href="SC2039.html#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">&quot;%d\n&quot;</span> <span class="st">&quot;</span><span class="va">$3</span><span class="st">&quot;</span></span>
+<span id="cb10-9"><a href="SC2039.html#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<p>To compare:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="SC2039.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">$((</span> <span class="dv">2</span><span class="op">**</span><span class="dv">62</span> <span class="va">))</span><span class="st">&quot;</span></span>
+<span id="cb11-2"><a href="SC2039.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">4611686018427387904</span></span>
+<span id="cb11-3"><a href="SC2039.html#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pow 2 62</span>
+<span id="cb11-4"><a href="SC2039.html#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">4611686018427387904</span></span></code></pre></div>
+<p>Alternatively, if you don't mind using an external program, you can
+use <code>bc</code>. Be aware though: <code>bash</code> and other
+programs may abide by a certain maximum integer that <code>bc</code>
+does not (for <code>bash</code> that's: 64-bit signed long int, failing
+back to 32-bit signed long int).</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="SC2039.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note the overflow that gives a negative number</span></span>
+<span id="cb12-2"><a href="SC2039.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">$((</span> <span class="dv">2</span><span class="op">**</span><span class="dv">63</span> <span class="va">))</span><span class="st">&quot;</span></span>
+<span id="cb12-3"><a href="SC2039.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-9223372036854775808</span></span>
+<span id="cb12-4"><a href="SC2039.html#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="SC2039.html#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># No such problem</span></span>
+<span id="cb12-6"><a href="SC2039.html#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo 2^63 <span class="kw">|</span> <span class="fu">bc</span></span>
+<span id="cb12-7"><a href="SC2039.html#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="ex">9223372036854775808</span></span>
+<span id="cb12-8"><a href="SC2039.html#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="SC2039.html#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># &#39;bc&#39; just keeps on going</span></span>
+<span id="cb12-10"><a href="SC2039.html#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo 2^1280 <span class="kw">|</span> <span class="fu">bc</span></span>
+<span id="cb12-11"><a href="SC2039.html#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ex">20815864389328798163850480654728171077230524494533409610638224700807</span><span class="dt">\</span></span>
+<span id="cb12-12"><a href="SC2039.html#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="ex">21611934672059602447888346464836968484322790856201558276713249664692</span><span class="dt">\</span></span>
+<span id="cb12-13"><a href="SC2039.html#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="ex">98162798132113546415258482590187784406915463666993231671009459188410</span><span class="dt">\</span></span>
+<span id="cb12-14"><a href="SC2039.html#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="ex">95379622423387354295096957733925002768876520583464697770622321657076</span><span class="dt">\</span></span>
+<span id="cb12-15"><a href="SC2039.html#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="ex">83317005651120933244966378183760369413644440628104205339687097746591</span><span class="dt">\</span></span>
+<span id="cb12-16"><a href="SC2039.html#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="ex">6057756101739472373801429441421111406337458176</span></span></code></pre></div>
+<h3 id="standalone-">standalone <code>((..))</code></h3>
+<p>Bash:</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="SC2039.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">((</span><span class="va">a</span><span class="op">=</span><span class="va">c</span><span class="op">+</span><span class="va">d</span><span class="kw">))</span></span>
+<span id="cb13-2"><a href="SC2039.html#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">((</span><span class="va">d</span><span class="kw">))</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> d is true.</span></code></pre></div>
+<p>POSIX:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="SC2039.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">:</span> <span class="va">$((a</span><span class="op">=</span><span class="va">c</span><span class="op">+</span><span class="va">d))</span> <span class="co"># discard the output of the arith expn with `:` command</span></span>
+<span id="cb14-2"><a href="SC2039.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="va">$((d))</span> <span class="ot">-ne</span> 0 <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> d is true. <span class="co"># manually check non-zero =&gt; true</span></span></code></pre></div>
+<h3 id="select-loops"><code>select</code> loops</h3>
+<p>It takes extra care over terminal columns to make select loop look
+like bash's, which generates a list with multiple items on one line, or
+like <code>ls</code>.</p>
+<p>It is, however, still possible to make a naive translation for
+<code>select foo in bar baz; do eat; done</code>:</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="SC2039.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span></span>
+<span id="cb15-2"><a href="SC2039.html#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="va">_i</span><span class="op">=</span>0 <span class="va">_foo</span><span class="op">=</span> <span class="va">foo</span><span class="op">=</span></span>
+<span id="cb15-3"><a href="SC2039.html#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> _name <span class="kw">in</span> bar baz<span class="kw">;</span> <span class="cf">do</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$((_i</span><span class="op">+=</span><span class="dv">1</span><span class="va">))</span><span class="st">) </span><span class="va">$_name</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">done</span></span>
+<span id="cb15-4"><a href="SC2039.html#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">printf</span> <span class="st">&#39;$# &#39;</span><span class="kw">;</span> <span class="bu">read</span> <span class="va">_foo</span></span>
+<span id="cb15-5"><a href="SC2039.html#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb15-6"><a href="SC2039.html#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> _foo <span class="kw">in</span> <span class="ss">1</span><span class="kw">)</span> <span class="va">foo</span><span class="op">=</span>bar<span class="cf">;;</span> <span class="ss">2</span><span class="kw">)</span> <span class="va">foo</span><span class="op">=</span>baz<span class="cf">;;</span> <span class="pp">*</span><span class="kw">)</span> <span class="cf">continue;;</span> <span class="cf">esac</span></span>
+<span id="cb15-7"><a href="SC2039.html#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">eat</span></span>
+<span id="cb15-8"><a href="SC2039.html#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="here-strings">Here-strings</h3>
+<p>Bash, ksh:</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="SC2039.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="va">aaa</span> <span class="va">bbb</span> <span class="op">&lt;&lt;&lt;</span> <span class="va">$(</span><span class="fu">grep</span> foo bar<span class="va">)</span></span></code></pre></div>
+<p>POSIX:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb17-1"><a href="SC2039.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="va">aaa</span> <span class="va">bbb</span> <span class="op">&lt;&lt; EOF</span></span>
+<span id="cb17-2"><a href="SC2039.html#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="va">$(</span><span class="fu">grep</span> foo bar<span class="va">)</span></span>
+<span id="cb17-3"><a href="SC2039.html#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="op">EOF</span></span></code></pre></div>
+<h3 id="echo-flags">echo flags</h3>
+<p>See <a href="https://unix.stackexchange.com/tags/echo/info"
+class="uri">https://unix.stackexchange.com/tags/echo/info</a>.</p>
+<h3 id="varpatreplacement"><code>${var/pat/replacement}</code></h3>
+<p>Bash:</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="SC2039.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${TERM</span><span class="op">/%</span><span class="ss">-256</span><span class="pp">*</span><span class="va">}</span><span class="st">&quot;</span></span></code></pre></div>
+<p>POSIX:</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="SC2039.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$TERM</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="at">-e</span> <span class="st">&#39;s/-256.*$//g&#39;</span></span>
+<span id="cb19-2"><a href="SC2039.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Special case for this since we are matching the end (the start [#] also works):</span></span>
+<span id="cb19-3"><a href="SC2039.html#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${TERM</span><span class="op">%</span>-256<span class="pp">*</span><span class="va">}</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="printf-q"><code>printf %q</code></h3>
+<p>Bash:</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="SC2039.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">&#39;%q &#39;</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span></span></code></pre></div>
+<p>POSIX:</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="SC2039.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: Interpret it back to printf escapes for hard-to-copy chars like \t?</span></span>
+<span id="cb21-2"><a href="SC2039.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># See also: http://git.savannah.gnu.org/cgit/libtool.git/tree/gl/build-aux/funclib.sh?id=c60e054#n1029</span></span>
+<span id="cb21-3"><a href="SC2039.html#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">reuse_quote()</span><span class="kw">(</span></span>
+<span id="cb21-4"><a href="SC2039.html#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> i<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb21-5"><a href="SC2039.html#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">__i_quote</span><span class="op">=</span><span class="va">$(</span><span class="bu">printf</span> <span class="st">&#39;%s\n&#39;</span> <span class="st">&quot;</span><span class="va">$i</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="at">-e</span> <span class="st">&quot;s/&#39;/&#39;</span><span class="dt">\\\\</span><span class="st">&#39;&#39;/g&quot;</span><span class="kw">;</span> <span class="bu">echo</span> x<span class="va">)</span></span>
+<span id="cb21-6"><a href="SC2039.html#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">&quot;&#39;%s&#39;&quot;</span> <span class="st">&quot;</span><span class="va">${__i_quote</span><span class="op">%</span>x<span class="va">}</span><span class="st">&quot;</span></span>
+<span id="cb21-7"><a href="SC2039.html#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">done</span></span>
+<span id="cb21-8"><a href="SC2039.html#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="kw">)</span></span>
+<span id="cb21-9"><a href="SC2039.html#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="ex">reuse_quote</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="jobs-flags"><code>jobs</code> flags</h3>
+<p>The only acceptable flags under POSIX sh for <code>jobs</code> are
+<code>-l</code> and <code>-p</code> (<a
+href="https://pubs.opengroup.org/onlinepubs/9699919799/utilities/jobs.html">see
+spec</a>). Common flags supported by other shells are <code>-s</code>
+and <code>-r</code>, to check for stopped/suspended jobs and running
+jobs. A portable alternative is using <code>grep</code> or
+<code>awk</code>:</p>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="SC2039.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span><span class="va">$(</span><span class="bu">jobs</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;/(S|s)(topped|uspended)/&#39;</span><span class="va">)</span><span class="st">&quot;</span> <span class="co"># instead of jobs -s</span></span>
+<span id="cb22-2"><a href="SC2039.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span><span class="va">$(</span><span class="bu">jobs</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;/(R|r)(unning)/&#39;</span><span class="va">)</span><span class="st">&quot;</span>          <span class="co"># instead of jobs -r</span></span></code></pre></div>
+<p>Although the state of stopped jobs is <code>Stopped</code> in Bash
+and dash, and it's the one specified by POSIX, <code>Suspended</code> is
+also a valid alternative (but Zsh happens to not respect the
+capitalization, that's why we try to match <code>suspended</code>).
+Similarly, the state of running jobs is <code>Running</code> according
+to POSIX. Bash and dash respect this, but Zsh uses
+<code>running</code>.</p>
+<h3 id="redirect-both-stdout-and-stderr">Redirect both stdout and
+stderr</h3>
+<p>Change:</p>
+<pre><code>&gt;&amp; and &amp;&gt;</code></pre>
+<p>To:</p>
+<pre><code>command &gt; file 2&gt;&amp;1 or command 2&gt;&amp;1 | othercommand</code></pre>
+<p>No Comments / Exceptions</p>
+<h3 id="prefixing-signal-names-with-sig">Prefixing signal names with
+<code>SIG</code></h3>
+<p>Instead of e.g.:</p>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb25-1"><a href="SC2039.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> my_handler SIGTERM</span></code></pre></div>
+<p>use:</p>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb26-1"><a href="SC2039.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> my_handler TERM</span>
+<span id="cb26-2"><a href="SC2039.html#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or (`trap -l` for a list of signal numbers; not every one is portable!)</span></span>
+<span id="cb26-3"><a href="SC2039.html#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> my_handler 15</span></code></pre></div>
+<h3 id="disown">disown</h3>
+<p>Bash:</p>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="SC2039.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>command<span class="op">&gt;</span></span>
+<span id="cb27-2"><a href="SC2039.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">disown</span> %<span class="op">&lt;</span>command<span class="op">&gt;</span></span></code></pre></div>
+<p>POSIX:</p>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb28-1"><a href="SC2039.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> <span class="op">&lt;</span>command<span class="op">&gt;</span></span></code></pre></div>
+<p>Note that while <code>nohup</code> can be used to achieve the same
+result, their semantics is different. Also note that <code>nohup</code>
+will, by default, redirect input and output.</p>
+<h2 id="errors-with-changed-codes">Errors with changed codes</h2>
+<p>Some errors, currently having their own pages, were linked to this
+page in older ShellCheck versions.</p>
+<ul>
+<li><a href="SC3026.html">SC3026: In POSIX sh, <code>^</code> in place of
+<code>!</code> in glob bracket expressions is undefined.</a></li>
+</ul>
+<h2 id="exception">Exception</h2>
+<p>Depends on what your expected POSIX shell providers would use.</p>
+<p>Some features have POSIX proposals:</p>
+<ul>
+<li><code>local</code>: <a
+href="https://www.austingroupbugs.net/bug_view_page.php?bug_id=767"
+class="uri">https://www.austingroupbugs.net/bug_view_page.php?bug_id=767</a></li>
+<li><code>$'c-style-escape'</code>: see above</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

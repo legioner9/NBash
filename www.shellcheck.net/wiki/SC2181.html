@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2181 – Check exit code directly with e.g. `if mycmd;`, not indirectly with `$?`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2181 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2181">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="check-exit-code-directly-with-eg-if-mycmd-not-indirectly-with-">Check
+exit code directly with e.g. <code>if mycmd;</code>, not indirectly with
+<code>$?</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2181.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> mytarget</span>
+<span id="cb1-2"><a href="SC2181.html#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="SC2181.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$?</span> <span class="ot">-ne</span> 0 <span class="bu">]</span></span>
+<span id="cb1-4"><a href="SC2181.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb1-5"><a href="SC2181.html#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Build failed&quot;</span></span>
+<span id="cb1-6"><a href="SC2181.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2181.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ot">! </span><span class="fu">make</span> mytarget</span>
+<span id="cb2-2"><a href="SC2181.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb2-3"><a href="SC2181.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Build failed&quot;</span></span>
+<span id="cb2-4"><a href="SC2181.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>For the Solaris 10 Bourne shell:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2181.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="fu">make</span> mytarget</span>
+<span id="cb3-2"><a href="SC2181.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb3-3"><a href="SC2181.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">:</span></span>
+<span id="cb3-4"><a href="SC2181.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb3-5"><a href="SC2181.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Build failed&quot;</span></span>
+<span id="cb3-6"><a href="SC2181.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Running a command and then checking its exit status <code>$?</code>
+against 0 is redundant.</p>
+<p>Instead of just checking the exit code of a command, it checks the
+exit code of a command (e.g. <code>[</code>) that checks the exit code
+of a command.</p>
+<p>Apart from the redundancy, there are other reasons to avoid this
+pattern:</p>
+<ul>
+<li>Since the command and its status test are decoupled, inserting an
+innocent command like <code>echo "make finished"</code> after
+<code>make</code> will cause the <code>if</code> statement to silently
+start comparing <code>echo</code>'s status instead.</li>
+<li>Scripts that run or are called with <code>set -e</code> aka
+<code>errexit</code> will exit immediately if the command fails, even
+though they're followed by a clause that handles failure.</li>
+<li>The value of <code>$?</code> is overwritten by
+<code>[</code>/<code>[[</code>, so you can't get the original value in
+the relevant then/else block (e.g.
+<code>if mycmd; then echo "Success"; else echo "Failed with $?"; fi</code>).</li>
+</ul>
+<p>To check that a command returns success, use
+<code>if mycommand; then ...</code>.</p>
+<p>To check that a command returns failure, use
+<code>if ! mycommand; then ...</code>. Notice that <code>!</code> will
+overwrite <code>$?</code> value.</p>
+<p>To additionally capture output with command substitution:
+<code>if ! output=$(mycommand); then ...</code></p>
+<p>This also applies to <code>while</code>/<code>until</code> loops.</p>
+<p>The default Solaris 10 Bourne shell does not support negating exit
+statuses with <code>!</code>, so <code>! mycommand</code> tries to
+invoke a utility named "!" instead. To test for failure, use
+<code>if mycommand; then :; else ...; fi</code> and
+<code>until mycommand; do ...; done</code>.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

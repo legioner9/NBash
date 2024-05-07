@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2029 – Note that, unescaped, this expands on the client side.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2029 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2029">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="note-that-unescaped-this-expands-on-the-client-side">Note that,
+unescaped, this expands on the client side.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2029.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> host <span class="st">&quot;echo </span><span class="va">$HOSTNAME</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2029.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> host <span class="st">&quot;echo </span><span class="dt">\$</span><span class="st">HOSTNAME&quot;</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2029.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> host <span class="st">&#39;echo $HOSTNAME&#39;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Bash expands all arguments that are not escaped/singlequoted. This
+means that the problematic code is identical to</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2029.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> host <span class="st">&quot;echo clienthostname&quot;</span></span></code></pre></div>
+<p>and will print out the client's hostname, not the server's
+hostname.</p>
+<p>By escaping the <code>$</code> in <code>$HOSTNAME</code>, it will be
+transmitted literally and evaluated on the server instead.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you do want your string expanded on the client side, you can
+safely ignore this message.</p>
+<p>Keep in mind that the expanded string will be evaluated again on the
+server side, so for arbitrary variables and command output, you may need
+to add a layer of escaping with e.g. <code>printf %q</code>.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

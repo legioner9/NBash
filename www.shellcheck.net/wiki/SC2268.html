@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2268 – Avoid x-prefix in comparisons as it no longer serves a purpose.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2268 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2268">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="avoid-x-prefix-in-comparisons-as-it-no-longer-serves-a-purpose">Avoid
+x-prefix in comparisons as it no longer serves a purpose.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2268.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;x</span><span class="va">$pass</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;xswordfish&quot;</span> <span class="bu">]</span></span>
+<span id="cb1-2"><a href="SC2268.html#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="SC2268.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> x<span class="st">&quot;</span><span class="va">$var</span><span class="st">&quot;</span> = x </span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2268.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$pass</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;swordfish&quot;</span> <span class="bu">]</span> </span>
+<span id="cb2-2"><a href="SC2268.html#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="SC2268.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">test</span> <span class="st">&quot;</span><span class="va">$var</span><span class="st">&quot;</span> = <span class="st">&quot;&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Some older shells would get confused if the first argument started
+with a dash, or consisted of <code>!</code> or <code>(</code>. As a
+workaround, people would prefix variables and values to be compared with
+<code>x</code> to ensure the left-hand side always started with an
+alphanumeric character.</p>
+<p>POSIX ensures <a
+href="https://pubs.opengroup.org/onlinepubs/9699919799/utilities/test.html">this
+is not necessary</a>, and all modern shells now follow suit.</p>
+<h3 id="examples">Examples:</h3>
+<p>Bash 1.14 from 1992 incorrectly fails this test. This was fixed for
+Bash 2.0 in 1996:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2268.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">var</span><span class="op">=</span><span class="st">&#39;!&#39;</span></span>
+<span id="cb3-2"><a href="SC2268.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$var</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;!&quot;</span> <span class="bu">]</span></span></code></pre></div>
+<p>Dash 0.5.4 from 2007 incorrectly passes this test. This was fixed for
+Dash 0.5.5 in 2008:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2268.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">x</span><span class="op">=</span><span class="st">&#39;(&#39;</span> <span class="va">y</span><span class="op">=</span><span class="st">&#39;)&#39;</span></span>
+<span id="cb4-2"><a href="SC2268.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$x</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;</span><span class="va">$y</span><span class="st">&quot;</span> <span class="bu">]</span></span></code></pre></div>
+<p>Zsh (while not supported by ShellCheck) fixed the same problem in
+2015.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you are targeting especially old shells, you can ignore this
+warning (or use a different letter).</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><a href="https://www.vidarholen.net/contents/blog/?p=1035">What
+exactly was the point of <code>[ "x$var" = "xval" ]</code></a>?</li>
+<li><a
+href="https://mywiki.wooledge.org/BashPitfalls#A.5B_.24foo_.3D_.22bar.22_.5D">Wooledge
+Bash Pitfall #4</a></li>
+<li><a href="http://www.oilshell.org/blog/2017/08/31.html">Problems With
+the test Builtin: What Does -a Mean?</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

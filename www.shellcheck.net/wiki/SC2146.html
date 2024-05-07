@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2146 – This action ignores everything before the `-o`. Use `\( \)` to group.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2146 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2146">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this-action-ignores-everything-before-the--o-use---to-group">This
+action ignores everything before the <code>-o</code>. Use
+<code>\( \)</code> to group.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2146.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">&#39;*.avi&#39;</span> <span class="at">-o</span> <span class="at">-name</span> <span class="st">&#39;*.mkv&#39;</span> <span class="at">-exec</span> cp {} /media <span class="dt">\;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2146.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="dt">\(</span> <span class="at">-name</span> <span class="st">&#39;*.avi&#39;</span> <span class="at">-o</span> <span class="at">-name</span> <span class="st">&#39;*.mkv&#39;</span> <span class="dt">\)</span> <span class="at">-exec</span> cp {} /media <span class="dt">\;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>In <code>find</code>, two predicates with no operator between them is
+considered a logical, short-circuiting AND (as if using
+<code>-a</code>). E.g., <code>-name '*.mkv' -exec ..</code> is the same
+as <code>-name '*.mkv' -a -exec ..</code>.</p>
+<p><code>-a</code> has higher precedence than <code>-o</code>, so
+<code>-name '*.avi' -o -name '*.mkv' -a -exec ..</code> is equivalent to
+<code>-name '*.avi' -o \( -name '*.mkv' -a -exec .. \)</code>.</p>
+<p>In other words, the problematic code means "if name matches
+<code>*.avi</code>, do nothing. Otherwise, if it matches
+<code>*.mkv</code>, execute a command.".</p>
+<p>In the correct code, we use <code>\( \)</code> to group to get the
+evaluation order we want. The correct code means "if name matches
+<code>*.avi</code> or <code>*.mkv</code>, then execute a command", which
+was what was intended.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you're aware of this, you can either ignore this error or group to
+make it explicit. For example, to decompress all gz files except tar.gz,
+you can use:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2146.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">&#39;*.tar.gz&#39;</span> <span class="at">-o</span> <span class="dt">\(</span> <span class="at">-name</span> <span class="st">&#39;*.gz&#39;</span> <span class="at">-exec</span> gzip <span class="at">-d</span> {} + <span class="dt">\)</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

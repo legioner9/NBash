@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1124 – ShellCheck directives are only valid in front of complete commands like `case` statements, not individual case branches.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1124 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1124">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="shellcheck-directives-are-only-valid-in-front-of-complete-commands-like-case-statements-not-individual-case-branches">ShellCheck
+directives are only valid in front of complete commands like
+<code>case</code> statements, not individual case branches.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1124.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="va">$?</span> <span class="kw">in</span></span>
+<span id="cb1-2"><a href="SC1124.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="ss">0</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&quot;Success&quot;</span> <span class="cf">;;</span></span>
+<span id="cb1-3"><a href="SC1124.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># shellcheck disable=2154</span></span>
+<span id="cb1-4"><a href="SC1124.html#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="pp">*</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$cmd</span><span class="st"> </span><span class="va">$flag</span><span class="st"> returned failure&quot;</span> <span class="cf">;;</span></span>
+<span id="cb1-5"><a href="SC1124.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">esac</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1124.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Applies to everything in the `case` statement</span></span>
+<span id="cb2-2"><a href="SC1124.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=2154</span></span>
+<span id="cb2-3"><a href="SC1124.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="va">$?</span> <span class="kw">in</span></span>
+<span id="cb2-4"><a href="SC1124.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="ss">0</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&quot;Success&quot;</span> <span class="cf">;;</span></span>
+<span id="cb2-5"><a href="SC1124.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="pp">*</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$cmd</span><span class="st"> </span><span class="va">$flag</span><span class="st"> returned failure&quot;</span> <span class="cf">;;</span></span>
+<span id="cb2-6"><a href="SC1124.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">esac</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC1124.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="va">$?</span> <span class="kw">in</span></span>
+<span id="cb3-2"><a href="SC1124.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="ss">0</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&quot;Success&quot;</span> <span class="cf">;;</span></span>
+<span id="cb3-3"><a href="SC1124.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="pp">*</span><span class="kw">)</span></span>
+<span id="cb3-4"><a href="SC1124.html#cb3-4" aria-hidden="true" tabindex="-1"></a>     <span class="co"># Applies to a single command within the `case`</span></span>
+<span id="cb3-5"><a href="SC1124.html#cb3-5" aria-hidden="true" tabindex="-1"></a>     <span class="co"># shellcheck disable=2154</span></span>
+<span id="cb3-6"><a href="SC1124.html#cb3-6" aria-hidden="true" tabindex="-1"></a>     <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$cmd</span><span class="st"> </span><span class="va">$flag</span><span class="st"> returned failure&quot;</span></span>
+<span id="cb3-7"><a href="SC1124.html#cb3-7" aria-hidden="true" tabindex="-1"></a>     <span class="cf">;;</span></span>
+<span id="cb3-8"><a href="SC1124.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="cf">esac</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You appear to have put a directive before a branch in a case
+statement.</p>
+<p>ShellCheck directives can not be scoped to individual branches of
+<code>case</code> statements, only to the entire <code>case</code>, or
+to individual commands within it. Please move the directive as
+appropriate.</p>
+<p>(It is possible to apply directives to all commands within a
+<code>{ ..: }</code> command group, if you truly wish to apply a
+directive to multiple commands but not the full <code>case</code>
+statement.)</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

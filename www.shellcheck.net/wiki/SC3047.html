@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC3047 – In POSIX sh, trapping ERR is undefined.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC3047 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC3047">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="in-posix-sh-trapping-err-is-undefined">In POSIX sh, trapping ERR
+is undefined.</h2>
+<p>(or "In dash, ... is not supported." when using
+<code>dash</code>)</p>
+<p>Also applies to RETURN and DEBUG.</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC3047.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb1-2"><a href="SC3047.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">&#39;Command failed with $?&#39;</span> ERR</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>Switch to a shell like <code>ksh</code> or <code>bash</code> that
+<em>does</em> support the kind of trap you want:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC3047.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="SC3047.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">&#39;Command failed with $?&#39;</span> ERR</span></code></pre></div>
+<p>Otherwise, rewrite the script to not rely on the trap.</p>
+<h3 id="rationale">Rationale:</h3>
+<p>You are trying to install a trap that is not supported by your
+current shell (<code>dash</code> or POSIX <code>sh</code>). There is no
+simple replacement. The script should be rewritten to avoid depending on
+the trap, or simply be run with a shell that supports it.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If you only intend to target shells that supports this feature, you
+can change the shebang to a shell that guarantees support, or <a
+href="ignore.html">ignore</a> this warning.</p>
+<p>You can use <code># shellcheck disable=SC3000-SC4000</code> to ignore
+all such compatibility warnings.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

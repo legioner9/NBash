@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: DevGuide – ShellCheck Dev Guide</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>DevGuide – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/DevGuide">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h1 id="shellcheck-dev-guide">ShellCheck Dev Guide</h1>
+<p>Want to write a new test? (as opposed to an <a
+href="Integration.html">Integration</a> with an editor or CI system)</p>
+<p>Some familiarity with Haskell helps. Most checks just use pattern
+matching and function calls. Grokking monads is generally not required,
+but <code>do</code> notation may come in handy.</p>
+<p>Feel free to skip ahead to <a
+href="DevGuide.html#shellcheck-in-practice">ShellCheck in practice</a>.</p>
+<h2 id="shellcheck-wiki-policy">ShellCheck wiki policy</h2>
+<p>The ShellCheck wiki can be edited by anyone with a GitHub account.
+Feel free to update it with special cases and additional information. If
+you are making a significant edit and would like someone to double check
+it, you can file an issue with the title
+<code>[Wiki] Updated SC1234 to ...</code> (and point to this paragraph
+since this suggestion is still new).</p>
+<h2 id="shellcheck-theory">ShellCheck theory</h2>
+<p>Here's the basic flow of code through ShellCheck:</p>
+<ol>
+<li>Parsing (emits parser warnings (1xxx))</li>
+<li>AST Analysis (emits other warnings (2xxx))</li>
+<li>Formatting and output</li>
+</ol>
+<p>Of these, AST analysis is the most relevant, and where most of the
+interesting checks happen.</p>
+<h3 id="parsing">Parsing</h3>
+<p>The parser turns a string into an AST and zero or more warnings.</p>
+<p>Parser warnings come in two flavors: problems and notes.</p>
+<p>Notes are only emitted when parsing succeeds (they are stored in the
+Parsec user state). For example, a note is emitted when adding spaces
+around <code>=</code> in assignments, because if the parser later fails
+(i.e. it's not actually an assignment), we want to discard the
+suggestion:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="DevGuide.html#cb1-1" aria-hidden="true" tabindex="-1"></a>when (hasLeftSpace <span class="op">||</span> hasRightSpace) <span class="op">$</span></span>
+<span id="cb1-2"><a href="DevGuide.html#cb1-2" aria-hidden="true" tabindex="-1"></a>    parseNoteAt pos <span class="dt">ErrorC</span> <span class="dv">1068</span> <span class="st">&quot;Don&#39;t put spaces around the = in assignments.&quot;</span></span></code></pre></div>
+<p>On the other hand, problems are always emitted, even when parsing
+fails (they are stored in a <code>StateT</code> higher than Parsec in
+the transformer stack). For example, a problem is emitted if there's an
+unescaped linefeed in a <code>[ .. ]</code> expression, because the
+statement is likely malformed or unterminated, and we want to show this
+warning even if we're unable to parse the whole thing:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="DevGuide.html#cb2-1" aria-hidden="true" tabindex="-1"></a>when (single <span class="op">&amp;&amp;</span> <span class="ch">&#39;\n&#39;</span> <span class="ot">`elem`</span> space) <span class="op">$</span></span>
+<span id="cb2-2"><a href="DevGuide.html#cb2-2" aria-hidden="true" tabindex="-1"></a>    parseProblemAt pos <span class="dt">ErrorC</span> <span class="dv">1080</span> <span class="st">&quot;When breaking lines in [ ], you need \\ before the linefeed.&quot;</span></span></code></pre></div>
+<p>So basically, notes are emitted for non-fatal warnings while problems
+are emitted for fatal ones.</p>
+<p>There's a distinction because often you can emit useful information
+even when parsing fails (suggestions for how to fix it). Likewise,
+there's often issues that only make sense in context, and shouldn't be
+emitted if the result does not end up being used. There are probably
+better solutions for this.</p>
+<p>Here are the full types of the parser:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="DevGuide.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">--                            v-- Read real/mocked files  v-- Stores parse problems</span></span>
+<span id="cb3-2"><a href="DevGuide.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> <span class="dt">SCBase</span> m <span class="ot">=</span> <span class="dt">Mr.ReaderT</span> (<span class="dt">SystemInterface</span> m) (<span class="dt">Ms.StateT</span> <span class="dt">SystemState</span> m)</span>
+<span id="cb3-3"><a href="DevGuide.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> <span class="dt">SCParser</span> m v <span class="ot">=</span> <span class="dt">ParsecT</span> <span class="dt">String</span> <span class="dt">UserState</span> (<span class="dt">SCBase</span> m) v</span>
+<span id="cb3-4"><a href="DevGuide.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">--                                 ^-- Stores parse notes and token offsets</span></span></code></pre></div>
+<h3 id="ast-analysis">AST analysis</h3>
+<p>AST analysis comes in two primary flavors: checks that run on the
+root node (sometimes called <em>"tree checks"</em>), and checks that run
+on every node (sometimes called <em>"node checks"</em>). Due to poor
+planning, these can't be distinguished by type because they both just
+take a <code>Token</code> parameter.</p>
+<p>Here's a simple check designed to run on each node, using pattern
+matching to find backticks:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb4-1"><a href="DevGuide.html#cb4-1" aria-hidden="true" tabindex="-1"></a>checkBackticks _ (<span class="dt">T_Backticked</span> <span class="fu">id</span> list) <span class="op">|</span> <span class="fu">not</span> (<span class="fu">null</span> list) <span class="ot">=</span></span>
+<span id="cb4-2"><a href="DevGuide.html#cb4-2" aria-hidden="true" tabindex="-1"></a>    style <span class="fu">id</span> <span class="dv">2006</span> <span class="st">&quot;Use $(..) instead of legacy `..`.&quot;</span></span>
+<span id="cb4-3"><a href="DevGuide.html#cb4-3" aria-hidden="true" tabindex="-1"></a>checkBackticks _ _ <span class="ot">=</span> <span class="fu">return</span> ()</span></code></pre></div>
+<p>A lot of checks are just like this, though usually with a bit more
+matching logic.</p>
+<p>Each check is preceded by some mostly self-explanatory unit
+tests:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="DevGuide.html#cb5-1" aria-hidden="true" tabindex="-1"></a>prop_checkBackticks1 <span class="ot">=</span> verify checkBackticks <span class="st">&quot;echo `foo`&quot;</span></span>
+<span id="cb5-2"><a href="DevGuide.html#cb5-2" aria-hidden="true" tabindex="-1"></a>prop_checkBackticks2 <span class="ot">=</span> verifyNot checkBackticks <span class="st">&quot;echo $(foo)&quot;</span></span>
+<span id="cb5-3"><a href="DevGuide.html#cb5-3" aria-hidden="true" tabindex="-1"></a>prop_checkBackticks3 <span class="ot">=</span> verifyNot checkBackticks <span class="st">&quot;echo `#inlined comment` foo&quot;</span></span></code></pre></div>
+<p>There are a few specialized test types for efficiency reasons.</p>
+<p>For example, many tests trigger only for certain commands. This could
+be done by N tests like the above, each matching command nodes and
+checking that the command name applies (N node patches, N command name
+extractions, N comparisons). It's more efficient to just have 1 node
+match, 1 name extraction, and then a map lookup to find one or more
+command handlers. Such checks just register to handle a command name,
+and can be found in <code>Checks/Command.hs</code>.</p>
+<p>Similarly, some checks only trigger for a certain shell. This could
+be done by N tree checks that optionally iterate the tree, or N node
+checks that match a node and skip emitting for certain shells, but it's
+more efficient to iterate the tree once with all applicable checks. Such
+checks just register to handle nodes for a certain shell, and can be
+found in <code>Checks/ShellSupport.hs</code>.</p>
+<h3 id="formatting">Formatting</h3>
+<p>ShellCheck has multiple output formatters. These take parsing results
+and outputs them as JSON, XML or human-readable output. They rarely need
+tweaking. Anyone looking for a different output format should consider
+transforming one of the existing ones (with XSLT, Python, etc) instead
+of writing a new formatter.</p>
+<h2 id="shellcheck-in-practice">ShellCheck in practice</h2>
+<p>Let's say that we have a pet peeve: people who use <code>tmp</code>
+as a temporary filename. We want to warn about statements like
+<code>sort file &gt; tmp &amp;&amp; mv tmp file</code>, and suggest
+using <code>mktemp</code> instead.</p>
+<p>To get started, clone the ShellCheck repository and run
+<code>cabal repl</code> followed by <code>:load ShellCheck.Debug</code>.
+This is a development module that offers access to a number of
+convenient methods, helpfully listed in <a
+href="https://github.com/koalaman/shellcheck/blob/master/src/ShellCheck/Debug.hs">Debug.hs</a>:</p>
+<pre><code>*ShellCheck.AST&gt; :load ShellCheck.Debug
+[...]
+[16 of 19] Compiling ShellCheck.Analytics ( src/ShellCheck/Analytics.hs, interpreted )
+[17 of 19] Compiling ShellCheck.Analyzer ( src/ShellCheck/Analyzer.hs, interpreted )
+[18 of 19] Compiling ShellCheck.Checker ( src/ShellCheck/Checker.hs, interpreted )
+[19 of 19] Compiling ShellCheck.Debug ( src/ShellCheck/Debug.hs, interpreted )
+Ok, 19 modules loaded.
+*ShellCheck.Debug&gt; </code></pre>
+<p>Now we can look at the AST for our command:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb7-1"><a href="DevGuide.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">*</span><span class="dt">ShellCheck.Debug</span><span class="op">&gt;</span> stringToAst <span class="st">&quot;sort file &gt; tmp&quot;</span></span>
+<span id="cb7-2"><a href="DevGuide.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">1</span>) (<span class="dt">Inner_T_Annotation</span> [] (<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">15</span>) (<span class="dt">Inner_T_Script</span> (<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">0</span>) (<span class="dt">Inner_T_Literal</span> <span class="st">&quot;&quot;</span>)) [<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">14</span>) (<span class="dt">Inner_T_Pipeline</span> [] [<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">12</span>) (<span class="dt">Inner_T_Redirecting</span> [<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">11</span>) (<span class="dt">Inner_T_FdRedirect</span> <span class="st">&quot;&quot;</span> (<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">10</span>) (<span class="dt">Inner_T_IoFile</span> (<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">7</span>) <span class="dt">Inner_T_Greater</span>) (<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">9</span>) (<span class="dt">Inner_T_NormalWord</span> [<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">8</span>) (<span class="dt">Inner_T_Literal</span> <span class="st">&quot;tmp&quot;</span>)])))))] (<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">13</span>) (<span class="dt">Inner_T_SimpleCommand</span> [] [<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">4</span>) (<span class="dt">Inner_T_NormalWord</span> [<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">3</span>) (<span class="dt">Inner_T_Literal</span> <span class="st">&quot;sort&quot;</span>)]),<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">6</span>) (<span class="dt">Inner_T_NormalWord</span> [<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">5</span>) (<span class="dt">Inner_T_Literal</span> <span class="st">&quot;file&quot;</span>)])])))])])))</span></code></pre></div>
+<p>(The AST node <code>T_Literal id str</code> is an alias for
+<code>OuterToken (Id id) (Inner_T_Literal str)</code>. GHC outputs the
+latter, unfortunately making it a bit difficult to read. However, with
+some effort we can see the part we're interested in:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb8-1"><a href="DevGuide.html#cb8-1" aria-hidden="true" tabindex="-1"></a>(<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">10</span>) (<span class="dt">Inner_T_IoFile</span> (<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">7</span>) <span class="dt">Inner_T_Greater</span>) (<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">9</span>) (<span class="dt">Inner_T_NormalWord</span> [<span class="dt">OuterToken</span> (<span class="dt">Id</span> <span class="dv">8</span>) (<span class="dt">Inner_T_Literal</span> <span class="st">&quot;tmp&quot;</span>)]))))</span></code></pre></div>
+<p>This would be equivalent to: (TODO: find a way to format it this way
+automatically)</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb9-1"><a href="DevGuide.html#cb9-1" aria-hidden="true" tabindex="-1"></a>(<span class="dt">T_IoFile</span> (<span class="dt">Id</span> <span class="dv">10</span>) (<span class="dt">T_Greater</span> (<span class="dt">Id</span> <span class="dv">7</span>)) (<span class="dt">T_NormalWord</span> (<span class="dt">Id</span> <span class="dv">9</span>) [<span class="dt">T_Literal</span> (<span class="dt">Id</span> <span class="dv">8</span>) <span class="st">&quot;tmp&quot;</span>]))</span></code></pre></div>
+<p>We can compare this with the definition in <code>AST.hs</code>:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb10-1"><a href="DevGuide.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">--                v-- Redirection operator (T_Greater)</span></span>
+<span id="cb10-2"><a href="DevGuide.html#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">|</span> <span class="dt">T_IoFile</span> <span class="dt">Id</span> <span class="dt">Token</span> <span class="dt">Token</span></span>
+<span id="cb10-3"><a href="DevGuide.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">--                      ^-- Filename (T_NormalWord)</span></span></code></pre></div>
+<p>Let's just add a check to <code>Analytics.hs</code>:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb11-1"><a href="DevGuide.html#cb11-1" aria-hidden="true" tabindex="-1"></a>  checkTmpFilename _ token <span class="ot">=</span></span>
+<span id="cb11-2"><a href="DevGuide.html#cb11-2" aria-hidden="true" tabindex="-1"></a>      <span class="kw">case</span> token <span class="kw">of</span></span>
+<span id="cb11-3"><a href="DevGuide.html#cb11-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">T_IoFile</span> <span class="fu">id</span> operator filename  <span class="ot">-&gt;</span></span>
+<span id="cb11-4"><a href="DevGuide.html#cb11-4" aria-hidden="true" tabindex="-1"></a>          warn <span class="fu">id</span> <span class="dv">9999</span> <span class="op">$</span> <span class="st">&quot;We found this node: &quot;</span> <span class="op">++</span> (<span class="fu">show</span> token)</span>
+<span id="cb11-5"><a href="DevGuide.html#cb11-5" aria-hidden="true" tabindex="-1"></a>        _ <span class="ot">-&gt;</span> <span class="fu">return</span> ()</span></code></pre></div>
+<p>and then append <code>checkTmpFilename</code> to the list of node
+checks at the top of the file:</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb12-1"><a href="DevGuide.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ot">  nodeChecks ::</span> [<span class="dt">Parameters</span> <span class="ot">-&gt;</span> <span class="dt">Token</span> <span class="ot">-&gt;</span> <span class="dt">Writer</span> [<span class="dt">TokenComment</span>] ()]</span>
+<span id="cb12-2"><a href="DevGuide.html#cb12-2" aria-hidden="true" tabindex="-1"></a>  nodeChecks <span class="ot">=</span> [</span>
+<span id="cb12-3"><a href="DevGuide.html#cb12-3" aria-hidden="true" tabindex="-1"></a>      checkUuoc</span>
+<span id="cb12-4"><a href="DevGuide.html#cb12-4" aria-hidden="true" tabindex="-1"></a>      ,checkPipePitfalls</span>
+<span id="cb12-5"><a href="DevGuide.html#cb12-5" aria-hidden="true" tabindex="-1"></a>      ,checkForInQuoted</span>
+<span id="cb12-6"><a href="DevGuide.html#cb12-6" aria-hidden="true" tabindex="-1"></a>      <span class="op">...</span></span>
+<span id="cb12-7"><a href="DevGuide.html#cb12-7" aria-hidden="true" tabindex="-1"></a>      ,checkTmpFilename  <span class="co">-- Here</span></span>
+<span id="cb12-8"><a href="DevGuide.html#cb12-8" aria-hidden="true" tabindex="-1"></a>    ]</span></code></pre></div>
+<p>We can now quick-reload the files with <code>:r</code>, and use
+ShellCheck.Debug's <code>shellcheckString</code> to run all of
+ShellCheck (minus output formatters):</p>
+<pre><code>*ShellCheck.Debug&gt; :r
+[...]
+[17 of 19] Compiling ShellCheck.Analyzer ( src/ShellCheck/Analyzer.hs, interpreted )
+[18 of 19] Compiling ShellCheck.Checker ( src/ShellCheck/Checker.hs, interpreted )
+[19 of 19] Compiling ShellCheck.Debug ( src/ShellCheck/Debug.hs, interpreted )
+*ShellCheck.Debug&gt; shellcheckString &quot;sort file &gt; tmp&quot;
+CheckResult {crFilename = &quot;&quot;, crComments = [PositionedComment {pcStartPos = Position {posFile = &quot;&quot;, posLine = 1, posColumn = 1}, pcEndPos = Position {posFile = &quot;&quot;, posLine = 1, posColumn = 1}, pcComment = Comment {cSeverity = ErrorC, cCode = 9999, cMessage = &quot;We found this node: (OuterToken (Id 10) (Inner_T_IoFile (OuterToken (Id 7) Inner_T_Greater) (OuterToken (Id 9) (Inner_T_NormalWord [OuterToken (Id 8) (Inner_T_Literal &quot;tmp&quot;)]))))&quot;}, pcFix = Nothing}]}</code></pre>
+<p>Or alternatively build and run to see the check apply as it would
+when invoking <code>shellcheck</code>:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="DevGuide.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cabal</span> run shellcheck <span class="at">-</span> <span class="op">&lt;&lt;&lt;</span>  <span class="st">&quot;sort file &gt; tmp&quot;</span></span></code></pre></div>
+<p>Alternatively, we can run it in interpreted mode, which is almost as
+quick as <code>:r</code>:</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="DevGuide.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./quickrun</span> <span class="at">-</span> <span class="op">&lt;&lt;&lt;</span> <span class="st">&quot;sort file &gt; tmp&quot;</span></span></code></pre></div>
+<p>In either case, our warning now shows up:</p>
+<pre><code>In - line 1:
+sort file &gt; tmp
+^-- SC2148: Tips depend on target shell and yours is unknown. Add a shebang.
+          ^-- SC9999: We found this node: (OuterToken (Id 10) (Inner_T_IoFile (OuterToken (Id 7) Inner_T_Greater) (OuterToken (Id 9) (Inner_T_NormalWord [OuterToken (Id 8) (Inner_T_Literal &quot;tmp&quot;)]))))</code></pre>
+<p>Now we can flesh out the check. See <code>ASTLib.hs</code> and
+<code>AnalyzerLib.hs</code> for convenient functions to work with AST
+nodes, such as getting the name of an invoked command, getting a list of
+flags using canonical flag parsing rules, or in this case, getting the
+literal string of a <code>T_NormalWord</code> so that it doesn't matter
+if we use <code>&gt; 'tmp'</code>, <code>&gt; "tmp"</code> or
+<code>&gt; "t"'m'p</code>:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb17-1"><a href="DevGuide.html#cb17-1" aria-hidden="true" tabindex="-1"></a>  checkTmpFilename _ token <span class="ot">=</span></span>
+<span id="cb17-2"><a href="DevGuide.html#cb17-2" aria-hidden="true" tabindex="-1"></a>      <span class="kw">case</span> token <span class="kw">of</span></span>
+<span id="cb17-3"><a href="DevGuide.html#cb17-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">T_IoFile</span> <span class="fu">id</span> operator filename  <span class="ot">-&gt;</span></span>
+<span id="cb17-4"><a href="DevGuide.html#cb17-4" aria-hidden="true" tabindex="-1"></a>          when (getLiteralString filename <span class="op">==</span> <span class="dt">Just</span> <span class="st">&quot;tmp&quot;</span>) <span class="op">$</span></span>
+<span id="cb17-5"><a href="DevGuide.html#cb17-5" aria-hidden="true" tabindex="-1"></a>            warn (getId filename) <span class="dv">9999</span> <span class="op">$</span> <span class="st">&quot;Please use mktemp instead of the filename &#39;tmp&#39;.&quot;</span></span>
+<span id="cb17-6"><a href="DevGuide.html#cb17-6" aria-hidden="true" tabindex="-1"></a>        _ <span class="ot">-&gt;</span> <span class="fu">return</span> ()</span></code></pre></div>
+<p>We can also prepend a few unit tests that will automatically be
+picked up if they start with <code>prop_</code>:</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb18-1"><a href="DevGuide.html#cb18-1" aria-hidden="true" tabindex="-1"></a>prop_checkTmpFilename1 <span class="ot">=</span> verify checkTmpFilename <span class="st">&quot;sort file &gt; tmp&quot;</span></span>
+<span id="cb18-2"><a href="DevGuide.html#cb18-2" aria-hidden="true" tabindex="-1"></a>prop_checkTmpFilename2 <span class="ot">=</span> verifyNot checkTmpFilename <span class="st">&quot;sort file &gt; $tmp&quot;</span></span></code></pre></div>
+<p>We can run these tests with <code>cabal test</code>, or in
+interpreted mode with <code>./quicktest</code>. If the command exits
+with success, it's good to go.</p>
+<p>If we wanted to submit this test, we could run
+<code>./nextnumber</code> which will output the next unused SC2xxx code,
+e.g. 2213 as of writing.</p>
+<p>We now have a completely functional test, yay!</p>
+<p>For any questions like "How do I turn a X into a Y?" like "shell
+string into an AST" or "AST into a CFG" or "AST/CFG/DFA into a GraphViz
+representation", see <a
+href="https://github.com/koalaman/shellcheck/blob/master/src/ShellCheck/Debug.hs">Debug.hs</a>.
+It's very readable, and includes additional useful development
+information.</p>
+<p>You can also find the ShellCheck author (me) on IRC as
+<code>koala_man</code> in <code>#haskell@libera.chat</code></p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

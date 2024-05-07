@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2211 – This is a glob used as a command name. Was it supposed to be in `${..}`, array, or is it missing quoting?</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2211 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2211">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="this-is-a-glob-used-as-a-command-name-was-it-supposed-to-be-in--array-or-is-it-missing-quoting">This
+is a glob used as a command name. Was it supposed to be in
+<code>${..}</code>, array, or is it missing quoting?</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2211.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="va">$(</span><span class="ex">*.png</span><span class="va">)</span><span class="kw">;</span> <span class="cf">do</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$f</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">done</span>   <span class="co"># Trying to loop over a glob</span></span>
+<span id="cb1-2"><a href="SC2211.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">array</span><span class="op">=</span><span class="va">$(</span><span class="ex">*.txt</span><span class="va">)</span>                          <span class="co"># Trying to assign an array</span></span>
+<span id="cb1-3"><a href="SC2211.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$(array</span><span class="op">[</span><span class="dv">1</span><span class="op">]</span><span class="va">)</span><span class="st">&quot;</span>                      <span class="co"># Trying to expand an array</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2211.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="pp">*</span>.png<span class="kw">;</span> <span class="cf">do</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$f</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">done</span></span>
+<span id="cb2-2"><a href="SC2211.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">array</span><span class="op">=</span><span class="va">(</span><span class="pp">*</span>.txt<span class="va">)</span></span>
+<span id="cb2-3"><a href="SC2211.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${array</span><span class="op">[</span><span class="dv">1</span><span class="op">]</span><span class="va">}</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You are using a glob as a command name. This is usually a mistake
+caused by one of the following:</p>
+<ul>
+<li>Trying to use <code>`*foo*`</code> or <code>$(*foo*)</code> to
+expand a glob.</li>
+<li>Using <code>var=$(*.txt)</code> instead of <code>var=(*.txt)</code>
+to assign an array.</li>
+<li>Using <code>$(..)</code> instead of <code>${..}</code> when
+expanding an array element.</li>
+<li>Running a program with a name or directory that contains glob
+characters without escaping them.</li>
+</ul>
+<p>Look up and double check the syntax of what you're trying to do.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None. If you want to specify a command name via glob, e.g. to not
+hard code version in <code>./myprogram-*/foo</code>, expand to array or
+parameters first to allow handling the cases of 0 or 2+ matches.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

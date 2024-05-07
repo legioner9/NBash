@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC3006 – In POSIX sh, standalone `((..))` is undefined.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC3006 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC3006">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="in-posix-sh-standalone--is-undefined">In POSIX sh, standalone
+<code>((..))</code> is undefined.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC3006.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">variable</span><span class="op">=</span>1</span>
+<span id="cb1-2"><a href="SC3006.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">((</span><span class="va">variable</span><span class="kw">));</span> <span class="cf">then</span></span>
+<span id="cb1-3"><a href="SC3006.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> variable is not zero</span>
+<span id="cb1-4"><a href="SC3006.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p><a
+href="https://www.gnu.org/software/bash/manual/html_node/Conditional-Constructs.html#index-select"><code>bash</code>
+supports standalone <code>((..))</code></a> natively.</p>
+<p>For POSIX compliance, use</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC3006.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">variable</span><span class="op">=</span>1</span>
+<span id="cb2-2"><a href="SC3006.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">${variable}</span><span class="st">&quot;</span> <span class="ot">-ne</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb2-3"><a href="SC3006.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> variable is not zero</span>
+<span id="cb2-4"><a href="SC3006.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

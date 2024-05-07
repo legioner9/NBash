@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2004 – `$`/`${}` is unnecessary on arithmetic variables.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2004 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2004">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h1
+id="-is-unnecessary-on-arithmetic-variables"><code>$</code>/<code>${}</code>
+is unnecessary on arithmetic variables.</h1>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2004.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$(($n</span> <span class="op">+</span> <span class="va">${arr</span><span class="op">[</span>i<span class="op">]</span><span class="va">}))</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2004.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$((n</span> <span class="op">+</span> <span class="va">arr</span><span class="op">[</span>i<span class="op">]</span><span class="va">))</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>The <code>$</code> or <code>${..}</code> on regular variables in
+arithmetic contexts is unnecessary, and can even lead to subtle bugs.
+This is because the contents of <code>$((..))</code> is first expanded
+into a string, and then evaluated as an expression:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2004.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> a=<span class="st">&#39;1+1&#39;</span></span>
+<span id="cb3-2"><a href="SC2004.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$(($a</span> <span class="op">*</span> <span class="dv">5</span><span class="va">))</span>    <span class="co"># becomes 1+1*5</span></span>
+<span id="cb3-3"><a href="SC2004.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">6</span></span>
+<span id="cb3-4"><a href="SC2004.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$((a</span> <span class="op">*</span> <span class="dv">5</span><span class="va">))</span>     <span class="co"># evaluates as (1+1)*5</span></span>
+<span id="cb3-5"><a href="SC2004.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span></span></code></pre></div>
+<p>The <code>$</code> is unavoidable for special variables like
+<code>$1</code> vs <code>1</code>, <code>$#</code> vs <code>#</code>.
+It's also required when adding modifiers to parameters expansions, like
+<code>${#var}</code> or <code>${var%-}</code>. ShellCheck does not warn
+about these cases.</p>
+<p>The <code>$</code> is also required (and not warned about) when you
+need to specify the <em>base</em> for a variable value:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2004.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> a=09</span>
+<span id="cb4-2"><a href="SC2004.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$((a</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span>          <span class="co"># leading zero forces octal interpretation</span></span>
+<span id="cb4-3"><a href="SC2004.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">bash:</span> 09: value too great for base <span class="er">(</span><span class="ex">error</span> token is <span class="st">&quot;09&quot;</span><span class="kw">)</span></span>
+<span id="cb4-4"><a href="SC2004.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$((</span><span class="dt">10#</span><span class="bn">a</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span></span>
+<span id="cb4-5"><a href="SC2004.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bash:</span> 10#a: value too great for base <span class="er">(</span><span class="ex">error</span> token is <span class="st">&quot;10#a&quot;</span><span class="kw">)</span></span>
+<span id="cb4-6"><a href="SC2004.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$((</span><span class="dt">10#</span><span class="va">$a</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span></span>
+<span id="cb4-7"><a href="SC2004.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

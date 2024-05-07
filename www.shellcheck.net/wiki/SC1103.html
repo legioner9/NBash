@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1103 – This shell type is unknown. Use e.g. `sh` or `bash`.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1103 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1103">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="this-shell-type-is-unknown-use-eg-sh-or-bash">This shell type is
+unknown. Use e.g. <code>sh</code> or <code>bash</code>.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1103.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck shell=zsh</span></span>
+<span id="cb1-2"><a href="SC1103.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PAGER</span><span class="op">=</span>less</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<p>Any supported shell on the shebang or the <code>-s</code> option</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1103.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck shell=sh</span></span>
+<span id="cb2-2"><a href="SC1103.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PAGER</span><span class="op">=</span>less</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Shellcheck only supports a specific range of shell dialects, there
+are many more applications providing shell like experiences and some of
+them look and feel like POSIX shell or bash but does not support the
+same commands.</p>
+<p>One notable unsupported shell type is zsh, see issue <a
+href="https://github.com/koalaman/shellcheck/issues/809">#809</a> about
+supporting zsh - some efforts have been done in the past.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>The supported shell types are listed in the help context, at the
+moment these are</p>
+<ul>
+<li>sh</li>
+<li>bash</li>
+<li>dash</li>
+<li>ksh</li>
+</ul>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Similar rules
+<ul>
+<li><a href="SC1008.html">SC1008</a> - unrecognized shebang</li>
+<li><a href="SC1071.html">SC1071</a> - unsupported shebang</li>
+</ul></li>
+<li>[[Documentation for shell directive|Directive#shell]]</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

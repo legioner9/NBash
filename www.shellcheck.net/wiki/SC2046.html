@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2046 – Quote this to prevent word splitting.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2046 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2046">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="quote-this-to-prevent-word-splitting">Quote this to prevent word
+splitting.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2046.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> <span class="va">$(</span><span class="ex">getfilename</span><span class="va">)</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2046.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># getfilename outputs 1 file</span></span>
+<span id="cb2-2"><a href="SC2046.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">getfilename</span><span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb2-3"><a href="SC2046.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="SC2046.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># getfilename outputs multiple files, linefeed separated</span></span>
+<span id="cb2-5"><a href="SC2046.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">getfilename</span> <span class="kw">|</span> <span class="cf">while</span> <span class="va">IFS</span><span class="op">=</span><span class="st">&#39;&#39;</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">line</span></span>
+<span id="cb2-6"><a href="SC2046.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb2-7"><a href="SC2046.html#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ls</span> <span class="at">-l</span> <span class="st">&quot;</span><span class="va">$line</span><span class="st">&quot;</span></span>
+<span id="cb2-8"><a href="SC2046.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>When command expansions are unquoted, word splitting and globbing
+will occur. This often manifests itself by breaking when filenames
+contain spaces.</p>
+<p>Trying to fix it by adding quotes or escapes to the data will not
+work. Instead, quote the command substitution itself.</p>
+<p>If the command substitution outputs multiple pieces of data, use a
+loop instead.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>In rare cases you actually want word splitting, such as in</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2046.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck disable=SC2046</span></span>
+<span id="cb3-2"><a href="SC2046.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gcc</span> <span class="va">$(</span><span class="ex">pkg-config</span> <span class="at">--libs</span> openssl<span class="va">)</span> client.c</span></code></pre></div>
+<p>This is because <code>pkg-config</code> outputs
+<code>-lssl -lcrypto</code>, which you want to break up by spaces into
+<code>-lssl</code> and <code>-lcrypto</code>.</p>
+<p>A bash alternative in these cases is to use <code>read -a</code> for
+words or <code>mapfile</code> for lines. ksh can also use
+<code>read -a</code>, or a <code>while read</code> loop for lines. In
+this case, since <code>pkg-config</code> outputs words, you could
+use:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC2046.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read words from one line into an array in bash and ksh, then expand each as args</span></span>
+<span id="cb4-2"><a href="SC2046.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="at">-ra</span> <span class="va">args</span> <span class="op">&lt;</span> <span class="op">&lt;(</span><span class="ex">pkg-config</span> <span class="at">--libs</span> openssl<span class="op">)</span></span>
+<span id="cb4-3"><a href="SC2046.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">gcc</span> <span class="st">&quot;</span><span class="va">${args</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span> client.c <span class="co"># expand as args</span></span>
+<span id="cb4-4"><a href="SC2046.html#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="SC2046.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Read lines into an array, then expand each as args</span></span>
+<span id="cb4-6"><a href="SC2046.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">readarray</span> <span class="at">-t</span> file_args <span class="op">&lt;</span> <span class="op">&lt;(</span><span class="fu">find</span> /etc/ <span class="at">-type</span> f <span class="kw">|</span> <span class="fu">grep</span> some-check<span class="op">)</span></span>
+<span id="cb4-7"><a href="SC2046.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">your-linter.sh</span> <span class="st">&quot;</span><span class="va">${file_args</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span> <span class="co"># expand as args</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

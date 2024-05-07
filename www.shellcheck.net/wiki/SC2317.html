@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2317 – Command appears to be unreachable. Check usage (or ignore if invoked indirectly).</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2317 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2317">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="command-appears-to-be-unreachable-check-usage-or-ignore-if-invoked-indirectly">Command
+appears to be unreachable. Check usage (or ignore if invoked
+indirectly).</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2317.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">usage()</span> <span class="kw">{</span></span>
+<span id="cb1-2"><a href="SC2317.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="op">&gt;&amp;</span><span class="dv">2</span> <span class="st">&quot;Usage: </span><span class="va">$0</span><span class="st"> -i input&quot;</span></span>
+<span id="cb1-3"><a href="SC2317.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 1</span>
+<span id="cb1-4"><a href="SC2317.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span>     </span>
+<span id="cb1-5"><a href="SC2317.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;--help&quot;</span> <span class="bu">]</span></span>
+<span id="cb1-6"><a href="SC2317.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb1-7"><a href="SC2317.html#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">usage</span></span>
+<span id="cb1-8"><a href="SC2317.html#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 0   <span class="co"># Unreachable</span></span>
+<span id="cb1-9"><a href="SC2317.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2317.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">usage()</span> <span class="kw">{</span></span>
+<span id="cb2-2"><a href="SC2317.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="op">&gt;&amp;</span><span class="dv">2</span> <span class="st">&quot;Usage: </span><span class="va">$0</span><span class="st"> -i input&quot;</span></span>
+<span id="cb2-3"><a href="SC2317.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span>     </span>
+<span id="cb2-4"><a href="SC2317.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;--help&quot;</span> <span class="bu">]</span></span>
+<span id="cb2-5"><a href="SC2317.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb2-6"><a href="SC2317.html#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">usage</span></span>
+<span id="cb2-7"><a href="SC2317.html#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 0</span>
+<span id="cb2-8"><a href="SC2317.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>The problematic code wanted to exit with success if the user
+explicitly asked for <code>--help</code>. However, since the
+<code>usage</code> function already had an <code>exit 1</code>, this
+statement could never run.</p>
+<p>One possible solution is to change <code>usage()</code> to only echo,
+and let callers be responsible for exiting.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>ShellCheck may incorrectly believe that code is unreachable if it's
+invoked by variable name or in a trap. In such a case, please <a
+href="Ignore.html">Ignore</a> the message.</p>
+<p>Note in particular that since unreachable commands may come in
+clusters, it's useful to use ShellCheck's filewide or functionwide
+ignore directives. A <code>disable</code> directive before a function
+ignores the entire function:</p>
+<pre><code>#!/bin/bash
+...
+# shellcheck disable=SC2317  # Don&#39;t warn about unreachable commands in this function
+start() {
+  echo Starting
+  /etc/init.d/foo start
+}
+&quot;$1&quot;
+exit 0</code></pre>
+<p>A disable directive after the shebang, before any commands, will
+ignore the entire file:</p>
+<pre><code>#!/bin/bash
+# Test script #1
+# shellcheck disable=SC2317  # Don&#39;t warn about unreachable commands in this file
+
+echo &quot;Temporarily disabled&quot;
+exit 0
+
+run-test1
+run-test2
+run-test3</code></pre>
+<p>Defined functions are assumed to be reachable when the script ends
+(not exits) since another file may source and invoke them.</p>
+<h3 id="more-problematic-code">More Problematic Code</h3>
+<p>You have defined two functions in the same file you are sourcing
+whose names are the same but defined differently within their bodies.
+Then shellcheck will state that every line of the body of the earlier
+seen function definition will be unreachable which is how bash would
+operate when sourcing the file. It <strong>unclear</strong> what
+shellcheck would output if the earlier definition appeared in a
+difference file that was seen first. Apparently doing a quick test. It
+does <strong>NOT</strong> notice.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

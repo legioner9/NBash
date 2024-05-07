@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1077 – For command expansion, the tick should slant left (`` ` `` vs `´`).</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1077 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1077">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h1 id="for-command-expansion-the-tick-should-slant-left--vs-">For
+command expansion, the tick should slant left (<code>`</code> vs
+<code>´</code>).</h1>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1077.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Your username is ´whoami´&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1077.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Your username is </span><span class="va">$(</span><span class="fu">whoami</span><span class="va">)</span><span class="st">&quot;</span> <span class="co"># Preferred</span></span>
+<span id="cb2-2"><a href="SC1077.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Your username is </span><span class="kw">`</span><span class="fu">whoami</span><span class="kw">`</span><span class="st">&quot;</span>  <span class="co"># Deprecated, will give [SC2006]</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>In some fonts it's hard to tell ticks apart, but Bash strongly
+distinguishes between backticks (grave accent <code>`</code>), forward
+ticks (acute accent <code>´</code>) and regular ticks (apostrophe
+<code>'</code>).</p>
+<p>Backticks start command expansions, while forward ticks are literal.
+To help spot bugs, ShellCheck parses backticks and forward ticks
+interchangeably.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you want to write out literal forward ticks, such as fancyful
+ascii quotation marks:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC1077.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="kw">``</span><span class="st">Proprietary software is an injustice.´´  - Richard Stallman&quot;</span></span></code></pre></div>
+<p>use single quotes instead:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="SC1077.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&#39;``Proprietary software is an injustice.´´  - Richard Stallman&#39;</span></span></code></pre></div>
+<p>To nest forward ticks in command expansion, use <code>$(..)</code>
+instead of <code>`..`</code>.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

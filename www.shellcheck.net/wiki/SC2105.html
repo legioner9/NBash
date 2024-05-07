@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2105 – `break` is only valid in loops</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2105 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2105">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="break-is-only-valid-in-loops"><code>break</code> is only valid
+in loops</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2105.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="kw">in</span></span>
+<span id="cb1-2"><a href="SC2105.html#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="ss">-v</span><span class="kw">)</span></span>
+<span id="cb1-3"><a href="SC2105.html#cb1-3" aria-hidden="true" tabindex="-1"></a>       <span class="va">verbose</span><span class="op">=</span>1</span>
+<span id="cb1-4"><a href="SC2105.html#cb1-4" aria-hidden="true" tabindex="-1"></a>       <span class="cf">break</span></span>
+<span id="cb1-5"><a href="SC2105.html#cb1-5" aria-hidden="true" tabindex="-1"></a>       <span class="cf">;;</span></span>
+<span id="cb1-6"><a href="SC2105.html#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">-d</span><span class="kw">)</span></span>
+<span id="cb1-7"><a href="SC2105.html#cb1-7" aria-hidden="true" tabindex="-1"></a>       <span class="va">debug</span><span class="op">=</span>1</span>
+<span id="cb1-8"><a href="SC2105.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="cf">esac</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2105.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="kw">in</span></span>
+<span id="cb2-2"><a href="SC2105.html#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="ss">-v</span><span class="kw">)</span></span>
+<span id="cb2-3"><a href="SC2105.html#cb2-3" aria-hidden="true" tabindex="-1"></a>       <span class="va">verbose</span><span class="op">=</span>1</span>
+<span id="cb2-4"><a href="SC2105.html#cb2-4" aria-hidden="true" tabindex="-1"></a>       <span class="cf">;;</span></span>
+<span id="cb2-5"><a href="SC2105.html#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">-d</span><span class="kw">)</span></span>
+<span id="cb2-6"><a href="SC2105.html#cb2-6" aria-hidden="true" tabindex="-1"></a>       <span class="va">debug</span><span class="op">=</span>1</span>
+<span id="cb2-7"><a href="SC2105.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">esac</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><code>break</code> or <code>continue</code> was found outside a loop.
+These statements are only valid in loops. In particular,
+<code>break</code> is not required in <code>case</code> statements as
+there is no implicit fall-through.</p>
+<p>To return from a function or sourced script, use <code>return</code>.
+To exit a script, use <code>exit</code>.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>It's possible to <code>break</code>/<code>continue</code> in a
+function without a loop. The call will then affect the loop -- if any --
+that the function is invoked from. This is obviously not good coding
+practice.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

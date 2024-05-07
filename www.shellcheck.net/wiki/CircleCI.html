@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: CircleCI – </title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>CircleCI – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/CircleCI">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <p>Shellcheck can be run on CircleCI in a variety of ways:</p>
+<h2 id="via-circleci-orbs">Via <a
+href="http://circleci.com/orbs">CircleCI Orbs</a></h2>
+<p>CircleCI provides a <code>circleci/shellcheck</code> orb that can be
+used in any CircleCI workflow:</p>
+<p><a href="https://circleci.com/orbs/registry/orb/circleci/shellcheck"
+class="uri">https://circleci.com/orbs/registry/orb/circleci/shellcheck</a></p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="CircleCI.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="fl">2.1</span></span>
+<span id="cb1-2"><a href="CircleCI.html#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="CircleCI.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">orbs</span><span class="kw">:</span></span>
+<span id="cb1-4"><a href="CircleCI.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">shellcheck</span><span class="kw">:</span><span class="at"> circleci/shellcheck@2.0.0</span></span>
+<span id="cb1-5"><a href="CircleCI.html#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="CircleCI.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">workflows</span><span class="kw">:</span></span>
+<span id="cb1-7"><a href="CircleCI.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">shellcheck</span><span class="kw">:</span></span>
+<span id="cb1-8"><a href="CircleCI.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb1-9"><a href="CircleCI.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> shellcheck/check</span></span></code></pre></div>
+<h2 id="manually">Manually</h2>
+<p>Simply copy and paste the <a
+href="https://github.com/koalaman/shellcheck#installing">existing
+installation instructions</a> into a <code>run</code> step in your
+CircleCI job.</p>
+<p>For example:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="CircleCI.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="fl">2.1</span></span>
+<span id="cb2-2"><a href="CircleCI.html#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="CircleCI.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb2-4"><a href="CircleCI.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">build</span><span class="kw">:</span></span>
+<span id="cb2-5"><a href="CircleCI.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">macos</span><span class="kw">:</span></span>
+<span id="cb2-6"><a href="CircleCI.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">xcode</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;9.0&quot;</span></span>
+<span id="cb2-7"><a href="CircleCI.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb2-8"><a href="CircleCI.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> checkout</span></span>
+<span id="cb2-9"><a href="CircleCI.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">run</span><span class="kw">:</span><span class="at"> brew install shellcheck</span></span></code></pre></div>
+<p>Or, in a Linux-based image:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="CircleCI.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="fl">2.1</span></span>
+<span id="cb3-2"><a href="CircleCI.html#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="CircleCI.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb3-4"><a href="CircleCI.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">build</span><span class="kw">:</span></span>
+<span id="cb3-5"><a href="CircleCI.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">machine</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb3-6"><a href="CircleCI.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb3-7"><a href="CircleCI.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> checkout</span></span>
+<span id="cb3-8"><a href="CircleCI.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">run</span><span class="kw">:</span><span class="at"> apt-get install shellcheck</span></span></code></pre></div>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

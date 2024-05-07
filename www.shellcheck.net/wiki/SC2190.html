@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2190 – Elements in associative arrays need index, e.g. `array=( [index]=value )` .</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2190 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2190">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="elements-in-associative-arrays-need-index-eg-array-indexvalue--">Elements
+in associative arrays need index, e.g.
+<code>array=( [index]=value )</code> .</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2190.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-A</span> <span class="va">foo</span></span>
+<span id="cb1-2"><a href="SC2190.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">foo</span><span class="op">=</span><span class="va">(</span> myvalue <span class="va">)</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2190.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-A</span> <span class="va">foo</span></span>
+<span id="cb2-2"><a href="SC2190.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">foo</span><span class="op">=</span><span class="va">(</span> <span class="op">[</span>key<span class="op">]</span><span class="va">=</span>myvalue <span class="va">)</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You appear to be initializing or appending an array element to an
+associative array without giving it an index. In an indexed array,
+elements will be auto-indexed by incremented characters. In associative
+arrays, the index must be given explicitly.</p>
+<p>This could happen because of invalid spaces or otherwise malformed
+index assignment, such as <code>array=( [key] = value )</code>. This
+should instead be <code>array=( [key]=value )</code>.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>ShellCheck may be confused when a variable name is reused in
+different contexts. If shellcheck mistakenly believes the array is
+associated, please <a href="ignore.html">ignore</a> this error.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

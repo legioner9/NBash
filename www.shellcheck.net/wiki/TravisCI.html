@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: TravisCI – </title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>TravisCI – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/TravisCI">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <p>It's recommended to first refer to the <a
+href="https://github.com/koalaman/shellcheck#travis-ci">official
+instructions</a> regarding using ShellCheck with Travis CI.</p>
+<p>For a truly simple configuration, place the following in your
+<code>.travis.yml</code>:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="TravisCI.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">language</span><span class="kw">:</span><span class="at"> shell</span></span>
+<span id="cb1-2"><a href="TravisCI.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">script</span><span class="kw">:</span></span>
+<span id="cb1-3"><a href="TravisCI.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> bash -c &#39;shopt -s globstar nullglob; shellcheck **/*.{sh,ksh,bash}&#39;</span></span></code></pre></div>
+<p>Note:</p>
+<blockquote>
+<p>Travis CI has now integrated ShellCheck by default, so you don't need
+to manually install it.</p>
+</blockquote>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

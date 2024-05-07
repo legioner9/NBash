@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2166 – Prefer `[ p ] && [ q ]` as `[ p -a q ]` is not well defined.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2166 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2166">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="prefer--p----q--as--p--a-q--is-not-well-defined">Prefer
+<code>[ p ] &amp;&amp; [ q ]</code> as <code>[ p -a q ]</code> is not
+well defined.</h2>
+<p>And likewise, prefer <code>[ p ] || [ q ]</code> over
+<code>[ p -o q ]</code>.</p>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2166.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;test&quot;</span> <span class="er">-a</span> <span class="ex">-z</span> <span class="st">&quot;</span><span class="va">$2</span><span class="st">&quot;</span> ]</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2166.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;test&quot;</span> <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">[</span> <span class="ot">-z</span> <span class="st">&quot;</span><span class="va">$2</span><span class="st">&quot;</span> <span class="bu">]</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><code>-a</code> and <code>-o</code> to mean AND and OR in a
+<code>[ .. ]</code> test expression is not well defined, and can cause
+incorrect results when arguments start with dashes or contain
+<code>!</code>. <a
+href="http://pubs.opengroup.org/onlinepubs/9699919799/utilities/test.html">From
+POSIX</a>:</p>
+<blockquote>
+<p>The XSI extensions specifying the -a and -o binary primaries and the
+'(' and ')' operators have been marked obsolescent. (Many expressions
+using them are ambiguously defined by the grammar depending on the
+specific expressions being evaluated.) Scripts using these expressions
+should be converted to the forms given below. Even though many
+implementations will continue to support these obsolescent forms,
+scripts should be extremely careful when dealing with user-supplied
+input that could be confused with these and other primaries and
+operators. Unless the application developer knows all the cases that
+produce input to the script, invocations like:</p>
+<p><code>test "$1" -a "$2"</code></p>
+<p>should be written as:</p>
+<p><code>test "$1" &amp;&amp; test "$2"</code></p>
+</blockquote>
+<p>Using multiple <code>[ .. ]</code> expressions with shell AND/OR
+operators <code>&amp;&amp;</code> and <code>||</code> is well defined
+and therefore preferred (but note that they have equal precedence, while
+<code>-a</code>/<code>-o</code> is unspecified but usually implemented
+as <code>-a</code> having higher precedence).</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>If the shell variant being used is ksh derived (such as the bash
+shell) it will have the shell builtin command <code>[[ ... ]]</code>.
+This has the operators <code>&amp;&amp;</code>, <code>||</code>,
+<code>(</code>, <code>)</code>, <code>!</code> which safely avoid the
+ambiguity by noting which arguments were quoted and requiring the
+operators to be unquoted (except by the <code>[[ ... ]]</code> construct
+itself).</p>
+<h3 id="see-also">See also:</h3>
+<ul>
+<li><a href="http://www.oilshell.org/blog/2017/08/31.html">Problems With
+the test Builtin: What Does -a Mean?</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

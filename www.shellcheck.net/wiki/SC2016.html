@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2016 – Expressions don't expand in single quotes, use double quotes for that.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2016 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2016">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h1
+id="expressions-dont-expand-in-single-quotes-use-double-quotes-for-that">Expressions
+don't expand in single quotes, use double quotes for that.</h1>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2016.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">name</span><span class="op">=</span>World</span>
+<span id="cb1-2"><a href="SC2016.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&#39;Hello $name&#39;</span>   <span class="co"># Outputs Hello $name</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2016.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">name</span><span class="op">=</span>World</span>
+<span id="cb2-2"><a href="SC2016.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Hello </span><span class="va">$name</span><span class="st">&quot;</span>   <span class="co"># Outputs Hello World</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found an expansion like <code>$var</code>,
+<code>$(cmd)</code>, or <code>`cmd`</code> in single quotes.</p>
+<p>Single quotes express all such expansions. If you want the expression
+to expand, use double quotes instead.</p>
+<p>If switching to double quotes would require excessive escaping of
+other metacharacters, note that you can mix and match quotes in the same
+shell word:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC2016.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dialog</span> <span class="at">--msgbox</span> <span class="st">&quot;Filename </span><span class="va">$file</span><span class="st"> may not contain any of: &quot;&#39;`&amp;;&quot;\#%$&#39;</span> 10 70</span></code></pre></div>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you know that you want the expression literally without expansion,
+you can <a href="ignore.html">ignore</a> this message:</p>
+<pre><code># We want this to output $PATH without expansion
+# shellcheck disable=SC2016
+echo &#39;PATH=$PATH:/usr/local/bin&#39; &gt;&gt; ~/.bashrc</code></pre>
+<pre><code># We also want this variable to expand &quot;$BASH_SOURCE:$LINE...&quot; during an execution trace. 
+# shellcheck disable=SC2016
+PS4=&#39;+$BASH_SOURCE:$LINENO:$FUNCNAME: &#39;</code></pre>
+<pre><code># We want to control which environment variables envsubst replaces
+# shellcheck disable=SC2016
+envsubst &#39;${SERVICE_HOST}:${SERVICE_PORT}&#39; config.template &gt; config</code></pre>
+<p>ShellCheck also does not warn about escaped expansions in double
+quotes:</p>
+<pre><code>echo &quot;PATH=\$PATH:/usr/local/bin&quot; &gt;&gt; ~/.bashrc</code></pre>
+<p>This suggestion is primarily meant to help newbies who assume single
+and double quotes are basically the same, like in Python and JavaScript.
+It's not at all meant to discourage experienced users from using single
+quotes in general. If you are well aware of the difference, please do
+not hesitate to permanently disable this suggestion with
+<code>disable=SC2016</code> in your <code>.shellcheckrc</code>.</p>
+<p>ShellCheck tries to increase the signal-to-noise ratio of this
+warning by ignoring certain well known commands that frequently expect
+literal dollar signs, such as <code>sh</code> and <code>perl</code>.
+However, there's a long tail of less common commands and flags that also
+frequently expect <code>$</code>s, and it's not in ShellCheck's scope to
+try to keep track of them all. When you come across such a command,
+please <a href="ignore.html">ignore</a> the suggestion, either permanently or
+for that one instance.</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>StackOverflow: <a
+href="https://stackoverflow.com/questions/21192420/how-do-i-use-variables-in-single-quoted-strings">How
+do I use variables in single quoted strings?</a></li>
+<li>BashFAQ: <a
+href="https://mywiki.wooledge.org/BashGuide/Practices">Practices</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

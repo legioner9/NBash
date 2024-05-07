@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1090 – Can't follow non-constant source. Use a directive to specify location</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1090 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1090">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="cant-follow-non-constant-source-use-a-directive-to-specify-location">Can't
+follow non-constant source. Use a directive to specify location</h2>
+<h3 id="problematic-code">Problematic code</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC1090.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span> <span class="st">&quot;</span><span class="va">${util_path}</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC1090.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shellcheck source=src/util.sh</span></span>
+<span id="cb2-2"><a href="SC1090.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span> <span class="st">&quot;</span><span class="va">${util_path}</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale</h3>
+<p>ShellCheck is not able to include sourced files from paths that are
+determined at runtime. The file will not be read, potentially resulting
+in warnings about unassigned variables and similar.</p>
+<p>Use a <a href="Directive.html">Directive</a> to point shellcheck to a
+fixed location it can read instead.</p>
+<p>ShellCheck v0.7.2+ will strip a single expansion followed by a slash,
+e.g. <code>${var}/util.sh</code> or
+<code>$(dirname "${BASH_SOURCE[0]}")/util.sh</code>, and treat them as
+<code>./util.sh</code>. This allows the use of <code>source-path</code>
+directives or <code>-P</code> flags to specify the location.</p>
+<h3 id="exceptions">Exceptions</h3>
+<p>If you don't care that ShellCheck is unable to account for the file,
+specify <code># shellcheck source=/dev/null</code>.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

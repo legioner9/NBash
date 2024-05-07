@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2118 – Ksh does not support `|&`. Use `2>&1 |`</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2118 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2118">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="ksh-does-not-support--use-21-">Ksh does not support
+<code>|&amp;</code>. Use <code>2&gt;&amp;1 |</code></h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2118.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/ksh</span></span>
+<span id="cb1-2"><a href="SC2118.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="kw">|&amp;</span> <span class="fu">tee</span> ~/log</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2118.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/ksh</span></span>
+<span id="cb2-2"><a href="SC2118.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span> <span class="fu">tee</span> ~/log</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>You are using the Bash specific shorthand <code>|&amp;</code>, but
+your script is running with Ksh. Rewrite it to its full,
+POSIX-compatible form as shown in the example.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

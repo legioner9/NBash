@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC3051 – In POSIX sh, `source` in place of `.` is undefined</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC3051 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC3051">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="in-posix-sh-source-in-place-of--is-undefined">In POSIX sh,
+<code>source</code> in place of <code>.</code> is undefined</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC3051.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb1-2"><a href="SC3051.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> /usr/lib/myfile.sh</span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC3051.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb2-2"><a href="SC3051.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span> /usr/lib/myfile.sh</span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>Your script uses a shell feature not supported by the shebang. Either
+rewrite the script to be portable, or change the shebang to explicitly
+require a shell like Bash.</p>
+<p><code>source</code> is a Bash/Ksh specific, readable synonym for
+<code>.</code>. In this case, you can for the most part easily replace
+<code>source</code> with <code>.</code></p>
+<p>Do note that <code>source myfile</code> in POSIX sh only searches
+<code>$PATH</code>, while Bash/Ksh will additionally search the current
+directory.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2304 – `*` must be escaped to multiply: `\*`. Modern `$((x * y))` avoids this issue.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2304 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2304">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2
+id="-must-be-escaped-to-multiply--modern-x--y-avoids-this-issue"><code>*</code>
+must be escaped to multiply: <code>\*</code>. Modern
+<code>$((x * y))</code> avoids this issue.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2304.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">result</span><span class="op">=</span><span class="va">$(</span><span class="fu">expr</span> 2 <span class="pp">*</span> 3<span class="va">)</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2304.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modern, efficient, POSIX standard approach</span></span>
+<span id="cb2-2"><a href="SC2304.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">result</span><span class="op">=</span><span class="va">$((</span> <span class="dv">2</span> <span class="op">*</span> <span class="dv">3</span> <span class="va">))</span></span>
+<span id="cb2-3"><a href="SC2304.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="SC2304.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Older, slower approach</span></span>
+<span id="cb2-5"><a href="SC2304.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="va">result</span><span class="op">=</span><span class="va">$(</span><span class="fu">expr</span> 2 <span class="dt">\*</span> 3<span class="va">)</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p>ShellCheck found an <code>expr</code> command whose operator is an
+unescaped asterisk <code>*</code>.</p>
+<p>When using <code>expr</code>, each argument is expanded the same way
+as for any other command. This means that <code>expr 2 * 3</code> will
+turn into
+<code>expr 2 Desktop Documents Downloads Music Pictures 3</code>
+depending on the files in the current directory, causing an error like
+<code>expr: syntax error: unexpected argument ‘Desktop’</code></p>
+<p>The best way to avoid this is to avoid <code>expr</code> and instead
+use <code>$((..))</code> instead. If you for any reason prefer the 200x
+slower, heavyweight process of forking a new process, you can escape the
+<code>*</code>. Both ways are demonstrated in the correct example.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li>Help by adding links to BashFAQ, StackOverflow, man pages, POSIX,
+etc!</li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

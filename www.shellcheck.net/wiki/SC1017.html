@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC1017 – Literal carriage return. Run script through `tr -d '\r'` .</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC1017 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC1017">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="literal-carriage-return-run-script-through-tr--d-r-">Literal
+carriage return. Run script through <code>tr -d '\r'</code> .</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<pre class="console"><code>$ cat -v myscript
+#!/bin/sh^M
+echo &quot;Hello World&quot;^M</code></pre>
+<h3 id="correct-code">Correct code:</h3>
+<pre class="console"><code>$ cat -v myscript
+#!/bin/sh
+echo &quot;Hello World&quot;</code></pre>
+<h3 id="rationale">Rationale:</h3>
+<p>The script uses Windows/MS-DOS style <code>\r\n</code> line
+terminators instead of Unix-style <code>\n</code> terminators. The
+additional <code>\r</code> aka <code>^M</code> aka carriage return
+characters will be treated literally, and results in all sorts strange
+bugs and messages.</p>
+<p>You can verify this with <code>cat -v yourfile</code> and see whether
+or not each line ends with a <code>^M</code>. To delete them, open the
+file in your editor and save the file as "Unix", "Unix/macOS Format",
+<code>:set ff=unix</code> or similar if it supports it.</p>
+<p>If you don't know how to get your editor to save a file with Unix
+line terminators, you can use <code>tr</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="SC1017.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tr</span> <span class="at">-d</span> <span class="st">&#39;\r&#39;</span> <span class="op">&lt;</span> badscript <span class="op">&gt;</span> goodscript</span>
+<span id="cb3-2"><a href="SC1017.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or</span></span>
+<span id="cb3-3"><a href="SC1017.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">dos2unix</span> badscript</span></code></pre></div>
+<p>This will read a script <code>badscript</code> with possible carriage
+returns, and write <code>goodscript</code> without them.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None</p>
+<h3 id="related-resources">Related resources:</h3>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/052">BashFaq: How do I
+convert a file from MS-DOS format to Unix format (remove CRs from CR-LF
+line terminators)?</a></li>
+<li><a
+href="https://stackoverflow.com/questions/39527571/are-shell-scripts-sensitive-to-encoding-and-line-endings">StackOverflow:
+Are shell-scripts sensitive to encoding and line-endings?</a></li>
+</ul>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+

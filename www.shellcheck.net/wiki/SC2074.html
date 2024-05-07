@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShellCheck: SC2074 – Can't use `=~` in `[ ]`. Use `[[..]]` instead.</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body style="margin-left: auto; margin-right: auto; max-width: 800px">
+    <h1>SC2074 – ShellCheck Wiki</h1>
+    <a href="https://github.com/koalaman/shellcheck/wiki/SC2074">See this page on GitHub</a>
+    <p style="display: none"><a href="index.html">Sitemap</a></p>
+    <hr />
+    <h2 id="cant-use--in---use--instead">Can't use <code>=~</code> in
+<code>[ ]</code>. Use <code>[..](..)</code> instead.</h2>
+<h3 id="problematic-code">Problematic code:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="SC2074.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">&quot;</span><span class="va">$input</span><span class="st">&quot;</span> =~ DOC[0-9]<span class="pp">*</span><span class="dt">\.</span>txt <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">&quot;match&quot;</span></span></code></pre></div>
+<h3 id="correct-code">Correct code:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="SC2074.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="st">&quot;</span><span class="va">$input</span><span class="st">&quot;</span> <span class="ot">=~</span> <span class="ss">DOC</span><span class="op">[</span><span class="ss">0</span><span class="op">-</span><span class="ss">9</span><span class="op">]</span><span class="pp">*</span><span class="dt">\.</span><span class="ss">txt</span> <span class="kw">]]</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">&quot;match&quot;</span></span></code></pre></div>
+<h3 id="rationale">Rationale:</h3>
+<p><code>=~</code> only works in <code>[[ .. ]]</code> tests. It does
+not work with <code>test</code> or <code>[</code> in any shell.</p>
+<p>If you're targeting POSIX <code>sh</code>, rewrite in terms of
+<code>case</code> or <code>grep</code> instead.</p>
+<h3 id="exceptions">Exceptions:</h3>
+<p>None.</p>
+    <hr />
+    <p style='font-size: 80%'><a href="../index.html">ShellCheck</a> is a static analysis tool for shell scripts. This page is part of its documentation.</p>
+  </body>
+</html>
+
+
