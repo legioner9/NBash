@@ -1,0 +1,309 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="doxygen__c_8h" kind="file" language="C++">
+    <compoundname>doxygen_c.h</compoundname>
+    <includes local="no">systemheader1.h</includes>
+    <includes local="no">systemheader2.h</includes>
+    <includes local="no">box/header1.h</includes>
+    <includes local="no">box/header2.h</includes>
+    <includes local="yes">local_header1.h</includes>
+    <includes local="yes">local_header2.h</includes>
+    <incdepgraph>
+      <node id="6">
+        <label>local_header1.h</label>
+      </node>
+      <node id="3">
+        <label>systemheader2.h</label>
+      </node>
+      <node id="5">
+        <label>box/header2.h</label>
+      </node>
+      <node id="2">
+        <label>systemheader1.h</label>
+      </node>
+      <node id="7">
+        <label>local_header2.h</label>
+      </node>
+      <node id="1">
+        <label>/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/doxygen_c.h</label>
+        <link refid="doxygen__c_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>box/header1.h</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="struct_box_struct__struct" prot="public">BoxStruct_struct</innerclass>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4" prot="public" static="no" strong="no">
+        <type></type>
+        <name>BoxEnum_enum</name>
+        <enumvalue id="doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a2bf0bdd7b9b287724c66f6c0f74ceb01" prot="public">
+          <name>BOXENUM_FIRST</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Some documentation for first. </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a3ede3b6dfb2dbdac72634f0334e11c63" prot="public">
+          <name>BOXENUM_SECOND</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Some documentation for second. </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a227130e825c6c4506cc4a226539d85fb" prot="public">
+          <name>BOXENUM_ETC</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Etc. </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a2bf0bdd7b9b287724c66f6c0f74ceb01" prot="public">
+          <name>BOXENUM_FIRST</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Some documentation for first. </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a3ede3b6dfb2dbdac72634f0334e11c63" prot="public">
+          <name>BOXENUM_SECOND</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Some documentation for second. </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a227130e825c6c4506cc4a226539d85fb" prot="public">
+          <name>BOXENUM_ETC</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Etc. </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Use brief, otherwise the index won&apos;t have a brief explanation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Detailed explanation. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/doxygen_c.h" line="50" column="1" bodyfile="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/doxygen_c.h" bodystart="50" bodyend="54"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="doxygen__c_8h_1a2345a085bbc7582971ddac2b2c7d1d7e" prot="public" static="no">
+        <type>enum <ref refid="doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4" kindref="member">BoxEnum_enum</ref></type>
+        <definition>typedef enum BoxEnum_enum BoxEnum</definition>
+        <argsstring></argsstring>
+        <name>BoxEnum</name>
+        <briefdescription>
+<para>Use brief, otherwise the index won&apos;t have a brief explanation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Detailed explanation. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/doxygen_c.h" line="54" column="9"/>
+      </memberdef>
+      <memberdef kind="typedef" id="doxygen__c_8h_1a40a25b8d3b226c01f7f83e410c6b58d7" prot="public" static="no">
+        <type>struct <ref refid="struct_box_struct__struct" kindref="compound">BoxStruct_struct</ref></type>
+        <definition>typedef struct BoxStruct_struct BoxStruct</definition>
+        <argsstring></argsstring>
+        <name>BoxStruct</name>
+        <briefdescription>
+<para>Use brief, otherwise the index won&apos;t have a brief explanation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Detailed explanation. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/doxygen_c.h" line="65" column="11"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="doxygen__c_8h_1aaddf8ced9406a68229baee8c1e922b6a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>BOXEXPORT <ref refid="struct_box_struct__struct" kindref="compound">BoxStruct</ref> *</type>
+        <definition>BOXEXPORT BoxStruct* Box_The_Function_Name</definition>
+        <argsstring>(BoxParamType1 param1, BoxParamType2 param2)</argsstring>
+        <name>Box_The_Function_Name</name>
+        <param>
+          <type>BoxParamType1</type>
+          <declname>param1</declname>
+        </param>
+        <param>
+          <type>BoxParamType2</type>
+          <declname>param2</declname>
+        </param>
+        <briefdescription>
+<para>Example showing how to document a function with Doxygen. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Description of what the function does. This part may refer to the parameters of the function, like <computeroutput>param1</computeroutput> or <computeroutput>param2</computeroutput>. A word of code can also be inserted like <computeroutput>this</computeroutput> which is equivalent to <computeroutput>this</computeroutput> and can be useful to say that the function returns a <computeroutput>void</computeroutput> or an <computeroutput>int</computeroutput>. If you want to have more than one word in typewriter font, then just use &lt;tt&gt;. We can also include text verbatim, <verbatim>like this</verbatim> Sometimes it is also convenient to include an example of usage: <programlisting><codeline><highlight class="normal">BoxStruct<sp/>*out<sp/>=<sp/>Box_The_Function_Name(param1,<sp/>param2);</highlight></codeline>
+<codeline><highlight class="normal">printf(&quot;something...\n&quot;);</highlight></codeline>
+</programlisting> Or, <programlisting filename=".py"><codeline><highlight class="normal">pyval<sp/>=<sp/>python_func(arg1,<sp/>arg2)</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordflow">print</highlight><highlight class="normal"><sp/>pyval</highlight></codeline>
+</programlisting> when the language is not the one used in the current source file (but <bold>be careful</bold> as this may be supported only by recent versions of Doxygen). By the way, <bold>this is how you write bold text</bold> or, if it is just one word, then you can just do <bold>this</bold>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>param1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Description of the first parameter of the function. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>param2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The second one, which follows <computeroutput>param1</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Describe what the function returns. </para>
+</simplesect>
+<simplesect kind="see"><para><ref refid="doxygen__c_8h_1a7ec4699a4197d74b5487929228b0597c" kindref="member">Box_The_Second_Function</ref> </para>
+</simplesect>
+<simplesect kind="see"><para><ref refid="doxygen__c_8h_1a01d1bdf75bc1d4b6445faeafa8fd853d" kindref="member">Box_The_Last_One</ref> </para>
+</simplesect>
+<simplesect kind="see"><para><ulink url="http://website/">http://website/</ulink> </para>
+</simplesect>
+<simplesect kind="note"><para>Something to note. </para>
+</simplesect>
+<simplesect kind="warning"><para>Warning. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/doxygen_c.h" line="101" column="1" declfile="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/doxygen_c.h" declline="101" declcolumn="1"/>
+      </memberdef>
+      <memberdef kind="function" id="doxygen__c_8h_1a7ec4699a4197d74b5487929228b0597c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>BOXEXPORT void *</type>
+        <definition>BOXEXPORT void* Box_The_Second_Function</definition>
+        <argsstring>(void)</argsstring>
+        <name>Box_The_Second_Function</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>A simple stub function to show how links do work. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Links are generated automatically for webpages (like <ulink url="http://www.google.co.uk">http://www.google.co.uk</ulink>) and for structures, like <ref refid="struct_box_struct__struct" kindref="compound">BoxStruct_struct</ref>. For typedef-ed types use <ref refid="doxygen__c_8h_1a40a25b8d3b226c01f7f83e410c6b58d7" kindref="member">BoxStruct</ref>. For functions, automatic links are generated when the parenthesis () follow the name of the function, like <ref refid="doxygen__c_8h_1aaddf8ced9406a68229baee8c1e922b6a" kindref="member">Box_The_Function_Name()</ref>. Alternatively, you can use <ref refid="doxygen__c_8h_1aaddf8ced9406a68229baee8c1e922b6a" kindref="member">Box_The_Function_Name</ref>. <simplesect kind="return"><para><computeroutput>NULL</computeroutput> is always returned. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/doxygen_c.h" line="115" column="1" declfile="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/doxygen_c.h" declline="115" declcolumn="1"/>
+      </memberdef>
+      <memberdef kind="function" id="doxygen__c_8h_1a01d1bdf75bc1d4b6445faeafa8fd853d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>BOXEXPORT void</type>
+        <definition>BOXEXPORT void Box_The_Last_One</definition>
+        <argsstring>(void)</argsstring>
+        <name>Box_The_Last_One</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Brief can be omitted. If you configure Doxygen with <computeroutput>JAVADOC_AUTOBRIEF=YES</computeroutput>, then the first Line of the comment is used instead. In this function this would be as if <verbatim>@brief Brief can be omitted. </verbatim> was used instead. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/doxygen_c.h" line="125" column="1" declfile="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/doxygen_c.h" declline="125" declcolumn="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>File containing example of doxygen usage for quick reference. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="author"><para>My Self </para>
+</simplesect>
+<simplesect kind="date"><para>9 Sep 2012</para>
+</simplesect>
+Here typically goes a more extensive explanation of what the header defines. Doxygens tags are words preceeded by either a backslash \ or by an at symbol @. <simplesect kind="see"><para><ulink url="http://www.stack.nl/~dimitri/doxygen/docblocks.html">http://www.stack.nl/~dimitri/doxygen/docblocks.html</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><ulink url="http://www.stack.nl/~dimitri/doxygen/commands.html">http://www.stack.nl/~dimitri/doxygen/commands.html</ulink> </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/****************************************************************************</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(C)<sp/>2012<sp/>by<sp/>Matteo<sp/>Franchin<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>Box.<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Box<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify<sp/>it<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/><sp/><sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/><sp/><sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or<sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/><sp/><sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Box<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/><sp/><sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/><sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/><sp/>See<sp/>the<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/><sp/>GNU<sp/>Lesser<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/><sp/><sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public<sp/><sp/><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/><sp/><sp/>License<sp/>along<sp/>with<sp/>Box.<sp/><sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.<sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>****************************************************************************/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_BOX_PROTOTYPES_DOXYGEN_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>define<sp/>_BOX_PROTOTYPES_DOXYGEN_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>include<sp/>&lt;systemheader1.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>include<sp/>&lt;systemheader2.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>include<sp/>&lt;box/header1.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>include<sp/>&lt;box/header2.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>include<sp/>&quot;local_header1.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>include<sp/>&quot;local_header2.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50" refid="doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>BoxEnum_enum<sp/>{</highlight></codeline>
+<codeline lineno="51" refid="doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a2bf0bdd7b9b287724c66f6c0f74ceb01" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a2bf0bdd7b9b287724c66f6c0f74ceb01" kindref="member">BOXENUM_FIRST</ref>,<sp/><sp/></highlight></codeline>
+<codeline lineno="52" refid="doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a3ede3b6dfb2dbdac72634f0334e11c63" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a3ede3b6dfb2dbdac72634f0334e11c63" kindref="member">BOXENUM_SECOND</ref>,<sp/></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><ref refid="doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a227130e825c6c4506cc4a226539d85fb" kindref="member">BOXENUM_ETC</ref><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="54" refid="doxygen__c_8h_1a2345a085bbc7582971ddac2b2c7d1d7e" refkind="member"><highlight class="normal">}<sp/><ref refid="doxygen__c_8h_1a2345a085bbc7582971ddac2b2c7d1d7e" kindref="member">BoxEnum</ref>;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_box_struct__struct" kindref="compound">BoxStruct_struct</ref><sp/>{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_box_struct__struct_1a4593938c5e90f024e7971bdb1392d9d6" kindref="member">a</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_box_struct__struct_1aee44748dc579c5d794853ee8b133d197" kindref="member">b</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="struct_box_struct__struct_1a4543370ed67b2cf5ae3f55201bea11e6" kindref="member">c</ref>;<sp/></highlight></codeline>
+<codeline lineno="65" refid="doxygen__c_8h_1a40a25b8d3b226c01f7f83e410c6b58d7" refkind="member"><highlight class="normal">}<sp/><ref refid="doxygen__c_8h_1a40a25b8d3b226c01f7f83e410c6b58d7" kindref="member">BoxStruct</ref>;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal">BOXEXPORT<sp/><ref refid="struct_box_struct__struct" kindref="compound">BoxStruct</ref><sp/>*</highlight></codeline>
+<codeline lineno="101" refid="doxygen__c_8h_1aaddf8ced9406a68229baee8c1e922b6a" refkind="member"><highlight class="normal"><ref refid="doxygen__c_8h_1aaddf8ced9406a68229baee8c1e922b6a" kindref="member">Box_The_Function_Name</ref>(BoxParamType1<sp/>param1,<sp/>BoxParamType2<sp/>param2<sp/></highlight><highlight class="comment">/*,<sp/>...*/</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal">BOXEXPORT<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline lineno="115" refid="doxygen__c_8h_1a7ec4699a4197d74b5487929228b0597c" refkind="member"><highlight class="normal"><ref refid="doxygen__c_8h_1a7ec4699a4197d74b5487929228b0597c" kindref="member">Box_The_Second_Function</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal">BOXEXPORT<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="125" refid="doxygen__c_8h_1a01d1bdf75bc1d4b6445faeafa8fd853d" refkind="member"><highlight class="normal"><ref refid="doxygen__c_8h_1a01d1bdf75bc1d4b6445faeafa8fd853d" kindref="member">Box_The_Last_One</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>_BOX_PROTOTYPES_DOXYGEN_H<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa.d/exa_1.d/poroject.ws/doxygen_c.h"/>
+  </compounddef>
+</doxygen>

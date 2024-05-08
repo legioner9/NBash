@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_struct_box_struct__struct" xml:lang="en-US">
+<title>BoxStruct_struct Struct Reference</title>
+<indexterm><primary>BoxStruct_struct</primary></indexterm>
+<para>
+
+<para>Use brief, otherwise the index won&apos;t have a brief explanation. </para>
+ 
+</para>
+<para>
+<computeroutput>#include &lt;dox_exa.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Data Fields    </title>
+        <itemizedlist>
+            <listitem><para>int <link linkend="_struct_box_struct__struct_1a4593938c5e90f024e7971bdb1392d9d6">a</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_struct_box_struct__struct_1aee44748dc579c5d794853ee8b133d197">b</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_struct_box_struct__struct_1a4543370ed67b2cf5ae3f55201bea11e6">c</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para>Use brief, otherwise the index won&apos;t have a brief explanation. </para>
+
+
+
+<para>Detailed explanation. </para>
+<para>
+Definition at line 61 of file dox_exa.h.</para>
+</section>
+<section>
+<title>Field Documentation</title>
+<anchor xml:id="_struct_box_struct__struct_1a4593938c5e90f024e7971bdb1392d9d6"/>    <section>
+    <title>a</title>
+<indexterm><primary>a</primary><secondary>BoxStruct_struct</secondary></indexterm>
+<indexterm><primary>BoxStruct_struct</primary><secondary>a</secondary></indexterm>
+<para><computeroutput>int BoxStruct_struct::a</computeroutput></para>
+<para>Some documentation for the member <link linkend="_struct_box_struct__struct_1a4593938c5e90f024e7971bdb1392d9d6">BoxStruct::a</link>. </para>
+<para>
+Definition at line 62 of file dox_exa.h.</para>
+    </section><anchor xml:id="_struct_box_struct__struct_1aee44748dc579c5d794853ee8b133d197"/>    <section>
+    <title>b</title>
+<indexterm><primary>b</primary><secondary>BoxStruct_struct</secondary></indexterm>
+<indexterm><primary>BoxStruct_struct</primary><secondary>b</secondary></indexterm>
+<para><computeroutput>int BoxStruct_struct::b</computeroutput></para>
+<para>Some documentation for the member <link linkend="_struct_box_struct__struct_1aee44748dc579c5d794853ee8b133d197">BoxStruct::b</link>. </para>
+<para>
+Definition at line 63 of file dox_exa.h.</para>
+    </section><anchor xml:id="_struct_box_struct__struct_1a4543370ed67b2cf5ae3f55201bea11e6"/>    <section>
+    <title>c</title>
+<indexterm><primary>c</primary><secondary>BoxStruct_struct</secondary></indexterm>
+<indexterm><primary>BoxStruct_struct</primary><secondary>c</secondary></indexterm>
+<para><computeroutput>double BoxStruct_struct::c</computeroutput></para>
+<para>Etc. </para>
+<para>
+Definition at line 64 of file dox_exa.h.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following files:</para>
+/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject.ws/dox_exa.h/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject.ws/<link linkend="_doxygen__c_8h">doxygen_c.h</link></section>
+</section>

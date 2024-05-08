@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_sender" xml:lang="en-US">
+<title>Sender Class Reference</title>
+<indexterm><primary>Sender</primary></indexterm>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para>void <link linkend="_class_sender_1a8ad2c6f9baa4e798868fe4a4d45f8fda">Ack</link> (bool ok)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para><link linkend="_class_sender">Sender</link> class. Can be used to send a command to the server. The receiver will acknowledge the command by calling <link linkend="_class_sender_1a8ad2c6f9baa4e798868fe4a4d45f8fda">Ack()</link>.  </para>
+<para>
+Definition at line 8 of file with_uml.c.</para>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_sender_1a8ad2c6f9baa4e798868fe4a4d45f8fda"/>    <section>
+    <title>Ack()</title>
+<indexterm><primary>Ack</primary><secondary>Sender</secondary></indexterm>
+<indexterm><primary>Sender</primary><secondary>Ack</secondary></indexterm>
+<para><computeroutput>void Sender::Ack (bool ok)</computeroutput></para>
+<para>Acknowledgment from server </para>
+</section>
+<para>
+The documentation for this class was generated from the following file:</para>
+/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject.ws/with_uml.c</section>
+</section>
