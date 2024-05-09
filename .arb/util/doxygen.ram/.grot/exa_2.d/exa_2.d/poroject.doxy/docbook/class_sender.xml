@@ -7,6 +7,8 @@
         <itemizedlist>
             <listitem><para>void <link linkend="_class_sender_1a8ad2c6f9baa4e798868fe4a4d45f8fda">Ack</link> (bool ok)</para>
 </listitem>
+            <listitem><para>void <link linkend="_class_sender_1a8ad2c6f9baa4e798868fe4a4d45f8fda">Ack</link> (bool ok)</para>
+</listitem>
         </itemizedlist>
 </simplesect>
 <section>
@@ -19,13 +21,19 @@ Definition at line 8 of file with_uml.c.</para>
 <section>
 <title>Member Function Documentation</title>
 <anchor xml:id="_class_sender_1a8ad2c6f9baa4e798868fe4a4d45f8fda"/>    <section>
-    <title>Ack()</title>
+    <title>Ack()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>Ack</primary><secondary>Sender</secondary></indexterm>
+<indexterm><primary>Sender</primary><secondary>Ack</secondary></indexterm>
+<para><computeroutput>void Sender::Ack (bool ok)</computeroutput></para>
+<para>Acknowledgment from server </para>
+    </section><anchor xml:id="_class_sender_1a8ad2c6f9baa4e798868fe4a4d45f8fda"/>    <section>
+    <title>Ack()<computeroutput>[2/2]</computeroutput></title>
 <indexterm><primary>Ack</primary><secondary>Sender</secondary></indexterm>
 <indexterm><primary>Sender</primary><secondary>Ack</secondary></indexterm>
 <para><computeroutput>void Sender::Ack (bool ok)</computeroutput></para>
 <para>Acknowledgment from server </para>
 </section>
 <para>
-The documentation for this class was generated from the following file:</para>
-/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject.ws/with_uml.c</section>
+The documentation for this class was generated from the following files:</para>
+/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject.ws/with_uml.c/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject2.ws/with_uml_2.c</section>
 </section>

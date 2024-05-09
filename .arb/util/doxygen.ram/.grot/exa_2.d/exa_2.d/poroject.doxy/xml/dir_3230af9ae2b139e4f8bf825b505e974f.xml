@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_3230af9ae2b139e4f8bf825b505e974f" kind="dir">
+    <compoundname>/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject2.ws</compoundname>
+    <innerfile refid="dox__exa__2_8h">dox_exa_2.h</innerfile>
+    <innerfile refid="poroject2_8ws_2doxygen__c_8h">doxygen_c.h</innerfile>
+    <innerfile refid="poroject2_8ws_2main_8cpp">main.cpp</innerfile>
+    <innerfile refid="with__uml__2_8c">with_uml_2.c</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject2.ws/"/>
+  </compounddef>
+</doxygen>

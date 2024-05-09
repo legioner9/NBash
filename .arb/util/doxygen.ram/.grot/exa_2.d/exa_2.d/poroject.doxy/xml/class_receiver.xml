@@ -21,15 +21,36 @@
         </inbodydescription>
         <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject.ws/with_uml.c" line="26" column="10"/>
       </memberdef>
+      <memberdef kind="function" id="class_receiver_1a162099741e0324e6254c9bc570566e40" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Receiver::Command</definition>
+        <argsstring>(int commandId)</argsstring>
+        <name>Command</name>
+        <param>
+          <type>int</type>
+          <declname>commandId</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Executable a command on the server </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject2.ws/with_uml_2.c" line="26" column="10"/>
+      </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
 <para><ref refid="class_receiver" kindref="compound">Receiver</ref> class. Can be used to receive and execute commands. After execution of a command, the receiver will send an acknowledgment <xrefsect id="todo_1_todo000001"><xreftitle>Todo</xreftitle><xrefdescription><para>TOOOOOO </para>
 </xrefdescription></xrefsect></para>
+<para><ref refid="class_receiver" kindref="compound">Receiver</ref> class. Can be used to receive and execute commands. After execution of a command, the receiver will send an acknowledgment <xrefsect id="todo_1_todo000002"><xreftitle>Todo</xreftitle><xrefdescription><para>TOOOOOO </para>
+</xrefdescription></xrefsect></para>
     </detaileddescription>
     <location file="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject.ws/with_uml.c" line="22" column="1" bodyfile="/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject.ws/with_uml.c" bodystart="23" bodyend="27"/>
     <listofallmembers>
+      <member refid="class_receiver_1a162099741e0324e6254c9bc570566e40" prot="public" virt="non-virtual"><scope>Receiver</scope><name>Command</name></member>
       <member refid="class_receiver_1a162099741e0324e6254c9bc570566e40" prot="public" virt="non-virtual"><scope>Receiver</scope><name>Command</name></member>
     </listofallmembers>
   </compounddef>

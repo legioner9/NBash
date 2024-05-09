@@ -7,6 +7,8 @@
         <itemizedlist>
             <listitem><para>void <link linkend="_class_receiver_1a162099741e0324e6254c9bc570566e40">Command</link> (int commandId)</para>
 </listitem>
+            <listitem><para>void <link linkend="_class_receiver_1a162099741e0324e6254c9bc570566e40">Command</link> (int commandId)</para>
+</listitem>
         </itemizedlist>
 </simplesect>
 <section>
@@ -15,19 +17,29 @@
 <para><link linkend="_class_receiver">Receiver</link> class. Can be used to receive and execute commands. After execution of a command, the receiver will send an acknowledgment <para><link linkend="_todo_1_todo000001">Todo</link> 
 <para>TOOOOOO </para>
 </para></para>
+
+<para><link linkend="_class_receiver">Receiver</link> class. Can be used to receive and execute commands. After execution of a command, the receiver will send an acknowledgment <para><link linkend="_todo_1_todo000002">Todo</link> 
+<para>TOOOOOO </para>
+</para></para>
 <para>
 Definition at line 22 of file with_uml.c.</para>
 </section>
 <section>
 <title>Member Function Documentation</title>
 <anchor xml:id="_class_receiver_1a162099741e0324e6254c9bc570566e40"/>    <section>
-    <title>Command()</title>
+    <title>Command()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>Command</primary><secondary>Receiver</secondary></indexterm>
+<indexterm><primary>Receiver</primary><secondary>Command</secondary></indexterm>
+<para><computeroutput>void Receiver::Command (int commandId)</computeroutput></para>
+<para>Executable a command on the server </para>
+    </section><anchor xml:id="_class_receiver_1a162099741e0324e6254c9bc570566e40"/>    <section>
+    <title>Command()<computeroutput>[2/2]</computeroutput></title>
 <indexterm><primary>Command</primary><secondary>Receiver</secondary></indexterm>
 <indexterm><primary>Receiver</primary><secondary>Command</secondary></indexterm>
 <para><computeroutput>void Receiver::Command (int commandId)</computeroutput></para>
 <para>Executable a command on the server </para>
 </section>
 <para>
-The documentation for this class was generated from the following file:</para>
-/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject.ws/with_uml.c</section>
+The documentation for this class was generated from the following files:</para>
+/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject.ws/with_uml.c/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject2.ws/with_uml_2.c</section>
 </section>

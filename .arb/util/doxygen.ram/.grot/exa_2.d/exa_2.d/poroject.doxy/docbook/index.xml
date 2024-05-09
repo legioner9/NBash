@@ -15,7 +15,9 @@
 </chapter>
 <chapter>
     <title>File Documentation</title>
-    <xi:include href="doxygen__c_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="poroject_8ws_2doxygen__c_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="poroject2_8ws_2doxygen__c_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="dox__exa__2_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
 </chapter>
 <index/>
 </book>

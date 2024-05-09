@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_doxygen__c_8h" xml:lang="en-US">
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_poroject_8ws_2doxygen__c_8h" xml:lang="en-US">
 <title>/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject.ws/doxygen_c.h File Reference</title>
 <indexterm><primary>/home/st/REPOBARE/_repo/NBash/.arb/util/doxygen.ram/.grot/exa_2.d/exa_2.d/poroject.ws/doxygen_c.h</primary></indexterm>
 <para>
@@ -17,7 +17,7 @@
     <informalfigure>
         <mediaobject>
             <imageobject>
-                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="doxygen__c_8h__incl.png"></imagedata>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="poroject_8ws_2doxygen__c_8h__incl.png"></imagedata>
             </imageobject>
         </mediaobject>
     </informalfigure>
@@ -34,11 +34,11 @@
 <simplesect>
     <title>Typedefs    </title>
         <itemizedlist>
-            <listitem><para>typedef enum <link linkend="_doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4">BoxEnum_enum</link> <link linkend="_doxygen__c_8h_1a2345a085bbc7582971ddac2b2c7d1d7e">BoxEnum</link></para>
+            <listitem><para>typedef enum <link linkend="_poroject2_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4">BoxEnum_enum</link> <link linkend="_poroject_8ws_2doxygen__c_8h_1a2345a085bbc7582971ddac2b2c7d1d7e">BoxEnum</link></para>
 
 <para>Use brief, otherwise the index won&apos;t have a brief explanation. </para>
 </listitem>
-            <listitem><para>typedef struct <link linkend="_struct_box_struct__struct">BoxStruct_struct</link> <link linkend="_doxygen__c_8h_1a40a25b8d3b226c01f7f83e410c6b58d7">BoxStruct</link></para>
+            <listitem><para>typedef struct <link linkend="_struct_box_struct__struct">BoxStruct_struct</link> <link linkend="_poroject_8ws_2doxygen__c_8h_1a40a25b8d3b226c01f7f83e410c6b58d7">BoxStruct</link></para>
 
 <para>Use brief, otherwise the index won&apos;t have a brief explanation. </para>
 </listitem>
@@ -47,14 +47,21 @@
 <simplesect>
     <title>Enumerations    </title>
         <itemizedlist>
-            <listitem><para>enum <link linkend="_doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4">BoxEnum_enum</link> { 
+            <listitem><para>enum <link linkend="_poroject_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4">BoxEnum_enum</link> { 
 <emphasis role="strong">BOXENUM_FIRST</emphasis>
 , <emphasis role="strong">BOXENUM_SECOND</emphasis>
 , <emphasis role="strong">BOXENUM_ETC</emphasis>
-, <link linkend="_doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a2bf0bdd7b9b287724c66f6c0f74ceb01">BOXENUM_FIRST</link>
+, <link linkend="_poroject_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a2bf0bdd7b9b287724c66f6c0f74ceb01">BOXENUM_FIRST</link>
 , 
-<link linkend="_doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a3ede3b6dfb2dbdac72634f0334e11c63">BOXENUM_SECOND</link>
-, <link linkend="_doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a227130e825c6c4506cc4a226539d85fb">BOXENUM_ETC</link>
+<link linkend="_poroject_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a3ede3b6dfb2dbdac72634f0334e11c63">BOXENUM_SECOND</link>
+, <link linkend="_poroject_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a227130e825c6c4506cc4a226539d85fb">BOXENUM_ETC</link>
+, <link linkend="_dox__exa__2_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a2bf0bdd7b9b287724c66f6c0f74ceb01">BOXENUM_FIRST</link>
+, <link linkend="_dox__exa__2_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a3ede3b6dfb2dbdac72634f0334e11c63">BOXENUM_SECOND</link>
+, 
+<link linkend="_dox__exa__2_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a227130e825c6c4506cc4a226539d85fb">BOXENUM_ETC</link>
+, <link linkend="_poroject2_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a2bf0bdd7b9b287724c66f6c0f74ceb01">BOXENUM_FIRST</link>
+, <link linkend="_poroject2_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a3ede3b6dfb2dbdac72634f0334e11c63">BOXENUM_SECOND</link>
+, <link linkend="_poroject2_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a227130e825c6c4506cc4a226539d85fb">BOXENUM_ETC</link>
  }</para>
 
 <para>Use brief, otherwise the index won&apos;t have a brief explanation. </para>
@@ -64,15 +71,15 @@
 <simplesect>
     <title>Functions    </title>
         <itemizedlist>
-            <listitem><para>BOXEXPORT <link linkend="_struct_box_struct__struct">BoxStruct</link> * <link linkend="_doxygen__c_8h_1aaddf8ced9406a68229baee8c1e922b6a">Box_The_Function_Name</link> (BoxParamType1 param1, BoxParamType2 param2)</para>
+            <listitem><para>BOXEXPORT <link linkend="_struct_box_struct__struct">BoxStruct</link> * <link linkend="_poroject_8ws_2doxygen__c_8h_1aaddf8ced9406a68229baee8c1e922b6a">Box_The_Function_Name</link> (BoxParamType1 param1, BoxParamType2 param2)</para>
 
 <para>Example showing how to document a function with Doxygen. </para>
 </listitem>
-            <listitem><para>BOXEXPORT void * <link linkend="_doxygen__c_8h_1a7ec4699a4197d74b5487929228b0597c">Box_The_Second_Function</link> (void)</para>
+            <listitem><para>BOXEXPORT void * <link linkend="_poroject_8ws_2doxygen__c_8h_1a7ec4699a4197d74b5487929228b0597c">Box_The_Second_Function</link> (void)</para>
 
 <para>A simple stub function to show how links do work. </para>
 </listitem>
-            <listitem><para>BOXEXPORT void <link linkend="_doxygen__c_8h_1a01d1bdf75bc1d4b6445faeafa8fd853d">Box_The_Last_One</link> (void)</para>
+            <listitem><para>BOXEXPORT void <link linkend="_poroject_8ws_2doxygen__c_8h_1a01d1bdf75bc1d4b6445faeafa8fd853d">Box_The_Last_One</link> (void)</para>
 </listitem>
         </itemizedlist>
 </simplesect>
@@ -99,17 +106,17 @@ Here typically goes a more extensive explanation of what the header defines. Dox
 </section>
 <section>
 <title>Typedef Documentation</title>
-<anchor xml:id="_doxygen__c_8h_1a2345a085bbc7582971ddac2b2c7d1d7e"/>    <section>
+<anchor xml:id="_poroject_8ws_2doxygen__c_8h_1a2345a085bbc7582971ddac2b2c7d1d7e"/>    <section>
     <title>BoxEnum</title>
 <indexterm><primary>BoxEnum</primary><secondary>doxygen_c.h</secondary></indexterm>
 <indexterm><primary>doxygen_c.h</primary><secondary>BoxEnum</secondary></indexterm>
-<para><computeroutput>typedef enum <link linkend="_doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4">BoxEnum_enum</link> BoxEnum</computeroutput></para><para>
+<para><computeroutput>typedef enum <link linkend="_poroject2_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4">BoxEnum_enum</link> BoxEnum</computeroutput></para><para>
 
 <para>Use brief, otherwise the index won&apos;t have a brief explanation. </para>
 </para>
 
 <para>Detailed explanation. </para>
-    </section><anchor xml:id="_doxygen__c_8h_1a40a25b8d3b226c01f7f83e410c6b58d7"/>    <section>
+    </section><anchor xml:id="_poroject_8ws_2doxygen__c_8h_1a40a25b8d3b226c01f7f83e410c6b58d7"/>    <section>
     <title>BoxStruct</title>
 <indexterm><primary>BoxStruct</primary><secondary>doxygen_c.h</secondary></indexterm>
 <indexterm><primary>doxygen_c.h</primary><secondary>BoxStruct</secondary></indexterm>
@@ -123,7 +130,7 @@ Here typically goes a more extensive explanation of what the header defines. Dox
 </section>
 <section>
 <title>Enumeration Type Documentation</title>
-<anchor xml:id="_doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4"/>    <section>
+<anchor xml:id="_poroject_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4"/>    <section>
     <title>BoxEnum_enum</title>
 <indexterm><primary>BoxEnum_enum</primary><secondary>doxygen_c.h</secondary></indexterm>
 <indexterm><primary>doxygen_c.h</primary><secondary>BoxEnum_enum</secondary></indexterm>
@@ -141,15 +148,39 @@ Here typically goes a more extensive explanation of what the header defines. Dox
 <tbody>
 <row><entry><indexterm><primary>BOXENUM_FIRST</primary><secondary>doxygen_c.h</secondary></indexterm>
 <indexterm><primary>doxygen_c.h</primary><secondary>BOXENUM_FIRST</secondary></indexterm>
-<anchor xml:id="_doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a2bf0bdd7b9b287724c66f6c0f74ceb01"/>BOXENUM_FIRST</entry><entry>
+<anchor xml:id="_poroject_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a2bf0bdd7b9b287724c66f6c0f74ceb01"/>BOXENUM_FIRST</entry><entry>
 <para>Some documentation for first. </para>
 </entry></row><row><entry><indexterm><primary>BOXENUM_SECOND</primary><secondary>doxygen_c.h</secondary></indexterm>
 <indexterm><primary>doxygen_c.h</primary><secondary>BOXENUM_SECOND</secondary></indexterm>
-<anchor xml:id="_doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a3ede3b6dfb2dbdac72634f0334e11c63"/>BOXENUM_SECOND</entry><entry>
+<anchor xml:id="_poroject_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a3ede3b6dfb2dbdac72634f0334e11c63"/>BOXENUM_SECOND</entry><entry>
 <para>Some documentation for second. </para>
 </entry></row><row><entry><indexterm><primary>BOXENUM_ETC</primary><secondary>doxygen_c.h</secondary></indexterm>
 <indexterm><primary>doxygen_c.h</primary><secondary>BOXENUM_ETC</secondary></indexterm>
-<anchor xml:id="_doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a227130e825c6c4506cc4a226539d85fb"/>BOXENUM_ETC</entry><entry>
+<anchor xml:id="_poroject_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a227130e825c6c4506cc4a226539d85fb"/>BOXENUM_ETC</entry><entry>
+<para>Etc. </para>
+</entry></row><row><entry><indexterm><primary>BOXENUM_FIRST</primary><secondary>doxygen_c.h</secondary></indexterm>
+<indexterm><primary>doxygen_c.h</primary><secondary>BOXENUM_FIRST</secondary></indexterm>
+<anchor xml:id="_poroject_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a2bf0bdd7b9b287724c66f6c0f74ceb01"/>BOXENUM_FIRST</entry><entry>
+<para>Some documentation for first. </para>
+</entry></row><row><entry><indexterm><primary>BOXENUM_SECOND</primary><secondary>doxygen_c.h</secondary></indexterm>
+<indexterm><primary>doxygen_c.h</primary><secondary>BOXENUM_SECOND</secondary></indexterm>
+<anchor xml:id="_poroject_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a3ede3b6dfb2dbdac72634f0334e11c63"/>BOXENUM_SECOND</entry><entry>
+<para>Some documentation for second. </para>
+</entry></row><row><entry><indexterm><primary>BOXENUM_ETC</primary><secondary>doxygen_c.h</secondary></indexterm>
+<indexterm><primary>doxygen_c.h</primary><secondary>BOXENUM_ETC</secondary></indexterm>
+<anchor xml:id="_poroject_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a227130e825c6c4506cc4a226539d85fb"/>BOXENUM_ETC</entry><entry>
+<para>Etc. </para>
+</entry></row><row><entry><indexterm><primary>BOXENUM_FIRST</primary><secondary>doxygen_c.h</secondary></indexterm>
+<indexterm><primary>doxygen_c.h</primary><secondary>BOXENUM_FIRST</secondary></indexterm>
+<anchor xml:id="_poroject_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a2bf0bdd7b9b287724c66f6c0f74ceb01"/>BOXENUM_FIRST</entry><entry>
+<para>Some documentation for first. </para>
+</entry></row><row><entry><indexterm><primary>BOXENUM_SECOND</primary><secondary>doxygen_c.h</secondary></indexterm>
+<indexterm><primary>doxygen_c.h</primary><secondary>BOXENUM_SECOND</secondary></indexterm>
+<anchor xml:id="_poroject_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a3ede3b6dfb2dbdac72634f0334e11c63"/>BOXENUM_SECOND</entry><entry>
+<para>Some documentation for second. </para>
+</entry></row><row><entry><indexterm><primary>BOXENUM_ETC</primary><secondary>doxygen_c.h</secondary></indexterm>
+<indexterm><primary>doxygen_c.h</primary><secondary>BOXENUM_ETC</secondary></indexterm>
+<anchor xml:id="_poroject_8ws_2doxygen__c_8h_1abdf4994e8e07b3eda6c6a5a9bf5357e4a227130e825c6c4506cc4a226539d85fb"/>BOXENUM_ETC</entry><entry>
 <para>Etc. </para>
 </entry></row>    </tbody>
     </tgroup>
@@ -160,7 +191,7 @@ Definition at line 50 of file doxygen_c.h.</para>
 </section>
 <section>
 <title>Function Documentation</title>
-<anchor xml:id="_doxygen__c_8h_1aaddf8ced9406a68229baee8c1e922b6a"/>    <section>
+<anchor xml:id="_poroject_8ws_2doxygen__c_8h_1aaddf8ced9406a68229baee8c1e922b6a"/>    <section>
     <title>Box_The_Function_Name()</title>
 <indexterm><primary>Box_The_Function_Name</primary><secondary>doxygen_c.h</secondary></indexterm>
 <indexterm><primary>doxygen_c.h</primary><secondary>Box_The_Function_Name</secondary></indexterm>
@@ -206,9 +237,9 @@ Parameters                    </title>
 </formalpara>
 <formalpara><title>See also</title>
 
-<para><link linkend="_doxygen__c_8h_1a7ec4699a4197d74b5487929228b0597c">Box_The_Second_Function</link> </para>
+<para><link linkend="_poroject_8ws_2doxygen__c_8h_1a7ec4699a4197d74b5487929228b0597c">Box_The_Second_Function</link> </para>
 
-<para><link linkend="_doxygen__c_8h_1a01d1bdf75bc1d4b6445faeafa8fd853d">Box_The_Last_One</link> </para>
+<para><link linkend="_poroject_8ws_2doxygen__c_8h_1a01d1bdf75bc1d4b6445faeafa8fd853d">Box_The_Last_One</link> </para>
 
 <para><link xlink:href="http://website/">http://website/</link> </para>
 </formalpara>
@@ -221,13 +252,13 @@ Parameters                    </title>
 <para>Warning. </para>
 </warning>
 </para>
-    </section><anchor xml:id="_doxygen__c_8h_1a01d1bdf75bc1d4b6445faeafa8fd853d"/>    <section>
+    </section><anchor xml:id="_poroject_8ws_2doxygen__c_8h_1a01d1bdf75bc1d4b6445faeafa8fd853d"/>    <section>
     <title>Box_The_Last_One()</title>
 <indexterm><primary>Box_The_Last_One</primary><secondary>doxygen_c.h</secondary></indexterm>
 <indexterm><primary>doxygen_c.h</primary><secondary>Box_The_Last_One</secondary></indexterm>
 <para><computeroutput>BOXEXPORT void Box_The_Last_One (void )</computeroutput></para>
 <para>Brief can be omitted. If you configure Doxygen with <computeroutput>JAVADOC_AUTOBRIEF=YES</computeroutput>, then the first Line of the comment is used instead. In this function this would be as if <literallayout><computeroutput>@brief Brief can be omitted. </computeroutput></literallayout> was used instead. </para>
-    </section><anchor xml:id="_doxygen__c_8h_1a7ec4699a4197d74b5487929228b0597c"/>    <section>
+    </section><anchor xml:id="_poroject_8ws_2doxygen__c_8h_1a7ec4699a4197d74b5487929228b0597c"/>    <section>
     <title>Box_The_Second_Function()</title>
 <indexterm><primary>Box_The_Second_Function</primary><secondary>doxygen_c.h</secondary></indexterm>
 <indexterm><primary>doxygen_c.h</primary><secondary>Box_The_Second_Function</secondary></indexterm>
@@ -236,7 +267,7 @@ Parameters                    </title>
 <para>A simple stub function to show how links do work. </para>
 </para>
 
-<para>Links are generated automatically for webpages (like <link xlink:href="http://www.google.co.uk">http://www.google.co.uk</link>) and for structures, like <link linkend="_struct_box_struct__struct">BoxStruct_struct</link>. For typedef-ed types use <link linkend="_doxygen__c_8h_1a40a25b8d3b226c01f7f83e410c6b58d7">BoxStruct</link>. For functions, automatic links are generated when the parenthesis () follow the name of the function, like <link linkend="_doxygen__c_8h_1aaddf8ced9406a68229baee8c1e922b6a">Box_The_Function_Name()</link>. Alternatively, you can use <link linkend="_doxygen__c_8h_1aaddf8ced9406a68229baee8c1e922b6a">Box_The_Function_Name</link>. <formalpara><title>Returns</title>
+<para>Links are generated automatically for webpages (like <link xlink:href="http://www.google.co.uk">http://www.google.co.uk</link>) and for structures, like <link linkend="_struct_box_struct__struct">BoxStruct_struct</link>. For typedef-ed types use <link linkend="_poroject_8ws_2doxygen__c_8h_1a40a25b8d3b226c01f7f83e410c6b58d7">BoxStruct</link>. For functions, automatic links are generated when the parenthesis () follow the name of the function, like <link linkend="_poroject_8ws_2doxygen__c_8h_1aaddf8ced9406a68229baee8c1e922b6a">Box_The_Function_Name()</link>. Alternatively, you can use <link linkend="_poroject_8ws_2doxygen__c_8h_1aaddf8ced9406a68229baee8c1e922b6a">Box_The_Function_Name</link>. <formalpara><title>Returns</title>
 
 <para><computeroutput>NULL</computeroutput> is always returned. </para>
 </formalpara>
