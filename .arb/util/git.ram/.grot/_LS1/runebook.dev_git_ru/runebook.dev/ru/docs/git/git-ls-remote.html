@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:15:05 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git ls-remote</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="bf172c0dd0a82a994e91ca5c031338cf6af1eeda0e1fa37afbacb4a4fae501e2/9b" data-source="git-ls-remote" onmousemove="i18n(this)">git-ls-remote</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="4f1528dc8c6c8f21bebfe4823a4a338b6a1b918252f9caf962178155cc1f2ff8/38" data-source="git-ls-remote - List references in a remote repository" onmousemove="i18n(this)">git-ls-remote &mdash; &scy;&pcy;&icy;&scy;&ocy;&kcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy; &vcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&mcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git ls-remote <span class="hljs-selector-attr">[--heads]</span> <span class="hljs-selector-attr">[--tags]</span> <span class="hljs-selector-attr">[--refs]</span> <span class="hljs-selector-attr">[--upload-pack=&lt;exec&gt;]</span>
+              <span class="hljs-selector-attr">[-q | --quiet]</span> <span class="hljs-selector-attr">[--exit-code]</span> <span class="hljs-selector-attr">[--get-url]</span> <span class="hljs-selector-attr">[--sort=&lt;key&gt;]</span>
+              <span class="hljs-selector-attr">[--symref]</span> <span class="hljs-selector-attr">[&lt;repository&gt; [&lt;patterns&gt;&hellip;&ZeroWidthSpace;]</span>]</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="996d6ce10c0e186d6289662f01a45c9108e7ca06f681b3a483ebde6a21fdefc6/a6" data-source="Displays references available in a remote repository along with the associated commit IDs." onmousemove="i18n(this)">&Ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&acy;&iecy;&tcy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy;&iecy; &vcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&mcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy;, &vcy;&mcy;&iecy;&scy;&tcy;&iecy; &scy;&ocy; &scy;&vcy;&yacy;&zcy;&acy;&ncy;&ncy;&ycy;&mcy;&icy; &icy;&dcy;&iecy;&ncy;&tcy;&icy;&fcy;&icy;&kcy;&acy;&tcy;&ocy;&rcy;&acy;&mcy;&icy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-ls-remote.txt--h"><span data-i18n="05dc0e47773fb3a7a4dc132574919f02b6242879820e347dc00a1962a96636b5/9d" data-source="-h" onmousemove="i18n(this)">-h</span></dt> <dt id="Documentation/git-ls-remote.txt---heads"><span data-i18n="7ecd5598bf2e151de5838cdd16a8af7e49f0ad82ef569e4b34036efe7baef2c2/6d" data-source="--heads" onmousemove="i18n(this)">--heads</span></dt> <dt id="Documentation/git-ls-remote.txt--t"><span data-i18n="7cd2e81795b97f4d593d0150f2882d884095719e4f612093a853d72747ebdba0/03" data-source="-t" onmousemove="i18n(this)">-t</span></dt> <dt id="Documentation/git-ls-remote.txt---tags"><span data-i18n="ca2ed6721d83f4f364916ec2259d24adfdba6b230be747d80ed87a4797650daf/8c" data-source="--tags" onmousemove="i18n(this)">--tags</span></dt> <dd> <p><span data-i18n="a310e626d5eb8bb3f13340719e2e18a41f69b028f549c37cf8e681eac0b36c9d/1c" data-source="Limit to only refs/heads and refs/tags, respectively. These options are &lt;code&gt;not&lt;/code&gt; mutually exclusive; when given both, references stored in refs/heads and refs/tags are displayed. Note that &lt;code&gt;git ls-remote -h&lt;/code&gt; used without anything else on the command line gives help, consistent with other git subcommands." onmousemove="i18n(this)">&Ocy;&gcy;&rcy;&acy;&ncy;&icy;&chcy;&softcy;&tcy;&iecy;&scy;&softcy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &scy;&scy;&ycy;&lcy;&kcy;&acy;&mcy;&icy;/&zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&kcy;&acy;&mcy;&icy; &icy; &scy;&scy;&ycy;&lcy;&kcy;&acy;&mcy;&icy;/&tcy;&iecy;&gcy;&acy;&mcy;&icy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&iecy;&ncy;&ncy;&ocy;. &Ecy;&tcy;&icy; &ocy;&pcy;&tscy;&icy;&icy;  <code>not</code>  &yacy;&vcy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy; &vcy;&zcy;&acy;&icy;&mcy;&ocy;&icy;&scy;&kcy;&lcy;&yucy;&chcy;&acy;&yucy;&shchcy;&icy;&mcy;&icy;; &iecy;&scy;&lcy;&icy; &zcy;&acy;&dcy;&acy;&ncy;&ycy; &ocy;&bcy;&acy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;&acy;, &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&acy;&yucy;&tcy;&scy;&yacy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &khcy;&rcy;&acy;&ncy;&yacy;&shchcy;&icy;&iecy;&scy;&yacy; &vcy; refs/heads &icy; refs/tags. &Ocy;&bcy;&rcy;&acy;&tcy;&icy;&tcy;&iecy; &vcy;&ncy;&icy;&mcy;&acy;&ncy;&icy;&iecy;, &chcy;&tcy;&ocy;  <code>git ls-remote -h</code> , &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&mcy;&ycy;&jcy; &bcy;&iecy;&zcy; &kcy;&acy;&kcy;&icy;&khcy;-&lcy;&icy;&bcy;&ocy; &dcy;&rcy;&ucy;&gcy;&icy;&khcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy; &vcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy;, &dcy;&acy;&iecy;&tcy; &scy;&pcy;&rcy;&acy;&vcy;&kcy;&ucy;, &scy;&ocy;&gcy;&lcy;&acy;&scy;&ucy;&yucy;&shchcy;&ucy;&yucy;&scy;&yacy; &scy; &dcy;&rcy;&ucy;&gcy;&icy;&mcy;&icy; &pcy;&ocy;&dcy;&kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy;&mcy;&icy;  git .</span></p> </dd> <dt id="Documentation/git-ls-remote.txt---refs"><span data-i18n="34ba3fd633a9db929b4b691e39c09683d78772db6b96b0625bcb6e7ab42ddd22/e9" data-source="--refs" onmousemove="i18n(this)">--refs</span></dt> <dd> <p><span data-i18n="64a48ac1f1080644d7b6f713647cf7f9d7c99d833044ca48e72e6d4377ccd688/5e" data-source="Do not show peeled tags or pseudorefs like &lt;code&gt;HEAD&lt;/code&gt; in the output." onmousemove="i18n(this)">&Ncy;&iecy; &pcy;&ocy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&jcy;&tcy;&iecy; &vcy; &vcy;&ycy;&vcy;&ocy;&dcy;&iecy; &ocy;&chcy;&icy;&shchcy;&iecy;&ncy;&ncy;&ycy;&iecy; &tcy;&iecy;&gcy;&icy; &icy;&lcy;&icy; &pcy;&scy;&iecy;&vcy;&dcy;&ocy;&scy;&scy;&ycy;&lcy;&kcy;&icy;, &tcy;&acy;&kcy;&icy;&iecy; &kcy;&acy;&kcy;  <code>HEAD</code> .</span></p> </dd> <dt id="Documentation/git-ls-remote.txt--q"><span data-i18n="5ce681666a15a41274346f65b8bcbf56f8e8170ac00706a44a09ee4d786a8609/cd" data-source="-q" onmousemove="i18n(this)">-q</span></dt> <dt id="Documentation/git-ls-remote.txt---quiet"><span data-i18n="b00818cdc507640687732769ee1cb501db377927ee76d03df23978bd0d706888/e2" data-source="--quiet" onmousemove="i18n(this)">--quiet</span></dt> <dd> <p><span data-i18n="b200485abf55c92f0e5971f5a57435b4c3d6cae0df45ecdd19685bfbfd57dfb6/6e" data-source="Do not print remote URL to stderr." onmousemove="i18n(this)">&Ncy;&iecy; &vcy;&ycy;&vcy;&ocy;&dcy;&icy;&tcy;&softcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&jcy; URL-&acy;&dcy;&rcy;&iecy;&scy; &vcy; stderr.</span></p> </dd> <dt id="Documentation/git-ls-remote.txt---upload-packltexecgt"><span data-i18n="e2a8e89a54545c724fa9773d9a3901705f20136be60f651b2a58166335dc01a9/34" data-source="--upload-pack=&amp;lt;exec&amp;gt;" onmousemove="i18n(this)">--upload-pack=&lt;exec&gt;</span></dt> <dd> <p><span data-i18n="5b2f9e762c6ba50e1c951e42651387e1d3bf7b042bab482489f3352c379d6244/6c" data-source="Specify the full path of &lt;code&gt;git-upload-pack&lt;/code&gt; on the remote host. This allows listing references from repositories accessed via SSH and where the SSH daemon does not use the PATH configured by the user." onmousemove="i18n(this)">&Ucy;&kcy;&acy;&zhcy;&icy;&tcy;&iecy; &pcy;&ocy;&lcy;&ncy;&ycy;&jcy; &pcy;&ucy;&tcy;&softcy; &kcy;  <code>git-upload-pack</code>  &ncy;&acy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&mcy; &khcy;&ocy;&scy;&tcy;&iecy;. &Ecy;&tcy;&ocy; &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&iecy;&tcy; &vcy;&ycy;&vcy;&ocy;&dcy;&icy;&tcy;&softcy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy; &icy;&zcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&iecy;&vcy;, &kcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&mcy; &ocy;&scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy; &chcy;&iecy;&rcy;&iecy;&zcy; SSH, &icy; &gcy;&dcy;&iecy; &dcy;&iecy;&mcy;&ocy;&ncy; SSH &ncy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy; PATH, &ncy;&acy;&scy;&tcy;&rcy;&ocy;&iecy;&ncy;&ncy;&ycy;&jcy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&iecy;&mcy;.</span></p> </dd> <dt id="Documentation/git-ls-remote.txt---exit-code"><span data-i18n="49f9b8a5a23f95599f1510c8c47c1251a7076f154883137cce4cdef01b2e01ec/c0" data-source="--exit-code" onmousemove="i18n(this)">--exit-code</span></dt> <dd> <p><span data-i18n="07e7e7388b4c0c8a1528aeafabad6601041a3462cec03fafc65b631b94fc1509/64" data-source="Exit with status &amp;quot;2&amp;quot; when no matching refs are found in the remote repository. Usually the command exits with status &amp;quot;0&amp;quot; to indicate it successfully talked with the remote repository, whether it found any matching refs." onmousemove="i18n(this)">&Vcy;&ycy;&jcy;&dcy;&icy;&tcy;&iecy; &scy;&ocy; &scy;&tcy;&acy;&tcy;&ucy;&scy;&ocy;&mcy;  &quot;2&quot; , &iecy;&scy;&lcy;&icy; &vcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&mcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy; &ncy;&iecy; &ncy;&acy;&jcy;&dcy;&iecy;&ncy;&ycy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy;. &Ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&acy;&iecy;&tcy;&scy;&yacy; &scy;&ocy; &scy;&tcy;&acy;&tcy;&ucy;&scy;&ocy;&mcy;  &quot;0&quot; , &chcy;&tcy;&ocy;&bcy;&ycy; &ucy;&kcy;&acy;&zcy;&acy;&tcy;&softcy;, &chcy;&tcy;&ocy; &ocy;&ncy;&acy; &ucy;&scy;&pcy;&iecy;&shcy;&ncy;&ocy; &scy;&vcy;&yacy;&zcy;&acy;&lcy;&acy;&scy;&softcy; &scy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&mcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&iecy;&mcy; &icy; &ocy;&bcy;&ncy;&acy;&rcy;&ucy;&zhcy;&icy;&lcy;&acy; &lcy;&icy; &ocy;&ncy;&acy; &kcy;&acy;&kcy;&icy;&iecy;-&lcy;&icy;&bcy;&ocy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy;.</span></p> </dd> <dt id="Documentation/git-ls-remote.txt---get-url"><span data-i18n="e0c237ec31a5f8483f1a4d6441781f2ef896867b883c6e5cfc3825abe106d641/22" data-source="--get-url" onmousemove="i18n(this)">--get-url</span></dt> <dd> <p><span data-i18n="cff9dafe4bd1a265a06179ca4106a52ace0e0bbaa60ada3fad5c5490f8feb7bb/c0" data-source="Expand the URL of the given remote repository taking into account any &amp;quot;url.&amp;lt;base&amp;gt;.insteadOf&amp;quot; config setting (See &lt;a href=&quot;git-config&quot;&gt;git-config[1]&lt;/a&gt;) and exit without talking to the remote." onmousemove="i18n(this)">&Rcy;&acy;&scy;&shcy;&icy;&rcy;&softcy;&tcy;&iecy; URL-&acy;&dcy;&rcy;&iecy;&scy; &dcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;, &pcy;&rcy;&icy;&ncy;&icy;&mcy;&acy;&yacy; &vcy;&ocy; &vcy;&ncy;&icy;&mcy;&acy;&ncy;&icy;&iecy; &lcy;&yucy;&bcy;&ycy;&iecy; &ncy;&acy;&scy;&tcy;&rcy;&ocy;&jcy;&kcy;&icy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  &quot;url.&lt;base&gt;.insteadOf&quot;  (&scy;&mcy;.  <a href="git-config.html">git-config[1]</a> ) &icy; &vcy;&ycy;&jcy;&dcy;&icy;&tcy;&iecy;, &ncy;&iecy; &rcy;&acy;&zcy;&gcy;&ocy;&vcy;&acy;&rcy;&icy;&vcy;&acy;&yacy; &scy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&mcy; &ucy;&scy;&tcy;&rcy;&ocy;&jcy;&scy;&tcy;&vcy;&ocy;&mcy;.</span></p> </dd> <dt id="Documentation/git-ls-remote.txt---symref"><span data-i18n="47da05efbdfbc343e7fc51455d21c75585e93f3105f57bcfcf851d80fe1287e0/a7" data-source="--symref" onmousemove="i18n(this)">--symref</span></dt> <dd> <p><span data-i18n="4ebfa00c18a35ecc3e60ca60666ce14d678534d1ca003a8d14b1898c04213db0/c6" data-source="In addition to the object pointed by it, show the underlying ref pointed by it when showing a symbolic ref. Currently, upload-pack only shows the symref HEAD, so it will be the only one shown by ls-remote." onmousemove="i18n(this)">&Vcy; &dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&iecy;&ncy;&icy;&iecy; &kcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ucy;, &ncy;&acy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &ocy;&ncy; &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy;, &pcy;&ocy;&kcy;&acy;&zhcy;&icy;&tcy;&iecy; &bcy;&acy;&zcy;&ocy;&vcy;&ucy;&yucy; &scy;&scy;&ycy;&lcy;&kcy;&ucy;, &ncy;&acy; &kcy;&ocy;&tcy;&ocy;&rcy;&ucy;&yucy; &ocy;&ncy; &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy;, &pcy;&rcy;&icy; &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&iecy;&ncy;&icy;&icy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&jcy; &scy;&scy;&ycy;&lcy;&kcy;&icy;. &Vcy; &ncy;&acy;&scy;&tcy;&ocy;&yacy;&shchcy;&iecy;&iecy; &vcy;&rcy;&iecy;&mcy;&yacy; &pcy;&acy;&kcy;&iecy;&tcy; &zcy;&acy;&gcy;&rcy;&ucy;&zcy;&kcy;&icy; &pcy;&ocy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; HEAD symref, &pcy;&ocy;&ecy;&tcy;&ocy;&mcy;&ucy; ls-remote &bcy;&ucy;&dcy;&iecy;&tcy; &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&acy;&tcy;&softcy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &iecy;&gcy;&ocy;.</span></p> </dd> <dt id="Documentation/git-ls-remote.txt---sortltkeygt"><span data-i18n="921fbc5300b7dc17202deacd8ae25406a7f792a0045f3a528a48bf79a9d7c5d9/58" data-source="--sort=&amp;lt;key&amp;gt;" onmousemove="i18n(this)">--sort=&lt;key&gt;</span></dt> <dd> <p><span data-i18n="f52c75a1975aa0fc38ae7ff08c094bafcd7eb3867a8b360ab0d5c987663e34d6/e4" data-source="Sort based on the key given. Prefix &lt;code&gt;-&lt;/code&gt; to sort in descending order of the value. Supports &amp;quot;version:refname&amp;quot; or &amp;quot;v:refname&amp;quot; (tag names are treated as versions). The &amp;quot;version:refname&amp;quot; sort order can also be affected by the &amp;quot;versionsort.suffix&amp;quot; configuration variable. See &lt;a href=&quot;git-for-each-ref&quot;&gt;git-for-each-ref[1]&lt;/a&gt; for more sort options, but be aware keys like &lt;code&gt;committerdate&lt;/code&gt; that require access to the objects themselves will not work for refs whose objects have not yet been fetched from the remote, and will give a &lt;code&gt;missing object&lt;/code&gt; error." onmousemove="i18n(this)">&Scy;&ocy;&rcy;&tcy;&icy;&rcy;&ocy;&vcy;&kcy;&acy; &pcy;&ocy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ocy;&mcy;&ucy; &kcy;&lcy;&yucy;&chcy;&ucy;. &Pcy;&rcy;&iecy;&fcy;&icy;&kcy;&scy;  <code>-</code>  &dcy;&lcy;&yacy; &scy;&ocy;&rcy;&tcy;&icy;&rcy;&ocy;&vcy;&kcy;&icy; &vcy; &pcy;&ocy;&rcy;&yacy;&dcy;&kcy;&iecy; &ucy;&bcy;&ycy;&vcy;&acy;&ncy;&icy;&yacy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy;. &Pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&icy;&vcy;&acy;&iecy;&tcy;  &quot;version:refname&quot;  &icy;&lcy;&icy;  &quot;v:refname&quot;  (&icy;&mcy;&iecy;&ncy;&acy; &tcy;&iecy;&gcy;&ocy;&vcy; &scy;&chcy;&icy;&tcy;&acy;&yucy;&tcy;&scy;&yacy; &vcy;&iecy;&rcy;&scy;&icy;&yacy;&mcy;&icy;). &Ncy;&acy; &pcy;&ocy;&rcy;&yacy;&dcy;&ocy;&kcy; &scy;&ocy;&rcy;&tcy;&icy;&rcy;&ocy;&vcy;&kcy;&icy;  &quot;version:refname&quot;  &tcy;&acy;&kcy;&zhcy;&iecy; &mcy;&ocy;&zhcy;&iecy;&tcy; &vcy;&lcy;&icy;&yacy;&tcy;&softcy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&acy;&yacy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  &quot;versionsort.suffix&quot; . &Dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&iecy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;&ycy; &scy;&ocy;&rcy;&tcy;&icy;&rcy;&ocy;&vcy;&kcy;&icy; &scy;&mcy;. &vcy;  <a href="git-for-each-ref.html">git-for-each-ref[1]</a> , &ncy;&ocy; &icy;&mcy;&iecy;&jcy;&tcy;&iecy; &vcy; &vcy;&icy;&dcy;&ucy;, &chcy;&tcy;&ocy; &tcy;&acy;&kcy;&icy;&iecy; &kcy;&lcy;&yucy;&chcy;&icy;, &kcy;&acy;&kcy;  <code>committerdate</code> , &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &tcy;&rcy;&iecy;&bcy;&ucy;&yucy;&tcy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&acy; &kcy; &scy;&acy;&mcy;&icy;&mcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy;&mcy;, &ncy;&iecy; &bcy;&ucy;&dcy;&ucy;&tcy; &rcy;&acy;&bcy;&ocy;&tcy;&acy;&tcy;&softcy; &dcy;&lcy;&yacy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;, &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&khcy; &iecy;&shchcy;&iecy; &ncy;&iecy; &bcy;&ycy;&lcy;&icy; &pcy;&ocy;&lcy;&ucy;&chcy;&iecy;&ncy;&ycy; &scy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &ucy;&scy;&tcy;&rcy;&ocy;&jcy;&scy;&tcy;&vcy;&acy;, &icy; &vcy;&ycy;&dcy;&acy;&dcy;&ucy;&tcy; &ocy;&shcy;&icy;&bcy;&kcy;&ucy;  <code>missing object</code> .</span></p> </dd> <dt id="Documentation/git-ls-remote.txt--oltoptiongt"><span data-i18n="cb75fe25d166b45eeca4833702356571acd940197b656e26dd01a8abdccadbe7/cc" data-source="-o &amp;lt;option&amp;gt;" onmousemove="i18n(this)">-o &lt;option&gt;</span></dt> <dt id="Documentation/git-ls-remote.txt---server-optionltoptiongt"><span data-i18n="dce655fcd4a086447f73d2c7d2a23522deac05cb7d9a1c4fbcfcf476fe5b8c5d/fb" data-source="--server-option=&amp;lt;option&amp;gt;" onmousemove="i18n(this)">--server-option=&lt;option&gt;</span></dt> <dd> <p><span data-i18n="892db6e8517599e8f3f8161becd0c5cf2a0b9fff7f91df2aeb7b39c83adfaf42/3b" data-source="Transmit the given string to the server when communicating using protocol version 2. The given string must not contain a NUL or LF character. When multiple &lt;code&gt;--server-option=&amp;lt;option&amp;gt;&lt;/code&gt; are given, they are all sent to the other side in the order listed on the command line." onmousemove="i18n(this)">&Pcy;&iecy;&rcy;&iecy;&dcy;&acy;&jcy;&tcy;&iecy; &dcy;&acy;&ncy;&ncy;&ucy;&yucy; &scy;&tcy;&rcy;&ocy;&kcy;&ucy; &ncy;&acy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy; &pcy;&rcy;&icy; &ocy;&bcy;&mcy;&iecy;&ncy;&iecy; &dcy;&acy;&ncy;&ncy;&ycy;&mcy;&icy; &pcy;&ocy; &pcy;&rcy;&ocy;&tcy;&ocy;&kcy;&ocy;&lcy;&ucy; &vcy;&iecy;&rcy;&scy;&icy;&icy; 2. &Dcy;&acy;&ncy;&ncy;&acy;&yacy; &scy;&tcy;&rcy;&ocy;&kcy;&acy; &ncy;&iecy; &dcy;&ocy;&lcy;&zhcy;&ncy;&acy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy; &scy;&icy;&mcy;&vcy;&ocy;&lcy; NUL &icy;&lcy;&icy; LF. &IEcy;&scy;&lcy;&icy; &zcy;&acy;&dcy;&acy;&ncy;&ocy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ocy;  <code>--server-option=&lt;option&gt;</code> , &vcy;&scy;&iecy; &ocy;&ncy;&icy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy; &dcy;&rcy;&ucy;&gcy;&ocy;&jcy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&iecy; &vcy; &pcy;&ocy;&rcy;&yacy;&dcy;&kcy;&iecy;, &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ocy;&mcy; &vcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy;.</span></p> </dd> <dt id="Documentation/git-ls-remote.txt-ltrepositorygt"><span data-i18n="33156ec69ef42f138c866bfb62145584bca1d9dd862e78b81cbaf77f8240c70e/6f" data-source="&amp;lt;repository&amp;gt;" onmousemove="i18n(this)">&lt;repository&gt;</span></dt> <dd> <p><span data-i18n="4be499c232788d3ac9e6e5e2dd6a0a0f9f93dac15da4275e7937a647ca5cc3ac/22" data-source="The &amp;quot;remote&amp;quot; repository to query. This parameter can be either a URL or the name of a remote (see the GIT URLS and REMOTES sections of &lt;a href=&quot;git-fetch&quot;&gt;git-fetch[1]&lt;/a&gt;)." onmousemove="i18n(this)">&Rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy;  &quot;remote&quot;  &dcy;&lcy;&yacy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&acy;. &Ecy;&tcy;&ocy;&tcy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &lcy;&icy;&bcy;&ocy; URL-&acy;&dcy;&rcy;&iecy;&scy;&ocy;&mcy;, &lcy;&icy;&bcy;&ocy; &icy;&mcy;&iecy;&ncy;&iecy;&mcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &ucy;&scy;&tcy;&rcy;&ocy;&jcy;&scy;&tcy;&vcy;&acy; (&scy;&mcy;. &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&ycy; &laquo;URL-&acy;&dcy;&rcy;&iecy;&scy;&acy;  GIT &raquo; &icy; &laquo;REMOTES&raquo; &dcy;&ocy;&kcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy;  <a href="git-fetch.html">git-fetch[1]</a> ).</span></p> </dd> <dt id="Documentation/git-ls-remote.txt-ltpatternsgt82308203"><span data-i18n="ababb78354e1353fcc6c55879b15b3f94a98fcacee99bab3b5f3784d77c885f8/bf" data-source="&amp;lt;patterns&amp;gt;&amp;hellip;" onmousemove="i18n(this)">&lt;patterns&gt;&hellip;</span></dt> <dd> <p><span data-i18n="46f0a647ef19ca4cbf7221768e97f5f8368bdd25a2d7dc72e7181fb0cd818ca3/04" data-source="When unspecified, all references, after filtering done with --heads and --tags, are shown. When &amp;lt;patterns&amp;gt;&amp;hellip;are specified, only references matching one or more of the given patterns are displayed. Each pattern is interpreted as a glob (see &lt;code&gt;glob&lt;/code&gt; in &lt;a href=&quot;gitglossary&quot;&gt;gitglossary[7]&lt;/a&gt;) which is matched against the &amp;quot;tail&amp;quot; of a ref, starting either from the start of the ref (so a full name like &lt;code&gt;refs/heads/foo&lt;/code&gt; matches) or from a slash separator (so &lt;code&gt;bar&lt;/code&gt; matches &lt;code&gt;refs/heads/bar&lt;/code&gt; but not &lt;code&gt;refs/heads/foobar&lt;/code&gt;)." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &ncy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ocy;, &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&acy;&yucy;&tcy;&scy;&yacy; &vcy;&scy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &pcy;&ocy;&scy;&lcy;&iecy; &fcy;&icy;&lcy;&softcy;&tcy;&rcy;&acy;&tscy;&icy;&icy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; --heads &icy; --tags. &IEcy;&scy;&lcy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ycy; &lt;patterns&gt;&hellip;, &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&acy;&yucy;&tcy;&scy;&yacy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&iecy; &ocy;&dcy;&ncy;&ocy;&mcy;&ucy; &icy;&lcy;&icy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&icy;&mcy; &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ycy;&mcy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&acy;&mcy;. &Kcy;&acy;&zhcy;&dcy;&ycy;&jcy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy; &icy;&ncy;&tcy;&iecy;&rcy;&pcy;&rcy;&iecy;&tcy;&icy;&rcy;&ucy;&iecy;&tcy;&scy;&yacy; &kcy;&acy;&kcy; glob (&scy;&mcy;.  <code>glob</code>  &vcy;  <a href="gitglossary.html">gitglossary[7]</a>  ), &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &scy;&ocy;&pcy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &scy;  &quot;tail&quot;  &scy;&scy;&ycy;&lcy;&kcy;&icy;, &ncy;&acy;&chcy;&icy;&ncy;&acy;&yacy; &lcy;&icy;&bcy;&ocy; &scy; &ncy;&acy;&chcy;&acy;&lcy;&acy; &scy;&scy;&ycy;&lcy;&kcy;&icy; (&tcy;&acy;&kcy; &chcy;&tcy;&ocy; &pcy;&ocy;&lcy;&ncy;&ocy;&iecy; &icy;&mcy;&yacy;, &ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;  <code>refs/heads/foo</code> , &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy;), &lcy;&icy;&bcy;&ocy; &scy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&icy;&tcy;&iecy;&lcy;&yacy; &kcy;&ocy;&scy;&ocy;&jcy; &chcy;&iecy;&rcy;&tcy;&ycy; (&tcy;&acy;&kcy; &chcy;&tcy;&ocy;  <code>bar</code>  &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy;  <code>refs/heads/bar</code> ). &ncy;&ocy; &ncy;&iecy;  <code>refs/heads/foobar</code> ).</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_output"><span data-i18n="b2439bcb8dee14b685f137f294b0e0cb62f5aadf45143ce01d79777d435a93b4/6b" data-source="Output" onmousemove="i18n(this)">Output</span></h2> <div> <p><span data-i18n="efcae882b9422fab078c1134552675a47f8b6be601d5c56583a283b0980b19db/a5" data-source="The output is in the format:" onmousemove="i18n(this)">&Vcy;&ycy;&vcy;&ocy;&dcy; &icy;&mcy;&iecy;&iecy;&tcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;:</span></p> <div> <div> <pre class="hljs language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">oid</span>&gt;</span> TAB <span class="hljs-tag">&lt;<span class="hljs-name">ref</span>&gt;</span> LF</pre> </div> </div> <p><span data-i18n="ecb054d0f85e8066ba89c4cd48dd476f34efdbf3d1559161a97b9da76b5f13d4/63" data-source="When showing an annotated tag, unless &lt;code&gt;--refs&lt;/code&gt; is given, two such lines are shown: one with the refname for the tag itself as &lt;code&gt;&amp;lt;ref&amp;gt;&lt;/code&gt;, and another with &lt;code&gt;&amp;lt;ref&amp;gt;&lt;/code&gt; followed by &lt;code&gt;^{}&lt;/code&gt;. The &lt;code&gt;&amp;lt;oid&amp;gt;&lt;/code&gt; on the latter line shows the name of the object the tag points at." onmousemove="i18n(this)">&Pcy;&rcy;&icy; &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&iecy;&ncy;&icy;&icy; &acy;&ncy;&ncy;&ocy;&tcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &tcy;&iecy;&gcy;&acy;, &iecy;&scy;&lcy;&icy; &ncy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;  <code>--refs</code> , &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&acy;&yucy;&tcy;&scy;&yacy; &dcy;&vcy;&iecy; &tcy;&acy;&kcy;&icy;&iecy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;: &ocy;&dcy;&ncy;&acy; &scy; &icy;&mcy;&iecy;&ncy;&iecy;&mcy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &dcy;&lcy;&yacy; &scy;&acy;&mcy;&ocy;&gcy;&ocy; &tcy;&iecy;&gcy;&acy; &kcy;&acy;&kcy;  <code>&lt;ref&gt;</code>  , &acy; &dcy;&rcy;&ucy;&gcy;&acy;&yacy; &scy;  <code>&lt;ref&gt;</code> , &zcy;&acy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&jcy; &scy;&lcy;&iecy;&dcy;&ucy;&iecy;&tcy;  <code>^{}</code>  .  <code>&lt;oid&gt;</code>  &vcy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ncy;&iecy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy; &pcy;&ocy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy; &icy;&mcy;&yacy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy;, &ncy;&acy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy; &tcy;&iecy;&gcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_examples"><span data-i18n="e68ee04dff59551b7d1ae07a2f8a00dc61d841628948da3d2781630706a05e92/38" data-source="Examples" onmousemove="i18n(this)">Examples</span></h2> <div> <div> <ul> <li> <p><span data-i18n="61c94318ef7ef15703eb674172c5a42404dee76eb8658d8e854b1e8ef6394b7f/4d" data-source="List all references (including symbolics and pseudorefs), peeling tags:" onmousemove="i18n(this)">&Pcy;&iecy;&rcy;&iecy;&chcy;&icy;&scy;&lcy;&icy;&tcy;&iecy; &vcy;&scy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy; (&vcy;&kcy;&lcy;&yucy;&chcy;&acy;&yacy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&kcy;&ucy; &icy; &pcy;&scy;&iecy;&vcy;&dcy;&ocy;&scy;&scy;&ycy;&lcy;&kcy;&icy;), &ocy;&chcy;&icy;&scy;&tcy;&icy;&vcy; &tcy;&iecy;&gcy;&icy;:</span></p> <div> <div> <pre class="hljs language-bash">$ git ls-remote
+27d43aaaf50ef0ae014b88bba294f93658016a2e        HEAD
+950264636c68591989456e3ba0a5442f93152c1a        refs/heads/main
+d9ab777d41f92a8c1684c91cfb02053d7dd1046b        refs/heads/next
+d4ca2e3147b409459955613c152220f4db848ee1        refs/tags/v2.40.0
+73876f4861cd3d187a4682290ab75c9dccadbc56        refs/tags/v2.40.0^{}</pre> </div> </div> </li> <li> <p><span data-i18n="eb12a4002fb39f6db3c1d99390c4bdb84a89ee5e1ec6199116bdb33ff95dbc9f/1d" data-source="List all references matching given patterns:" onmousemove="i18n(this)">&Pcy;&iecy;&rcy;&iecy;&chcy;&icy;&scy;&lcy;&icy;&tcy;&iecy; &vcy;&scy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&iecy; &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ycy;&mcy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&acy;&mcy;:</span></p> <div> <div> <pre class="hljs language-bash">$ git ls-remote http://www.kernel.org/pub/scm/git/git.git master seen rc
+5fe978a5381f1fbad26a80e682ddd2a401966740        refs/heads/master
+c781a84b5204fb294c9ccc79f8b3baceeb32c061        refs/heads/seen</pre> </div> </div> </li> <li> <p><span data-i18n="4602f317ceaecea45464bc582b2b0b16fb27a2d91a13189f79c95511f10b4aa3/34" data-source="List only tags matching a given wildcard pattern:" onmousemove="i18n(this)">&Pcy;&iecy;&rcy;&iecy;&chcy;&icy;&scy;&lcy;&icy;&tcy;&iecy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &tcy;&iecy;&gcy;&icy;, &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&iecy; &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ocy;&mcy;&ucy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ucy; &pcy;&ocy;&dcy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&ocy;&chcy;&ncy;&ycy;&khcy; &zcy;&ncy;&acy;&kcy;&ocy;&vcy;:</span></p> <div> <div> <pre class="hljs language-bash">$ git ls-remote --tags http://www.kernel.org/pub/scm/git/git.git v\*
+485a869c64a68cc5795dd99689797c5900f4716d        refs/tags/v2.39.2
+cbf04937d5b9fcf0a76c28f69e6294e9e3ecd7e6        refs/tags/v2.39.2^{}
+d4ca2e3147b409459955613c152220f4db848ee1        refs/tags/v2.40.0
+73876f4861cd3d187a4682290ab75c9dccadbc56        refs/tags/v2.40.0^{}</pre> </div> </div> </li> </ul> </div> </div> <h2 class="text-body-emphasis"  id="_see_also"><span data-i18n="2fa97693b70fa87b95b2d1bdf9558e4ac65d5e82d145f13a03849c4d9c4957a9/40" data-source="See also" onmousemove="i18n(this)">See also</span></h2> <div> <p><span data-i18n="f46f1ab069c345e2e55724c81174138d58d3e87375bff2afdc8142984a19b1c2/62" data-source="&lt;a href=&quot;git-check-ref-format&quot;&gt;git-check-ref-format[1]&lt;/a&gt;." onmousemove="i18n(this)"><a href="git-check-ref-format.html">git-check-ref-format[1]</a>.</span></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-ls-remote">https://git-scm.com/docs/git-ls-remote</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-ls-tree.html">
+                            git ls-tree                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-mailinfo.html">
+                            git mailinfo                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-mailsplit.html">
+                            git mailsplit                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-maintenance.html">
+                            git maintenance                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge.html">
+                            git merge                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge-base.html">
+                            git merge-base                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge-file.html">
+                            git merge-file                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-ls-remote.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-10 18:34:32 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git fetch-pack</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="590803108255f33791a24786dff6e284999dbdb3d63965c19dc3359a4eb9b738/7f" data-source="git-fetch-pack" onmousemove="i18n(this)">git-fetch-pack</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="02d0a4ea0cabecd37da0a59a74e6da00d27225eb2ce2da637cc015434fcb3187/11" data-source="git-fetch-pack - Receive missing objects from another repository" onmousemove="i18n(this)">git-fetch-pack &mdash; &Pcy;&ocy;&lcy;&ucy;&chcy;&icy;&tcy;&softcy; &ncy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&yucy;&shchcy;&icy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy; &icy;&zcy; &dcy;&rcy;&ucy;&gcy;&ocy;&gcy;&ocy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git fetch-pack <span class="hljs-selector-attr">[--all]</span> <span class="hljs-selector-attr">[--quiet|-q]</span> <span class="hljs-selector-attr">[--keep|-k]</span> <span class="hljs-selector-attr">[--thin]</span> <span class="hljs-selector-attr">[--include-tag]</span>
+        <span class="hljs-selector-attr">[--upload-pack=&lt;git-upload-pack&gt;]</span>
+        <span class="hljs-selector-attr">[--depth=&lt;n&gt;]</span> <span class="hljs-selector-attr">[--no-progress]</span>
+        <span class="hljs-selector-attr">[-v]</span> &lt;repository&gt; <span class="hljs-selector-attr">[&lt;refs&gt;&hellip;&ZeroWidthSpace;]</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="063a84d4f4ed3fbbc1ecc4694d31d2d80b1c5824bb0412bd99604fa6338a6896/1c" data-source="Usually you would want to use &lt;code&gt;git fetch&lt;/code&gt;, which is a higher level wrapper of this command, instead." onmousemove="i18n(this)">&Ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &ecy;&tcy;&ocy;&gcy;&ocy; &vcy;&ycy; &pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&chcy;&icy;&tcy;&acy;&iecy;&tcy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;  <code>git fetch</code>  , &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&ocy;&jcy; &bcy;&ocy;&lcy;&iecy;&iecy; &vcy;&ycy;&scy;&ocy;&kcy;&ocy;&gcy;&ocy; &ucy;&rcy;&ocy;&vcy;&ncy;&yacy; &ecy;&tcy;&ocy;&jcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ycy;.</span></p> <p><span data-i18n="5613632e8ecf9649069e5bfc2642631442581752e61115ef4d5926eba3ed0fa9/2f" data-source="Invokes &lt;code&gt;git-upload-pack&lt;/code&gt; on a possibly remote repository and asks it to send objects missing from this repository, to update the named heads. The list of commits available locally is found out by scanning the local refs/ hierarchy and sent to &lt;code&gt;git-upload-pack&lt;/code&gt; running on the other end." onmousemove="i18n(this)">&Vcy;&ycy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy;  <code>git-upload-pack</code>  &vcy; &vcy;&ocy;&zcy;&mcy;&ocy;&zhcy;&ncy;&ocy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&mcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy; &icy; &pcy;&rcy;&ocy;&scy;&icy;&tcy; &iecy;&gcy;&ocy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&icy;&tcy;&softcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy;, &ocy;&tcy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&iecy; &vcy; &ecy;&tcy;&ocy;&mcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy;, &dcy;&lcy;&yacy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy; &icy;&mcy;&iecy;&ncy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&khcy; &gcy;&ocy;&lcy;&ocy;&vcy;&ocy;&kcy;. &Scy;&pcy;&icy;&scy;&ocy;&kcy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy;&khcy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ocy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &pcy;&ucy;&tcy;&iecy;&mcy; &scy;&kcy;&acy;&ncy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ycy;&khcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;/&icy;&iecy;&rcy;&acy;&rcy;&khcy;&icy;&icy; &icy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &ncy;&acy;  <code>git-upload-pack</code> , &rcy;&acy;&bcy;&ocy;&tcy;&acy;&yucy;&shchcy;&icy;&jcy; &ncy;&acy; &dcy;&rcy;&ucy;&gcy;&ocy;&mcy; &kcy;&ocy;&ncy;&tscy;&iecy;.</span></p> <p><span data-i18n="fcc8c5af0e1c02838798101fda6554fe7ee04d924825ea727d0c59c7f6655720/af" data-source="This command degenerates to download everything to complete the asked refs from the remote side when the local side does not have a common ancestor commit." onmousemove="i18n(this)">&Ecy;&tcy;&acy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &vcy;&ycy;&rcy;&ocy;&zhcy;&dcy;&acy;&iecy;&tcy;&scy;&yacy; &vcy; &zcy;&acy;&gcy;&rcy;&ucy;&zcy;&kcy;&ucy; &vcy;&scy;&iecy;&gcy;&ocy;, &chcy;&tcy;&ocy;&bcy;&ycy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&icy;&tcy;&softcy; &zcy;&acy;&pcy;&rcy;&ocy;&shcy;&iecy;&ncy;&ncy;&ycy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &scy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&jcy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&ycy;, &kcy;&ocy;&gcy;&dcy;&acy; &ncy;&acy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ocy;&jcy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&iecy; &ncy;&iecy;&tcy; &ocy;&bcy;&shchcy;&iecy;&gcy;&ocy; &pcy;&rcy;&iecy;&dcy;&kcy;&acy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-fetch-pack.txt---all"><span data-i18n="7dbf56c38208e33a9193b210245465f7729af0d59b9df556e7f1f7138a6d6e93/a1" data-source="--all" onmousemove="i18n(this)">--all</span></dt> <dd> <p><span data-i18n="66947779149c5395878fc006f7c7603517038acd79b5aa5329ac984f525f21ce/e1" data-source="Fetch all remote refs." onmousemove="i18n(this)">&Pcy;&ocy;&lcy;&ucy;&chcy;&icy;&tcy;&softcy; &vcy;&scy;&iecy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy;.</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt---stdin"><span data-i18n="06cc2377ccb785d93fd1515e188ca4dfe8c83def25a0c91bd36731a3b50c77f2/d9" data-source="--stdin" onmousemove="i18n(this)">--stdin</span></dt> <dd> <p><span data-i18n="3e7e5e10dc7682917fc6f94df65cceeaf7c553fef38f002602aabf0ed9e5aa96/e7" data-source="Take the list of refs from stdin, one per line. If there are refs specified on the command line in addition to this option, then the refs from stdin are processed after those on the command line." onmousemove="i18n(this)">&Vcy;&ocy;&zcy;&softcy;&mcy;&icy;&tcy;&iecy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy; &icy;&zcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ocy;&gcy;&ocy; &vcy;&vcy;&ocy;&dcy;&acy;, &pcy;&ocy; &ocy;&dcy;&ncy;&ocy;&jcy; &vcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy;. &IEcy;&scy;&lcy;&icy; &pcy;&ocy;&mcy;&icy;&mcy;&ocy; &ecy;&tcy;&ocy;&jcy; &ocy;&pcy;&tscy;&icy;&icy; &vcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ycy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &tcy;&ocy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &icy;&zcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ocy;&gcy;&ocy; &vcy;&vcy;&ocy;&dcy;&acy; &ocy;&bcy;&rcy;&acy;&bcy;&acy;&tcy;&ycy;&vcy;&acy;&yucy;&tcy;&scy;&yacy; &pcy;&ocy;&scy;&lcy;&iecy; &scy;&scy;&ycy;&lcy;&ocy;&kcy; &vcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy;.</span></p> <p><span data-i18n="94800ab69f87a552aea734a641f38012990d3f0abb493c306a3b4812904f64e1/20" data-source="If &lt;code&gt;--stateless-rpc&lt;/code&gt; is specified together with this option then the list of refs must be in packet format (pkt-line). Each ref must be in a separate packet, and the list must end with a flush packet." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &vcy;&mcy;&iecy;&scy;&tcy;&iecy; &scy; &ecy;&tcy;&ocy;&jcy; &ocy;&pcy;&tscy;&icy;&iecy;&jcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;  <code>--stateless-rpc</code> , &tcy;&ocy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy; &dcy;&ocy;&lcy;&zhcy;&iecy;&ncy; &bcy;&ycy;&tcy;&softcy; &vcy; &pcy;&acy;&kcy;&iecy;&tcy;&ncy;&ocy;&mcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;&iecy; (pkt-line). &Kcy;&acy;&zhcy;&dcy;&acy;&yacy; &scy;&scy;&ycy;&lcy;&kcy;&acy; &dcy;&ocy;&lcy;&zhcy;&ncy;&acy; &ncy;&acy;&khcy;&ocy;&dcy;&icy;&tcy;&softcy;&scy;&yacy; &vcy; &ocy;&tcy;&dcy;&iecy;&lcy;&softcy;&ncy;&ocy;&mcy; &pcy;&acy;&kcy;&iecy;&tcy;&iecy;, &acy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &dcy;&ocy;&lcy;&zhcy;&iecy;&ncy; &zcy;&acy;&kcy;&acy;&ncy;&chcy;&icy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &fcy;&lcy;&iecy;&shcy;-&pcy;&acy;&kcy;&iecy;&tcy;&ocy;&mcy;.</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt--q"><span data-i18n="5ce681666a15a41274346f65b8bcbf56f8e8170ac00706a44a09ee4d786a8609/cd" data-source="-q" onmousemove="i18n(this)">-q</span></dt> <dt id="Documentation/git-fetch-pack.txt---quiet"><span data-i18n="b00818cdc507640687732769ee1cb501db377927ee76d03df23978bd0d706888/e2" data-source="--quiet" onmousemove="i18n(this)">--quiet</span></dt> <dd> <p><span data-i18n="fc784bb527223c1432768b94680d92fce2e7bc808e44f05b123f303f26f9db27/d7" data-source="Pass &lt;code&gt;-q&lt;/code&gt; flag to &lt;code&gt;git unpack-objects&lt;/code&gt;; this makes the cloning process less verbose." onmousemove="i18n(this)">&Pcy;&iecy;&rcy;&iecy;&dcy;&acy;&tcy;&softcy; &fcy;&lcy;&acy;&gcy;  <code>-q</code>  &vcy;  <code>git unpack-objects</code>  ; &ecy;&tcy;&ocy; &dcy;&iecy;&lcy;&acy;&iecy;&tcy; &pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy; &kcy;&lcy;&ocy;&ncy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &mcy;&iecy;&ncy;&iecy;&iecy; &mcy;&ncy;&ocy;&gcy;&ocy;&scy;&lcy;&ocy;&vcy;&ncy;&ycy;&mcy;.</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt--k"><span data-i18n="2491456786e2f980156bb6d6932d5f25deea5b8b234c1a89766ff9280ab1f280/02" data-source="-k" onmousemove="i18n(this)">-k</span></dt> <dt id="Documentation/git-fetch-pack.txt---keep"><span data-i18n="ad8e4cbae591ad249ce8e2aba49d9676fbb2a16a7520506a682b1418ae1ad979/0b" data-source="--keep" onmousemove="i18n(this)">--keep</span></dt> <dd> <p><span data-i18n="890da94117cbbfa54ba9989565dd6979d8c6c06c3966bdadec213eda17598cc0/20" data-source="Do not invoke &lt;code&gt;git unpack-objects&lt;/code&gt; on received data, but create a single packfile out of it instead, and store it in the object database. If provided twice then the pack is locked against repacking." onmousemove="i18n(this)">&Ncy;&iecy; &vcy;&ycy;&zcy;&ycy;&vcy;&acy;&jcy;&tcy;&iecy;  <code>git unpack-objects</code>  &dcy;&lcy;&yacy; &pcy;&ocy;&lcy;&ucy;&chcy;&iecy;&ncy;&ncy;&ycy;&khcy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy;, &acy; &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &ecy;&tcy;&ocy;&gcy;&ocy; &scy;&ocy;&zcy;&dcy;&acy;&jcy;&tcy;&iecy; &icy;&zcy; &ncy;&icy;&khcy; &ocy;&dcy;&icy;&ncy; &pcy;&acy;&kcy;&iecy;&tcy;&ncy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy; &icy; &scy;&ocy;&khcy;&rcy;&acy;&ncy;&icy;&tcy;&iecy; &iecy;&gcy;&ocy; &vcy; &bcy;&acy;&zcy;&iecy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;. &IEcy;&scy;&lcy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ocy; &dcy;&vcy;&acy;&zhcy;&dcy;&ycy;, &pcy;&acy;&kcy;&iecy;&tcy; &zcy;&acy;&bcy;&lcy;&ocy;&kcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy; &ocy;&tcy; &pcy;&iecy;&rcy;&iecy;&ucy;&pcy;&acy;&kcy;&ocy;&vcy;&kcy;&icy;.</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt---thin"><span data-i18n="1e6c96e4875848222ea06c3f6490016e1e74d5fa57f538e762d359a87327dd2e/e3" data-source="--thin" onmousemove="i18n(this)">--thin</span></dt> <dd> <p><span data-i18n="29114eae123cca4fc52e513aa8289663e1227a4775facab9059292be2aae85eb/7a" data-source="Fetch a &amp;quot;thin&amp;quot; pack, which records objects in deltified form based on objects not included in the pack to reduce network traffic." onmousemove="i18n(this)">&Pcy;&ocy;&lcy;&ucy;&chcy;&icy;&tcy;&iecy; &pcy;&acy;&kcy;&iecy;&tcy;  &quot;thin&quot; , &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &zcy;&acy;&pcy;&icy;&scy;&ycy;&vcy;&acy;&iecy;&tcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy; &vcy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&iecy;&ncy;&ncy;&ocy;&jcy; &fcy;&ocy;&rcy;&mcy;&iecy; &ncy;&acy; &ocy;&scy;&ncy;&ocy;&vcy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;, &ncy;&iecy; &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&ncy;&ycy;&khcy; &vcy; &pcy;&acy;&kcy;&iecy;&tcy;, &chcy;&tcy;&ocy;&bcy;&ycy; &ucy;&mcy;&iecy;&ncy;&softcy;&shcy;&icy;&tcy;&softcy; &scy;&iecy;&tcy;&iecy;&vcy;&ocy;&jcy; &tcy;&rcy;&acy;&fcy;&icy;&kcy;.</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt---include-tag"><span data-i18n="3dd76c08aa41897aee554e52b49d1db280347bf79823e2156ed8671244ae4aa0/8d" data-source="--include-tag" onmousemove="i18n(this)">--include-tag</span></dt> <dd> <p><span data-i18n="6cfc75fdbbd18802e5350fd4edecc42e8b2a04e1bdd5448a09ab17b1c9d73d22/5f" data-source="If the remote side supports it, annotated tags objects will be downloaded on the same connection as the other objects if the object the tag references is downloaded. The caller must otherwise determine the tags this option made available." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&acy;&yacy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&acy; &pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&icy;&vcy;&acy;&iecy;&tcy; &ecy;&tcy;&ocy;, &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy; &acy;&ncy;&ncy;&ocy;&tcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&khcy; &tcy;&iecy;&gcy;&ocy;&vcy; &bcy;&ucy;&dcy;&ucy;&tcy; &zcy;&acy;&gcy;&rcy;&ucy;&zhcy;&acy;&tcy;&softcy;&scy;&yacy; &pcy;&ocy; &tcy;&ocy;&mcy;&ucy; &zhcy;&iecy; &scy;&ocy;&iecy;&dcy;&icy;&ncy;&iecy;&ncy;&icy;&yucy;, &chcy;&tcy;&ocy; &icy; &dcy;&rcy;&ucy;&gcy;&icy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy;, &iecy;&scy;&lcy;&icy; &zcy;&acy;&gcy;&rcy;&ucy;&zhcy;&iecy;&ncy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;, &ncy;&acy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &scy;&scy;&ycy;&lcy;&acy;&iecy;&tcy;&scy;&yacy; &tcy;&iecy;&gcy;. &Vcy; &pcy;&rcy;&ocy;&tcy;&icy;&vcy;&ncy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &vcy;&ycy;&zcy;&ycy;&vcy;&acy;&yucy;&shchcy;&acy;&yacy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&acy; &dcy;&ocy;&lcy;&zhcy;&ncy;&acy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&icy;&tcy;&softcy; &tcy;&iecy;&gcy;&icy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ecy;&tcy;&acy; &ocy;&pcy;&tscy;&icy;&yacy; &dcy;&iecy;&lcy;&acy;&iecy;&tcy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy;&mcy;&icy;.</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt---upload-packltgit-upload-packgt"><span data-i18n="d74ae0debe3013807588946a660ef75d983a33a9ff7e00ce9584738d5f7919d2/a0" data-source="--upload-pack=&amp;lt;git-upload-pack&amp;gt;" onmousemove="i18n(this)">--upload-pack=&lt;git-upload-pack&gt;</span></dt> <dd> <p><span data-i18n="cc062dfafa17219f12853ce586244f7d03b1efb9d73e8134fb4964eb156aaa73/fc" data-source="Use this to specify the path to &lt;code&gt;git-upload-pack&lt;/code&gt; on the remote side, if it is not found on your $PATH. Installations of sshd ignores the user&amp;rsquo;s environment setup scripts for login shells (e.g. .bash_profile) and your privately installed git may not be found on the system default $PATH. Another workaround suggested is to set up your $PATH in &amp;quot;.bashrc&amp;quot;, but this flag is for people who do not want to pay the overhead for non-interactive shells by having a lean .bashrc file (they set most of the things up in .bash_profile)." onmousemove="i18n(this)">&Icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy; &ecy;&tcy;&ocy;, &chcy;&tcy;&ocy;&bcy;&ycy; &ucy;&kcy;&acy;&zcy;&acy;&tcy;&softcy; &pcy;&ucy;&tcy;&softcy; &kcy;  <code>git-upload-pack</code>  &ncy;&acy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&jcy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&iecy;, &iecy;&scy;&lcy;&icy; &ocy;&ncy; &ncy;&iecy; &ncy;&acy;&jcy;&dcy;&iecy;&ncy; &vcy; &vcy;&acy;&shcy;&iecy;&mcy; $PATH. &Pcy;&rcy;&icy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&kcy;&iecy; sshd &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ucy;&yucy;&tcy;&scy;&yacy; &scy;&tscy;&iecy;&ncy;&acy;&rcy;&icy;&icy; &ncy;&acy;&scy;&tcy;&rcy;&ocy;&jcy;&kcy;&icy; &scy;&rcy;&iecy;&dcy;&ycy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&yacy; &dcy;&lcy;&yacy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&iecy;&kcy; &vcy;&khcy;&ocy;&dcy;&acy; &vcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ucy; (&ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, .bash_profile), &icy; &vcy;&acy;&shcy; &chcy;&acy;&scy;&tcy;&ncy;&ycy;&jcy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&ncy;&ycy;&jcy;  git  &mcy;&ocy;&zhcy;&iecy;&tcy; &ncy;&iecy; &bcy;&ycy;&tcy;&softcy; &ncy;&acy;&jcy;&dcy;&iecy;&ncy; &vcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ncy;&ocy;&mcy; $PATH &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;. &Dcy;&rcy;&ucy;&gcy;&ocy;&jcy; &pcy;&rcy;&iecy;&dcy;&lcy;&acy;&gcy;&acy;&iecy;&mcy;&ycy;&jcy; &ocy;&bcy;&khcy;&ocy;&dcy;&ncy;&ocy;&jcy; &pcy;&ucy;&tcy;&softcy; &mdash; &ncy;&acy;&scy;&tcy;&rcy;&ocy;&icy;&tcy;&softcy; $PATH &vcy;  &quot;.bashrc&quot; , &ncy;&ocy; &ecy;&tcy;&ocy;&tcy; &fcy;&lcy;&acy;&gcy; &pcy;&rcy;&iecy;&dcy;&ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy; &dcy;&lcy;&yacy; &lcy;&yucy;&dcy;&iecy;&jcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ncy;&iecy; &khcy;&ocy;&tcy;&yacy;&tcy; &pcy;&lcy;&acy;&tcy;&icy;&tcy;&softcy; &ncy;&acy;&kcy;&lcy;&acy;&dcy;&ncy;&ycy;&iecy; &rcy;&acy;&scy;&khcy;&ocy;&dcy;&ycy; &zcy;&acy; &ncy;&iecy;&icy;&ncy;&tcy;&iecy;&rcy;&acy;&kcy;&tcy;&icy;&vcy;&ncy;&ycy;&iecy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&icy;, &icy;&mcy;&iecy;&yacy; &pcy;&rcy;&ocy;&scy;&tcy;&ocy;&jcy; &fcy;&acy;&jcy;&lcy; .bashrc (&bcy;&ocy;&lcy;&softcy;&shcy;&ucy;&yucy; &chcy;&acy;&scy;&tcy;&softcy; &vcy;&iecy;&shchcy;&iecy;&jcy; &ocy;&ncy;&icy; &ncy;&acy;&scy;&tcy;&rcy;&acy;&icy;&vcy;&acy;&yucy;&tcy; &vcy; .bash_profile). ).</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt---execltgit-upload-packgt"><span data-i18n="e1fc945897a18cbec58e00fde4779062cb8b1b7e02071faab8d96d611b3c1ee8/a1" data-source="--exec=&amp;lt;git-upload-pack&amp;gt;" onmousemove="i18n(this)">--exec=&lt;git-upload-pack&gt;</span></dt> <dd> <p><span data-i18n="4cffebd46994664c8a4769c56c5d82e007b82d36c29825602c11f10116cc2fa1/43" data-source="Same as --upload-pack=&amp;lt;git-upload-pack&amp;gt;." onmousemove="i18n(this)">&Tcy;&ocy; &zhcy;&iecy;, &chcy;&tcy;&ocy; --upload-pack=&lt;git-upload-pack&gt;.</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt---depthltngt"><span data-i18n="b3661e539516b4d217ef191527a3113ca5a2f1afcc438943797d9febfc891090/75" data-source="--depth=&amp;lt;n&amp;gt;" onmousemove="i18n(this)">--depth=&lt;n&gt;</span></dt> <dd> <p><span data-i18n="1287ad29d83a9861ac5694f830b5f51f028f2fa352eca29c234b23582a300d6d/53" data-source="Limit fetching to ancestor-chains not longer than n. &lt;code&gt;git-upload-pack&lt;/code&gt; treats the special depth 2147483647 as infinite even if there is an ancestor-chain that long." onmousemove="i18n(this)">&Ocy;&gcy;&rcy;&acy;&ncy;&icy;&chcy;&softcy;&tcy;&iecy; &vcy;&ycy;&bcy;&ocy;&rcy;&kcy;&ucy; &tscy;&iecy;&pcy;&ocy;&chcy;&iecy;&kcy; &pcy;&rcy;&iecy;&dcy;&kcy;&ocy;&vcy; &dcy;&lcy;&icy;&ncy;&ocy;&jcy; &ncy;&iecy; &bcy;&ocy;&lcy;&iecy;&iecy; n.  <code>git-upload-pack</code>  &rcy;&acy;&scy;&scy;&mcy;&acy;&tcy;&rcy;&icy;&vcy;&acy;&iecy;&tcy; &scy;&pcy;&iecy;&tscy;&icy;&acy;&lcy;&softcy;&ncy;&ucy;&yucy; &gcy;&lcy;&ucy;&bcy;&icy;&ncy;&ucy; 2147483647 &kcy;&acy;&kcy; &bcy;&iecy;&scy;&kcy;&ocy;&ncy;&iecy;&chcy;&ncy;&ucy;&yucy;, &dcy;&acy;&zhcy;&iecy; &iecy;&scy;&lcy;&icy; &scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &tcy;&acy;&kcy;&acy;&yacy; &dcy;&lcy;&icy;&ncy;&ncy;&acy;&yacy; &tscy;&iecy;&pcy;&ocy;&chcy;&kcy;&acy; &pcy;&rcy;&iecy;&dcy;&kcy;&ocy;&vcy;.</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt---shallow-sinceltdategt"><span data-i18n="84686689a0e33b49490781c72374bf1fcda765c235cee81a142368a478008df5/75" data-source="--shallow-since=&amp;lt;date&amp;gt;" onmousemove="i18n(this)">--shallow-since=&lt;date&gt;</span></dt> <dd> <p><span data-i18n="b6e60e0a7702bfb2cc02cfa324bbbc790409e350e77204b14bd980dff91cc731/41" data-source="Deepen or shorten the history of a shallow repository to include all reachable commits after &amp;lt;date&amp;gt;." onmousemove="i18n(this)">&Ucy;&gcy;&lcy;&ucy;&bcy;&icy;&tcy;&iecy; &icy;&lcy;&icy; &scy;&ocy;&kcy;&rcy;&acy;&tcy;&icy;&tcy;&iecy; &icy;&scy;&tcy;&ocy;&rcy;&icy;&yucy; &mcy;&iecy;&lcy;&kcy;&ocy;&gcy;&ocy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;, &chcy;&tcy;&ocy;&bcy;&ycy; &vcy;&kcy;&lcy;&yucy;&chcy;&icy;&tcy;&softcy; &vcy;&scy;&iecy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy;&iecy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ycy; &pcy;&ocy;&scy;&lcy;&iecy; &lt;&dcy;&acy;&tcy;&acy;&gt;.</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt---shallow-excludeltrevisiongt"><span data-i18n="8cca75478a04ca1d721f0bb2db7fa4f471c8ef87be332dca391d8956faa68822/7f" data-source="--shallow-exclude=&amp;lt;revision&amp;gt;" onmousemove="i18n(this)">--shallow-exclude=&lt;revision&gt;</span></dt> <dd> <p><span data-i18n="393f9763ba5650cca57708d6cf6b5cd3fd1d86a541cc4b1f408d639729c1311c/84" data-source="Deepen or shorten the history of a shallow repository to exclude commits reachable from a specified remote branch or tag. This option can be specified multiple times." onmousemove="i18n(this)">&Ucy;&gcy;&lcy;&ucy;&bcy;&icy;&tcy;&iecy; &icy;&lcy;&icy; &scy;&ocy;&kcy;&rcy;&acy;&tcy;&icy;&tcy;&iecy; &icy;&scy;&tcy;&ocy;&rcy;&icy;&yucy; &mcy;&iecy;&lcy;&kcy;&ocy;&gcy;&ocy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;, &chcy;&tcy;&ocy;&bcy;&ycy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&icy;&tcy;&softcy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ycy;, &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy;&iecy; &icy;&zcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ocy;&jcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&jcy; &vcy;&iecy;&tcy;&kcy;&icy; &icy;&lcy;&icy; &tcy;&iecy;&gcy;&acy;. &Ecy;&tcy;&ucy; &ocy;&pcy;&tscy;&icy;&yucy; &mcy;&ocy;&zhcy;&ncy;&ocy; &ucy;&kcy;&acy;&zcy;&acy;&tcy;&softcy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ocy; &rcy;&acy;&zcy;.</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt---deepen-relative"><span data-i18n="8b968ebd03b25a0a7b7973da281220ee9ef5869d04dadb4fd80d06948a56788c/b8" data-source="--deepen-relative" onmousemove="i18n(this)">--deepen-relative</span></dt> <dd> <p><span data-i18n="a9574423683892e7bbe0cdc6e6aa6786fd81bf5d9f3fb04f7b560a66c68c18d7/57" data-source="Argument --depth specifies the number of commits from the current shallow boundary instead of from the tip of each remote branch history." onmousemove="i18n(this)">&Acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy; --&gcy;&lcy;&ucy;&bcy;&icy;&ncy;&acy; &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy; &kcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&tcy;&vcy;&ocy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy; &ocy;&tcy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&jcy; &mcy;&iecy;&lcy;&kcy;&ocy;&jcy; &gcy;&rcy;&acy;&ncy;&icy;&tscy;&ycy;, &acy; &ncy;&iecy; &ocy;&tcy; &kcy;&ocy;&ncy;&chcy;&icy;&kcy;&acy; &icy;&scy;&tcy;&ocy;&rcy;&icy;&icy; &kcy;&acy;&zhcy;&dcy;&ocy;&jcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&jcy; &vcy;&iecy;&tcy;&kcy;&icy;.</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt---refetch"><span data-i18n="db6eedb78c386dba97c6e9469722e625c22932a8d8d25b7156a1317da99cd7dd/d7" data-source="--refetch" onmousemove="i18n(this)">--refetch</span></dt> <dd> <p><span data-i18n="2ef22f5dff72c3c64a3b5dacbbcdff661791dd15a265db873f873440bea78729/b2" data-source="Skips negotiating commits with the server in order to fetch all matching objects. Use to reapply a new partial clone blob/tree filter." onmousemove="i18n(this)">&Pcy;&rcy;&ocy;&pcy;&ucy;&scy;&kcy;&acy;&iecy;&tcy; &scy;&ocy;&gcy;&lcy;&acy;&scy;&ocy;&vcy;&acy;&ncy;&icy;&iecy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy; &scy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&ocy;&mcy;, &chcy;&tcy;&ocy;&bcy;&ycy; &pcy;&ocy;&lcy;&ucy;&chcy;&icy;&tcy;&softcy; &vcy;&scy;&iecy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy;. &Icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy; &dcy;&lcy;&yacy; &pcy;&ocy;&vcy;&tcy;&ocy;&rcy;&ncy;&ocy;&gcy;&ocy; &pcy;&rcy;&icy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy; &ncy;&ocy;&vcy;&ocy;&gcy;&ocy; &fcy;&icy;&lcy;&softcy;&tcy;&rcy;&acy; BLOB-&ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;/&dcy;&iecy;&rcy;&iecy;&vcy;&acy; &chcy;&acy;&scy;&tcy;&icy;&chcy;&ncy;&ocy;&gcy;&ocy; &kcy;&lcy;&ocy;&ncy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy;.</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt---no-progress"><span data-i18n="22f4f0ddc705adf0de87e662c11a1d9f91a5693bfd2b50df9fec2f4ba289b775/63" data-source="--no-progress" onmousemove="i18n(this)">--no-progress</span></dt> <dd> <p><span data-i18n="16b84a05c260fcff9d4b242559c2ce175651c32d0a8557624e3d36cdf6f73205/48" data-source="Do not show the progress." onmousemove="i18n(this)">&Ncy;&iecy; &pcy;&ocy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&jcy;&tcy;&iecy; &pcy;&rcy;&ocy;&gcy;&rcy;&iecy;&scy;&scy;.</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt---check-self-contained-and-connected"><span data-i18n="2cb167ab358fec05b43f08b21a91e95613c7ddae063359fc5bb4c89ca8c5b798/41" data-source="--check-self-contained-and-connected" onmousemove="i18n(this)">--check-self-contained-and-connected</span></dt> <dd> <p><span data-i18n="9fc08e146dc5d89c8b1be5e4052b71e3c1822f243681e34abba641f8a7923738/b1" data-source="Output &amp;quot;connectivity-ok&amp;quot; if the received pack is self-contained and connected." onmousemove="i18n(this)">&Vcy;&ycy;&vcy;&iecy;&dcy;&icy;&tcy;&iecy;  &quot;connectivity-ok&quot; , &iecy;&scy;&lcy;&icy; &pcy;&ocy;&lcy;&ucy;&chcy;&iecy;&ncy;&ncy;&ycy;&jcy; &pcy;&acy;&kcy;&iecy;&tcy; &acy;&vcy;&tcy;&ocy;&ncy;&ocy;&mcy;&iecy;&ncy; &icy; &pcy;&ocy;&dcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;.</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt--v"><span data-i18n="81c36ccd44ef18baabad6e2d87038b72d606263bd6a3432b964a872023654fff/7c" data-source="-v" onmousemove="i18n(this)">-v</span></dt> <dd> <p><span data-i18n="833be3e945bff4477e0fc369fcfc98cd5662da32f7a698c4776b1236acdb1857/b9" data-source="Run verbosely." onmousemove="i18n(this)">Run verbosely.</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt-ltrepositorygt"><span data-i18n="33156ec69ef42f138c866bfb62145584bca1d9dd862e78b81cbaf77f8240c70e/6f" data-source="&amp;lt;repository&amp;gt;" onmousemove="i18n(this)">&lt;repository&gt;</span></dt> <dd> <p><span data-i18n="6ad047bd20a6e9fc76acde1ede4843fbf3b9328fbb3b876da9435652b185136e/c7" data-source="The URL to the remote repository." onmousemove="i18n(this)">URL-&acy;&dcy;&rcy;&iecy;&scy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;.</span></p> </dd> <dt id="Documentation/git-fetch-pack.txt-ltrefsgt82308203"><span data-i18n="941ac4d460967a3355fc13bc72d02added6296fe4ab285bdade26792f1cd6e33/bc" data-source="&amp;lt;refs&amp;gt;&amp;hellip;" onmousemove="i18n(this)">&lt;refs&gt;&hellip;</span></dt> <dd> <p><span data-i18n="9fb42ba8271b28c6255f20e9c8db1fe542780e6197938f0b662d2a5b01472a0a/af" data-source="The remote heads to update from. This is relative to $GIT_DIR (e.g. &amp;quot;HEAD&amp;quot;, &amp;quot;refs/heads/master&amp;quot;). When unspecified, update from all heads the remote side has." onmousemove="i18n(this)">&Ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&iecy; &gcy;&ocy;&lcy;&ocy;&vcy;&kcy;&icy; &dcy;&lcy;&yacy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy;. &Ecy;&tcy;&ocy; &ocy;&tcy;&ncy;&ocy;&scy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy; $GIT_DIR (&ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;,  &quot;HEAD&quot; ,  &quot;refs/heads/master&quot; ). &IEcy;&scy;&lcy;&icy; &ncy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ocy;, &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &scy;&ocy; &vcy;&scy;&iecy;&khcy; &gcy;&ocy;&lcy;&ocy;&vcy;&ocy;&kcy;, &icy;&mcy;&iecy;&yucy;&shchcy;&icy;&khcy;&scy;&yacy; &ncy;&acy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&jcy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&iecy;.</span></p> <p><span data-i18n="983d80c947ebac6fdec2e186cb49250c2e98cd823ae9ffc71b28eba2f35a2e29/50" data-source="If the remote has enabled the options &lt;code&gt;uploadpack.allowTipSHA1InWant&lt;/code&gt;, &lt;code&gt;uploadpack.allowReachableSHA1InWant&lt;/code&gt;, or &lt;code&gt;uploadpack.allowAnySHA1InWant&lt;/code&gt;, they may alternatively be 40-hex sha1s present on the remote." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &ncy;&acy; &pcy;&ucy;&lcy;&softcy;&tcy;&iecy; &dcy;&icy;&scy;&tcy;&acy;&ncy;&tscy;&icy;&ocy;&ncy;&ncy;&ocy;&gcy;&ocy; &ucy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy; &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&ycy; &ocy;&pcy;&tscy;&icy;&icy;  <code>uploadpack.allowTipSHA1InWant</code>  ,  <code>uploadpack.allowReachableSHA1InWant</code>  &icy;&lcy;&icy;  <code>uploadpack.allowAnySHA1InWant</code>  , &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &acy;&lcy;&softcy;&tcy;&iecy;&rcy;&ncy;&acy;&tcy;&icy;&vcy;&ycy; &ocy;&ncy;&icy; &mcy;&ocy;&gcy;&ucy;&tcy; &bcy;&ycy;&tcy;&softcy; 40-&shcy;&iecy;&scy;&tcy;&ncy;&acy;&dcy;&tscy;&acy;&tcy;&iecy;&rcy;&icy;&chcy;&ncy;&ycy;&mcy;&icy; sha1, &pcy;&rcy;&icy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&mcy;&icy; &ncy;&acy; &pcy;&ucy;&lcy;&softcy;&tcy;&iecy; &dcy;&icy;&scy;&tcy;&acy;&ncy;&tscy;&icy;&ocy;&ncy;&ncy;&ocy;&gcy;&ocy; &ucy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_see_also"><span data-i18n="2fa97693b70fa87b95b2d1bdf9558e4ac65d5e82d145f13a03849c4d9c4957a9/40" data-source="See also" onmousemove="i18n(this)">See also</span></h2> <div> <p><a href="git-fetch.html"><span data-i18n="acf0799c84c4353dcef229cf7f244fbdaa789642f3eb8047c99b761a16206241/a0" data-source="git-fetch[1]" onmousemove="i18n(this)">git-fetch[1]</span></a></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-fetch-pack">https://git-scm.com/docs/git-fetch-pack</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-filter-branch.html">
+                            git filter-branch                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-fmt-merge-msg.html">
+                            git fmt-merge-msg                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-for-each-ref.html">
+                            git for-each-ref                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-for-each-repo.html">
+                            git for-each-repo                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-format-patch.html">
+                            git format-patch                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-fsck.html">
+                            git fsck                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-fsmonitor--daemon.html">
+                            git fsmonitor--daemon                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-fetch-pack.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

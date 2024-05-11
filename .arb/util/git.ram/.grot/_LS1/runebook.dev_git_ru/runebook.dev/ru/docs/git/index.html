@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:12:55 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Git</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="b949c922b6ef9ffbf41eb853b99578624ca6f6475c4f13abe2995484b0348e5c/bf" data-source="Git" onmousemove="i18n(this)">Git</span></h1> <div> <p><span data-i18n="e700672c8cbe91518d2c3ccc3197fc994fd2dbe1bbf3335b7d54090f13462768/84" data-source="Quick reference guides: &lt;a href=&quot;https://github.github.com/training-kit/&quot;&gt;GitHub Cheat Sheet&lt;/a&gt; | &lt;a href=&quot;https://ndpsoftware.com/git-cheatsheet.html&quot;&gt;Visual Git Cheat Sheet&lt;/a&gt;" onmousemove="i18n(this)">&Kcy;&rcy;&acy;&tcy;&kcy;&icy;&iecy; &scy;&pcy;&rcy;&acy;&vcy;&ocy;&chcy;&ncy;&ycy;&iecy; &rcy;&ucy;&kcy;&ocy;&vcy;&ocy;&dcy;&scy;&tcy;&vcy;&acy;:  <a href="https://github.github.com/training-kit/">GitHub Cheat Sheet</a>  |  <a href="https://ndpsoftware.com/git-cheatsheet.html">Visual Git Cheat Sheet</a></span> </p> </div> <div> <a href="git.html#_git_commands"><span data-i18n="5a53b49dec740f700a8f3d22da216e51d43025e63a5bb12e497a7d0ca40389b8/52" data-source="Complete list of all commands" onmousemove="i18n(this)">&Pcy;&ocy;&lcy;&ncy;&ycy;&jcy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &vcy;&scy;&iecy;&khcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;</span></a> </div> <div> <div> <div> <h3 class="text-body-emphasis" ><span data-i18n="500b72d8f2776a95c88d87cc9c985edde398b9551683802b9922b9f7dfd4839d/e0" data-source="Setup and Config" onmousemove="i18n(this)">&Ncy;&acy;&scy;&tcy;&rcy;&ocy;&jcy;&kcy;&acy; &icy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&yacy;</span></h3> <ul> <li><a href="git.html"><span data-i18n="9a881b9b9f23849475296a8cd768ea1965bc3152df7118e60c145975af6aa58a/d4" data-source="git" onmousemove="i18n(this)">git</span></a></li> <li><a href="git-config.html"><span data-i18n="b79606fb3afea5bd1609ed40b622142f1c98125abcfe89a76a661b0e8e343910/3a" data-source="config" onmousemove="i18n(this)">config</span></a></li> <li><a href="git-help.html"><span data-i18n="106a5842fc5fce6f663176285ed1516dbb1e3d15c05abab12fdca46d60b539b7/86" data-source="help" onmousemove="i18n(this)">help</span></a></li> <li><a href="git-bugreport.html"><span data-i18n="204427d3a7c1975c45dfde14c5a548c2817536d8d05ea492485bfdb6c3cbb981/08" data-source="bugreport" onmousemove="i18n(this)">bugreport</span></a></li> <a href="https://git-scm.com/doc/credential-helpers"><span data-i18n="78b53e92513b3c53a22ed70aee4285cdd593e41aa3e9dafd168ed5958432f1e2/e4" data-source="Credential helpers" onmousemove="i18n(this)">Credential helpers</span></a> </ul> <h3 class="text-body-emphasis" ><span data-i18n="4e3136f07f6c030bbe1ae3449e40173bcbb066ae5cd64ce9a530752f2729c2cc/e3" data-source="Getting and Creating Projects" onmousemove="i18n(this)">&Pcy;&ocy;&lcy;&ucy;&chcy;&iecy;&ncy;&icy;&iecy; &icy; &scy;&ocy;&zcy;&dcy;&acy;&ncy;&icy;&iecy; &pcy;&rcy;&ocy;&iecy;&kcy;&tcy;&ocy;&vcy;</span></h3> <ul> <li><a href="git-init.html"><span data-i18n="bb54068aea85faa7e487530083366be9962390af822e4c71ef1aca7033c83e66/d5" data-source="init" onmousemove="i18n(this)">init</span></a></li> <li><a href="git-clone.html"><span data-i18n="b5d61dc89a35d2c924b28c9760765da94039e94184c50f87dde54532f126b4ac/3d" data-source="clone" onmousemove="i18n(this)">clone</span></a></li> </ul> <h3 class="text-body-emphasis" ><span data-i18n="0c55372bdb9d772b38030ea2e292105ac52266a03f7324301985d53db2da9ba6/a3" data-source="Basic Snapshotting" onmousemove="i18n(this)">Basic Snapshotting</span></h3> <ul> <li><a href="git-add.html"><span data-i18n="7e9e5ac30f2216fd0fd6f5faed316f2d5983361a4203c3330cfa46ef65bb4767/39" data-source="add" onmousemove="i18n(this)">add</span></a></li> <li><a href="git-status.html"><span data-i18n="073c1634c496cdb649d1afe0a312bbb4b7e1741b271542e4a436c3b8824b1761/7a" data-source="status" onmousemove="i18n(this)">status</span></a></li> <li><a href="git-diff.html"><span data-i18n="df087996d45b03e7eb8c133c0298fd98d35113fca26aaba58612fef3cc212cad/68" data-source="diff" onmousemove="i18n(this)">diff</span></a></li> <li><a href="git-commit.html"><span data-i18n="9505cacb7c710ed17125fcc6cb3669e8ddca6c8cd8af6a31f6b3cd64604c3098/55" data-source="commit" onmousemove="i18n(this)">commit</span></a></li> <li><a href="git-notes.html"><span data-i18n="ab5aa97074c454a0632057e704220d9a6678fbf773a0a5806fc09b8173b07309/cd" data-source="notes" onmousemove="i18n(this)">notes</span></a></li> <li><a href="git-restore.html"><span data-i18n="f329e3a317eee6a8a1a7357f69bc0488e0fad238ad58b30fc99139445f51e6ab/85" data-source="restore" onmousemove="i18n(this)">restore</span></a></li> <li><a href="git-reset.html"><span data-i18n="01be30bb4a27765c37462e6bf2a0bf8b6c109f9be9d81e6fd56455db1a736a43/31" data-source="reset" onmousemove="i18n(this)">reset</span></a></li> <li><a href="git-rm.html"><span data-i18n="58466ebdd352f801198118e294e38715f864985fd87977f348bfcd7db62e7c76/b9" data-source="rm" onmousemove="i18n(this)">rm</span></a></li> <li><a href="git-mv.html"><span data-i18n="d1829078fe03f2ec5f692c7a217859409b6822240625c10282bb022888657148/e7" data-source="mv" onmousemove="i18n(this)">mv</span></a></li> </ul> <h3 class="text-body-emphasis" ><span data-i18n="bdbebe66f6995e26db03c1c3528bf7068482a9b0fc90fb1f6f2312f98a4eb6fe/83" data-source="Branching and Merging" onmousemove="i18n(this)">&Vcy;&iecy;&tcy;&vcy;&lcy;&iecy;&ncy;&icy;&iecy; &icy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&iecy;</span></h3> <ul> <li><a href="git-branch.html"><span data-i18n="f38c764c8aa00b6578f4254a4dc6d9b50f88fa926e270ea7859bd1b707cd8662/19" data-source="branch" onmousemove="i18n(this)">branch</span></a></li> <li><a href="git-checkout.html"><span data-i18n="c7761e58969f7edd498186641b2021e8477e1bcd230de4cf3435242da4a40d14/a8" data-source="checkout" onmousemove="i18n(this)">checkout</span></a></li> <li><a href="git-switch.html"><span data-i18n="78b49fb2cc2d2ed6c1bb8383b3d267b3bc623a8a0fb4aff4aa5d3db74c3b4967/43" data-source="switch" onmousemove="i18n(this)">switch</span></a></li> <li><a href="git-merge.html"><span data-i18n="283128acef14943c127f7327ca8f57e7cd7c31ec6c5546de5d62ab16a2f9758a/53" data-source="merge" onmousemove="i18n(this)">merge</span></a></li> <li><a href="git-mergetool.html"><span data-i18n="97b89d6b1a075766ecd3808c2323c01dce9bd09763603d42bf41a0ce161546d6/37" data-source="mergetool" onmousemove="i18n(this)">mergetool</span></a></li> <li><a href="git-log.html"><span data-i18n="836ff184e7b41b1e13cb5fd89fa1de98dbbab99e9d2918913ff43b86a5c7c213/ec" data-source="log" onmousemove="i18n(this)">log</span></a></li> <li><a href="git-stash.html"><span data-i18n="2c70237f50de15d265e68ea22d398935fc1efe72f1c8d15824fa9a2f69a12c0b/97" data-source="stash" onmousemove="i18n(this)">stash</span></a></li> <li><a href="git-tag.html"><span data-i18n="2a1073a6e67f0e5f09a5957c659503c690efe7272be8313df872556a9a684d8c/eb" data-source="tag" onmousemove="i18n(this)">tag</span></a></li> <li><a href="git-worktree.html"><span data-i18n="d63516bc98983230cc2f6dff6e9c746d0b15e70026f924131114fdef35c11f83/ff" data-source="worktree" onmousemove="i18n(this)">worktree</span></a></li> </ul> <h3 class="text-body-emphasis" ><span data-i18n="eef87ebb00910a59ec4ab4811111db908907f924dea7b4689957ad4f0b4cd9cd/df" data-source="Sharing and Updating Projects" onmousemove="i18n(this)">&Scy;&ocy;&vcy;&mcy;&iecy;&scy;&tcy;&ncy;&ocy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy; &icy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&iecy; &pcy;&rcy;&ocy;&iecy;&kcy;&tcy;&ocy;&vcy;</span></h3> <ul> <li><a href="git-fetch.html"><span data-i18n="e7d3799ecc09f5cbc446aa0a79bb1fb9d0126395fa19a5903b7425f42e5e92e7/87" data-source="fetch" onmousemove="i18n(this)">fetch</span></a></li> <li><a href="git-pull.html"><span data-i18n="c5f5571c2c9c437485d5c572a3ad9efe51db8839cae2414732f051eaca6293fb/1b" data-source="pull" onmousemove="i18n(this)">pull</span></a></li> <li><a href="git-push.html"><span data-i18n="d107ea3629c326718876f07356a48dea26f123742f8bf44ce75f8f805cf9a37d/4c" data-source="push" onmousemove="i18n(this)">push</span></a></li> <li><a href="git-remote.html"><span data-i18n="b71199ebd070b36beab7317920c2c2f1d777df8d05e5527d8458fda57cb17a7a/e4" data-source="remote" onmousemove="i18n(this)">remote</span></a></li> <li><a href="git-submodule.html"><span data-i18n="d8566c566c6f671a5cc7779dc2cad0ddbdb68f37dc1e2e6157599ec585f4bf89/72" data-source="submodule" onmousemove="i18n(this)">submodule</span></a></li> </ul> <h3 class="text-body-emphasis" ><span data-i18n="8550b2641674ff1b9eae0487b8220f5550905d60fc1497dfe1e93be25989231b/e6" data-source="Inspection and Comparison" onmousemove="i18n(this)">&Ocy;&scy;&mcy;&ocy;&tcy;&rcy; &icy; &scy;&rcy;&acy;&vcy;&ncy;&iecy;&ncy;&icy;&iecy;</span></h3> <ul> <li><a href="git-show.html"><span data-i18n="1c6333509debf060200eb6bbe28db307508da67c0e3c58088393e4cf09de596d/42" data-source="show" onmousemove="i18n(this)">show</span></a></li> <li><a href="git-log.html"><span data-i18n="836ff184e7b41b1e13cb5fd89fa1de98dbbab99e9d2918913ff43b86a5c7c213/ec" data-source="log" onmousemove="i18n(this)">log</span></a></li> <li><a href="git-diff.html"><span data-i18n="df087996d45b03e7eb8c133c0298fd98d35113fca26aaba58612fef3cc212cad/68" data-source="diff" onmousemove="i18n(this)">diff</span></a></li> <li><a href="git-difftool.html"><span data-i18n="4175a555d17dedc93a6a51da8faf420e7d321b7ab7b25d4ef5b8af5f0321d763/88" data-source="difftool" onmousemove="i18n(this)">difftool</span></a></li> <li><a href="git-range-diff.html"><span data-i18n="c79566d963111b65c270ae8ddfe3307f269c70d06788afccc25adb7fc4163fdb/f5" data-source="range-diff" onmousemove="i18n(this)">range-diff</span></a></li> <li><a href="git-shortlog.html"><span data-i18n="1c2ed957561bd899d1c55a7626df2e3eab5a8dc7ffe1594c337518f74b82dcb0/72" data-source="shortlog" onmousemove="i18n(this)">shortlog</span></a></li> <li><a href="git-describe.html"><span data-i18n="c52028f34e378d1e07b4d5b8d10e4860e99cd3802218acf9391db8ea64fd2899/76" data-source="describe" onmousemove="i18n(this)">describe</span></a></li> </ul> <h3 class="text-body-emphasis" ><span data-i18n="29e94f9b2cf0cd2cb1a2d9962f8049c5582301e635ea6d25c43b963db3f93df7/32" data-source="Patching" onmousemove="i18n(this)">Patching</span></h3> <ul> <li><a href="git-apply.html"><span data-i18n="97a5e41b45ddd2b2381046e77ccfa5c45d3553b81b66aeba7ed5c460c660f93f/16" data-source="apply" onmousemove="i18n(this)">apply</span></a></li> <li><a href="git-cherry-pick.html"><span data-i18n="97e08b183df4423032dc527fa3b34a0ba437a125abe69fb066db3fa39ba0da03/28" data-source="cherry-pick" onmousemove="i18n(this)">cherry-pick</span></a></li> <li><a href="git-diff.html"><span data-i18n="df087996d45b03e7eb8c133c0298fd98d35113fca26aaba58612fef3cc212cad/68" data-source="diff" onmousemove="i18n(this)">diff</span></a></li> <li><a href="git-rebase.html"><span data-i18n="a66eb0bb9047722fa4b65664997cede3cfa3f29b3e3485f0ed8dca91c48bf4c9/b0" data-source="rebase" onmousemove="i18n(this)">rebase</span></a></li> <li><a href="git-revert.html"><span data-i18n="07913239c9e8d42fcd39da156d79fea4dcc8b373ef5cd2696b49275bc7887669/de" data-source="revert" onmousemove="i18n(this)">revert</span></a></li> </ul> <h3 class="text-body-emphasis" ><span data-i18n="47fc5bfb5680bd7a9d55085c13c03c5c75ab3a5e2beb3eebd08067146a17a0f1/2d" data-source="Debugging" onmousemove="i18n(this)">Debugging</span></h3> <ul> <li><a href="git-bisect.html"><span data-i18n="d665f555dcf78d973ac2786f7c510b6f3723d88b58868a153682dda668671246/a2" data-source="bisect" onmousemove="i18n(this)">bisect</span></a></li> <li><a href="git-blame.html"><span data-i18n="5e7434f45c5ecbda1678d9508a7ef790481cb87fe8dce511dee060eb29f5c2a5/f2" data-source="blame" onmousemove="i18n(this)">blame</span></a></li> <li><a href="git-grep.html"><span data-i18n="faefbbbf05cb9cfb18112dde743b3eb327b5b26426f4206583a2fb4cb9cc344d/8c" data-source="grep" onmousemove="i18n(this)">grep</span></a></li> </ul> </div> <div> <h3 class="text-body-emphasis" ><span data-i18n="572cd72feb9a84e0c639af3ccae73f3a4406f69fe193eac69ab0678eee32baff/c7" data-source="Guides" onmousemove="i18n(this)">Guides</span></h3> <ul> <li><a href="gitattributes.html"><span data-i18n="b387e1e440a9ee0a70c8c0297fd648c5f00abd6167cb99ab63bd60fd828b5f05/45" data-source="gitattributes" onmousemove="i18n(this)">gitattributes</span></a></li> <li><a href="gitcli.html"><span data-i18n="c25317e4e08c51efc28054d8ad75c7df791d0df9c3e4001b2eb17a98e12c7e19/08" data-source="Command-line interface conventions" onmousemove="i18n(this)">&Scy;&ocy;&gcy;&lcy;&acy;&shcy;&iecy;&ncy;&icy;&yacy; &ocy;&bcy; &icy;&ncy;&tcy;&iecy;&rcy;&fcy;&iecy;&jcy;&scy;&iecy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;</span></a></li> <li><a href="giteveryday.html"><span data-i18n="cef70b516061b59039ab7c4a7b056bf788e30743602dcdcda95344dc0c01a870/d2" data-source="Everyday Git" onmousemove="i18n(this)">Everyday Git</span></a></li> <li><a href="gitfaq.html"><span data-i18n="5988537c8e402df1febf9f6e717e29d489479dce062d446dcb42d4499a32044e/b2" data-source="Frequently Asked Questions (FAQ)" onmousemove="i18n(this)">&CHcy;&acy;&scy;&tcy;&ocy; &zcy;&acy;&dcy;&acy;&vcy;&acy;&iecy;&mcy;&ycy;&iecy; &vcy;&ocy;&pcy;&rcy;&ocy;&scy;&ycy; (FAQ)</span></a></li> <li><a href="gitglossary.html"><span data-i18n="4c4e436f9a453c776dbf011f98d932d615988bb08bddec6051625340e88d012f/3f" data-source="Glossary" onmousemove="i18n(this)">Glossary</span></a></li> <li><a href="githooks.html"><span data-i18n="d412a062620ef57bace76558a0384077b1919e66ba0a35af91e5a372f873e65e/9c" data-source="Hooks" onmousemove="i18n(this)">Hooks</span></a></li> <li><a href="gitignore.html"><span data-i18n="a1aa6596787cc04d4c22c2d40526e2bc261ad0895823a27c91a8e3ccd9cdefa2/14" data-source="gitignore" onmousemove="i18n(this)">gitignore</span></a></li> <li><a href="gitmodules.html"><span data-i18n="b63184ed1885bae2329939675544bafbfcc71df061ee1f4487bd1fcdddd3880c/11" data-source="gitmodules" onmousemove="i18n(this)">gitmodules</span></a></li> <li><a href="gitrevisions.html"><span data-i18n="da80b1d5740caaef137b3e5185cd47db4398bcba72abeb6fdf79930aa01991f5/27" data-source="Revisions" onmousemove="i18n(this)">Revisions</span></a></li> <li><a href="gitsubmodules.html"><span data-i18n="164d7e819605edf514e288a42414763d89425de061681e362909e064c857d7ea/21" data-source="Submodules" onmousemove="i18n(this)">Submodules</span></a></li> <li><a href="gittutorial.html"><span data-i18n="c26982b1425da26a9637dd69da684a036c8b67a1ddf2c3d09b915a96e4b58037/15" data-source="Tutorial" onmousemove="i18n(this)">Tutorial</span></a></li> <li><a href="gitworkflows.html"><span data-i18n="e2073645cb0dbbddb2464dacc4ed2a03923b8e4a4b680245c36c69763766fb40/04" data-source="Workflows" onmousemove="i18n(this)">Workflows</span></a></li> <li><a href="git.html#_guides"><span data-i18n="1e271d421114bac7868ee7221d66cfab485e910bf65d5e1bfb362e4d5e31ed1b/02" data-source="All guides..." onmousemove="i18n(this)">All guides...</span></a></li> </ul> <h3 class="text-body-emphasis" ><span data-i18n="969ccbd3cf6300ecd5c880459d81ae9027df7517563184a1b8b15282db230621/67" data-source="Email" onmousemove="i18n(this)">Email</span></h3> <ul> <li><a href="git-am.html"><span data-i18n="ab6db599234d2636659cba1aa191bd014c3867d5cfade98ff694785c20c28fc6/a0" data-source="am" onmousemove="i18n(this)">am</span></a></li> <li><a href="git-apply.html"><span data-i18n="97a5e41b45ddd2b2381046e77ccfa5c45d3553b81b66aeba7ed5c460c660f93f/16" data-source="apply" onmousemove="i18n(this)">apply</span></a></li> <li><a href="git-format-patch.html"><span data-i18n="07cc6d649514c69dd2369075b08906f0e797eff7a5c78aa8cafadc295e92d76d/7f" data-source="format-patch" onmousemove="i18n(this)">format-patch</span></a></li> <li><a href="git-send-email.html"><span data-i18n="db926702f8a10cbb1b9d9efc415a483e5d2818a91e88e626c636fbfca9794721/d4" data-source="send-email" onmousemove="i18n(this)">send-email</span></a></li> <li><a href="git-request-pull.html"><span data-i18n="8cd2b0f27780677a18a745a28fee5a63a8f35d976ab9a0422787cb3c85a3b16c/1d" data-source="request-pull" onmousemove="i18n(this)">request-pull</span></a></li> </ul> <h3 class="text-body-emphasis" ><span data-i18n="029bdd77655abad7b42e87d7cbf6194a3b1f2ef7d16abb48558cbe028e667605/aa" data-source="External Systems" onmousemove="i18n(this)">External Systems</span></h3> <ul> <li><a href="git-svn.html"><span data-i18n="34f24a58ec1f0be7b2916ca9b6ebd9f8b8c98df89134d7649d7127dc10b62af9/cf" data-source="svn" onmousemove="i18n(this)">svn</span></a></li> <li><a href="git-fast-import.html"><span data-i18n="e4b756a7429c6c9bae48784af0b0638b3f35d806eee02872811128197e5bc6b8/35" data-source="fast-import" onmousemove="i18n(this)">fast-import</span></a></li> </ul> <h3 class="text-body-emphasis" ><span data-i18n="4b42c6690ebeb867e96784025c16e1b109cf5b688cadce26dd9355a22cc3ad7d/10" data-source="Administration" onmousemove="i18n(this)">Administration</span></h3> <ul> <li><a href="git-clean.html"><span data-i18n="3b066804f6d1d077173cfe4d06002e6a61e6f21c2b2e648417962115f1afcd8e/f5" data-source="clean" onmousemove="i18n(this)">clean</span></a></li> <li><a href="git-gc.html"><span data-i18n="3e399c46e9652dadde7e51c0c0fa5ac911aa1908375f3ccf5595246cc508c5e4/c6" data-source="gc" onmousemove="i18n(this)">gc</span></a></li> <li><a href="git-fsck.html"><span data-i18n="fb0989fee4065cfe4d93c467b80985646596d0d0efd921b424f4183706dda235/98" data-source="fsck" onmousemove="i18n(this)">fsck</span></a></li> <li><a href="git-reflog.html"><span data-i18n="ee76b4b3c543947a684de5a115444a8315520ba8bebd3c69a25f99e6286843da/53" data-source="reflog" onmousemove="i18n(this)">reflog</span></a></li> <li><a href="git-filter-branch.html"><span data-i18n="db6bb5ebb7e7fb8e910940ba3a1bbd423eeb7a2d8ee17d04da789ae8369f64fa/01" data-source="filter-branch" onmousemove="i18n(this)">filter-branch</span></a></li> <li><a href="git-instaweb.html"><span data-i18n="fc4fe6e5b2e190a61cc5847d0f81febb95fd1d7605b2e1c44ad55feaaa084395/d8" data-source="instaweb" onmousemove="i18n(this)">instaweb</span></a></li> <li><a href="git-archive.html"><span data-i18n="0eb3e36bfb24dcd9bb1d1bece1531216b59539a8fde17ee80224af0653c92aa3/e0" data-source="archive" onmousemove="i18n(this)">archive</span></a></li> <li><a href="git-bundle.html"><span data-i18n="1e6ed65d77d6364eeaed5a745ba5c4985ae2b700dd85d7cf7f027bdf294a33fc/36" data-source="bundle" onmousemove="i18n(this)">bundle</span></a></li> </ul> <h3 class="text-body-emphasis" ><span data-i18n="e06f968165c3337c48f4244b5d96be0f5643a3f33b74711a155caf65897956ca/85" data-source="Server Admin" onmousemove="i18n(this)">Server Admin</span></h3> <ul> <li><a href="git-daemon.html"><span data-i18n="f77b12a53ece5f6b7050800bbdbf8cc5ebe87f1b1387cf739f243e43e2ce886b/f8" data-source="daemon" onmousemove="i18n(this)">daemon</span></a></li> <li><a href="git-update-server-info.html"><span data-i18n="19ecbab33df457f46e1008ad0f976c3763694306bc3653fdc4ef67f43fa30e13/cf" data-source="update-server-info" onmousemove="i18n(this)">update-server-info</span></a></li> </ul> <h3 class="text-body-emphasis" ><span data-i18n="d8210001d48da5edf8ffa6f11ff6a1d233904e852631af7c573156f9340bdf3f/a4" data-source="Plumbing Commands" onmousemove="i18n(this)">Plumbing Commands</span></h3> <ul> <li><a href="git-cat-file.html"><span data-i18n="f44a4297899140bde553cdf82948bea259a46e78d25913bd815da98625e95446/d4" data-source="cat-file" onmousemove="i18n(this)">cat-file</span></a></li> <li><a href="git-check-ignore.html"><span data-i18n="b999eda1d51920d767f563c584a57f667983703946c10af6a281da5a4e75554c/14" data-source="check-ignore" onmousemove="i18n(this)">check-ignore</span></a></li> <li><a href="git-checkout-index.html"><span data-i18n="a2bbda4dc2747c3858ec2401af625c4f7a21210b6bc26ffd8381da278c8a50f1/29" data-source="checkout-index" onmousemove="i18n(this)">checkout-index</span></a></li> <li><a href="git-commit-tree.html"><span data-i18n="f35cc4a3c38f10fb4397a4ce62d84b5003b4c0f74746de4162660b4f7e42c1c1/dc" data-source="commit-tree" onmousemove="i18n(this)">commit-tree</span></a></li> <li><a href="git-count-objects.html"><span data-i18n="4685a48f308880b9965c21ce3802104824910390f72481001059ff7b818cdb4a/58" data-source="count-objects" onmousemove="i18n(this)">count-objects</span></a></li> <li><a href="git-diff-index.html"><span data-i18n="ed3fabdf67c2f0ee40aeb183de7608e66012d11b6e12e914bf5f616e5c7b3f46/8e" data-source="diff-index" onmousemove="i18n(this)">diff-index</span></a></li> <li><a href="git-for-each-ref.html"><span data-i18n="c3cb0a1b32a4e33fca9029f3b0c679e7ebcdf058b4306ce33808617f31717dbb/44" data-source="for-each-ref" onmousemove="i18n(this)">for-each-ref</span></a></li> <li><a href="git-hash-object.html"><span data-i18n="70dd5a42ab038e264d5f42342ba93b32ccfec5ff97fa289c5dd6c3f350503a48/ff" data-source="hash-object" onmousemove="i18n(this)">hash-object</span></a></li> <li><a href="git-ls-files.html"><span data-i18n="dc9bc8cb8c446fabf7bb2e5acfe45c5e6d807ec3bc9676fc73200e92420aa2c9/6f" data-source="ls-files" onmousemove="i18n(this)">ls-files</span></a></li> <li><a href="git-ls-tree.html"><span data-i18n="71feb647d52dce4440a2edd5a49a990a99416b48c138c1aaff6cdce3797932cc/5d" data-source="ls-tree" onmousemove="i18n(this)">ls-tree</span></a></li> <li><a href="git-merge-base.html"><span data-i18n="ce4a15a53e3c4d408899f5c5f344efc54ffdda71242b8b2966b2f4cc027eb91e/8f" data-source="merge-base" onmousemove="i18n(this)">merge-base</span></a></li> <li><a href="git-read-tree.html"><span data-i18n="b70e683cb925ac633e3d3ffcb4e2355a62d708b6b750492fa04a5ce4ae62734c/6c" data-source="read-tree" onmousemove="i18n(this)">read-tree</span></a></li> <li><a href="git-rev-list.html"><span data-i18n="5cb504b2970c55742370e492b50d3eefa7ea7fa9a90ed65c4eacd80d7286a50a/88" data-source="rev-list" onmousemove="i18n(this)">rev-list</span></a></li> <li><a href="git-rev-parse.html"><span data-i18n="f457914e11eb08c1376bb437fa90ce66f8d670de0966c6036ba45cbe8af9a472/6c" data-source="rev-parse" onmousemove="i18n(this)">rev-parse</span></a></li> <li><a href="git-show-ref.html"><span data-i18n="3b17e27b08d9bc5c6299bbec0f817b0c95ee7ed41e63a274a03c8fe4e37e5b06/02" data-source="show-ref" onmousemove="i18n(this)">show-ref</span></a></li> <li><a href="git-symbolic-ref.html"><span data-i18n="fb5e97db188c8dd50a863fe33b40164179b47f25a0cf305245109243dd4f1a65/bf" data-source="symbolic-ref" onmousemove="i18n(this)">symbolic-ref</span></a></li> <li><a href="git-update-index.html"><span data-i18n="40a251364f1fa507909204e651307cc6438f640ebe90bb54967662b83d5c8ba1/33" data-source="update-index" onmousemove="i18n(this)">update-index</span></a></li> <li><a href="git-update-ref.html"><span data-i18n="0dc9c9d1b91c19a1e5a599a58f41ded60d880c173c3c4dc31946ab99c2a50214/6d" data-source="update-ref" onmousemove="i18n(this)">update-ref</span></a></li> <li><a href="git-verify-pack.html"><span data-i18n="d9e06a4636afe73456df71889b1321437c672d74b6d1871339b807cd87f5d139/70" data-source="verify-pack" onmousemove="i18n(this)">verify-pack</span></a></li> <li><a href="git-write-tree.html"><span data-i18n="d9a919320b5166b22fc871025e5050b660cd6d2638c90da917f34b35449f04a0/ca" data-source="write-tree" onmousemove="i18n(this)">write-tree</span></a></li> </ul> </div> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs">https://git-scm.com/docs</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="api-index.html">
+                            api index                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="api-simple-ipc.html">
+                            api simple-ipc                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="api-trace2.html">
+                            api trace2                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="bundle-uri.html">
+                            bundle uri                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git.html">
+                            git                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-add.html">
+                            git add                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-am.html">
+                            git am                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="index.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

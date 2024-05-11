@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:15:59 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git var</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="0d05188d6c6f9a5be0e92f78f7ddbf60993fe0e43c16c27ed189a676c3acbc78/fe" data-source="git-var" onmousemove="i18n(this)">git-var</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="48ce92896893ae214ce23aa901110ab4ba1f577c726c9acabda588923953b5df/4f" data-source="git-var - Show a Git logical variable" onmousemove="i18n(this)">git-var &mdash; &pcy;&ocy;&kcy;&acy;&zcy;&acy;&tcy;&softcy; &lcy;&ocy;&gcy;&icy;&chcy;&iecy;&scy;&kcy;&ucy;&yucy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ucy;&yucy;  Git</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-go">git <span class="hljs-keyword">var</span> (-l | &lt;variable&gt;)</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="676f9f3133dab2a707946e8841d9587528609d297191872d8071bc3b8193ec17/b0" data-source="Prints a Git logical variable. Exits with code 1 if the variable has no value." onmousemove="i18n(this)">&Pcy;&iecy;&chcy;&acy;&tcy;&acy;&iecy;&tcy; &lcy;&ocy;&gcy;&icy;&chcy;&iecy;&scy;&kcy;&ucy;&yucy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ucy;&yucy;  Git . &Vcy;&ycy;&khcy;&ocy;&dcy; &scy; &kcy;&ocy;&dcy;&ocy;&mcy; 1, &iecy;&scy;&lcy;&icy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&acy;&yacy; &ncy;&iecy; &icy;&mcy;&iecy;&iecy;&tcy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-var.txt--l"><span data-i18n="8d29a0f35918ca625667b2858e1c366e227ecbb424c5b30d008a1b2ec709e6d2/a6" data-source="-l" onmousemove="i18n(this)">-l</span></dt> <dd> <p><span data-i18n="5375067bb642fd9bbe204c48b5cc5507a5456cec2c49568abb95f65c9b156e59/7e" data-source="Display the logical variables. In addition, all the variables of the Git configuration file .git/config are listed as well. (However, the configuration variables listing functionality is deprecated in favor of &lt;code&gt;git config -l&lt;/code&gt;.)" onmousemove="i18n(this)">&Ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zcy;&icy;&tcy;&iecy; &lcy;&ocy;&gcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&iecy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ycy;&iecy;. &Kcy;&rcy;&ocy;&mcy;&iecy; &tcy;&ocy;&gcy;&ocy;, &tcy;&acy;&kcy;&zhcy;&iecy; &pcy;&iecy;&rcy;&iecy;&chcy;&icy;&scy;&lcy;&iecy;&ncy;&ycy; &vcy;&scy;&iecy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ycy;&iecy; &fcy;&acy;&jcy;&lcy;&acy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  Git  .git/config. (&Ocy;&dcy;&ncy;&acy;&kcy;&ocy; &fcy;&ucy;&ncy;&kcy;&tscy;&icy;&yacy; &vcy;&ycy;&vcy;&ocy;&dcy;&acy; &scy;&pcy;&icy;&scy;&kcy;&acy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ycy;&khcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy; &ucy;&scy;&tcy;&acy;&rcy;&iecy;&lcy;&acy; &vcy; &pcy;&ocy;&lcy;&softcy;&zcy;&ucy;  <code>git config -l</code> .)</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_examples"><span data-i18n="e68ee04dff59551b7d1ae07a2f8a00dc61d841628948da3d2781630706a05e92/38" data-source="Examples" onmousemove="i18n(this)">Examples</span></h2> <div> <div> <div> <pre class="hljs language-java">$ git <span class="hljs-keyword">var</span> GIT_AUTHOR_IDENT
+Eric W. Biederman &lt;ebiederm<span class="hljs-meta">@lnxi</span>.com&gt; <span class="hljs-number">1121223278</span> -<span class="hljs-number">0600</span></pre> </div> </div> </div> <h2 class="text-body-emphasis"  id="_variables"><span data-i18n="02db55bac5e3f7ceb98fdea15d7dfcfd40efcc41b777d10c2a8483b571f332bd/86" data-source="Variables" onmousemove="i18n(this)">Variables</span></h2> <div> <div> <dl> <dt id="Documentation/git-var.txt-GITAUTHORIDENT"><span data-i18n="e3a973662004f20458832932e5b3984f8c004324264c01354da681bcd46e2928/a0" data-source="GIT_AUTHOR_IDENT" onmousemove="i18n(this)">GIT_AUTHOR_IDENT</span></dt> <dd> <p><span data-i18n="08b401f68c3e94337bc15225065d1225fc38876d4ff40074c0ce3c652c8bea7b/8b" data-source="The author of a piece of code." onmousemove="i18n(this)">&Acy;&vcy;&tcy;&ocy;&rcy; &fcy;&rcy;&acy;&gcy;&mcy;&iecy;&ncy;&tcy;&acy; &kcy;&ocy;&dcy;&acy;.</span></p> </dd> <dt id="Documentation/git-var.txt-GITCOMMITTERIDENT"><span data-i18n="f81c1eb56ecf9a78574f4e406b92f68a248172a2d4d2e7b6ccc4fc0f34f65704/2c" data-source="GIT_COMMITTER_IDENT" onmousemove="i18n(this)">GIT_COMMITTER_IDENT</span></dt> <dd> <p><span data-i18n="87896a4f1140f147ce4ba455e558e8cd79eccf86b36226b8563e2a9137c6b283/09" data-source="The person who put a piece of code into Git." onmousemove="i18n(this)">&CHcy;&iecy;&lcy;&ocy;&vcy;&iecy;&kcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &pcy;&ocy;&mcy;&iecy;&scy;&tcy;&icy;&lcy; &kcy;&ucy;&scy;&ocy;&kcy; &kcy;&ocy;&dcy;&acy; &vcy; Git.</span></p> </dd> <dt id="Documentation/git-var.txt-GITEDITOR"><span data-i18n="908e75594fab6978f79a09c6461b3c66a2d382c6d79176d11ff8b5e7a8c72364/de" data-source="GIT_EDITOR" onmousemove="i18n(this)">GIT_EDITOR</span></dt> <dd> <p><span data-i18n="39134c5776f7b57e2bc52e22467a23e547abaf245d03ba82c9dd556f61934478/bf" data-source="Text editor for use by Git commands. The value is meant to be interpreted by the shell when it is used. Examples: &lt;code&gt;~/bin/vi&lt;/code&gt;, &lt;code&gt;$SOME_ENVIRONMENT_VARIABLE&lt;/code&gt;, &lt;code&gt;&amp;quot;C:\Program Files\Vim\gvim.exe&amp;quot;
+--nofork&lt;/code&gt;. The order of preference is the &lt;code&gt;$GIT_EDITOR&lt;/code&gt; environment variable, then &lt;code&gt;core.editor&lt;/code&gt; configuration, then &lt;code&gt;$VISUAL&lt;/code&gt;, then &lt;code&gt;$EDITOR&lt;/code&gt;, and then the default chosen at compile time, which is usually &lt;code&gt;vi&lt;/code&gt;." onmousemove="i18n(this)">&Tcy;&iecy;&kcy;&scy;&tcy;&ocy;&vcy;&ycy;&jcy; &rcy;&iecy;&dcy;&acy;&kcy;&tcy;&ocy;&rcy; &dcy;&lcy;&yacy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy;&mcy;&icy;  Git . &Zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&rcy;&iecy;&dcy;&ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&ocy; &dcy;&lcy;&yacy; &icy;&ncy;&tcy;&iecy;&rcy;&pcy;&rcy;&iecy;&tcy;&acy;&tscy;&icy;&icy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&ocy;&jcy; &pcy;&rcy;&icy; &iecy;&gcy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&icy;. &Pcy;&rcy;&icy;&mcy;&iecy;&rcy;&ycy;:  <code>~/bin/vi</code> ,  <code>$SOME_ENVIRONMENT_VARIABLE</code> ,  <code>&quot;C:\Program Files\Vim\gvim.exe&quot;
+--nofork</code> . &Pcy;&ocy;&rcy;&yacy;&dcy;&ocy;&kcy; &pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&chcy;&tcy;&iecy;&ncy;&icy;&yacy;: &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&acy;&yacy; &scy;&rcy;&iecy;&dcy;&ycy;  <code>$GIT_EDITOR</code> , &zcy;&acy;&tcy;&iecy;&mcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&yacy;  <code>core.editor</code> , &zcy;&acy;&tcy;&iecy;&mcy;  <code>$VISUAL</code> , &zcy;&acy;&tcy;&iecy;&mcy;  <code>$EDITOR</code> , &acy; &zcy;&acy;&tcy;&iecy;&mcy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;, &vcy;&ycy;&bcy;&rcy;&acy;&ncy;&ncy;&ocy;&iecy; &vcy;&ocy; &vcy;&rcy;&iecy;&mcy;&yacy; &kcy;&ocy;&mcy;&pcy;&icy;&lcy;&yacy;&tscy;&icy;&icy;, &ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &ecy;&tcy;&ocy;  <code>vi</code> .</span></p> </dd> <dt id="Documentation/git-var.txt-GITSEQUENCEEDITOR"><span data-i18n="4554e7d7528adaa1f8416edcdbc7165361dc7820b978143dd6a77137cab3586c/13" data-source="GIT_SEQUENCE_EDITOR" onmousemove="i18n(this)">GIT_SEQUENCE_EDITOR</span></dt> <dd> <p><span data-i18n="a755eaecacfcea87daa5cac7f3765dad770fe744cf268875002434b64931641b/0d" data-source="Text editor used to edit the &lt;code&gt;todo&lt;/code&gt; file while running &lt;code&gt;git rebase
+-i&lt;/code&gt;. Like &lt;code&gt;GIT_EDITOR&lt;/code&gt;, the value is meant to be interpreted by the shell when it is used. The order of preference is the &lt;code&gt;$GIT_SEQUENCE_EDITOR&lt;/code&gt; environment variable, then &lt;code&gt;sequence.editor&lt;/code&gt; configuration, and then the value of &lt;code&gt;git var
+GIT_EDITOR&lt;/code&gt;." onmousemove="i18n(this)">&Tcy;&iecy;&kcy;&scy;&tcy;&ocy;&vcy;&ycy;&jcy; &rcy;&iecy;&dcy;&acy;&kcy;&tcy;&ocy;&rcy;, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&mcy;&ycy;&jcy; &dcy;&lcy;&yacy; &rcy;&iecy;&dcy;&acy;&kcy;&tcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &fcy;&acy;&jcy;&lcy;&acy;  <code>todo</code>  &vcy;&ocy; &vcy;&rcy;&iecy;&mcy;&yacy; &rcy;&acy;&bcy;&ocy;&tcy;&ycy;  <code>git rebase
+-i</code> . &Kcy;&acy;&kcy; &icy;  <code>GIT_EDITOR</code> , &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&rcy;&iecy;&dcy;&ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&ocy; &dcy;&lcy;&yacy; &icy;&ncy;&tcy;&iecy;&rcy;&pcy;&rcy;&iecy;&tcy;&acy;&tscy;&icy;&icy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&ocy;&jcy; &pcy;&rcy;&icy; &iecy;&gcy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&icy;. &Vcy; &pcy;&ocy;&rcy;&yacy;&dcy;&kcy;&iecy; &pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&chcy;&tcy;&iecy;&ncy;&icy;&yacy; &mdash; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&acy;&yacy; &scy;&rcy;&iecy;&dcy;&ycy;  <code>$GIT_SEQUENCE_EDITOR</code> , &zcy;&acy;&tcy;&iecy;&mcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&yacy;  <code>sequence.editor</code> , &acy; &zcy;&acy;&tcy;&iecy;&mcy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy;  <code>git var
+GIT_EDITOR</code> .</span></p> </dd> <dt id="Documentation/git-var.txt-GITPAGER"><span data-i18n="b59165831e907558ce3f5afdf68ea010cf8d41648dbe63c0d243aecc7f2f432c/fe" data-source="GIT_PAGER" onmousemove="i18n(this)">GIT_PAGER</span></dt> <dd> <p><span data-i18n="c6f74e4d69af510a05a9dd084c7d2c330f9f29ec5ad6cb8933ae3aa6e7238ec5/4c" data-source="Text viewer for use by Git commands (e.g., &lt;code&gt;less&lt;/code&gt;). The value is meant to be interpreted by the shell. The order of preference is the &lt;code&gt;$GIT_PAGER&lt;/code&gt; environment variable, then &lt;code&gt;core.pager&lt;/code&gt; configuration, then &lt;code&gt;$PAGER&lt;/code&gt;, and then the default chosen at compile time (usually &lt;code&gt;less&lt;/code&gt;)." onmousemove="i18n(this)">&Pcy;&rcy;&ocy;&scy;&mcy;&ocy;&tcy;&rcy;&shchcy;&icy;&kcy; &tcy;&iecy;&kcy;&scy;&tcy;&acy; &dcy;&lcy;&yacy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy;&mcy;&icy;  Git  (&ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;,  <code>less</code> ). &Zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&rcy;&iecy;&dcy;&ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&ocy; &dcy;&lcy;&yacy; &icy;&ncy;&tcy;&iecy;&rcy;&pcy;&rcy;&iecy;&tcy;&acy;&tscy;&icy;&icy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&ocy;&jcy;. &Pcy;&ocy;&rcy;&yacy;&dcy;&ocy;&kcy; &pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&chcy;&tcy;&iecy;&ncy;&icy;&jcy;: &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&acy;&yacy; &scy;&rcy;&iecy;&dcy;&ycy;  <code>$GIT_PAGER</code> , &zcy;&acy;&tcy;&iecy;&mcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&yacy;  <code>core.pager</code> , &zcy;&acy;&tcy;&iecy;&mcy;  <code>$PAGER</code>  &icy; &zcy;&acy;&tcy;&iecy;&mcy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;, &vcy;&ycy;&bcy;&rcy;&acy;&ncy;&ncy;&ocy;&iecy; &vcy;&ocy; &vcy;&rcy;&iecy;&mcy;&yacy; &kcy;&ocy;&mcy;&pcy;&icy;&lcy;&yacy;&tscy;&icy;&icy; (&ocy;&bcy;&ycy;&chcy;&ncy;&ocy;  <code>less</code> ).</span></p> </dd> <dt id="Documentation/git-var.txt-GITDEFAULTBRANCH"><span data-i18n="2b40304b678160e5972cad081c8582659917f4f01f5abe1bcc2ecffd3ba2f36a/4d" data-source="GIT_DEFAULT_BRANCH" onmousemove="i18n(this)">GIT_DEFAULT_BRANCH</span></dt> <dd> <p><span data-i18n="00d4e2d1498acb2b65248df13dc6847ae7ebee16ae9b125cfba005346de810a6/e8" data-source="The name of the first branch created in newly initialized repositories." onmousemove="i18n(this)">&Icy;&mcy;&yacy; &pcy;&iecy;&rcy;&vcy;&ocy;&jcy; &vcy;&iecy;&tcy;&kcy;&icy;, &scy;&ocy;&zcy;&dcy;&acy;&ncy;&ncy;&ocy;&jcy; &vcy;&ocy; &vcy;&ncy;&ocy;&vcy;&softcy; &icy;&ncy;&icy;&tscy;&icy;&acy;&lcy;&icy;&zcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&khcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;&khcy;.</span></p> </dd> <dt id="Documentation/git-var.txt-GITSHELLPATH"><span data-i18n="4bfb034936f78eda5ad74653b0d3fe851122b75b52adbe295a2f3f50f0a4050d/25" data-source="GIT_SHELL_PATH" onmousemove="i18n(this)">GIT_SHELL_PATH</span></dt> <dd> <p><span data-i18n="e9f52ff5a6c7de77c8549c50bc888733c5493f342cebb401640e51b9c7f5c41c/4f" data-source="The path of the binary providing the POSIX shell for commands which use the shell." onmousemove="i18n(this)">&Pcy;&ucy;&tcy;&softcy; &kcy; &dcy;&vcy;&ocy;&icy;&chcy;&ncy;&ocy;&mcy;&ucy; &fcy;&acy;&jcy;&lcy;&ucy;, &pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&yucy;&shchcy;&iecy;&mcy;&ucy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&ucy; POSIX &dcy;&lcy;&yacy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yucy;&shchcy;&icy;&khcy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&ucy;.</span></p> </dd> <dt id="Documentation/git-var.txt-GITATTRSYSTEM"><span data-i18n="fa75e370adda281459c8d97018371673129171253e7fd5477a8a92d00a6c75e5/57" data-source="GIT_ATTR_SYSTEM" onmousemove="i18n(this)">GIT_ATTR_SYSTEM</span></dt> <dd> <p><span data-i18n="580d5fc43464f96dbdba1ccbafb8ee9c7b54d774dfe7dce4c84ac1c707ead7a0/1f" data-source="The path to the system &lt;a href=&quot;gitattributes&quot;&gt;gitattributes[5]&lt;/a&gt; file, if one is enabled." onmousemove="i18n(this)">&Pcy;&ucy;&tcy;&softcy; &kcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ncy;&ocy;&mcy;&ucy; &fcy;&acy;&jcy;&lcy;&ucy;  <a href="gitattributes.html">gitattributes[5]</a> , &iecy;&scy;&lcy;&icy; &ocy;&ncy; &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;.</span></p> </dd> <dt id="Documentation/git-var.txt-GITATTRGLOBAL"><span data-i18n="9cb1e6bf2903c7a023778339cf1245f0df97c314e56300c0b6f6e9e0b55dcea3/ef" data-source="GIT_ATTR_GLOBAL" onmousemove="i18n(this)">GIT_ATTR_GLOBAL</span></dt> <dd> <p><span data-i18n="00da6a904a87a4cd70f0a9107c8395af3ed0790fd33ea1f5eb989501e55d0e7e/05" data-source="The path to the global (per-user) &lt;a href=&quot;gitattributes&quot;&gt;gitattributes[5]&lt;/a&gt; file." onmousemove="i18n(this)">&Pcy;&ucy;&tcy;&softcy; &kcy; &gcy;&lcy;&ocy;&bcy;&acy;&lcy;&softcy;&ncy;&ocy;&mcy;&ucy; (&dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&yacy;) &fcy;&acy;&jcy;&lcy;&ucy;  <a href="gitattributes.html">gitattributes[5]</a> .</span></p> </dd> <dt id="Documentation/git-var.txt-GITCONFIGSYSTEM"><span data-i18n="263e8fe17cab1660e65abe2f22b0339665f7cc55638f880fd2845f309bc97fd0/6c" data-source="GIT_CONFIG_SYSTEM" onmousemove="i18n(this)">GIT_CONFIG_SYSTEM</span></dt> <dd> <p><span data-i18n="ebf796dcb438e0d0311221ed76b2add4fdb0174642322f56918c2e9d498e7e96/68" data-source="The path to the system configuration file, if one is enabled." onmousemove="i18n(this)">&Pcy;&ucy;&tcy;&softcy; &kcy; &fcy;&acy;&jcy;&lcy;&ucy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ycy;, &iecy;&scy;&lcy;&icy; &ocy;&ncy; &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;.</span></p> </dd> <dt id="Documentation/git-var.txt-GITCONFIGGLOBAL"><span data-i18n="ed32c7ca3df2e48f305dc716680ab38522deceddc8233ba91bcad5bdacbfeefc/20" data-source="GIT_CONFIG_GLOBAL" onmousemove="i18n(this)">GIT_CONFIG_GLOBAL</span></dt> <dd> <p><span data-i18n="17936645ac81b1a8ca5047598d43863735b8eee2c9d0755a5e1e0ce886d74523/0f" data-source="The path to the global (per-user) configuration files, if any." onmousemove="i18n(this)">&Pcy;&ucy;&tcy;&softcy; &kcy; &gcy;&lcy;&ocy;&bcy;&acy;&lcy;&softcy;&ncy;&ycy;&mcy; &fcy;&acy;&jcy;&lcy;&acy;&mcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy; (&dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&yacy;), &iecy;&scy;&lcy;&icy; &tcy;&acy;&kcy;&ocy;&vcy;&ycy;&iecy; &icy;&mcy;&iecy;&yucy;&tcy;&scy;&yacy;.</span></p> </dd> </dl> </div> <p><span data-i18n="0db904d61f6ef77e3ea9436239e663e1bd1870b70e78bce47ec4b60ce14c29d7/3b" data-source="Most path values contain only one value. However, some can contain multiple values, which are separated by newlines, and are listed in order from highest to lowest priority. Callers should be prepared for any such path value to contain multiple items." onmousemove="i18n(this)">&Bcy;&ocy;&lcy;&softcy;&shcy;&icy;&ncy;&scy;&tcy;&vcy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&jcy; &pcy;&ucy;&tcy;&icy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &ocy;&dcy;&ncy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy;. &Ocy;&dcy;&ncy;&acy;&kcy;&ocy; &ncy;&iecy;&kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &icy;&zcy; &ncy;&icy;&khcy; &mcy;&ocy;&gcy;&ucy;&tcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&jcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&iecy;&ncy;&ycy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&acy;&mcy;&icy; &ncy;&ocy;&vcy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &icy; &pcy;&iecy;&rcy;&iecy;&chcy;&icy;&scy;&lcy;&iecy;&ncy;&ycy; &vcy; &pcy;&ocy;&rcy;&yacy;&dcy;&kcy;&iecy; &ocy;&tcy; &vcy;&ycy;&scy;&shcy;&iecy;&gcy;&ocy; &kcy; &ncy;&icy;&zcy;&shcy;&iecy;&mcy;&ucy; &pcy;&rcy;&icy;&ocy;&rcy;&icy;&tcy;&iecy;&tcy;&ucy;. &Vcy;&ycy;&zcy;&ycy;&vcy;&acy;&yucy;&shchcy;&icy;&iecy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ycy; &dcy;&ocy;&lcy;&zhcy;&ncy;&ycy; &bcy;&ycy;&tcy;&softcy; &gcy;&ocy;&tcy;&ocy;&vcy;&ycy; &kcy; &tcy;&ocy;&mcy;&ucy;, &chcy;&tcy;&ocy; &lcy;&yucy;&bcy;&ocy;&iecy; &tcy;&acy;&kcy;&ocy;&iecy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&ucy;&tcy;&icy; &bcy;&ucy;&dcy;&iecy;&tcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ocy; &ecy;&lcy;&iecy;&mcy;&iecy;&ncy;&tcy;&ocy;&vcy;.</span></p> <p><span data-i18n="5593b143a5b8a0c75f145fcf8436b96ef9f6ae37b5cdb1638735aed1a3470219/94" data-source="Note that paths are printed even if they do not exist, but not if they are disabled by other environment variables." onmousemove="i18n(this)">&Ocy;&bcy;&rcy;&acy;&tcy;&icy;&tcy;&iecy; &vcy;&ncy;&icy;&mcy;&acy;&ncy;&icy;&iecy;, &chcy;&tcy;&ocy; &pcy;&ucy;&tcy;&icy; &pcy;&iecy;&chcy;&acy;&tcy;&acy;&yucy;&tcy;&scy;&yacy;, &dcy;&acy;&zhcy;&iecy; &iecy;&scy;&lcy;&icy; &ocy;&ncy;&icy; &ncy;&iecy; &scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ucy;&yucy;&tcy;, &ncy;&ocy; &ncy;&iecy; &vcy; &tcy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy;, &iecy;&scy;&lcy;&icy; &ocy;&ncy;&icy; &ocy;&tcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&ycy; &dcy;&rcy;&ucy;&gcy;&icy;&mcy;&icy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ycy;&mcy;&icy; &scy;&rcy;&iecy;&dcy;&ycy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_see_also"><span data-i18n="2fa97693b70fa87b95b2d1bdf9558e4ac65d5e82d145f13a03849c4d9c4957a9/40" data-source="See also" onmousemove="i18n(this)">See also</span></h2> <div> <p> <span data-i18n="dcb3ee5cc3379091e4c52b1daf0d6e1e1dcba745a40e25b079efc9a1b67cbc5e/0c" data-source="&lt;a href=&quot;git-commit-tree&quot;&gt;git-commit-tree[1]&lt;/a&gt;&lt;a href=&quot;git-tag&quot;&gt;git-tag[1]&lt;/a&gt;&lt;a href=&quot;git-config&quot;&gt;git-config[1]&lt;/a&gt;" onmousemove="i18n(this)"><a href="git-commit-tree.html">git-commit-tree[1]</a><a href="git-tag.html">git-tag[1]</a><a href="git-config.html">git-config[1]</a></span></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-var">https://git-scm.com/docs/git-var</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-verify-commit.html">
+                            git verify-commit                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-verify-pack.html">
+                            git verify-pack                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-verify-tag.html">
+                            git verify-tag                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-version.html">
+                            git version                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-web--browse.html">
+                            git web--browse                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-whatchanged.html">
+                            git whatchanged                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-worktree.html">
+                            git worktree                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-var.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

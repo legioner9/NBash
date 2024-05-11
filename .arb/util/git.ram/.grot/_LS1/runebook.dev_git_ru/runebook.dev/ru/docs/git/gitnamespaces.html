@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:13:25 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Git - gitnamespaces</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Miscellaneous">
+                                Miscellaneous                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="e25a43629fd2092c4cec3ef325d7abfc4ba066599c6b64159894b0211679dacb/5f" data-source="gitnamespaces" onmousemove="i18n(this)">gitnamespaces</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="a8bb2486b8497e3a8994c4f0948556f649f04f853d29f6d1d88db34ec141a7f0/62" data-source="gitnamespaces - Git namespaces" onmousemove="i18n(this)">gitnamespaces &mdash; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&acy; &icy;&mcy;&iecy;&ncy;  Git</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-ini"><span class="hljs-attr">GIT_NAMESPACE</span>=&lt;namespace&gt; git upload-pack
+<span class="hljs-attr">GIT_NAMESPACE</span>=&lt;namespace&gt; git receive-pack</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="b1582e80d126a6781e33cb43022436bdfd358370bf383944e3d29632925ac5f7/0a" data-source="Git supports dividing the refs of a single repository into multiple namespaces, each of which has its own branches, tags, and HEAD. Git can expose each namespace as an independent repository to pull from and push to, while sharing the object store, and exposing all the refs to operations such as &lt;a href=&quot;git-gc&quot;&gt;git-gc[1]&lt;/a&gt;." onmousemove="i18n(this)">Git  &pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&icy;&vcy;&acy;&iecy;&tcy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&iecy;&ncy;&icy;&iecy; &scy;&scy;&ycy;&lcy;&ocy;&kcy; &ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy; &ncy;&acy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ocy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy; &icy;&mcy;&iecy;&ncy;, &kcy;&acy;&zhcy;&dcy;&ocy;&iecy; &icy;&zcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&khcy; &icy;&mcy;&iecy;&iecy;&tcy; &scy;&vcy;&ocy;&icy; &scy;&ocy;&bcy;&scy;&tcy;&vcy;&iecy;&ncy;&ncy;&ycy;&iecy; &vcy;&iecy;&tcy;&kcy;&icy;, &tcy;&iecy;&gcy;&icy; &icy; HEAD.  Git  &mcy;&ocy;&zhcy;&iecy;&tcy; &pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&tcy;&softcy; &kcy;&acy;&zhcy;&dcy;&ocy;&iecy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&ocy; &icy;&mcy;&iecy;&ncy; &kcy;&acy;&kcy; &ncy;&iecy;&zcy;&acy;&vcy;&icy;&scy;&icy;&mcy;&ycy;&jcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy; &dcy;&lcy;&yacy; &icy;&zcy;&vcy;&lcy;&iecy;&chcy;&iecy;&ncy;&icy;&yacy; &icy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&kcy;&icy;, &pcy;&rcy;&icy; &ecy;&tcy;&ocy;&mcy; &scy;&ocy;&vcy;&mcy;&iecy;&scy;&tcy;&ncy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yacy; &khcy;&rcy;&acy;&ncy;&icy;&lcy;&icy;&shchcy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy; &icy; &pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&yacy; &vcy;&scy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &dcy;&lcy;&yacy; &tcy;&acy;&kcy;&icy;&khcy; &ocy;&pcy;&iecy;&rcy;&acy;&tscy;&icy;&jcy;, &kcy;&acy;&kcy;  <a href="git-gc.html">git-gc[1]</a> .</span></p> <p><span data-i18n="ebcdb508380470e2648a037dfae03d7b4431338a02905d21ba028d03d637a488/69" data-source="Storing multiple repositories as namespaces of a single repository avoids storing duplicate copies of the same objects, such as when storing multiple branches of the same source. The alternates mechanism provides similar support for avoiding duplicates, but alternates do not prevent duplication between new objects added to the repositories without ongoing maintenance, while namespaces do." onmousemove="i18n(this)">&KHcy;&rcy;&acy;&ncy;&iecy;&ncy;&icy;&iecy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&icy;&khcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&iecy;&vcy; &kcy;&acy;&kcy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy; &icy;&mcy;&iecy;&ncy; &ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy; &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&iecy;&tcy; &icy;&zcy;&bcy;&iecy;&zhcy;&acy;&tcy;&softcy; &khcy;&rcy;&acy;&ncy;&iecy;&ncy;&icy;&yacy; &dcy;&ucy;&bcy;&lcy;&icy;&kcy;&acy;&tcy;&ocy;&vcy; &ocy;&dcy;&ncy;&icy;&khcy; &icy; &tcy;&iecy;&khcy; &zhcy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;, &ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &pcy;&rcy;&icy; &khcy;&rcy;&acy;&ncy;&iecy;&ncy;&icy;&icy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&icy;&khcy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy; &ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &icy; &tcy;&ocy;&gcy;&ocy; &zhcy;&iecy; &icy;&scy;&tcy;&ocy;&chcy;&ncy;&icy;&kcy;&acy;. &Mcy;&iecy;&khcy;&acy;&ncy;&icy;&zcy;&mcy; &acy;&lcy;&softcy;&tcy;&iecy;&rcy;&ncy;&acy;&tcy;&icy;&vcy; &ocy;&bcy;&iecy;&scy;&pcy;&iecy;&chcy;&icy;&vcy;&acy;&iecy;&tcy; &acy;&ncy;&acy;&lcy;&ocy;&gcy;&icy;&chcy;&ncy;&ucy;&yucy; &pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&kcy;&ucy; &dcy;&lcy;&yacy; &pcy;&rcy;&iecy;&dcy;&ocy;&tcy;&vcy;&rcy;&acy;&shchcy;&iecy;&ncy;&icy;&yacy; &dcy;&ucy;&bcy;&lcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy;, &ncy;&ocy; &acy;&lcy;&softcy;&tcy;&iecy;&rcy;&ncy;&acy;&tcy;&icy;&vcy;&ycy; &ncy;&iecy; &pcy;&rcy;&iecy;&dcy;&ocy;&tcy;&vcy;&rcy;&acy;&shchcy;&acy;&yucy;&tcy; &dcy;&ucy;&bcy;&lcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy; &mcy;&iecy;&zhcy;&dcy;&ucy; &ncy;&ocy;&vcy;&ycy;&mcy;&icy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy;&mcy;&icy;, &dcy;&ocy;&bcy;&acy;&vcy;&lcy;&yacy;&iecy;&mcy;&ycy;&mcy;&icy; &vcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy; &bcy;&iecy;&zcy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&gcy;&ocy; &ocy;&bcy;&scy;&lcy;&ucy;&zhcy;&icy;&vcy;&acy;&ncy;&icy;&yacy;, &vcy; &ocy;&tcy;&lcy;&icy;&chcy;&icy;&iecy; &ocy;&tcy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy; &icy;&mcy;&iecy;&ncy;.</span></p> <p><span data-i18n="e1603afd09f76c32ad5def4f3ea154c369d2985c944aa1a2944c80fbb540fc81/a7" data-source="To specify a namespace, set the &lt;code&gt;GIT_NAMESPACE&lt;/code&gt; environment variable to the namespace. For each ref namespace, Git stores the corresponding refs in a directory under &lt;code&gt;refs/namespaces/&lt;/code&gt;. For example, &lt;code&gt;GIT_NAMESPACE=foo&lt;/code&gt; will store refs under &lt;code&gt;refs/namespaces/foo/&lt;/code&gt;. You can also specify namespaces via the &lt;code&gt;--namespace&lt;/code&gt; option to &lt;a href=&quot;git&quot;&gt;git[1]&lt;/a&gt;." onmousemove="i18n(this)">&CHcy;&tcy;&ocy;&bcy;&ycy; &ucy;&kcy;&acy;&zcy;&acy;&tcy;&softcy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&ocy; &icy;&mcy;&iecy;&ncy;, &zcy;&acy;&dcy;&acy;&jcy;&tcy;&iecy; &dcy;&lcy;&yacy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ocy;&jcy; &scy;&rcy;&iecy;&dcy;&ycy;  <code>GIT_NAMESPACE</code>  &ecy;&tcy;&ocy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&ocy; &icy;&mcy;&iecy;&ncy;. &Dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&acy; &icy;&mcy;&iecy;&ncy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;  Git  &scy;&ocy;&khcy;&rcy;&acy;&ncy;&yacy;&iecy;&tcy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &vcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy; &pcy;&ocy;&dcy;  <code>refs/namespaces/</code> . &Ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;,  <code>GIT_NAMESPACE=foo</code>  &bcy;&ucy;&dcy;&iecy;&tcy; &khcy;&rcy;&acy;&ncy;&icy;&tcy;&softcy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &vcy;  <code>refs/namespaces/foo/</code> . &Vcy;&ycy; &tcy;&acy;&kcy;&zhcy;&iecy; &mcy;&ocy;&zhcy;&iecy;&tcy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&tcy;&softcy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&acy; &icy;&mcy;&iecy;&ncy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &ocy;&pcy;&tscy;&icy;&icy;  <code>--namespace</code>  &dcy;&lcy;&yacy;  <a href="git.html">git[1]</a> .</span></p> <p><span data-i18n="ba0b967b4fd4c426e1e41bc5bbffaa2f285bb0059d6b5183068dd6c0f0fbd77c/94" data-source="Note that namespaces which include a &lt;code&gt;/&lt;/code&gt; will expand to a hierarchy of namespaces; for example, &lt;code&gt;GIT_NAMESPACE=foo/bar&lt;/code&gt; will store refs under &lt;code&gt;refs/namespaces/foo/refs/namespaces/bar/&lt;/code&gt;. This makes paths in &lt;code&gt;GIT_NAMESPACE&lt;/code&gt; behave hierarchically, so that cloning with &lt;code&gt;GIT_NAMESPACE=foo/bar&lt;/code&gt; produces the same result as cloning with &lt;code&gt;GIT_NAMESPACE=foo&lt;/code&gt; and cloning from that repo with &lt;code&gt;GIT_NAMESPACE=bar&lt;/code&gt;. It also avoids ambiguity with strange namespace paths such as &lt;code&gt;foo/refs/heads/&lt;/code&gt;, which could otherwise generate directory/file conflicts within the &lt;code&gt;refs&lt;/code&gt; directory." onmousemove="i18n(this)">&Ocy;&bcy;&rcy;&acy;&tcy;&icy;&tcy;&iecy; &vcy;&ncy;&icy;&mcy;&acy;&ncy;&icy;&iecy;, &chcy;&tcy;&ocy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&acy; &icy;&mcy;&iecy;&ncy;, &vcy;&kcy;&lcy;&yucy;&chcy;&acy;&yucy;&shchcy;&icy;&iecy;  <code>/</code> , &rcy;&acy;&scy;&shcy;&icy;&rcy;&yacy;&yucy;&tcy;&scy;&yacy; &dcy;&ocy; &icy;&iecy;&rcy;&acy;&rcy;&khcy;&icy;&icy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy; &icy;&mcy;&iecy;&ncy;; &ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;,  <code>GIT_NAMESPACE=foo/bar</code>  &bcy;&ucy;&dcy;&iecy;&tcy; &khcy;&rcy;&acy;&ncy;&icy;&tcy;&softcy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &vcy;  <code>refs/namespaces/foo/refs/namespaces/bar/</code> . &Ecy;&tcy;&ocy; &pcy;&rcy;&icy;&vcy;&ocy;&dcy;&icy;&tcy; &kcy; &tcy;&ocy;&mcy;&ucy;, &chcy;&tcy;&ocy; &pcy;&ucy;&tcy;&icy; &vcy;  <code>GIT_NAMESPACE</code>  &vcy;&iecy;&dcy;&ucy;&tcy; &scy;&iecy;&bcy;&yacy; &icy;&iecy;&rcy;&acy;&rcy;&khcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;, &tcy;&acy;&kcy; &chcy;&tcy;&ocy; &kcy;&lcy;&ocy;&ncy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy;  <code>GIT_NAMESPACE=foo/bar</code>  &dcy;&acy;&iecy;&tcy; &tcy;&ocy;&tcy; &zhcy;&iecy; &rcy;&iecy;&zcy;&ucy;&lcy;&softcy;&tcy;&acy;&tcy;, &chcy;&tcy;&ocy; &icy; &kcy;&lcy;&ocy;&ncy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy;  <code>GIT_NAMESPACE=foo</code>  &icy; &kcy;&lcy;&ocy;&ncy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy; &icy;&zcy; &ecy;&tcy;&ocy;&gcy;&ocy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy;  <code>GIT_NAMESPACE=bar</code> . &Ecy;&tcy;&ocy; &tcy;&acy;&kcy;&zhcy;&iecy; &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&iecy;&tcy; &icy;&zcy;&bcy;&iecy;&zhcy;&acy;&tcy;&softcy; &dcy;&vcy;&ucy;&scy;&mcy;&ycy;&scy;&lcy;&iecy;&ncy;&ncy;&ocy;&scy;&tcy;&icy; &scy;&ocy; &scy;&tcy;&rcy;&acy;&ncy;&ncy;&ycy;&mcy;&icy; &pcy;&ucy;&tcy;&yacy;&mcy;&icy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&acy; &icy;&mcy;&iecy;&ncy;, &tcy;&acy;&kcy;&icy;&mcy;&icy; &kcy;&acy;&kcy;  <code>foo/refs/heads/</code>  , &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &vcy; &pcy;&rcy;&ocy;&tcy;&icy;&vcy;&ncy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &mcy;&ocy;&gcy;&lcy;&icy; &bcy;&ycy; &vcy;&ycy;&zcy;&vcy;&acy;&tcy;&softcy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy;&ycy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&ocy;&vcy; &icy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &vcy;&ncy;&ucy;&tcy;&rcy;&icy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&acy;  <code>refs</code> .</span></p> <p><span data-i18n="c62ab3983ed0c18fcd6d112369b1582d5dfe06d1755f0e02b9400bbe55c9131f/ae" data-source="&lt;a href=&quot;git-upload-pack&quot;&gt;git-upload-pack[1]&lt;/a&gt; and &lt;a href=&quot;git-receive-pack&quot;&gt;git-receive-pack[1]&lt;/a&gt; rewrite the names of refs as specified by &lt;code&gt;GIT_NAMESPACE&lt;/code&gt;. git-upload-pack and git-receive-pack will ignore all references outside the specified namespace." onmousemove="i18n(this)"><a href="git-upload-pack.html">git-upload-pack[1]</a>  &icy;  <a href="git-receive-pack.html">git-receive-pack[1]</a>  &pcy;&iecy;&rcy;&iecy;&pcy;&icy;&scy;&ycy;&vcy;&acy;&yucy;&tcy; &icy;&mcy;&iecy;&ncy;&acy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;, &kcy;&acy;&kcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ocy; &vcy;  <code>GIT_NAMESPACE</code> . git-upload-pack &icy; git-receive-pack &bcy;&ucy;&dcy;&ucy;&tcy; &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ocy;&vcy;&acy;&tcy;&softcy; &vcy;&scy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &zcy;&acy; &pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&acy;&mcy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&acy; &icy;&mcy;&iecy;&ncy;.</span></p> <p><span data-i18n="dca658f1d0498780aed0ef5e5d141674d892f158595287b8154eba198b4d993e/ad" data-source="The smart HTTP server, &lt;a href=&quot;git-http-backend&quot;&gt;git-http-backend[1]&lt;/a&gt;, will pass GIT_NAMESPACE through to the backend programs; see &lt;a href=&quot;git-http-backend&quot;&gt;git-http-backend[1]&lt;/a&gt; for sample configuration to expose repository namespaces as repositories." onmousemove="i18n(this)">&Icy;&ncy;&tcy;&iecy;&lcy;&lcy;&iecy;&kcy;&tcy;&ucy;&acy;&lcy;&softcy;&ncy;&ycy;&jcy; HTTP-&scy;&iecy;&rcy;&vcy;&iecy;&rcy;  <a href="git-http-backend.html">git-http-backend[1]</a>  &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&scy;&tcy; GIT_NAMESPACE &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&ncy;&ycy;&mcy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&acy;&mcy;; &scy;&mcy;.  <a href="git-http-backend.html">git-http-backend[1]</a>  &dcy;&lcy;&yacy; &pcy;&rcy;&icy;&mcy;&iecy;&rcy;&acy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;, &chcy;&tcy;&ocy;&bcy;&ycy; &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&icy;&tcy;&softcy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&acy; &icy;&mcy;&iecy;&ncy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy; &kcy;&acy;&kcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy;.</span></p> <p><span data-i18n="38aae8441fede3cb029a15500ebbafc82881d2b41e10b36cf5a6b641b3949912/21" data-source="For a simple local test, you can use &lt;a href=&quot;git-remote-ext&quot;&gt;git-remote-ext[1]&lt;/a&gt;:" onmousemove="i18n(this)">&Dcy;&lcy;&yacy; &pcy;&rcy;&ocy;&scy;&tcy;&ocy;&gcy;&ocy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ocy;&gcy;&ocy; &tcy;&iecy;&scy;&tcy;&acy; &vcy;&ycy; &mcy;&ocy;&zhcy;&iecy;&tcy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;  <a href="git-remote-ext.html">git-remote-ext[1]</a> :</span></p> <div> <div> <pre class="hljs language-bash">git <span class="hljs-built_in">clone</span> ext::<span class="hljs-string">&apos;git --namespace=foo %s /tmp/prefixed.git&apos;</span></pre> </div> </div> </div> <h2 class="text-body-emphasis"  id="_security"><span data-i18n="8f6fb4eb7f42c0e245e29e63f5b82cc3ba19852681d1ed9aed291f59cf75ec0e/6e" data-source="Security" onmousemove="i18n(this)">Security</span></h2> <div> <p><span data-i18n="e3c62b433d0793924d2b9ae13325cde82b048c84b9be55ce486e0301aa6c7f59/1f" data-source="The fetch and push protocols are not designed to prevent one side from stealing data from the other repository that was not intended to be shared. If you have private data that you need to protect from a malicious peer, your best option is to store it in another repository. This applies to both clients and servers. In particular, namespaces on a server are not effective for read access control; you should only grant read access to a namespace to clients that you would trust with read access to the entire repository." onmousemove="i18n(this)">&Pcy;&rcy;&ocy;&tcy;&ocy;&kcy;&ocy;&lcy;&ycy; &vcy;&ycy;&bcy;&ocy;&rcy;&kcy;&icy; &icy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&kcy;&icy; &ncy;&iecy; &pcy;&rcy;&iecy;&dcy;&ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&ycy; &dcy;&lcy;&yacy; &pcy;&rcy;&iecy;&dcy;&ocy;&tcy;&vcy;&rcy;&acy;&shchcy;&iecy;&ncy;&icy;&yacy; &kcy;&rcy;&acy;&zhcy;&icy; &ocy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&ocy;&jcy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy; &icy;&zcy; &dcy;&rcy;&ucy;&gcy;&ocy;&gcy;&ocy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ncy;&iecy; &pcy;&rcy;&iecy;&dcy;&ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&ycy; &dcy;&lcy;&yacy; &scy;&ocy;&vcy;&mcy;&iecy;&scy;&tcy;&ncy;&ocy;&gcy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy;. &IEcy;&scy;&lcy;&icy; &ucy; &vcy;&acy;&scy; &iecy;&scy;&tcy;&softcy; &dcy;&acy;&ncy;&ncy;&ycy;&iecy;  private , &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ocy; &zcy;&acy;&shchcy;&icy;&tcy;&icy;&tcy;&softcy; &ocy;&tcy; &zcy;&lcy;&ocy;&ncy;&acy;&mcy;&iecy;&rcy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &ucy;&zcy;&lcy;&acy;, &lcy;&ucy;&chcy;&shcy;&icy;&jcy; &vcy;&acy;&rcy;&icy;&acy;&ncy;&tcy; &mdash; &scy;&ocy;&khcy;&rcy;&acy;&ncy;&icy;&tcy;&softcy; &icy;&khcy; &vcy; &dcy;&rcy;&ucy;&gcy;&ocy;&mcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy;. &Ecy;&tcy;&ocy; &kcy;&acy;&scy;&acy;&iecy;&tcy;&scy;&yacy; &kcy;&acy;&kcy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy;&ocy;&vcy;, &tcy;&acy;&kcy; &icy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&ocy;&vcy;. &Vcy; &chcy;&acy;&scy;&tcy;&ncy;&ocy;&scy;&tcy;&icy;, &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&acy; &icy;&mcy;&iecy;&ncy; &ncy;&acy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&iecy; &ncy;&iecy;&ecy;&fcy;&fcy;&iecy;&kcy;&tcy;&icy;&vcy;&ncy;&ycy; &dcy;&lcy;&yacy; &ucy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ocy;&mcy; &dcy;&lcy;&yacy; &chcy;&tcy;&iecy;&ncy;&icy;&yacy;; &vcy;&acy;&mcy; &scy;&lcy;&iecy;&dcy;&ucy;&iecy;&tcy; &pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&tcy;&softcy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy; &ncy;&acy; &chcy;&tcy;&iecy;&ncy;&icy;&iecy; &kcy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&ucy; &icy;&mcy;&iecy;&ncy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &tcy;&iecy;&mcy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy;&acy;&mcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&mcy; &vcy;&ycy; &dcy;&ocy;&vcy;&iecy;&rcy;&yacy;&iecy;&tcy;&iecy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy; &ncy;&acy; &chcy;&tcy;&iecy;&ncy;&icy;&iecy; &kcy;&ocy; &vcy;&scy;&iecy;&mcy;&ucy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yucy;.</span></p> <p><span data-i18n="46617e55b677a5a7bd7b96c233bf7af7f8046acae18f8f8598479c6d08af8ede/9d" data-source="The known attack vectors are as follows:" onmousemove="i18n(this)">&Icy;&zcy;&vcy;&iecy;&scy;&tcy;&ncy;&ycy;&iecy; &vcy;&iecy;&kcy;&tcy;&ocy;&rcy;&ycy; &acy;&tcy;&acy;&kcy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&iecy;:</span></p> <div> <ol> <li> <p><span data-i18n="84398463aceda9e868708a14aee8356b23aebdbdcccd3d1a9b529a441c652255/1e" data-source="The victim sends &amp;quot;have&amp;quot; lines advertising the IDs of objects it has that are not explicitly intended to be shared but can be used to optimize the transfer if the peer also has them. The attacker chooses an object ID X to steal and sends a ref to X, but isn&amp;rsquo;t required to send the content of X because the victim already has it. Now the victim believes that the attacker has X, and it sends the content of X back to the attacker later. (This attack is most straightforward for a client to perform on a server, by creating a ref to X in the namespace the client has access to and then fetching it. The most likely way for a server to perform it on a client is to &amp;quot;merge&amp;quot; X into a public branch and hope that the user does additional work on this branch and pushes it back to the server without noticing the merge.)" onmousemove="i18n(this)">&ZHcy;&iecy;&rcy;&tcy;&vcy;&acy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;  &quot;have&quot; , &ocy;&bcy;&hardcy;&yacy;&vcy;&lcy;&yacy;&yucy;&shchcy;&icy;&iecy; &icy;&dcy;&iecy;&ncy;&tcy;&icy;&fcy;&icy;&kcy;&acy;&tcy;&ocy;&rcy;&ycy; &icy;&mcy;&iecy;&yucy;&shchcy;&icy;&khcy;&scy;&yacy; &ucy; &ncy;&iecy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &yacy;&vcy;&ncy;&ocy; &ncy;&iecy; &pcy;&rcy;&iecy;&dcy;&ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&ycy; &dcy;&lcy;&yacy; &scy;&ocy;&vcy;&mcy;&iecy;&scy;&tcy;&ncy;&ocy;&gcy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy;, &ncy;&ocy; &mcy;&ocy;&gcy;&ucy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &dcy;&lcy;&yacy; &ocy;&pcy;&tcy;&icy;&mcy;&icy;&zcy;&acy;&tscy;&icy;&icy; &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&chcy;&icy;, &iecy;&scy;&lcy;&icy; &ocy;&ncy;&icy; &tcy;&acy;&kcy;&zhcy;&iecy; &iecy;&scy;&tcy;&softcy; &ucy; &ucy;&zcy;&lcy;&acy;. &Zcy;&lcy;&ocy;&ucy;&mcy;&ycy;&shcy;&lcy;&iecy;&ncy;&ncy;&icy;&kcy; &vcy;&ycy;&bcy;&icy;&rcy;&acy;&iecy;&tcy; &icy;&dcy;&iecy;&ncy;&tcy;&icy;&fcy;&icy;&kcy;&acy;&tcy;&ocy;&rcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy; X &dcy;&lcy;&yacy; &kcy;&rcy;&acy;&zhcy;&icy; &icy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &scy;&scy;&ycy;&lcy;&kcy;&ucy; &ncy;&acy; X, &ncy;&ocy; &ncy;&iecy; &ocy;&bcy;&yacy;&zcy;&acy;&ncy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&tcy;&softcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&mcy;&ocy;&iecy; X, &pcy;&ocy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ucy; &ocy;&ncy;&ocy; &ucy;&zhcy;&iecy; &iecy;&scy;&tcy;&softcy; &ucy; &zhcy;&iecy;&rcy;&tcy;&vcy;&ycy;. &Tcy;&iecy;&pcy;&iecy;&rcy;&softcy; &zhcy;&iecy;&rcy;&tcy;&vcy;&acy; &scy;&chcy;&icy;&tcy;&acy;&iecy;&tcy;, &chcy;&tcy;&ocy; &ucy; &zcy;&lcy;&ocy;&ucy;&mcy;&ycy;&shcy;&lcy;&iecy;&ncy;&ncy;&icy;&kcy;&acy; &iecy;&scy;&tcy;&softcy; X, &icy; &pcy;&ocy;&zcy;&zhcy;&iecy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&mcy;&ocy;&iecy; X &ocy;&bcy;&rcy;&acy;&tcy;&ncy;&ocy; &zcy;&lcy;&ocy;&ucy;&mcy;&ycy;&shcy;&lcy;&iecy;&ncy;&ncy;&icy;&kcy;&ucy;. (&Ecy;&tcy;&ucy; &acy;&tcy;&acy;&kcy;&ucy; &ncy;&acy;&icy;&bcy;&ocy;&lcy;&iecy;&iecy; &pcy;&rcy;&ocy;&scy;&tcy;&ocy; &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&softcy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy; &ncy;&acy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&iecy;, &scy;&ocy;&zcy;&dcy;&acy;&vcy; &scy;&scy;&ycy;&lcy;&kcy;&ucy; &ncy;&acy; X &vcy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&iecy; &icy;&mcy;&iecy;&ncy;, &kcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&mcy;&ucy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy; &icy;&mcy;&iecy;&iecy;&tcy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy;, &acy; &zcy;&acy;&tcy;&iecy;&mcy; &icy;&zcy;&vcy;&lcy;&iecy;&kcy;&acy;&yacy; &iecy;&iecy;. &Ncy;&acy;&icy;&bcy;&ocy;&lcy;&iecy;&iecy; &vcy;&iecy;&rcy;&ocy;&yacy;&tcy;&ncy;&ycy;&jcy; &scy;&pcy;&ocy;&scy;&ocy;&bcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&mcy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy; &mcy;&ocy;&zhcy;&iecy;&tcy; &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&softcy; &ecy;&tcy;&ucy; &acy;&tcy;&acy;&kcy;&ucy; &ncy;&acy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy;&iecy;, &mdash; &ecy;&tcy;&ocy;  &quot;merge&quot; . X &vcy; &vcy;&iecy;&tcy;&kcy;&ucy;  public  &icy; &ncy;&acy;&dcy;&iecy;&yacy;&tcy;&softcy;&scy;&yacy;, &chcy;&tcy;&ocy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy; &pcy;&rcy;&ocy;&dcy;&iecy;&lcy;&acy;&iecy;&tcy; &dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ucy;&yucy; &rcy;&acy;&bcy;&ocy;&tcy;&ucy; &ncy;&acy;&dcy; &ecy;&tcy;&ocy;&jcy; &vcy;&iecy;&tcy;&kcy;&ocy;&jcy; &icy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&icy;&tcy; &iecy;&iecy; &ocy;&bcy;&rcy;&acy;&tcy;&ncy;&ocy; &ncy;&acy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;, &ncy;&iecy; &zcy;&acy;&mcy;&iecy;&tcy;&icy;&vcy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy;.)</span></p> </li> <li> <p><span data-i18n="5a3b46f89036f6e7c09377a2abfcb69a78f964a82901957f346c0c9be36d0a17/75" data-source="As in #1, the attacker chooses an object ID X to steal. The victim sends an object Y that the attacker already has, and the attacker falsely claims to have X and not Y, so the victim sends Y as a delta against X. The delta reveals regions of X that are similar to Y to the attacker." onmousemove="i18n(this)">&Kcy;&acy;&kcy; &icy; &vcy; &numero; 1, &zcy;&lcy;&ocy;&ucy;&mcy;&ycy;&shcy;&lcy;&iecy;&ncy;&ncy;&icy;&kcy; &vcy;&ycy;&bcy;&icy;&rcy;&acy;&iecy;&tcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy; &scy; &icy;&dcy;&iecy;&ncy;&tcy;&icy;&fcy;&icy;&kcy;&acy;&tcy;&ocy;&rcy;&ocy;&mcy; X &dcy;&lcy;&yacy; &kcy;&rcy;&acy;&zhcy;&icy;. &ZHcy;&iecy;&rcy;&tcy;&vcy;&acy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy; Y, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &ucy;&zhcy;&iecy; &iecy;&scy;&tcy;&softcy; &ucy; &zcy;&lcy;&ocy;&ucy;&mcy;&ycy;&shcy;&lcy;&iecy;&ncy;&ncy;&icy;&kcy;&acy;, &icy; &zcy;&lcy;&ocy;&ucy;&mcy;&ycy;&shcy;&lcy;&iecy;&ncy;&ncy;&icy;&kcy; &lcy;&ocy;&zhcy;&ncy;&ocy; &ucy;&tcy;&vcy;&iecy;&rcy;&zhcy;&dcy;&acy;&iecy;&tcy;, &chcy;&tcy;&ocy; &ucy; &ncy;&iecy;&gcy;&ocy; &iecy;&scy;&tcy;&softcy; X, &acy; &ncy;&iecy; Y, &pcy;&ocy;&ecy;&tcy;&ocy;&mcy;&ucy; &zhcy;&iecy;&rcy;&tcy;&vcy;&acy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; Y &kcy;&acy;&kcy; &dcy;&iecy;&lcy;&softcy;&tcy;&ucy; &pcy;&rcy;&ocy;&tcy;&icy;&vcy; X. &Dcy;&iecy;&lcy;&softcy;&tcy;&acy; &pcy;&ocy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy; &zcy;&lcy;&ocy;&ucy;&mcy;&ycy;&shcy;&lcy;&iecy;&ncy;&ncy;&icy;&kcy;&ucy; &ocy;&bcy;&lcy;&acy;&scy;&tcy;&icy; X, &pcy;&ocy;&khcy;&ocy;&zhcy;&icy;&iecy; &ncy;&acy; Y.</span></p> </li> </ol> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/gitnamespaces">https://git-scm.com/docs/gitnamespaces</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitprotocol-capabilities.html">
+                            gitprotocol capabilities                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitprotocol-common.html">
+                            gitprotocol common                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitprotocol-http.html">
+                            gitprotocol http                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitprotocol-pack.html">
+                            gitprotocol pack                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitprotocol-v2.html">
+                            gitprotocol v2                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitremote-helpers.html">
+                            gitremote helpers                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitrepository-layout.html">
+                            gitrepository layout                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="gitnamespaces.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:15:24 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git pack-redundant</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="afca7c04486cd4ec3d5493b8a50e1e619d9d8a29a824fbb083e12427907d717e/30" data-source="git-pack-redundant" onmousemove="i18n(this)">git-pack-redundant</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="b87649ad57bd9d6320f47e46da9e809bd7de7eebb1238f48f64bb3f30775177a/a2" data-source="git-pack-redundant - Find redundant pack files" onmousemove="i18n(this)">git-pack-redundant &mdash; &ncy;&acy;&jcy;&tcy;&icy; &icy;&zcy;&bcy;&ycy;&tcy;&ocy;&chcy;&ncy;&ycy;&iecy; &fcy;&acy;&jcy;&lcy;&ycy; &pcy;&acy;&kcy;&iecy;&tcy;&ocy;&vcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-scss">git pack-redundant <span class="hljs-selector-attr">[--verbose]</span> <span class="hljs-selector-attr">[--alt-odb]</span> (--all | &lt;pack-filename&gt;&hellip;&ZeroWidthSpace;)</pre> </div> </div> <h2 class="text-body-emphasis"  id="_warning"><span data-i18n="e981ddae45d8f4ca53f1ccbe613ad254a041dacf65a06026099a6302d332113b/e8" data-source="Warning" onmousemove="i18n(this)">Warning</span></h2> <div> <p><span data-i18n="8427cc00660ed7c4c40981f037933095633a905b741ff43f73526a66b582a1aa/02" data-source="&lt;code&gt;git pack-redundant&lt;/code&gt; has been deprecated and is scheduled for removal in a future version of Git. Because it can only remove entire duplicate packs and not individual duplicate objects, it is generally not a useful tool for reducing repository size. You are better off using &lt;code&gt;git gc&lt;/code&gt; to do so, which will put objects into a new pack, removing duplicates." onmousemove="i18n(this)"><code>git pack-redundant</code>  &ucy;&scy;&tcy;&acy;&rcy;&iecy;&lcy;, &icy; &iecy;&gcy;&ocy; &pcy;&lcy;&acy;&ncy;&icy;&rcy;&ucy;&iecy;&tcy;&scy;&yacy; &ucy;&dcy;&acy;&lcy;&icy;&tcy;&softcy; &vcy; &bcy;&ucy;&dcy;&ucy;&shchcy;&iecy;&jcy; &vcy;&iecy;&rcy;&scy;&icy;&icy; Git. &Pcy;&ocy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ucy; &ocy;&ncy; &mcy;&ocy;&zhcy;&iecy;&tcy; &ucy;&dcy;&acy;&lcy;&yacy;&tcy;&softcy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &tscy;&iecy;&lcy;&ycy;&iecy; &pcy;&ocy;&vcy;&tcy;&ocy;&rcy;&yacy;&yucy;&shchcy;&icy;&iecy;&scy;&yacy; &pcy;&acy;&kcy;&iecy;&tcy;&ycy;, &acy; &ncy;&iecy; &ocy;&tcy;&dcy;&iecy;&lcy;&softcy;&ncy;&ycy;&iecy; &pcy;&ocy;&vcy;&tcy;&ocy;&rcy;&yacy;&yucy;&shchcy;&icy;&iecy;&scy;&yacy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy;, &ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &ocy;&ncy; &ncy;&iecy; &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ycy;&mcy; &icy;&ncy;&scy;&tcy;&rcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ocy;&mcy; &dcy;&lcy;&yacy; &ucy;&mcy;&iecy;&ncy;&softcy;&shcy;&iecy;&ncy;&icy;&yacy; &rcy;&acy;&zcy;&mcy;&iecy;&rcy;&acy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;. &Dcy;&lcy;&yacy; &ecy;&tcy;&ocy;&gcy;&ocy; &lcy;&ucy;&chcy;&shcy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;  <code>git gc</code> , &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &pcy;&ocy;&mcy;&iecy;&scy;&tcy;&icy;&tcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy; &vcy; &ncy;&ocy;&vcy;&ycy;&jcy; &pcy;&acy;&kcy;&iecy;&tcy;, &ucy;&dcy;&acy;&lcy;&icy;&vcy; &dcy;&ucy;&bcy;&lcy;&icy;&kcy;&acy;&tcy;&ycy;.</span></p> <p><span data-i18n="59f6a2fb62ee403aaa43a7d4d102b7ff55e4291165002af972b3e7a7bcbed356/86" data-source="Running &lt;code&gt;pack-redundant&lt;/code&gt; without the &lt;code&gt;--i-still-use-this&lt;/code&gt; flag will fail in this release. If you believe you have a use case for which &lt;code&gt;pack-redundant&lt;/code&gt; is better suited and oppose this removal, please contact the Git mailing list at &lt;a href=&quot;mailto:git@vger.kernel.org&quot;&gt;git@vger.kernel.org&lt;/a&gt;. More information about the list is available at &lt;a href=&quot;https://git-scm.com/community&quot;&gt;https://git-scm.com/community&lt;/a&gt;." onmousemove="i18n(this)">&Vcy; &ecy;&tcy;&ocy;&mcy; &vcy;&ycy;&pcy;&ucy;&scy;&kcy;&iecy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;  <code>pack-redundant</code>  &bcy;&iecy;&zcy; &fcy;&lcy;&acy;&gcy;&acy;  <code>--i-still-use-this</code>  &ncy;&iecy; &ucy;&dcy;&acy;&scy;&tcy;&scy;&yacy;. &IEcy;&scy;&lcy;&icy; &vcy;&ycy; &scy;&chcy;&icy;&tcy;&acy;&iecy;&tcy;&iecy;, &chcy;&tcy;&ocy; &ucy; &vcy;&acy;&scy; &iecy;&scy;&tcy;&softcy; &vcy;&acy;&rcy;&icy;&acy;&ncy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy;, &dcy;&lcy;&yacy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&gcy;&ocy;  <code>pack-redundant</code>  &lcy;&ucy;&chcy;&shcy;&iecy; &pcy;&ocy;&dcy;&khcy;&ocy;&dcy;&icy;&tcy;, &icy; &vcy;&ycy; &vcy;&ocy;&zcy;&rcy;&acy;&zhcy;&acy;&iecy;&tcy;&iecy; &pcy;&rcy;&ocy;&tcy;&icy;&vcy; &tcy;&acy;&kcy;&ocy;&gcy;&ocy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&icy;&yacy;, &ocy;&bcy;&rcy;&acy;&tcy;&icy;&tcy;&iecy;&scy;&softcy; &vcy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &rcy;&acy;&scy;&scy;&ycy;&lcy;&kcy;&icy;  Git  &pcy;&ocy; &acy;&dcy;&rcy;&iecy;&scy;&ucy;  <a href="https://runebook.dev/cdn-cgi/l/email-protection#d7b0bea397a1b0b2a5f9bcb2a5b9b2bbf9b8a5b0"><span class="__cf_email__" data-cfemail="e5828c91a593828097cb8e80978b8089cb8a9782">[email&#160;protected]</span></a> . &Dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ucy;&yucy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&yucy; &ocy; &scy;&pcy;&icy;&scy;&kcy;&iecy; &mcy;&ocy;&zhcy;&ncy;&ocy; &pcy;&ocy;&lcy;&ucy;&chcy;&icy;&tcy;&softcy; &pcy;&ocy; &acy;&dcy;&rcy;&iecy;&scy;&ucy;  <a href="https://git-scm.com/community">https://git-scm.com/community</a> .</span></p> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="24e4d9b94a5402734bb8aa6c0cd5a6ee0b9ab809438ee3cfe5a6fd5d4ce88a97/bd" data-source="This program computes which packs in your repository are redundant. The output is suitable for piping to &lt;code&gt;xargs rm&lt;/code&gt; if you are in the root of the repository." onmousemove="i18n(this)">&Ecy;&tcy;&acy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&acy; &vcy;&ycy;&chcy;&icy;&scy;&lcy;&yacy;&iecy;&tcy;, &kcy;&acy;&kcy;&icy;&iecy; &pcy;&acy;&kcy;&iecy;&tcy;&ycy; &vcy; &vcy;&acy;&shcy;&iecy;&mcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy; &yacy;&vcy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy; &icy;&zcy;&bcy;&ycy;&tcy;&ocy;&chcy;&ncy;&ycy;&mcy;&icy;. &Vcy;&ycy;&vcy;&ocy;&dcy; &pcy;&ocy;&dcy;&khcy;&ocy;&dcy;&icy;&tcy; &dcy;&lcy;&yacy; &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&chcy;&icy; &ncy;&acy;  <code>xargs rm</code> , &iecy;&scy;&lcy;&icy; &vcy;&ycy; &ncy;&acy;&khcy;&ocy;&dcy;&icy;&tcy;&iecy;&scy;&softcy; &vcy; &kcy;&ocy;&rcy;&ncy;&iecy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;.</span></p> <p><span data-i18n="7469bd2fb8ec113b7078694d7d158f705cc34d582e19cd55e73fccc04f01d503/82" data-source="&lt;code&gt;git pack-redundant&lt;/code&gt; accepts a list of objects on standard input. Any objects given will be ignored when checking which packs are required. This makes the following command useful when wanting to remove packs which contain unreachable objects." onmousemove="i18n(this)"><code>git pack-redundant</code>  &pcy;&rcy;&icy;&ncy;&icy;&mcy;&acy;&iecy;&tcy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy; &ncy;&acy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&jcy; &vcy;&vcy;&ocy;&dcy;. &Lcy;&yucy;&bcy;&ycy;&iecy; &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ycy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy; &bcy;&ucy;&dcy;&ucy;&tcy; &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ocy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &pcy;&rcy;&icy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&iecy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ycy;&khcy; &pcy;&acy;&kcy;&iecy;&tcy;&ocy;&vcy;. &Ecy;&tcy;&ocy; &dcy;&iecy;&lcy;&acy;&iecy;&tcy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&ucy;&yucy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ucy; &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ocy;&jcy; &pcy;&rcy;&icy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ocy;&scy;&tcy;&icy; &ucy;&dcy;&acy;&lcy;&icy;&tcy;&softcy; &pcy;&acy;&kcy;&iecy;&tcy;&ycy;, &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&shchcy;&icy;&iecy; &ncy;&iecy;&dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy;.</span></p> <p><span data-i18n="86e55c086e297f1c880f8f28b1cac1863338266746e8bbb926782a4c9b494d01/f9" data-source="git fsck --full --unreachable | cut -d &amp;apos; &amp;apos; -f3 | \ git pack-redundant --all | xargs rm" onmousemove="i18n(this)">git  fsck --full --&ncy;&iecy;&dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ocy; | &vcy;&ycy;&rcy;&iecy;&zcy;&acy;&tcy;&softcy; -d &apos; &apos; -f3 | \  git  &pcy;&acy;&kcy;&iecy;&tcy;&ncy;&ocy;-&rcy;&iecy;&zcy;&iecy;&rcy;&vcy;&ncy;&ycy;&jcy; --all | xargs &Rcy;&Mcy;</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-pack-redundant.txt---all"><span data-i18n="7dbf56c38208e33a9193b210245465f7729af0d59b9df556e7f1f7138a6d6e93/a1" data-source="--all" onmousemove="i18n(this)">--all</span></dt> <dd> <p><span data-i18n="5fa033c1590b6b71f720f8181eec2fa67f4295ff8fc145e8dfd93884292a30de/d8" data-source="Processes all packs. Any filenames on the command line are ignored." onmousemove="i18n(this)">&Ocy;&bcy;&rcy;&acy;&bcy;&acy;&tcy;&ycy;&vcy;&acy;&iecy;&tcy; &vcy;&scy;&iecy; &pcy;&acy;&kcy;&iecy;&tcy;&ycy;. &Lcy;&yucy;&bcy;&ycy;&iecy; &icy;&mcy;&iecy;&ncy;&acy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &vcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy; &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ucy;&yucy;&tcy;&scy;&yacy;.</span></p> </dd> <dt id="Documentation/git-pack-redundant.txt---alt-odb"><span data-i18n="9e196680ab58c5da05f71f5836521a562ef368b258448e1e047bf679c18fea8e/0b" data-source="--alt-odb" onmousemove="i18n(this)">--alt-odb</span></dt> <dd> <p><span data-i18n="be2d4239c03c4a6634107694595c40b40759f9cc277cca23d19e2bf73f9d0ca6/f9" data-source="Don&amp;rsquo;t require objects present in packs from alternate object database (odb) directories to be present in local packs." onmousemove="i18n(this)">&Ncy;&iecy; &tcy;&rcy;&iecy;&bcy;&ucy;&jcy;&tcy;&iecy;, &chcy;&tcy;&ocy;&bcy;&ycy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy;, &pcy;&rcy;&icy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&iecy; &vcy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;&khcy; &icy;&zcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&ocy;&vcy; &acy;&lcy;&softcy;&tcy;&iecy;&rcy;&ncy;&acy;&tcy;&icy;&vcy;&ncy;&ocy;&jcy; &bcy;&acy;&zcy;&ycy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy; (odb), &pcy;&rcy;&icy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ocy;&vcy;&acy;&lcy;&icy; &vcy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ycy;&khcy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;&khcy;.</span></p> </dd> <dt id="Documentation/git-pack-redundant.txt---verbose"><span data-i18n="bff1e8d3adf9e53481e9b21876983b359dc8a231bf7ebadde36a42dd7bd4db5c/93" data-source="--verbose" onmousemove="i18n(this)">--verbose</span></dt> <dd> <p><span data-i18n="19582dce383b7107659bb9b32a1999d3996a8b884f71be2be5d5fb3e85f09916/b4" data-source="Outputs some statistics to stderr. Has a small performance penalty." onmousemove="i18n(this)">&Vcy;&ycy;&vcy;&ocy;&dcy;&icy;&tcy; &ncy;&iecy;&kcy;&ocy;&tcy;&ocy;&rcy;&ucy;&yucy; &scy;&tcy;&acy;&tcy;&icy;&scy;&tcy;&icy;&kcy;&ucy; &vcy; stderr. &Icy;&mcy;&iecy;&iecy;&tcy; &ncy;&iecy;&bcy;&ocy;&lcy;&softcy;&shcy;&ocy;&jcy; &shcy;&tcy;&rcy;&acy;&fcy; &zcy;&acy; &pcy;&rcy;&ocy;&icy;&zcy;&vcy;&ocy;&dcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&scy;&tcy;&softcy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_see_also"><span data-i18n="2fa97693b70fa87b95b2d1bdf9558e4ac65d5e82d145f13a03849c4d9c4957a9/40" data-source="See also" onmousemove="i18n(this)">See also</span></h2> <div> <p> <span data-i18n="7bfbab3298b892003fdbf13e1fad642645c876bed600d130a4b7cb4e51ecd961/50" data-source="&lt;a href=&quot;git-pack-objects&quot;&gt;git-pack-objects[1]&lt;/a&gt;&lt;a href=&quot;git-repack&quot;&gt;git-repack[1]&lt;/a&gt;&lt;a href=&quot;git-prune-packed&quot;&gt;git-prune-packed[1]&lt;/a&gt;" onmousemove="i18n(this)"><a href="git-pack-objects.html">git-pack-objects[1]</a><a href="git-repack.html">git-repack[1]</a><a href="git-prune-packed.html">git-prune-packed[1]</a></span></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-pack-redundant">https://git-scm.com/docs/git-pack-redundant</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-pack-refs.html">
+                            git pack-refs                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-patch-id.html">
+                            git patch-id                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-prune.html">
+                            git prune                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-prune-packed.html">
+                            git prune-packed                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-pull.html">
+                            git pull                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-push.html">
+                            git push                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-quiltimport.html">
+                            git quiltimport                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-pack-redundant.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:16:55 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git count-objects</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Plumbing_Commands">
+                                Plumbing Commands                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="7f0c88b9cca4f61facc9f1a2f2b74cbfc3fd6a46763647cea74c7a688e5191a4/be" data-source="git-count-objects" onmousemove="i18n(this)">git-count-objects</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="fd095b6e1b90529be9f46447daa0737aa70607e0cdec91949126f83118cc8cb1/58" data-source="git-count-objects - Count unpacked number of objects and their disk consumption" onmousemove="i18n(this)">git-count-objects &mdash; &pcy;&ocy;&dcy;&scy;&chcy;&icy;&tcy;&acy;&tcy;&softcy; &kcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&tcy;&vcy;&ocy; &rcy;&acy;&scy;&pcy;&acy;&kcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&khcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy; &icy; &icy;&khcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy; &ncy;&acy; &dcy;&icy;&scy;&kcy;&iecy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git count-objects <span class="hljs-selector-attr">[-v]</span> <span class="hljs-selector-attr">[-H | --human-readable]</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="d08be845ac31c9099da860311348453de1cbac51349b604436f60e72ea122d96/65" data-source="Counts the number of unpacked object files and disk space consumed by them, to help you decide when it is a good time to repack." onmousemove="i18n(this)">&Pcy;&ocy;&dcy;&scy;&chcy;&icy;&tcy;&ycy;&vcy;&acy;&iecy;&tcy; &kcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&tcy;&vcy;&ocy; &rcy;&acy;&scy;&pcy;&acy;&kcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&khcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ncy;&ycy;&khcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &icy; &zcy;&acy;&ncy;&yacy;&tcy;&ocy;&iecy; &icy;&mcy;&icy; &dcy;&icy;&scy;&kcy;&ocy;&vcy;&ocy;&iecy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&ocy;, &chcy;&tcy;&ocy;&bcy;&ycy; &pcy;&ocy;&mcy;&ocy;&chcy;&softcy; &vcy;&acy;&mcy; &rcy;&iecy;&shcy;&icy;&tcy;&softcy;, &kcy;&ocy;&gcy;&dcy;&acy; &lcy;&ucy;&chcy;&shcy;&iecy; &pcy;&iecy;&rcy;&iecy;&pcy;&acy;&kcy;&ocy;&vcy;&acy;&tcy;&softcy; &icy;&khcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-count-objects.txt--v"><span data-i18n="81c36ccd44ef18baabad6e2d87038b72d606263bd6a3432b964a872023654fff/7c" data-source="-v" onmousemove="i18n(this)">-v</span></dt> <dt id="Documentation/git-count-objects.txt---verbose"><span data-i18n="bff1e8d3adf9e53481e9b21876983b359dc8a231bf7ebadde36a42dd7bd4db5c/93" data-source="--verbose" onmousemove="i18n(this)">--verbose</span></dt> <dd> <p><span data-i18n="dd54605b56e1ba0493b84d784c0f28666e21f474142cbb2325b8c5f865499379/d0" data-source="Provide more detailed reports:" onmousemove="i18n(this)">&Pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&mcy; &bcy;&ocy;&lcy;&iecy;&iecy; &pcy;&ocy;&dcy;&rcy;&ocy;&bcy;&ncy;&ycy;&iecy; &ocy;&tcy;&chcy;&iecy;&tcy;&ycy;:</span></p> <p><span data-i18n="8634929aedfd254c6aeffae4016ab25891430bb804cf787575dba4017bb110c3/20" data-source="count: the number of loose objects" onmousemove="i18n(this)">&pcy;&ocy;&dcy;&scy;&chcy;&iecy;&tcy;: &kcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&tcy;&vcy;&ocy; &ncy;&iecy;&zcy;&acy;&kcy;&rcy;&iecy;&pcy;&lcy;&iecy;&ncy;&ncy;&ycy;&khcy; &pcy;&rcy;&iecy;&dcy;&mcy;&iecy;&tcy;&ocy;&vcy;</span></p> <p><span data-i18n="c7e84cef88cb719c2c23177a03aaf77fea1528a72cf7c1ff72c78887d06ea8df/87" data-source="size: disk space consumed by loose objects, in KiB (unless -H is specified)" onmousemove="i18n(this)">&rcy;&acy;&zcy;&mcy;&iecy;&rcy;: &dcy;&icy;&scy;&kcy;&ocy;&vcy;&ocy;&iecy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&ocy;, &zcy;&acy;&ncy;&icy;&mcy;&acy;&iecy;&mcy;&ocy;&iecy; &ncy;&iecy;&zcy;&acy;&kcy;&rcy;&iecy;&pcy;&lcy;&iecy;&ncy;&ncy;&ycy;&mcy;&icy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy;&mcy;&icy;, &vcy; &Kcy;&icy;&Bcy; (&iecy;&scy;&lcy;&icy; &ncy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy; -H)</span></p> <p><span data-i18n="f71767e5f42c96b02f20f2b467d7fcc6a4b5d4517871b3d60672618eda013b62/27" data-source="in-pack: the number of in-pack objects" onmousemove="i18n(this)">&vcy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&kcy;&iecy;: &kcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&tcy;&vcy;&ocy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy; &vcy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&kcy;&iecy;.</span></p> <p><span data-i18n="4dde5adfcfaaafdfcc5cc1886531da4ac88779acea426d9918fb9ff70f98aafb/38" data-source="size-pack: disk space consumed by the packs, in KiB (unless -H is specified)" onmousemove="i18n(this)">size-pack: &dcy;&icy;&scy;&kcy;&ocy;&vcy;&ocy;&iecy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&ocy;, &zcy;&acy;&ncy;&icy;&mcy;&acy;&iecy;&mcy;&ocy;&iecy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;&mcy;&icy;, &vcy; &Kcy;&icy;&Bcy; (&iecy;&scy;&lcy;&icy; &ncy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy; -H)</span></p> <p><span data-i18n="35e432ad1c866bfe81dec4a5f84dfcb1e92018b96a053d1b812ef52f7daae84c/9b" data-source="prune-packable: the number of loose objects that are also present in the packs. These objects could be pruned using &lt;code&gt;git prune-packed&lt;/code&gt;." onmousemove="i18n(this)">&vcy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&kcy;&iecy; &scy; &chcy;&iecy;&rcy;&ncy;&ocy;&scy;&lcy;&icy;&vcy;&ocy;&mcy;: &kcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&tcy;&vcy;&ocy; &ncy;&iecy;&zcy;&acy;&kcy;&rcy;&iecy;&pcy;&lcy;&iecy;&ncy;&ncy;&ycy;&khcy; &pcy;&rcy;&iecy;&dcy;&mcy;&iecy;&tcy;&ocy;&vcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &tcy;&acy;&kcy;&zhcy;&iecy; &pcy;&rcy;&icy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&tcy; &vcy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&kcy;&acy;&khcy;. &Ecy;&tcy;&icy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy; &mcy;&ocy;&zhcy;&ncy;&ocy; &ucy;&dcy;&acy;&lcy;&icy;&tcy;&softcy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy;  <code>git prune-packed</code> .</span></p> <p><span data-i18n="eb41de6ad243e374c8c87fb5e8cac7f2cb3236651081ec6fb34f041018c6a099/5c" data-source="garbage: the number of files in the object database that are neither valid loose objects nor valid packs" onmousemove="i18n(this)">&mcy;&ucy;&scy;&ocy;&rcy;: &kcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&tcy;&vcy;&ocy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &vcy; &bcy;&acy;&zcy;&iecy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ncy;&iecy; &yacy;&vcy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy; &ncy;&icy; &dcy;&ocy;&pcy;&ucy;&scy;&tcy;&icy;&mcy;&ycy;&mcy;&icy; &scy;&vcy;&ocy;&bcy;&ocy;&dcy;&ncy;&ycy;&mcy;&icy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy;&mcy;&icy;, &ncy;&icy; &dcy;&ocy;&pcy;&ucy;&scy;&tcy;&icy;&mcy;&ycy;&mcy;&icy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;&mcy;&icy;.</span></p> <p><span data-i18n="1edc23d613761aebb9551134f5fa52faa7368ee033a4d7bf3691a3101996f61b/de" data-source="size-garbage: disk space consumed by garbage files, in KiB (unless -H is specified)" onmousemove="i18n(this)">size-garbage: &dcy;&icy;&scy;&kcy;&ocy;&vcy;&ocy;&iecy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&ocy;, &zcy;&acy;&ncy;&icy;&mcy;&acy;&iecy;&mcy;&ocy;&iecy; &mcy;&ucy;&scy;&ocy;&rcy;&ncy;&ycy;&mcy;&icy; &fcy;&acy;&jcy;&lcy;&acy;&mcy;&icy;, &vcy; &Kcy;&icy;&Bcy; (&iecy;&scy;&lcy;&icy; &ncy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy; -H)</span></p> <p><span data-i18n="34c5b9330f33b628ecf250a94bfcd84d99fa0f5d69dbc93b7fe5043d233c0dcc/63" data-source="alternate: absolute path of alternate object databases; may appear multiple times, one line per path. Note that if the path contains non-printable characters, it may be surrounded by double-quotes and contain C-style backslashed escape sequences." onmousemove="i18n(this)">&acy;&lcy;&softcy;&tcy;&iecy;&rcy;&ncy;&acy;&tcy;&icy;&vcy;&ncy;&ycy;&jcy;: &acy;&bcy;&scy;&ocy;&lcy;&yucy;&tcy;&ncy;&ycy;&jcy; &pcy;&ucy;&tcy;&softcy; &kcy; &acy;&lcy;&softcy;&tcy;&iecy;&rcy;&ncy;&acy;&tcy;&icy;&vcy;&ncy;&ycy;&mcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ncy;&ycy;&mcy; &bcy;&acy;&zcy;&acy;&mcy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy;; &mcy;&ocy;&zhcy;&iecy;&tcy; &pcy;&ocy;&yacy;&vcy;&lcy;&yacy;&tcy;&softcy;&scy;&yacy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ocy; &rcy;&acy;&zcy;, &pcy;&ocy; &ocy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy; &ncy;&acy; &kcy;&acy;&zhcy;&dcy;&ycy;&jcy; &pcy;&ucy;&tcy;&softcy;. &Ocy;&bcy;&rcy;&acy;&tcy;&icy;&tcy;&iecy; &vcy;&ncy;&icy;&mcy;&acy;&ncy;&icy;&iecy;: &iecy;&scy;&lcy;&icy; &pcy;&ucy;&tcy;&softcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&tcy; &ncy;&iecy;&pcy;&iecy;&chcy;&acy;&tcy;&acy;&iecy;&mcy;&ycy;&iecy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&ycy;, &ocy;&ncy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &zcy;&acy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy; &vcy; &dcy;&vcy;&ocy;&jcy;&ncy;&ycy;&iecy; &kcy;&acy;&vcy;&ycy;&chcy;&kcy;&icy; &icy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy; escape-&pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&scy;&tcy;&icy; &scy; &ocy;&bcy;&rcy;&acy;&tcy;&ncy;&ocy;&jcy; &kcy;&ocy;&scy;&ocy;&jcy; &chcy;&iecy;&rcy;&tcy;&ocy;&jcy; &vcy; &scy;&tcy;&icy;&lcy;&iecy; C.</span></p> </dd> <dt id="Documentation/git-count-objects.txt--H"><span data-i18n="738f05773cd28266112399fd21a2ab3bf1fc5e5ee588cb44f39d238419d71fbc/3e" data-source="-H" onmousemove="i18n(this)">-H</span></dt> <dt id="Documentation/git-count-objects.txt---human-readable"><span data-i18n="cb24ab0673825dad8e828b02b07f2929b919fc95530cecd66bd556e6581f63db/08" data-source="--human-readable" onmousemove="i18n(this)">--human-readable</span></dt> <dd> <p><span data-i18n="f9924e480ba7a3617ed1a9cdd0731da0e8c7b86a8529d3011d21a1177a5f956f/16" data-source="Print sizes in human readable format" onmousemove="i18n(this)">&Rcy;&acy;&zcy;&mcy;&iecy;&rcy;&ycy; &pcy;&iecy;&chcy;&acy;&tcy;&icy; &vcy; &ucy;&dcy;&ocy;&bcy;&ocy;&chcy;&icy;&tcy;&acy;&iecy;&mcy;&ocy;&mcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;&iecy;</span></p> </dd> </dl> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-count-objects">https://git-scm.com/docs/git-count-objects</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-credential.html">
+                            git credential                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-credential-cache.html">
+                            git credential-cache                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-credential-store.html">
+                            git credential-store                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-cvsexportcommit.html">
+                            git cvsexportcommit                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-cvsimport.html">
+                            git cvsimport                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-cvsserver.html">
+                            git cvsserver                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-daemon.html">
+                            git daemon                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-count-objects.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

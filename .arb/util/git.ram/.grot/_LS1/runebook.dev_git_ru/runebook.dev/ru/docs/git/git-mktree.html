@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:15:17 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git mktree</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="c0e560e5edc330d07dd03b18479d36d7c33b24768b5d5f92b74ee8fda6be734c/cd" data-source="git-mktree" onmousemove="i18n(this)">git-mktree</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="10f0307d842de9c32f98b30e3ab0a5ac038688a968d745c6e35b6504d1498b7e/ef" data-source="git-mktree - Build a tree-object from ls-tree formatted text" onmousemove="i18n(this)">git-mktree &mdash; &pcy;&ocy;&scy;&tcy;&rcy;&ocy;&icy;&tcy;&softcy; &dcy;&rcy;&iecy;&vcy;&ocy;&vcy;&icy;&dcy;&ncy;&ycy;&jcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy; &icy;&zcy; &tcy;&iecy;&kcy;&scy;&tcy;&acy; &vcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;&iecy; ls-tree.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git mktree <span class="hljs-selector-attr">[-z]</span> <span class="hljs-selector-attr">[--missing]</span> <span class="hljs-selector-attr">[--batch]</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="44d4f90925b8efe7274573d633b4cbcbe91b6f8335dd8c3d8c17588a6657bedb/bb" data-source="Reads standard input in non-recursive &lt;code&gt;ls-tree&lt;/code&gt; output format, and creates a tree object. The order of the tree entries is normalized by mktree so pre-sorting the input is not required. The object name of the tree object built is written to the standard output." onmousemove="i18n(this)">&Scy;&chcy;&icy;&tcy;&ycy;&vcy;&acy;&iecy;&tcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&jcy; &vcy;&vcy;&ocy;&dcy; &vcy; &ncy;&iecy;&rcy;&iecy;&kcy;&ucy;&rcy;&scy;&icy;&vcy;&ncy;&ocy;&mcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;&iecy; &vcy;&ycy;&vcy;&ocy;&dcy;&acy;  <code>ls-tree</code>  &icy; &scy;&ocy;&zcy;&dcy;&acy;&iecy;&tcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy; &dcy;&iecy;&rcy;&iecy;&vcy;&acy;. &Pcy;&ocy;&rcy;&yacy;&dcy;&ocy;&kcy; &zcy;&acy;&pcy;&icy;&scy;&iecy;&jcy; &dcy;&iecy;&rcy;&iecy;&vcy;&acy; &ncy;&ocy;&rcy;&mcy;&acy;&lcy;&icy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; mktree, &pcy;&ocy;&ecy;&tcy;&ocy;&mcy;&ucy; &pcy;&rcy;&iecy;&dcy;&vcy;&acy;&rcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&acy;&yacy; &scy;&ocy;&rcy;&tcy;&icy;&rcy;&ocy;&vcy;&kcy;&acy; &vcy;&khcy;&ocy;&dcy;&ncy;&ycy;&khcy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy; &ncy;&iecy; &tcy;&rcy;&iecy;&bcy;&ucy;&iecy;&tcy;&scy;&yacy;. &Icy;&mcy;&yacy; &pcy;&ocy;&scy;&tcy;&rcy;&ocy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy; &dcy;&iecy;&rcy;&iecy;&vcy;&acy; &zcy;&acy;&pcy;&icy;&scy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &vcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&jcy; &vcy;&ycy;&vcy;&ocy;&dcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-mktree.txt--z"><span data-i18n="cac3c371c8f2e17e79214e0fae22255e0f1fad169bac56d2f8a10d7fd54846cb/4d" data-source="-z" onmousemove="i18n(this)">-z</span></dt> <dd> <p><span data-i18n="fba700c7803cd94982fe1803ec831f9009410394ed6a3e780a0e22cf18cbfc99/77" data-source="Read the NUL-terminated &lt;code&gt;ls-tree -z&lt;/code&gt; output instead." onmousemove="i18n(this)">&Vcy;&mcy;&iecy;&scy;&tcy;&ocy; &ecy;&tcy;&ocy;&gcy;&ocy; &pcy;&rcy;&ocy;&chcy;&icy;&tcy;&acy;&jcy;&tcy;&iecy; &vcy;&ycy;&vcy;&ocy;&dcy;  <code>ls-tree -z</code>  &scy; &ncy;&ucy;&lcy;&iecy;&vcy;&ycy;&mcy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&iecy;&ncy;&icy;&iecy;&mcy;.</span></p> </dd> <dt id="Documentation/git-mktree.txt---missing"><span data-i18n="f889f93ded121c99fe592b4b2160b165d896efc245e9227718bd637a10267d4a/e3" data-source="--missing" onmousemove="i18n(this)">--missing</span></dt> <dd> <p><span data-i18n="ce3e2607678c28ab67bb3f511f393fb7e63b38a8e6de28c8c1282a42ed983144/06" data-source="Allow missing objects. The default behaviour (without this option) is to verify that each tree entry&amp;rsquo;s hash identifies an existing object. This option has no effect on the treatment of gitlink entries (aka &amp;quot;submodules&amp;quot;) which are always allowed to be missing." onmousemove="i18n(this)">&Rcy;&acy;&zcy;&rcy;&iecy;&shcy;&icy;&tcy;&softcy; &ocy;&tcy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy;. &Pcy;&ocy;&vcy;&iecy;&dcy;&iecy;&ncy;&icy;&iecy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; (&bcy;&iecy;&zcy; &ecy;&tcy;&ocy;&jcy; &ocy;&pcy;&tscy;&icy;&icy;) &zcy;&acy;&kcy;&lcy;&yucy;&chcy;&acy;&iecy;&tcy;&scy;&yacy; &vcy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&iecy; &tcy;&ocy;&gcy;&ocy;, &chcy;&tcy;&ocy; &khcy;&ecy;&shcy; &kcy;&acy;&zhcy;&dcy;&ocy;&jcy; &zcy;&acy;&pcy;&icy;&scy;&icy; &dcy;&iecy;&rcy;&iecy;&vcy;&acy; &icy;&dcy;&iecy;&ncy;&tcy;&icy;&fcy;&icy;&tscy;&icy;&rcy;&ucy;&iecy;&tcy; &scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&jcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;. &Ecy;&tcy;&acy; &ocy;&pcy;&tscy;&icy;&yacy; &ncy;&iecy; &vcy;&lcy;&icy;&yacy;&iecy;&tcy; &ncy;&acy; &ocy;&bcy;&rcy;&acy;&bcy;&ocy;&tcy;&kcy;&ucy; &zcy;&acy;&pcy;&icy;&scy;&iecy;&jcy; gitlink (&tcy;&acy;&kcy;&zhcy;&iecy; &icy;&zcy;&vcy;&iecy;&scy;&tcy;&ncy;&ycy;&khcy; &kcy;&acy;&kcy;  &quot;submodules&quot; ), &ocy;&tcy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&icy;&iecy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&khcy; &vcy;&scy;&iecy;&gcy;&dcy;&acy; &dcy;&ocy;&pcy;&ucy;&scy;&kcy;&acy;&iecy;&tcy;&scy;&yacy;.</span></p> </dd> <dt id="Documentation/git-mktree.txt---batch"><span data-i18n="3348f1e2904230e4289ad9ccf34ba11845a67dd59058eca1055ce6fb2f82c9f1/4a" data-source="--batch" onmousemove="i18n(this)">--batch</span></dt> <dd> <p><span data-i18n="abb1a217bc7d9d8163992737e033d9b54feb047a3b63f6d4bae3c1c3db6a686e/a6" data-source="Allow building of more than one tree object before exiting. Each tree is separated by a single blank line. The final newline is optional. Note - if the &lt;code&gt;-z&lt;/code&gt; option is used, lines are terminated with NUL." onmousemove="i18n(this)">&Rcy;&acy;&zcy;&rcy;&iecy;&shcy;&icy;&tcy;&softcy; &pcy;&ocy;&scy;&tcy;&rcy;&ocy;&iecy;&ncy;&icy;&iecy; &bcy;&ocy;&lcy;&iecy;&iecy; &ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &dcy;&rcy;&iecy;&vcy;&ocy;&vcy;&icy;&dcy;&ncy;&ocy;&gcy;&ocy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy; &pcy;&iecy;&rcy;&iecy;&dcy; &vcy;&ycy;&khcy;&ocy;&dcy;&ocy;&mcy;. &Kcy;&acy;&zhcy;&dcy;&ocy;&iecy; &dcy;&iecy;&rcy;&iecy;&vcy;&ocy; &ocy;&tcy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &ocy;&dcy;&ncy;&ocy;&jcy; &pcy;&ucy;&scy;&tcy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&ocy;&jcy;. &Pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ncy;&yacy;&yacy; &ncy;&ocy;&vcy;&acy;&yacy; &scy;&tcy;&rcy;&ocy;&kcy;&acy; &ncy;&iecy; &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &ocy;&bcy;&yacy;&zcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&jcy;. &Pcy;&rcy;&icy;&mcy;&iecy;&chcy;&acy;&ncy;&icy;&iecy;. &IEcy;&scy;&lcy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &ocy;&pcy;&tscy;&icy;&yacy;  <code>-z</code> , &scy;&tcy;&rcy;&ocy;&kcy;&icy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&acy;&yucy;&tcy;&scy;&yacy; NUL.</span></p> </dd> </dl> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-mktree">https://git-scm.com/docs/git-mktree</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-multi-pack-index.html">
+                            git multi-pack-index                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-mv.html">
+                            git mv                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-name-rev.html">
+                            git name-rev                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-notes.html">
+                            git notes                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-p4.html">
+                            git p4                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-pack-objects.html">
+                            git pack-objects                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-pack-redundant.html">
+                            git pack-redundant                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="3777011170"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-mktree.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

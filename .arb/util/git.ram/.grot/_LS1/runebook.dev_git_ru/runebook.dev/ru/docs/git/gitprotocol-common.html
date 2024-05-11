@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:13:27 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Git - gitprotocol common</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Miscellaneous">
+                                Miscellaneous                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="4e6b4e75dea0ab1f04b9d897ccf7f490fb2e47c895c2e1b513c2534439e5b781/3b" data-source="gitprotocol-common" onmousemove="i18n(this)">gitprotocol-common</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="a6ab9cc8f080c1ea2aba97b95e9aedbc51dd8a707d8e3fc7c4e55942a53f83af/a9" data-source="gitprotocol-common - Things common to various protocols" onmousemove="i18n(this)">gitprotocol-common &mdash; &ocy;&bcy;&shchcy;&icy;&iecy; &scy;&vcy;&iecy;&dcy;&iecy;&ncy;&icy;&yacy; &dcy;&lcy;&yacy; &rcy;&acy;&zcy;&lcy;&icy;&chcy;&ncy;&ycy;&khcy; &pcy;&rcy;&ocy;&tcy;&ocy;&kcy;&ocy;&lcy;&ocy;&vcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">over-the-wire-protocol</span>&gt;</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="5df344b5695941e219485d934c72e2ca4c7c15e0f46de55fcb0e415ea4742822/55" data-source="This document defines things common to various over-the-wire protocols and file formats used in Git." onmousemove="i18n(this)">&Ecy;&tcy;&ocy;&tcy; &dcy;&ocy;&kcy;&ucy;&mcy;&iecy;&ncy;&tcy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy; &ocy;&bcy;&shchcy;&icy;&iecy; &chcy;&iecy;&rcy;&tcy;&ycy; &rcy;&acy;&zcy;&lcy;&icy;&chcy;&ncy;&ycy;&khcy; &pcy;&rcy;&ocy;&tcy;&ocy;&kcy;&ocy;&lcy;&ocy;&vcy; &bcy;&iecy;&scy;&pcy;&rcy;&ocy;&vcy;&ocy;&dcy;&ncy;&ocy;&jcy; &scy;&vcy;&yacy;&zcy;&icy; &icy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;&ocy;&vcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&mcy;&ycy;&khcy; &vcy; Git.</span></p> </div> <h2 class="text-body-emphasis"  id="_abnf_notation"><span data-i18n="8599443133b71628968adfc6ad590e355c5cdb5a63377c96e201272ee2a58066/39" data-source="Abnf notation" onmousemove="i18n(this)">Abnf notation</span></h2> <div> <p><span data-i18n="28b978aca1aae7c4b5f378b064ac0825c93dee9734b7c61cfc2b49b809aa3704/24" data-source="ABNF notation as described by RFC 5234 is used within the protocol documents, except the following replacement core rules are used:" onmousemove="i18n(this)">&Ncy;&ocy;&tcy;&acy;&tscy;&icy;&yacy; ABNF, &ocy;&pcy;&icy;&scy;&acy;&ncy;&ncy;&acy;&yacy; &vcy; RFC 5234, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &vcy; &dcy;&ocy;&kcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy;&khcy; &pcy;&rcy;&ocy;&tcy;&ocy;&kcy;&ocy;&lcy;&acy;, &zcy;&acy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&iecy;&mcy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&khcy; &ocy;&scy;&ncy;&ocy;&vcy;&ncy;&ycy;&khcy; &pcy;&rcy;&acy;&vcy;&icy;&lcy; &zcy;&acy;&mcy;&iecy;&ncy;&ycy;:</span></p> <div> <div> <pre class="hljs language-ini">  <span class="hljs-attr">HEXDIG</span>    =  DIGIT / <span class="hljs-string">&quot;a&quot;</span> / <span class="hljs-string">&quot;b&quot;</span> / <span class="hljs-string">&quot;c&quot;</span> / <span class="hljs-string">&quot;d&quot;</span> / <span class="hljs-string">&quot;e&quot;</span> / <span class="hljs-string">&quot;f&quot;</span></pre> </div> </div> <p><span data-i18n="3afb0994b0c8f2c54c14a20d640ea113b879ee7d4baf448beb8979d01e16a20e/88" data-source="We also define the following common rules:" onmousemove="i18n(this)">&Mcy;&ycy; &tcy;&acy;&kcy;&zhcy;&iecy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&iecy;&mcy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&iecy; &ocy;&bcy;&shchcy;&icy;&iecy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&acy;:</span></p> <div> <div> <pre class="hljs language-python">  NUL       =  %x00
+  zero-<span class="hljs-built_in">id</span>   =  <span class="hljs-number">40</span>*<span class="hljs-string">&quot;0&quot;</span>
+  obj-<span class="hljs-built_in">id</span>    =  <span class="hljs-number">40</span>*(HEXDIGIT)
+
+  refname  =  <span class="hljs-string">&quot;HEAD&quot;</span>
+  refname /=  <span class="hljs-string">&quot;refs/&quot;</span> &lt;see discussion below&gt;</pre> </div> </div> <p><span data-i18n="3450fbc0607c76c01f8f4ddba5951d9e03cb4c30e61c4f71609304199aaed19f/64" data-source="A refname is a hierarchical octet string beginning with &amp;quot;refs/&amp;quot; and not violating the &lt;code&gt;git-check-ref-format&lt;/code&gt; command&amp;rsquo;s validation rules. More specifically, they:" onmousemove="i18n(this)">&Icy;&mcy;&yacy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &mdash; &ecy;&tcy;&ocy; &icy;&iecy;&rcy;&acy;&rcy;&khcy;&icy;&chcy;&iecy;&scy;&kcy;&acy;&yacy; &scy;&tcy;&rcy;&ocy;&kcy;&acy; &ocy;&kcy;&tcy;&iecy;&tcy;&ocy;&vcy;, &ncy;&acy;&chcy;&icy;&ncy;&acy;&yucy;&shchcy;&acy;&yacy;&scy;&yacy; &scy;  &quot;refs/&quot;  &icy; &ncy;&iecy; &ncy;&acy;&rcy;&ucy;&shcy;&acy;&yucy;&shchcy;&acy;&yacy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&acy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&icy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ycy;  <code>git-check-ref-format</code> . &Bcy;&ocy;&lcy;&iecy;&iecy; &kcy;&ocy;&ncy;&kcy;&rcy;&iecy;&tcy;&ncy;&ocy;, &ocy;&ncy;&icy;:</span></p> <div> <ol> <li> <p><span data-i18n="67b28015c94640bac357e9d24c4a39ec53466966ad6aaf41aae5233b8f4cc8a2/a7" data-source="They can include slash &lt;code&gt;/&lt;/code&gt; for hierarchical (directory) grouping, but no slash-separated component can begin with a dot &lt;code&gt;.&lt;/code&gt;." onmousemove="i18n(this)">&Ocy;&ncy;&icy; &mcy;&ocy;&gcy;&ucy;&tcy; &vcy;&kcy;&lcy;&yucy;&chcy;&acy;&tcy;&softcy; &kcy;&ocy;&scy;&ucy;&yucy; &chcy;&iecy;&rcy;&tcy;&ucy;  <code>/</code>  &dcy;&lcy;&yacy; &icy;&iecy;&rcy;&acy;&rcy;&khcy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&jcy; &gcy;&rcy;&ucy;&pcy;&pcy;&icy;&rcy;&ocy;&vcy;&kcy;&icy; (&kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&ocy;&vcy;), &ncy;&ocy; &ncy;&icy; &ocy;&dcy;&icy;&ncy; &kcy;&ocy;&mcy;&pcy;&ocy;&ncy;&iecy;&ncy;&tcy;, &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&iecy;&ncy;&ncy;&ycy;&jcy; &kcy;&ocy;&scy;&ocy;&jcy; &chcy;&iecy;&rcy;&tcy;&ocy;&jcy;, &ncy;&iecy; &mcy;&ocy;&zhcy;&iecy;&tcy; &ncy;&acy;&chcy;&icy;&ncy;&acy;&tcy;&softcy;&scy;&yacy; &scy; &tcy;&ocy;&chcy;&kcy;&icy;  <code>.</code>  .</span></p> </li> <li> <p><span data-i18n="07e0191183251ef4d770d4484a8a7476d4da2eb702b54eeaa6c27831f628d561/2b" data-source="They must contain at least one &lt;code&gt;/&lt;/code&gt;. This enforces the presence of a category like &lt;code&gt;heads/&lt;/code&gt;, &lt;code&gt;tags/&lt;/code&gt; etc. but the actual names are not restricted." onmousemove="i18n(this)">&Ocy;&ncy;&icy; &dcy;&ocy;&lcy;&zhcy;&ncy;&ycy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy; &khcy;&ocy;&tcy;&yacy; &bcy;&ycy; &ocy;&dcy;&icy;&ncy;  <code>/</code> . &Ecy;&tcy;&ocy; &ocy;&bcy;&iecy;&scy;&pcy;&iecy;&chcy;&icy;&vcy;&acy;&iecy;&tcy; &ncy;&acy;&lcy;&icy;&chcy;&icy;&iecy; &tcy;&acy;&kcy;&ocy;&jcy; &kcy;&acy;&tcy;&iecy;&gcy;&ocy;&rcy;&icy;&icy;, &kcy;&acy;&kcy;  <code>heads/</code> ,  <code>tags/</code>  &icy; &tcy;. &dcy;., &ncy;&ocy; &fcy;&acy;&kcy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&iecy; &icy;&mcy;&iecy;&ncy;&acy; &ncy;&iecy; &ocy;&gcy;&rcy;&acy;&ncy;&icy;&chcy;&icy;&vcy;&acy;&yucy;&tcy;&scy;&yacy;.</span></p> </li> <li> <p><span data-i18n="bc4e750cb8e63d19500adfd2e948fd054fcb4f5a16327ad49cc5a80aac899a00/43" data-source="They cannot have two consecutive dots &lt;code&gt;..&lt;/code&gt; anywhere." onmousemove="i18n(this)">&Ucy; &ncy;&icy;&khcy; &ncy;&icy;&gcy;&dcy;&iecy; &ncy;&iecy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &dcy;&vcy;&ucy;&khcy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&khcy; &tcy;&ocy;&chcy;&iecy;&kcy;  <code>..</code> .</span></p> </li> <li> <p><span data-i18n="bf8437a7ae5b8df1635b3b0baa82ae5932a7cd526bbddd6af41978dbe4440c44/8d" data-source="They cannot have ASCII control characters (i.e. bytes whose values are lower than \040, or \177 &lt;code&gt;DEL&lt;/code&gt;), space, tilde &lt;code&gt;~&lt;/code&gt;, caret &lt;code&gt;^&lt;/code&gt;, colon &lt;code&gt;:&lt;/code&gt;, question-mark &lt;code&gt;?&lt;/code&gt;, asterisk &lt;code&gt;*&lt;/code&gt;, or open bracket &lt;code&gt;[&lt;/code&gt; anywhere." onmousemove="i18n(this)">&Ocy;&ncy;&icy; &ncy;&iecy; &mcy;&ocy;&gcy;&ucy;&tcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy; &ucy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&yucy;&shchcy;&icy;&iecy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&ycy; ASCII (&tcy;. &iecy;. &bcy;&acy;&jcy;&tcy;&ycy;, &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&khcy; &mcy;&iecy;&ncy;&softcy;&shcy;&iecy; \040 &icy;&lcy;&icy; \177  <code>DEL</code>  ), &pcy;&rcy;&ocy;&bcy;&iecy;&lcy;, &tcy;&icy;&lcy;&softcy;&dcy;&ucy;  <code>~</code>  , &kcy;&ucy;&rcy;&scy;&ocy;&rcy;  <code>^</code>  , &dcy;&vcy;&ocy;&iecy;&tcy;&ocy;&chcy;&icy;&iecy;  <code>:</code>  , &vcy;&ocy;&pcy;&rcy;&ocy;&scy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&jcy; &zcy;&ncy;&acy;&kcy;  <code>?</code>  , &zcy;&vcy;&iecy;&zcy;&dcy;&ocy;&chcy;&kcy;&ucy;  <code>*</code>  &icy;&lcy;&icy; &ocy;&tcy;&kcy;&rcy;&ycy;&vcy;&acy;&yucy;&shchcy;&ucy;&yucy; &scy;&kcy;&ocy;&bcy;&kcy;&ucy;  <code>[</code>  &gcy;&dcy;&iecy; &ucy;&gcy;&ocy;&dcy;&ncy;&ocy;.</span></p> </li> <li> <p><span data-i18n="1565addd216a1904dd43380daad9914494df79d2edfa9617795d859a00a7afbd/26" data-source="They cannot end with a slash &lt;code&gt;/&lt;/code&gt; or a dot &lt;code&gt;.&lt;/code&gt;." onmousemove="i18n(this)">&Ocy;&ncy;&icy; &ncy;&iecy; &mcy;&ocy;&gcy;&ucy;&tcy; &zcy;&acy;&kcy;&acy;&ncy;&chcy;&icy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &kcy;&ocy;&scy;&ocy;&jcy; &chcy;&iecy;&rcy;&tcy;&ocy;&jcy;  <code>/</code>  &icy;&lcy;&icy; &tcy;&ocy;&chcy;&kcy;&ocy;&jcy;  <code>.</code> .</span></p> </li> <li> <p><span data-i18n="b29bbc52bde8862ad3f86a351d0fe2155324e35cfeb36738f6e6b085a9a37209/ad" data-source="They cannot end with the sequence &lt;code&gt;.lock&lt;/code&gt;." onmousemove="i18n(this)">&Ocy;&ncy;&icy; &ncy;&iecy; &mcy;&ocy;&gcy;&ucy;&tcy; &zcy;&acy;&kcy;&acy;&ncy;&chcy;&icy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&scy;&tcy;&softcy;&yucy;  <code>.lock</code> .</span></p> </li> <li> <p><span data-i18n="58c1255145c7be1ae6221e155359437eba398e7a377b241daeaea5d30121e800/0a" data-source="They cannot contain a sequence &lt;code&gt;@{&lt;/code&gt;." onmousemove="i18n(this)">&Ocy;&ncy;&icy; &ncy;&iecy; &mcy;&ocy;&gcy;&ucy;&tcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&scy;&tcy;&softcy;  <code>@{</code> .</span></p> </li> <li> <p><span data-i18n="9516abd300fdf00a8912f1d8ffc416b1534664e586a81eb9529bad64351940d5/c8" data-source="They cannot contain a &lt;code&gt;\\&lt;/code&gt;." onmousemove="i18n(this)">&Ocy;&ncy;&icy; &ncy;&iecy; &mcy;&ocy;&gcy;&ucy;&tcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy;  <code>\\</code> .</span></p> </li> </ol> </div> </div> <h2 class="text-body-emphasis"  id="_pkt_line_format"><span data-i18n="acc1129e12b383c02b9c54a2eecb844f44edf6e5eb16724f23a46501b82e8f3c/73" data-source="Pkt-line format" onmousemove="i18n(this)">Pkt-line format</span></h2> <div> <p><span data-i18n="a1336780422802cea0729d210a94d5be40fc464e15adf7066d35c31693e8b23a/d5" data-source="Much (but not all) of the payload is described around pkt-lines." onmousemove="i18n(this)">&Bcy;&ocy;&lcy;&softcy;&shcy;&acy;&yacy; &chcy;&acy;&scy;&tcy;&softcy; (&ncy;&ocy; &ncy;&iecy; &vcy;&scy;&yacy;) &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ocy;&jcy; &ncy;&acy;&gcy;&rcy;&ucy;&zcy;&kcy;&icy; &ocy;&pcy;&icy;&scy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &vcy;&ocy;&kcy;&rcy;&ucy;&gcy; pkt-lines.</span></p> <p><span data-i18n="05bc80a59064c9e9d0f17ff4a43f42472617fa98580d0b842387f36acca7ef53/ac" data-source="A pkt-line is a variable length binary string. The first four bytes of the line, the pkt-len, indicates the total length of the line, in hexadecimal. The pkt-len includes the 4 bytes used to contain the length&amp;rsquo;s hexadecimal representation." onmousemove="i18n(this)">Pkt-line &mdash; &ecy;&tcy;&ocy; &dcy;&vcy;&ocy;&icy;&chcy;&ncy;&acy;&yacy; &scy;&tcy;&rcy;&ocy;&kcy;&acy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ocy;&jcy; &dcy;&lcy;&icy;&ncy;&ycy;. &Pcy;&iecy;&rcy;&vcy;&ycy;&iecy; &chcy;&iecy;&tcy;&ycy;&rcy;&iecy; &bcy;&acy;&jcy;&tcy;&acy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;, pkt-len, &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&yucy;&tcy; &ocy;&bcy;&shchcy;&ucy;&yucy; &dcy;&lcy;&icy;&ncy;&ucy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &vcy; &shcy;&iecy;&scy;&tcy;&ncy;&acy;&dcy;&tscy;&acy;&tcy;&iecy;&rcy;&icy;&chcy;&ncy;&ocy;&mcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;&iecy;. Pkt-len &vcy;&kcy;&lcy;&yucy;&chcy;&acy;&iecy;&tcy; &vcy; &scy;&iecy;&bcy;&yacy; 4 &bcy;&acy;&jcy;&tcy;&acy;, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&mcy;&ycy;&iecy; &dcy;&lcy;&yacy; &khcy;&rcy;&acy;&ncy;&iecy;&ncy;&icy;&yacy; &shcy;&iecy;&scy;&tcy;&ncy;&acy;&dcy;&tscy;&acy;&tcy;&iecy;&rcy;&icy;&chcy;&ncy;&ocy;&gcy;&ocy; &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy; &dcy;&lcy;&icy;&ncy;&ycy;.</span></p> <p><span data-i18n="c001278a68116c5b4a6ef83cefb99d5bcb6ac24d61563087f1090bfb771107b7/81" data-source="A pkt-line MAY contain binary data, so implementors MUST ensure pkt-line parsing/formatting routines are 8-bit clean." onmousemove="i18n(this)">&Scy;&tcy;&rcy;&ocy;&kcy;&acy; pkt &Mcy;&Ocy;&ZHcy;&IEcy;&Tcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy; &dcy;&vcy;&ocy;&icy;&chcy;&ncy;&ycy;&iecy; &dcy;&acy;&ncy;&ncy;&ycy;&iecy;, &pcy;&ocy;&ecy;&tcy;&ocy;&mcy;&ucy; &rcy;&acy;&zcy;&rcy;&acy;&bcy;&ocy;&tcy;&chcy;&icy;&kcy;&icy; &Dcy;&Ocy;&Lcy;&ZHcy;&Ncy;&Ycy; &ocy;&bcy;&iecy;&scy;&pcy;&iecy;&chcy;&icy;&tcy;&softcy; 8-&bcy;&icy;&tcy;&ncy;&ucy;&yucy; &chcy;&icy;&scy;&tcy;&ocy;&tcy;&ucy; &pcy;&rcy;&ocy;&tscy;&iecy;&dcy;&ucy;&rcy; &acy;&ncy;&acy;&lcy;&icy;&zcy;&acy;/&fcy;&ocy;&rcy;&mcy;&acy;&tcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; pkt.</span></p> <p><span data-i18n="926b48cfdf154c5a62a3683fa73d2970592fc85e86a90ec2db68f5fe8d6b98db/6b" data-source="A non-binary line SHOULD BE terminated by an LF, which if present MUST be included in the total length. Receivers MUST treat pkt-lines with non-binary data the same whether or not they contain the trailing LF (stripping the LF if present, and not complaining when it is missing)." onmousemove="i18n(this)">&Ncy;&iecy;&dcy;&vcy;&ocy;&icy;&chcy;&ncy;&acy;&yacy; &lcy;&icy;&ncy;&icy;&yacy; &Dcy;&Ocy;&Lcy;&ZHcy;&Ncy;&Acy; &Bcy;&Ycy;&Tcy;&SOFTcy; &zcy;&acy;&kcy;&acy;&ncy;&chcy;&icy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; LF, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy;, &iecy;&scy;&lcy;&icy; &ocy;&ncy; &pcy;&rcy;&icy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy;, &Dcy;&Ocy;&Lcy;&ZHcy;&IEcy;&Ncy; &bcy;&ycy;&tcy;&softcy; &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy; &vcy; &ocy;&bcy;&shchcy;&ucy;&yucy; &dcy;&lcy;&icy;&ncy;&ucy;. &Pcy;&ocy;&lcy;&ucy;&chcy;&acy;&tcy;&iecy;&lcy;&icy; &Dcy;&Ocy;&Lcy;&ZHcy;&Ncy;&Ycy; &ocy;&bcy;&rcy;&acy;&bcy;&acy;&tcy;&ycy;&vcy;&acy;&tcy;&softcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; pkt &scy; &ncy;&iecy;&dcy;&vcy;&ocy;&icy;&chcy;&ncy;&ycy;&mcy;&icy; &dcy;&acy;&ncy;&ncy;&ycy;&mcy;&icy; &ocy;&dcy;&icy;&ncy;&acy;&kcy;&ocy;&vcy;&ocy;, &ncy;&iecy;&zcy;&acy;&vcy;&icy;&scy;&icy;&mcy;&ocy; &ocy;&tcy; &tcy;&ocy;&gcy;&ocy;, &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy; &lcy;&icy; &ocy;&ncy;&icy; &kcy;&ocy;&ncy;&iecy;&chcy;&ncy;&ycy;&jcy; LF (&ucy;&dcy;&acy;&lcy;&yacy;&yacy; LF, &iecy;&scy;&lcy;&icy; &ocy;&ncy; &pcy;&rcy;&icy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy;, &icy; &ncy;&iecy; &zhcy;&acy;&lcy;&ucy;&yacy;&scy;&softcy;, &kcy;&ocy;&gcy;&dcy;&acy; &ocy;&ncy; &ocy;&tcy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy;).</span></p> <p><span data-i18n="bd849e930efa56b80500acc8a7bd56aed889f7c034d98bd6e5d3d39e84e4120d/69" data-source="The maximum length of a pkt-line&amp;rsquo;s data component is 65516 bytes. Implementations MUST NOT send pkt-line whose length exceeds 65520 (65516 bytes of payload + 4 bytes of length data)." onmousemove="i18n(this)">&Mcy;&acy;&kcy;&scy;&icy;&mcy;&acy;&lcy;&softcy;&ncy;&acy;&yacy; &dcy;&lcy;&icy;&ncy;&acy; &kcy;&ocy;&mcy;&pcy;&ocy;&ncy;&iecy;&ncy;&tcy;&acy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy; pkt-&lcy;&icy;&ncy;&icy;&icy; &scy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; 65516 &bcy;&acy;&jcy;&tcy;. &Rcy;&iecy;&acy;&lcy;&icy;&zcy;&acy;&tscy;&icy;&icy; &Ncy;&IEcy; &Dcy;&Ocy;&Lcy;&ZHcy;&Ncy;&Ycy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&tcy;&softcy; pkt-&scy;&tcy;&rcy;&ocy;&kcy;&ucy;, &dcy;&lcy;&icy;&ncy;&acy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&jcy; &pcy;&rcy;&iecy;&vcy;&ycy;&shcy;&acy;&iecy;&tcy; 65520 (65516 &bcy;&acy;&jcy;&tcy; &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ocy;&jcy; &ncy;&acy;&gcy;&rcy;&ucy;&zcy;&kcy;&icy; + 4 &bcy;&acy;&jcy;&tcy;&acy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy; &dcy;&lcy;&icy;&ncy;&ycy;).</span></p> <p><span data-i18n="2c3ba79cca05464d7528f0c84324b2a7e47942431f7c0f5fefd9a255427dfb41/f0" data-source="Implementations SHOULD NOT send an empty pkt-line (&amp;quot;0004&amp;quot;)." onmousemove="i18n(this)">&Rcy;&iecy;&acy;&lcy;&icy;&zcy;&acy;&tscy;&icy;&icy; &Ncy;&IEcy; &Dcy;&Ocy;&Lcy;&ZHcy;&Ncy;&Ycy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&tcy;&softcy; &pcy;&ucy;&scy;&tcy;&ucy;&yucy; &scy;&tcy;&rcy;&ocy;&kcy;&ucy; pkt ( &quot;0004&quot; ).</span></p> <p><span data-i18n="84a3e13437e0939a25fcc6d1468c0d266e29809c89fe51aebf7c339a8ee19944/9d" data-source="A pkt-line with a length field of 0 (&amp;quot;0000&amp;quot;), called a flush-pkt, is a special case and MUST be handled differently than an empty pkt-line (&amp;quot;0004&amp;quot;)." onmousemove="i18n(this)">&Scy;&tcy;&rcy;&ocy;&kcy;&acy; pkt &scy; &pcy;&ocy;&lcy;&iecy;&mcy; &dcy;&lcy;&icy;&ncy;&ycy; 0 ( &quot;0000&quot; ), &ncy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&mcy;&acy;&yacy; &fcy;&lcy;&iecy;&shcy;-pkt, &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &ocy;&scy;&ocy;&bcy;&ycy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy;&mcy; &icy; &Dcy;&Ocy;&Lcy;&ZHcy;&Ncy;&Acy; &ocy;&bcy;&rcy;&acy;&bcy;&acy;&tcy;&ycy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &icy;&ncy;&acy;&chcy;&iecy;, &chcy;&iecy;&mcy; &pcy;&ucy;&scy;&tcy;&acy;&yacy; &scy;&tcy;&rcy;&ocy;&kcy;&acy; pkt ( &quot;0004&quot; ).</span></p> <div> <div> <pre class="hljs language-ini">  <span class="hljs-attr">pkt-line</span>     =  data-pkt / flush-pkt
+
+  <span class="hljs-attr">data-pkt</span>     =  pkt-len pkt-payload
+  <span class="hljs-attr">pkt-len</span>      =  <span class="hljs-number">4</span>*(HEXDIG)
+  <span class="hljs-attr">pkt-payload</span>  =  (pkt-len - <span class="hljs-number">4</span>)*(OCTET)
+
+  <span class="hljs-attr">flush-pkt</span>    = <span class="hljs-string">&quot;0000&quot;</span></pre> </div> </div> <p><span data-i18n="c0ec178750230d33ea5e1880e625c5bf4b794f3ad49bdd323368037558e18441/15" data-source="Examples (as C-style strings):" onmousemove="i18n(this)">&Pcy;&rcy;&icy;&mcy;&iecy;&rcy;&ycy; (&kcy;&acy;&kcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &vcy; &scy;&tcy;&icy;&lcy;&iecy; C):</span></p> <div> <div> <pre class="hljs language-swift">  pkt<span class="hljs-operator">-</span>line          actual value
+  <span class="hljs-operator">---------------------------------</span>
+  <span class="hljs-string">&quot;0006a<span class="hljs-subst">\n</span>&quot;</span>         <span class="hljs-string">&quot;a<span class="hljs-subst">\n</span>&quot;</span>
+  <span class="hljs-string">&quot;0005a&quot;</span>           <span class="hljs-string">&quot;a&quot;</span>
+  <span class="hljs-string">&quot;000bfoobar<span class="hljs-subst">\n</span>&quot;</span>    <span class="hljs-string">&quot;foobar<span class="hljs-subst">\n</span>&quot;</span>
+  <span class="hljs-string">&quot;0004&quot;</span>            <span class="hljs-string">&quot;&quot;</span></pre> </div> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/gitprotocol-common">https://git-scm.com/docs/gitprotocol-common</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitprotocol-http.html">
+                            gitprotocol http                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitprotocol-pack.html">
+                            gitprotocol pack                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitprotocol-v2.html">
+                            gitprotocol v2                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitremote-helpers.html">
+                            gitremote helpers                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitrepository-layout.html">
+                            gitrepository layout                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitrevisions.html">
+                            gitrevisions                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitsubmodules.html">
+                            gitsubmodules                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="gitprotocol-common.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

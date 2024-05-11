@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 00:14:03 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git prune-packed</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="42554bfd3fd6f44efe6711f4e4d5c3026bba345469c3029cd5670bdf8975086d/e2" data-source="git-prune-packed" onmousemove="i18n(this)">git-prune-packed</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="24ba19ba5f4edc267d6819bbe6b9602cd50d7e3f1214f97851999b9b27e54d37/d8" data-source="git-prune-packed - Remove extra objects that are already in pack files" onmousemove="i18n(this)">git-prune-packed &mdash; &ucy;&dcy;&acy;&lcy;&icy;&tcy;&softcy; &lcy;&icy;&shcy;&ncy;&icy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ucy;&zhcy;&iecy; &iecy;&scy;&tcy;&softcy; &vcy; &fcy;&acy;&jcy;&lcy;&acy;&khcy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git prune-packed <span class="hljs-selector-attr">[-n | --dry-run]</span> <span class="hljs-selector-attr">[-q | --quiet]</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="1958bdc03d20cabafdf32af595df134f524d0337ead863c160b5d95b616271b2/38" data-source="This program searches the &lt;code&gt;$GIT_OBJECT_DIRECTORY&lt;/code&gt; for all objects that currently exist in a pack file as well as in the independent object directories." onmousemove="i18n(this)">&Ecy;&tcy;&acy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&acy; &icy;&shchcy;&iecy;&tcy; &vcy;  <code>$GIT_OBJECT_DIRECTORY</code>  &vcy;&scy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &vcy; &dcy;&acy;&ncy;&ncy;&ycy;&jcy; &mcy;&ocy;&mcy;&iecy;&ncy;&tcy; &scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ucy;&yucy;&tcy; &vcy; &pcy;&acy;&kcy;&iecy;&tcy;&ncy;&ocy;&mcy; &fcy;&acy;&jcy;&lcy;&iecy;, &acy; &tcy;&acy;&kcy;&zhcy;&iecy; &vcy; &ncy;&iecy;&zcy;&acy;&vcy;&icy;&scy;&icy;&mcy;&ycy;&khcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&acy;&khcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;.</span></p> <p><span data-i18n="ba3d3c411518d754a21ee94fa490d591b55b8dd1d0a84a4ee84e86dc70dd8e1b/ee" data-source="All such extra objects are removed." onmousemove="i18n(this)">&Vcy;&scy;&iecy; &tcy;&acy;&kcy;&icy;&iecy; &lcy;&icy;&shcy;&ncy;&icy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy; &ucy;&dcy;&acy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy;.</span></p> <p><span data-i18n="defb26148105fc41dcaccf26d499a86be7470a89fe88663adcd708c334b4d8d9/1a" data-source="A pack is a collection of objects, individually compressed, with delta compression applied, stored in a single file, with an associated index file." onmousemove="i18n(this)">&Pcy;&acy;&kcy;&iecy;&tcy; &mdash; &ecy;&tcy;&ocy; &ncy;&acy;&bcy;&ocy;&rcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;, &icy;&ncy;&dcy;&icy;&vcy;&icy;&dcy;&ucy;&acy;&lcy;&softcy;&ncy;&ocy; &scy;&zhcy;&acy;&tcy;&ycy;&khcy; &scy; &pcy;&rcy;&icy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&iecy;&mcy; &dcy;&iecy;&lcy;&softcy;&tcy;&acy;-&scy;&zhcy;&acy;&tcy;&icy;&yacy;, &khcy;&rcy;&acy;&ncy;&yacy;&shchcy;&icy;&khcy;&scy;&yacy; &vcy; &ocy;&dcy;&ncy;&ocy;&mcy; &fcy;&acy;&jcy;&lcy;&iecy; &scy;&ocy; &scy;&vcy;&yacy;&zcy;&acy;&ncy;&ncy;&ycy;&mcy; &icy;&ncy;&dcy;&iecy;&kcy;&scy;&ncy;&ycy;&mcy; &fcy;&acy;&jcy;&lcy;&ocy;&mcy;.</span></p> <p><span data-i18n="185437a8e897caf722ceb5104df93f3491bcf05b8e31d7f76dcf7754d9ac9513/4f" data-source="Packs are used to reduce the load on mirror systems, backup engines, disk storage, etc." onmousemove="i18n(this)">&Pcy;&acy;&kcy;&iecy;&tcy;&ycy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yucy;&tcy;&scy;&yacy; &dcy;&lcy;&yacy; &scy;&ncy;&icy;&zhcy;&iecy;&ncy;&icy;&yacy; &ncy;&acy;&gcy;&rcy;&ucy;&zcy;&kcy;&icy; &ncy;&acy; &zcy;&iecy;&rcy;&kcy;&acy;&lcy;&softcy;&ncy;&ycy;&iecy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ycy;, &mcy;&iecy;&khcy;&acy;&ncy;&icy;&zcy;&mcy;&ycy; &rcy;&iecy;&zcy;&iecy;&rcy;&vcy;&ncy;&ocy;&gcy;&ocy; &kcy;&ocy;&pcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy;, &dcy;&icy;&scy;&kcy;&ocy;&vcy;&ycy;&iecy; &khcy;&rcy;&acy;&ncy;&icy;&lcy;&icy;&shchcy;&acy; &icy; &tcy;. &dcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-prune-packed.txt--n"><span data-i18n="5249f4fcc629efa0e6d6b2bf746b6c5de61611ce719ad61ac820fbe5c8cece66/28" data-source="-n" onmousemove="i18n(this)">-n</span></dt> <dt id="Documentation/git-prune-packed.txt---dry-run"><span data-i18n="675ca48430023bf861e914e0cf5bbe183efe84bd9d831affc574394bf4edc690/c1" data-source="--dry-run" onmousemove="i18n(this)">--dry-run</span></dt> <dd> <p><span data-i18n="4fb922048c2ff8f1bd510b6f209022e9c5230c6ef63501752570f6ede70d50b2/df" data-source="Don&amp;rsquo;t actually remove any objects, only show those that would have been removed." onmousemove="i18n(this)">&Ncy;&acy; &scy;&acy;&mcy;&ocy;&mcy; &dcy;&iecy;&lcy;&iecy; &ncy;&iecy; &ucy;&dcy;&acy;&lcy;&yacy;&jcy;&tcy;&iecy; &ncy;&icy;&kcy;&acy;&kcy;&icy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy;, &acy; &pcy;&ocy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&jcy;&tcy;&iecy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &tcy;&iecy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &mcy;&ocy;&gcy;&lcy;&icy; &bcy;&ycy; &bcy;&ycy;&tcy;&softcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ycy;.</span></p> </dd> <dt id="Documentation/git-prune-packed.txt--q"><span data-i18n="5ce681666a15a41274346f65b8bcbf56f8e8170ac00706a44a09ee4d786a8609/cd" data-source="-q" onmousemove="i18n(this)">-q</span></dt> <dt id="Documentation/git-prune-packed.txt---quiet"><span data-i18n="b00818cdc507640687732769ee1cb501db377927ee76d03df23978bd0d706888/e2" data-source="--quiet" onmousemove="i18n(this)">--quiet</span></dt> <dd> <p><span data-i18n="fcac686aaf20cedd43e70e5a52b7451215bd2d53a30249ffa3cf2e54d7f78219/00" data-source="Squelch the progress indicator." onmousemove="i18n(this)">&Pcy;&ocy;&dcy;&acy;&vcy;&icy;&tcy;&softcy; &icy;&ncy;&dcy;&icy;&kcy;&acy;&tcy;&ocy;&rcy; &pcy;&rcy;&ocy;&gcy;&rcy;&iecy;&scy;&scy;&acy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_see_also"><span data-i18n="2fa97693b70fa87b95b2d1bdf9558e4ac65d5e82d145f13a03849c4d9c4957a9/40" data-source="See also" onmousemove="i18n(this)">See also</span></h2> <div> <p> <span data-i18n="87980b61e86100d30f584b3705d0d19bd383f7cfaad733105765231ae7dc1f72/33" data-source="&lt;a href=&quot;git-pack-objects&quot;&gt;git-pack-objects[1]&lt;/a&gt;&lt;a href=&quot;git-repack&quot;&gt;git-repack[1]&lt;/a&gt;" onmousemove="i18n(this)"><a href="git-pack-objects.html">git-pack-objects[1]</a><a href="git-repack.html">git-repack[1]</a></span></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-prune-packed">https://git-scm.com/docs/git-prune-packed</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-pull.html">
+                            git pull                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-push.html">
+                            git push                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-quiltimport.html">
+                            git quiltimport                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-range-diff.html">
+                            git range-diff                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-read-tree.html">
+                            git read-tree                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-rebase.html">
+                            git rebase                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-receive-pack.html">
+                            git receive-pack                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-prune-packed.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

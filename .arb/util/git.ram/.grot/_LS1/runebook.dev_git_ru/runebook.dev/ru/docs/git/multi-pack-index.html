@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:13:44 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Git - multi pack-index</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Miscellaneous">
+                                Miscellaneous                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="efedee1eab86d7b8554b0bb10d496263e5396f6ac0b97b8c252d0107c6e7abaa/14" data-source="multi-pack-index" onmousemove="i18n(this)">multi-pack-index</span></h1> <div> <p><span data-i18n="fa18bd3921bc35237aea5d060810a1f60ae89b2b9427aa7b9b11e1b4e89f95ab/58" data-source="The Git object directory contains a &lt;code&gt;pack&lt;/code&gt; directory containing packfiles (with suffix &amp;quot;.pack&amp;quot;) and pack-indexes (with suffix &amp;quot;.idx&amp;quot;). The pack-indexes provide a way to lookup objects and navigate to their offset within the pack, but these must come in pairs with the packfiles. This pairing depends on the file names, as the pack-index differs only in suffix with its pack- file. While the pack-indexes provide fast lookup per packfile, this performance degrades as the number of packfiles increases, because abbreviations need to inspect every packfile and we are more likely to have a miss on our most-recently-used packfile. For some large repositories, repacking into a single packfile is not feasible due to storage space or excessive repack times." onmousemove="i18n(this)">&Kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;  Git  &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&tcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;  <code>pack</code> , &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&shchcy;&icy;&jcy; &fcy;&acy;&jcy;&lcy;&ycy; &pcy;&acy;&kcy;&iecy;&tcy;&ocy;&vcy; (&scy; &scy;&ucy;&fcy;&fcy;&icy;&kcy;&scy;&ocy;&mcy;  &quot;.pack&quot; ) &icy; &icy;&ncy;&dcy;&iecy;&kcy;&scy;&ycy; &pcy;&acy;&kcy;&iecy;&tcy;&ocy;&vcy; (&scy; &scy;&ucy;&fcy;&fcy;&icy;&kcy;&scy;&ocy;&mcy;  &quot;.idx&quot; ). &Icy;&ncy;&dcy;&iecy;&kcy;&scy;&ycy; &pcy;&acy;&kcy;&iecy;&tcy;&acy; &pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&yucy;&tcy; &vcy;&ocy;&zcy;&mcy;&ocy;&zhcy;&ncy;&ocy;&scy;&tcy;&softcy; &pcy;&ocy;&icy;&scy;&kcy;&acy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy; &icy; &pcy;&iecy;&rcy;&iecy;&khcy;&ocy;&dcy;&acy; &kcy; &icy;&khcy; &scy;&mcy;&iecy;&shchcy;&iecy;&ncy;&icy;&yucy; &vcy;&ncy;&ucy;&tcy;&rcy;&icy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;, &ncy;&ocy; &ocy;&ncy;&icy; &dcy;&ocy;&lcy;&zhcy;&ncy;&ycy; &icy;&dcy;&tcy;&icy; &vcy; &pcy;&acy;&rcy;&iecy; &scy; &fcy;&acy;&jcy;&lcy;&acy;&mcy;&icy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;. &Ecy;&tcy;&ocy; &scy;&ocy;&iecy;&dcy;&icy;&ncy;&iecy;&ncy;&icy;&iecy; &zcy;&acy;&vcy;&icy;&scy;&icy;&tcy; &ocy;&tcy; &icy;&mcy;&iecy;&ncy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;, &pcy;&ocy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ucy; &icy;&ncy;&dcy;&iecy;&kcy;&scy; &pcy;&acy;&kcy;&iecy;&tcy;&acy; &ocy;&tcy;&lcy;&icy;&chcy;&acy;&iecy;&tcy;&scy;&yacy; &ocy;&tcy; &iecy;&gcy;&ocy; &fcy;&acy;&jcy;&lcy;&acy; &pcy;&acy;&kcy;&iecy;&tcy;&acy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &scy;&ucy;&fcy;&fcy;&icy;&kcy;&scy;&ocy;&mcy;. &KHcy;&ocy;&tcy;&yacy; &icy;&ncy;&dcy;&iecy;&kcy;&scy;&ycy; &pcy;&acy;&kcy;&iecy;&tcy;&ocy;&vcy; &ocy;&bcy;&iecy;&scy;&pcy;&iecy;&chcy;&icy;&vcy;&acy;&yucy;&tcy; &bcy;&ycy;&scy;&tcy;&rcy;&ycy;&jcy; &pcy;&ocy;&icy;&scy;&kcy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &fcy;&acy;&jcy;&lcy;&acy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;, &ecy;&tcy;&acy; &pcy;&rcy;&ocy;&icy;&zcy;&vcy;&ocy;&dcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&scy;&tcy;&softcy; &scy;&ncy;&icy;&zhcy;&acy;&iecy;&tcy;&scy;&yacy; &pcy;&ocy; &mcy;&iecy;&rcy;&iecy; &ucy;&vcy;&iecy;&lcy;&icy;&chcy;&iecy;&ncy;&icy;&yacy; &kcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&tcy;&vcy;&acy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;, &pcy;&ocy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ucy; &scy;&ocy;&kcy;&rcy;&acy;&shchcy;&iecy;&ncy;&icy;&yacy;&mcy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ocy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&yacy;&tcy;&softcy; &kcy;&acy;&zhcy;&dcy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;, &icy; &mcy;&ycy; &scy; &bcy;&ocy;&lcy;&softcy;&shcy;&iecy;&jcy; &vcy;&iecy;&rcy;&ocy;&yacy;&tcy;&ncy;&ocy;&scy;&tcy;&softcy;&yucy; &pcy;&rcy;&ocy;&pcy;&ucy;&scy;&tcy;&icy;&mcy; &ncy;&acy;&shcy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ncy;&icy;&jcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;. &Dcy;&lcy;&yacy; &ncy;&iecy;&kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&khcy; &bcy;&ocy;&lcy;&softcy;&shcy;&icy;&khcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&iecy;&vcy; &pcy;&iecy;&rcy;&iecy;&ucy;&pcy;&acy;&kcy;&ocy;&vcy;&kcy;&acy; &vcy; &ocy;&dcy;&icy;&ncy; &pcy;&acy;&kcy;&iecy;&tcy;&ncy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy; &ncy;&iecy;&vcy;&ocy;&zcy;&mcy;&ocy;&zhcy;&ncy;&acy; &icy;&zcy;-&zcy;&acy; &ncy;&iecy;&khcy;&vcy;&acy;&tcy;&kcy;&icy; &mcy;&iecy;&scy;&tcy;&acy; &dcy;&lcy;&yacy; &khcy;&rcy;&acy;&ncy;&iecy;&ncy;&icy;&yacy; &icy;&lcy;&icy; &chcy;&rcy;&iecy;&zcy;&mcy;&iecy;&rcy;&ncy;&ocy;&gcy;&ocy; &vcy;&rcy;&iecy;&mcy;&iecy;&ncy;&icy; &pcy;&iecy;&rcy;&iecy;&ucy;&pcy;&acy;&kcy;&ocy;&vcy;&kcy;&icy;.</span></p> <p><span data-i18n="0737ddb8b43378809a92d9a7603742daf3463bd1564fd0639507b6d4e1889145/8d" data-source="The multi-pack-index (MIDX for short) stores a list of objects and their offsets into multiple packfiles. It contains:" onmousemove="i18n(this)">&Mcy;&ucy;&lcy;&softcy;&tcy;&icy;&pcy;&acy;&kcy;-&icy;&ncy;&dcy;&iecy;&kcy;&scy; (&scy;&ocy;&kcy;&rcy;&acy;&shchcy;&iecy;&ncy;&ncy;&ocy; MIDX) &khcy;&rcy;&acy;&ncy;&icy;&tcy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy; &icy; &icy;&khcy; &scy;&mcy;&iecy;&shchcy;&iecy;&ncy;&icy;&jcy; &vcy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&icy;&khcy; &pcy;&acy;&kcy;&ocy;&vcy;&ocy;&chcy;&ncy;&ycy;&khcy; &fcy;&acy;&jcy;&lcy;&acy;&khcy;. &Ecy;&tcy;&ocy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&tcy;:</span></p> <div> <ul> <li> <p><span data-i18n="0ee886c90b7ca64f4a1bbbaf39ee2ac0d81a844b2b515656f8f7811ad4fd4ae3/77" data-source="A list of packfile names." onmousemove="i18n(this)">&Scy;&pcy;&icy;&scy;&ocy;&kcy; &icy;&mcy;&iecy;&ncy; &pcy;&acy;&kcy;&fcy;&acy;&jcy;&lcy;&ocy;&vcy;.</span></p> </li> <li> <p><span data-i18n="5fe7e184a9ff0c06feba551049b952c0412c6c0c8fae7534d79744138272fed6/40" data-source="A sorted list of object IDs." onmousemove="i18n(this)">&Ocy;&tcy;&scy;&ocy;&rcy;&tcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&jcy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &icy;&dcy;&iecy;&ncy;&tcy;&icy;&fcy;&icy;&kcy;&acy;&tcy;&ocy;&rcy;&ocy;&vcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;.</span></p> </li> <li> <p><span data-i18n="2571135d20491af1d1d904a9f685e9ffad401099d3a231d6c2ab197b92a2f396/27" data-source="A list of metadata for the ith object ID including:" onmousemove="i18n(this)">&Scy;&pcy;&icy;&scy;&ocy;&kcy; &mcy;&iecy;&tcy;&acy;&dcy;&acy;&ncy;&ncy;&ycy;&khcy; &dcy;&lcy;&yacy; i-&gcy;&ocy; &icy;&dcy;&iecy;&ncy;&tcy;&icy;&fcy;&icy;&kcy;&acy;&tcy;&ocy;&rcy;&acy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy;, &vcy;&kcy;&lcy;&yucy;&chcy;&acy;&yacy;:</span></p> <div> <ul> <li> <p><span data-i18n="409c5c742fc49e899e4ee77a61692a82bcb7cf69da763220adcf62561aa4bbed/d9" data-source="A value j referring to the jth packfile." onmousemove="i18n(this)">&Zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; j, &ocy;&tcy;&ncy;&ocy;&scy;&yacy;&shchcy;&iecy;&iecy;&scy;&yacy; &kcy; j-&mcy;&ucy; &pcy;&acy;&kcy;&iecy;&tcy;&ncy;&ocy;&mcy;&ucy; &fcy;&acy;&jcy;&lcy;&ucy;.</span></p> </li> <li> <p><span data-i18n="bccfdc1269b1c2dfd1b083a41334fd6c68df955ed0828c8e7acf32455c221471/f0" data-source="An offset within the jth packfile for the object." onmousemove="i18n(this)">&Scy;&mcy;&iecy;&shchcy;&iecy;&ncy;&icy;&iecy; &vcy; j-&mcy; &pcy;&acy;&kcy;&iecy;&tcy;&ncy;&ocy;&mcy; &fcy;&acy;&jcy;&lcy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy;.</span></p> </li> </ul> </div> </li> <li> <p><span data-i18n="d505f9c265e889c8ddde3c789a00f781d628e0b662fbc6b7a5ff89c2d271d049/57" data-source="If large offsets are required, we use another list of large offsets similar to version 2 pack-indexes." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &tcy;&rcy;&iecy;&bcy;&ucy;&yucy;&tcy;&scy;&yacy; &bcy;&ocy;&lcy;&softcy;&shcy;&icy;&iecy; &scy;&mcy;&iecy;&shchcy;&iecy;&ncy;&icy;&yacy;, &mcy;&ycy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&mcy; &dcy;&rcy;&ucy;&gcy;&ocy;&jcy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &bcy;&ocy;&lcy;&softcy;&shcy;&icy;&khcy; &scy;&mcy;&iecy;&shchcy;&iecy;&ncy;&icy;&jcy;, &acy;&ncy;&acy;&lcy;&ocy;&gcy;&icy;&chcy;&ncy;&ycy;&jcy; &icy;&ncy;&dcy;&iecy;&kcy;&scy;&acy;&mcy; &pcy;&acy;&kcy;&iecy;&tcy;&ocy;&vcy; &vcy;&iecy;&rcy;&scy;&icy;&icy; 2.</span></p> <div> <ul> <li> <p><span data-i18n="a5ca3343a984ab6f221bf82ccd7626f5686ae55efb79a9a874b9e3b6dcfea43c/c0" data-source="An optional list of objects in pseudo-pack order (used with MIDX bitmaps)." onmousemove="i18n(this)">&Ncy;&iecy;&ocy;&bcy;&yacy;&zcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&jcy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy; &vcy; &pcy;&scy;&iecy;&vcy;&dcy;&ocy;&pcy;&acy;&kcy;&iecy;&tcy;&ncy;&ocy;&mcy; &pcy;&ocy;&rcy;&yacy;&dcy;&kcy;&iecy; (&icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &scy; &rcy;&acy;&scy;&tcy;&rcy;&ocy;&vcy;&ycy;&mcy;&icy; &icy;&zcy;&ocy;&bcy;&rcy;&acy;&zhcy;&iecy;&ncy;&icy;&yacy;&mcy;&icy; MIDX).</span></p> </li> </ul> </div> </li> </ul> </div> <p><span data-i18n="46000880df09db03d544ed781436016f2d369cc5ec235424a38b9f03480c122e/01" data-source="Thus, we can provide O(log N) lookup time for any number of packfiles." onmousemove="i18n(this)">&Tcy;&acy;&kcy;&icy;&mcy; &ocy;&bcy;&rcy;&acy;&zcy;&ocy;&mcy;, &mcy;&ycy; &mcy;&ocy;&zhcy;&iecy;&mcy; &ocy;&bcy;&iecy;&scy;&pcy;&iecy;&chcy;&icy;&tcy;&softcy; &vcy;&rcy;&iecy;&mcy;&yacy; &pcy;&ocy;&icy;&scy;&kcy;&acy; O(log N) &dcy;&lcy;&yacy; &lcy;&yucy;&bcy;&ocy;&gcy;&ocy; &kcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&tcy;&vcy;&acy; &pcy;&acy;&kcy;&ocy;&vcy;&ocy;&chcy;&ncy;&ycy;&khcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_design_details"><span data-i18n="beb98c82fe6f7739b8d9178c030095debc8587cd3c58ff98be847b6c875e2d4c/84" data-source="Design details" onmousemove="i18n(this)">Design details</span></h2> <div> <div> <ul> <li> <p><span data-i18n="feb34f660a21bf6cea4bf8194cb6f16b9a6a314da33b2202e5f757f0916c01d9/5a" data-source="The MIDX is stored in a file named &lt;code&gt;multi-pack-index&lt;/code&gt; in the .git/objects/pack directory. This could be stored in the pack directory of an alternate. It refers only to packfiles in that same directory." onmousemove="i18n(this)">MIDX &khcy;&rcy;&acy;&ncy;&icy;&tcy;&scy;&yacy; &vcy; &fcy;&acy;&jcy;&lcy;&iecy; &scy; &icy;&mcy;&iecy;&ncy;&iecy;&mcy;  <code>multi-pack-index</code>  &vcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy; .git/objects/pack. &Ecy;&tcy;&ocy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &scy;&ocy;&khcy;&rcy;&acy;&ncy;&iecy;&ncy;&ocy; &vcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy; &pcy;&acy;&kcy;&iecy;&tcy;&acy; &acy;&lcy;&softcy;&tcy;&iecy;&rcy;&ncy;&acy;&tcy;&icy;&vcy;&ncy;&ocy;&gcy;&ocy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;. &Ecy;&tcy;&ocy; &ocy;&tcy;&ncy;&ocy;&scy;&icy;&tcy;&scy;&yacy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &kcy; &pcy;&acy;&kcy;&ocy;&vcy;&ocy;&chcy;&ncy;&ycy;&mcy; &fcy;&acy;&jcy;&lcy;&acy;&mcy; &vcy; &tcy;&ocy;&mcy; &zhcy;&iecy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy;.</span></p> </li> <li> <p><span data-i18n="c275eb9eeb4b491d1346d1ceaa496f2e1b2580630756309f6b25af99bfd6ccdb/c5" data-source="The core.multiPackIndex config setting must be on (which is the default) to consume MIDX files. Setting it to &lt;code&gt;false&lt;/code&gt; prevents Git from reading a MIDX file, even if one exists." onmousemove="i18n(this)">&Dcy;&lcy;&yacy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; MIDX &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy; core.multiPackIndex &dcy;&ocy;&lcy;&zhcy;&iecy;&ncy; &bcy;&ycy;&tcy;&softcy; &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy; (&ecy;&tcy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;). &Ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&kcy;&acy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy;  <code>false</code>  &ncy;&iecy; &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&iecy;&tcy;  Git  &chcy;&icy;&tcy;&acy;&tcy;&softcy; &fcy;&acy;&jcy;&lcy; MIDX, &dcy;&acy;&zhcy;&iecy; &iecy;&scy;&lcy;&icy; &ocy;&ncy; &scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy;.</span></p> </li> <li> <p><span data-i18n="c4f23bec4375e6f0864bdccfa4569a93fba84bcee7b70309dd3c507a11d04e44/ad" data-source="The file format includes parameters for the object ID hash function, so a future change of hash algorithm does not require a change in format." onmousemove="i18n(this)">&Fcy;&ocy;&rcy;&mcy;&acy;&tcy; &fcy;&acy;&jcy;&lcy;&acy; &vcy;&kcy;&lcy;&yucy;&chcy;&acy;&iecy;&tcy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;&ycy; &dcy;&lcy;&yacy; &khcy;&ecy;&shcy;-&fcy;&ucy;&ncy;&kcy;&tscy;&icy;&icy; &icy;&dcy;&iecy;&ncy;&tcy;&icy;&fcy;&icy;&kcy;&acy;&tcy;&ocy;&rcy;&acy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy;, &pcy;&ocy;&ecy;&tcy;&ocy;&mcy;&ucy; &bcy;&ucy;&dcy;&ucy;&shchcy;&iecy;&iecy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&iecy; &acy;&lcy;&gcy;&ocy;&rcy;&icy;&tcy;&mcy;&acy; &khcy;&ecy;&shcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &ncy;&iecy; &tcy;&rcy;&iecy;&bcy;&ucy;&iecy;&tcy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;&acy;.</span></p> </li> <li> <p><span data-i18n="7402316c319f2aa82bda27632c75f56624a6a3e47d2586d999ea5271f13b3ca0/b5" data-source="The MIDX keeps only one record per object ID. If an object appears in multiple packfiles, then the MIDX selects the copy in the preferred packfile, otherwise selecting from the most-recently modified packfile." onmousemove="i18n(this)">MIDX &khcy;&rcy;&acy;&ncy;&icy;&tcy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &ocy;&dcy;&ncy;&ucy; &zcy;&acy;&pcy;&icy;&scy;&softcy; &dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &icy;&dcy;&iecy;&ncy;&tcy;&icy;&fcy;&icy;&kcy;&acy;&tcy;&ocy;&rcy;&acy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy;. &IEcy;&scy;&lcy;&icy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy; &pcy;&rcy;&icy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &vcy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&icy;&khcy; &pcy;&acy;&kcy;&iecy;&tcy;&ncy;&ycy;&khcy; &fcy;&acy;&jcy;&lcy;&acy;&khcy;, &tcy;&ocy; MIDX &vcy;&ycy;&bcy;&icy;&rcy;&acy;&iecy;&tcy; &kcy;&ocy;&pcy;&icy;&yucy; &vcy; &pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&chcy;&icy;&tcy;&acy;&iecy;&mcy;&ocy;&mcy; &pcy;&acy;&kcy;&iecy;&tcy;&ncy;&ocy;&mcy; &fcy;&acy;&jcy;&lcy;&iecy;, &vcy; &pcy;&rcy;&ocy;&tcy;&icy;&vcy;&ncy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &mdash; &icy;&zcy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ncy;&iecy;&gcy;&ocy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &pcy;&acy;&kcy;&iecy;&tcy;&ncy;&ocy;&gcy;&ocy; &fcy;&acy;&jcy;&lcy;&acy;.</span></p> </li> <li> <p><span data-i18n="dbd901a607b0a6b8aaafc079276ffb2c8f35427c2282487c35ac8f30f84c8730/a9" data-source="If there exist packfiles in the pack directory not registered in the MIDX, then those packfiles are loaded into the &lt;code&gt;packed_git&lt;/code&gt; list and &lt;code&gt;packed_git_mru&lt;/code&gt; cache." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &vcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy; &pcy;&acy;&kcy;&iecy;&tcy;&acy; &scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ucy;&yucy;&tcy; &fcy;&acy;&jcy;&lcy;&ycy; &pcy;&acy;&kcy;&iecy;&tcy;&ocy;&vcy;, &ncy;&iecy; &zcy;&acy;&rcy;&iecy;&gcy;&icy;&scy;&tcy;&rcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&iecy; &vcy; MIDX, &tcy;&ocy; &ecy;&tcy;&icy; &fcy;&acy;&jcy;&lcy;&ycy; &pcy;&acy;&kcy;&iecy;&tcy;&ocy;&vcy; &zcy;&acy;&gcy;&rcy;&ucy;&zhcy;&acy;&yucy;&tcy;&scy;&yacy; &vcy; &scy;&pcy;&icy;&scy;&ocy;&kcy;  <code>packed_git</code>  &icy; &kcy;&ecy;&shcy;  <code>packed_git_mru</code> .</span></p> </li> <li> <p><span data-i18n="899790cb2717d27b67b722513cdebb07a96fffbc7c97944a5f21246be23559a7/00" data-source="The pack-indexes (.idx files) remain in the pack directory so we can delete the MIDX file, set core.midx to false, or downgrade without any loss of information." onmousemove="i18n(this)">&Icy;&ncy;&dcy;&iecy;&kcy;&scy;&ycy; &pcy;&acy;&kcy;&iecy;&tcy;&ocy;&vcy; (&fcy;&acy;&jcy;&lcy;&ycy; .idx) &ocy;&scy;&tcy;&acy;&yucy;&tcy;&scy;&yacy; &vcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;, &pcy;&ocy;&ecy;&tcy;&ocy;&mcy;&ucy; &mcy;&ycy; &mcy;&ocy;&zhcy;&iecy;&mcy; &ucy;&dcy;&acy;&lcy;&icy;&tcy;&softcy; &fcy;&acy;&jcy;&lcy; MIDX, &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&icy;&tcy;&softcy; &dcy;&lcy;&yacy; core.midx &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; false &icy;&lcy;&icy; &pcy;&iecy;&rcy;&iecy;&jcy;&tcy;&icy; &ncy;&acy; &bcy;&ocy;&lcy;&iecy;&iecy; &rcy;&acy;&ncy;&ncy;&yucy;&yucy; &vcy;&iecy;&rcy;&scy;&icy;&yucy; &bcy;&iecy;&zcy; &pcy;&ocy;&tcy;&iecy;&rcy;&icy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&icy;.</span></p> </li> <li> <p><span data-i18n="f5c5e4c2190cc273dcb6620a05e434a43efa1c4d12fed7ce81e9e2b79f825b9f/29" data-source="The MIDX file format uses a chunk-based approach (similar to the commit-graph file) that allows optional data to be added." onmousemove="i18n(this)">&Fcy;&ocy;&rcy;&mcy;&acy;&tcy; &fcy;&acy;&jcy;&lcy;&acy; MIDX &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy; &pcy;&ocy;&dcy;&khcy;&ocy;&dcy; &ncy;&acy; &ocy;&scy;&ncy;&ocy;&vcy;&iecy; &fcy;&rcy;&acy;&gcy;&mcy;&iecy;&ncy;&tcy;&ocy;&vcy; (&acy;&ncy;&acy;&lcy;&ocy;&gcy;&icy;&chcy;&ncy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy;&ucy; &gcy;&rcy;&acy;&fcy;&acy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy;), &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&iecy;&tcy; &dcy;&ocy;&bcy;&acy;&vcy;&lcy;&yacy;&tcy;&softcy; &dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&iecy; &dcy;&acy;&ncy;&ncy;&ycy;&iecy;.</span></p> </li> </ul> </div> </div> <h2 class="text-body-emphasis"  id="_future_work"><span data-i18n="31cf6469c5cc06b5801d31278e8a1ed327686098ebd0414c526c7be8327c36f5/61" data-source="Future work" onmousemove="i18n(this)">Future work</span></h2> <div> <div> <ul> <li> <p><span data-i18n="e575cf3f32b283fd5d3e11ed6e9858c20e8aebcdb647e96baba00e4d0b6b8fec/6a" data-source="The multi-pack-index allows many packfiles, especially in a context where repacking is expensive (such as a very large repo), or unexpected maintenance time is unacceptable (such as a high-demand build machine). However, the multi-pack-index needs to be rewritten in full every time. We can extend the format to be incremental, so writes are fast. By storing a small &amp;quot;tip&amp;quot; multi-pack-index that points to large &amp;quot;base&amp;quot; MIDX files, we can keep writes fast while still reducing the number of binary searches required for object lookups." onmousemove="i18n(this)">&Icy;&ncy;&dcy;&iecy;&kcy;&scy; multi-pack &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&iecy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &mcy;&ncy;&ocy;&zhcy;&iecy;&scy;&tcy;&vcy;&ocy; &pcy;&acy;&kcy;-&fcy;&acy;&jcy;&lcy;&ocy;&vcy;, &ocy;&scy;&ocy;&bcy;&iecy;&ncy;&ncy;&ocy; &vcy; &kcy;&ocy;&ncy;&tcy;&iecy;&kcy;&scy;&tcy;&iecy;, &gcy;&dcy;&iecy; &pcy;&iecy;&rcy;&iecy;&ucy;&pcy;&acy;&kcy;&ocy;&vcy;&kcy;&acy; &ocy;&bcy;&khcy;&ocy;&dcy;&icy;&tcy;&scy;&yacy; &dcy;&ocy;&rcy;&ocy;&gcy;&ocy; (&ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &pcy;&rcy;&icy; &ocy;&chcy;&iecy;&ncy;&softcy; &bcy;&ocy;&lcy;&softcy;&shcy;&ocy;&mcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy;) &icy;&lcy;&icy; &kcy;&ocy;&gcy;&dcy;&acy; &ncy;&iecy;&ocy;&zhcy;&icy;&dcy;&acy;&ncy;&ncy;&ocy;&iecy; &vcy;&rcy;&iecy;&mcy;&yacy; &ocy;&bcy;&scy;&lcy;&ucy;&zhcy;&icy;&vcy;&acy;&ncy;&icy;&yacy; &ncy;&iecy;&pcy;&rcy;&icy;&iecy;&mcy;&lcy;&iecy;&mcy;&ocy; (&ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &ncy;&acy; &mcy;&acy;&shcy;&icy;&ncy;&iecy; &scy;&bcy;&ocy;&rcy;&kcy;&icy; &scy; &vcy;&ycy;&scy;&ocy;&kcy;&icy;&mcy; &scy;&pcy;&rcy;&ocy;&scy;&ocy;&mcy;). &Ocy;&dcy;&ncy;&acy;&kcy;&ocy; &mcy;&ucy;&lcy;&softcy;&tcy;&icy;&pcy;&acy;&kcy;-&icy;&ncy;&dcy;&iecy;&kcy;&scy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ocy; &kcy;&acy;&zhcy;&dcy;&ycy;&jcy; &rcy;&acy;&zcy; &pcy;&iecy;&rcy;&iecy;&pcy;&icy;&scy;&ycy;&vcy;&acy;&tcy;&softcy; &pcy;&ocy;&lcy;&ncy;&ocy;&scy;&tcy;&softcy;&yucy;. &Mcy;&ycy; &mcy;&ocy;&zhcy;&iecy;&mcy; &rcy;&acy;&scy;&shcy;&icy;&rcy;&icy;&tcy;&softcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;, &scy;&dcy;&iecy;&lcy;&acy;&vcy; &iecy;&gcy;&ocy; &icy;&ncy;&kcy;&rcy;&iecy;&mcy;&iecy;&ncy;&tcy;&ncy;&ycy;&mcy;, &chcy;&tcy;&ocy;&bcy;&ycy; &zcy;&acy;&pcy;&icy;&scy;&softcy; &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&yacy;&lcy;&acy;&scy;&softcy; &bcy;&ycy;&scy;&tcy;&rcy;&ocy;. &Scy;&ocy;&khcy;&rcy;&acy;&ncy;&yacy;&yacy; &ncy;&iecy;&bcy;&ocy;&lcy;&softcy;&shcy;&ocy;&jcy; &icy;&ncy;&dcy;&iecy;&kcy;&scy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&icy;&khcy; &pcy;&acy;&kcy;&iecy;&tcy;&ocy;&vcy;  &quot;tip&quot; , &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy; &ncy;&acy; &bcy;&ocy;&lcy;&softcy;&shcy;&icy;&iecy; &fcy;&acy;&jcy;&lcy;&ycy; MIDX  &quot;base&quot; , &mcy;&ycy; &mcy;&ocy;&zhcy;&iecy;&mcy; &ocy;&bcy;&iecy;&scy;&pcy;&iecy;&chcy;&icy;&tcy;&softcy; &bcy;&ycy;&scy;&tcy;&rcy;&ucy;&yucy; &zcy;&acy;&pcy;&icy;&scy;&softcy;, &ocy;&dcy;&ncy;&ocy;&vcy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ocy; &scy;&ocy;&kcy;&rcy;&acy;&shchcy;&acy;&yacy; &kcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&tcy;&vcy;&ocy; &dcy;&vcy;&ocy;&icy;&chcy;&ncy;&ycy;&khcy; &pcy;&ocy;&icy;&scy;&kcy;&ocy;&vcy;, &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ycy;&khcy; &dcy;&lcy;&yacy; &pcy;&ocy;&icy;&scy;&kcy;&acy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;.</span></p> </li> <li> <p><span data-i18n="c7a7fceb6ecd5fdb7797e291c376b3f0bbb521f8eb9a7993faa6d46cc0ba769a/55" data-source="If the multi-pack-index is extended to store a &amp;quot;stable object order&amp;quot; (a function Order(hash) = integer that is constant for a given hash, even as the multi-pack-index is updated) then MIDX bitmaps could be updated independently of the MIDX." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &icy;&ncy;&dcy;&iecy;&kcy;&scy; &mcy;&ucy;&lcy;&softcy;&tcy;&icy;-&pcy;&acy;&kcy;&iecy;&tcy;&acy; &rcy;&acy;&scy;&shcy;&icy;&rcy;&iecy;&ncy; &dcy;&lcy;&yacy; &khcy;&rcy;&acy;&ncy;&iecy;&ncy;&icy;&yacy;  &quot;stable object order&quot;  (&fcy;&ucy;&ncy;&kcy;&tscy;&icy;&yacy; Order(hash) = &tscy;&iecy;&lcy;&ocy;&iecy; &chcy;&icy;&scy;&lcy;&ocy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&iecy; &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &pcy;&ocy;&scy;&tcy;&ocy;&yacy;&ncy;&ncy;&ycy;&mcy; &dcy;&lcy;&yacy; &dcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &khcy;&ecy;&shcy;&acy;, &dcy;&acy;&zhcy;&iecy; &pcy;&rcy;&icy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&icy; &icy;&ncy;&dcy;&iecy;&kcy;&scy;&acy; &mcy;&ucy;&lcy;&softcy;&tcy;&icy;-&pcy;&acy;&kcy;&iecy;&tcy;&acy;), &tcy;&ocy; &rcy;&acy;&scy;&tcy;&rcy;&ocy;&vcy;&ycy;&iecy; &icy;&zcy;&ocy;&bcy;&rcy;&acy;&zhcy;&iecy;&ncy;&icy;&yacy; MIDX &mcy;&ocy;&gcy;&ucy;&tcy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&yacy;&tcy;&softcy;&scy;&yacy; &ncy;&iecy;&zcy;&acy;&vcy;&icy;&scy;&icy;&mcy;&ocy; &ocy;&tcy; &Mcy;&Icy;&Dcy;&Kcy;&Scy;.</span></p> </li> <li> <p><span data-i18n="c9567fe9fe7d6c178d95de0d6215261bcf340b209a93414f5213e92befd71a76/e7" data-source="Packfiles can be marked as &amp;quot;special&amp;quot; using empty files that share the initial name but replace &amp;quot;.pack&amp;quot; with &amp;quot;.keep&amp;quot; or &amp;quot;.promisor&amp;quot;. We can add an optional chunk of data to the multi-pack-index that records flags of information about the packfiles. This allows new states, such as &lt;code&gt;repacked&lt;/code&gt; or &lt;code&gt;redeltified&lt;/code&gt;, that can help with pack maintenance in a multi-pack environment. It may also be helpful to organize packfiles by object type (commit, tree, blob, etc.) and use this metadata to help that maintenance." onmousemove="i18n(this)">&Pcy;&acy;&kcy;&iecy;&tcy;&ncy;&ycy;&iecy; &fcy;&acy;&jcy;&lcy;&ycy; &mcy;&ocy;&zhcy;&ncy;&ocy; &pcy;&ocy;&mcy;&iecy;&tcy;&icy;&tcy;&softcy; &kcy;&acy;&kcy;  &quot;special&quot; , &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yacy; &pcy;&ucy;&scy;&tcy;&ycy;&iecy; &fcy;&acy;&jcy;&lcy;&ycy; &scy; &ocy;&dcy;&icy;&ncy;&acy;&kcy;&ocy;&vcy;&ycy;&mcy; &icy;&scy;&khcy;&ocy;&dcy;&ncy;&ycy;&mcy; &icy;&mcy;&iecy;&ncy;&iecy;&mcy;, &ncy;&ocy; &zcy;&acy;&mcy;&iecy;&ncy;&yacy;&yacy;  &quot;.pack&quot;  &ncy;&acy;  &quot;.keep&quot;  &icy;&lcy;&icy;  &quot;.promisor&quot; . &Mcy;&ycy; &mcy;&ocy;&zhcy;&iecy;&mcy; &dcy;&ocy;&bcy;&acy;&vcy;&icy;&tcy;&softcy; &ncy;&iecy;&ocy;&bcy;&yacy;&zcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&jcy; &fcy;&rcy;&acy;&gcy;&mcy;&iecy;&ncy;&tcy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy; &vcy; multi-pack-index, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &zcy;&acy;&pcy;&icy;&scy;&ycy;&vcy;&acy;&iecy;&tcy; &fcy;&lcy;&acy;&gcy;&icy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&icy; &ocy; &pcy;&acy;&kcy;-&fcy;&acy;&jcy;&lcy;&acy;&khcy;. &Ecy;&tcy;&ocy; &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&iecy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &ncy;&ocy;&vcy;&ycy;&iecy; &scy;&ocy;&scy;&tcy;&ocy;&yacy;&ncy;&icy;&yacy;, &tcy;&acy;&kcy;&icy;&iecy; &kcy;&acy;&kcy;  <code>repacked</code>  &icy;&lcy;&icy;  <code>redeltified</code> , &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &mcy;&ocy;&gcy;&ucy;&tcy; &pcy;&ocy;&mcy;&ocy;&chcy;&softcy; &vcy; &ocy;&bcy;&scy;&lcy;&ucy;&zhcy;&icy;&vcy;&acy;&ncy;&icy;&icy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&kcy;&icy; &vcy; &scy;&rcy;&iecy;&dcy;&iecy; &scy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&icy;&mcy;&icy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&kcy;&acy;&mcy;&icy;. &Tcy;&acy;&kcy;&zhcy;&iecy; &mcy;&ocy;&zhcy;&iecy;&tcy; &ocy;&kcy;&acy;&zcy;&acy;&tcy;&softcy;&scy;&yacy; &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ycy;&mcy; &ocy;&rcy;&gcy;&acy;&ncy;&icy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &pcy;&acy;&kcy;&iecy;&tcy;&ycy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &pcy;&ocy; &tcy;&icy;&pcy;&acy;&mcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy; (&fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&yacy;, &dcy;&iecy;&rcy;&iecy;&vcy;&ocy;, &bcy;&ocy;&lcy;&softcy;&shcy;&ocy;&jcy; &dcy;&vcy;&ocy;&icy;&chcy;&ncy;&ycy;&jcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy; &icy; &tcy;.&nbsp;&dcy;.) &icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &ecy;&tcy;&icy; &mcy;&iecy;&tcy;&acy;&dcy;&acy;&ncy;&ncy;&ycy;&iecy; &dcy;&lcy;&yacy; &ocy;&bcy;&lcy;&iecy;&gcy;&chcy;&iecy;&ncy;&icy;&yacy; &ocy;&bcy;&scy;&lcy;&ucy;&zhcy;&icy;&vcy;&acy;&ncy;&icy;&yacy;.</span></p> </li> </ul> </div> </div> <h2 class="text-body-emphasis"  id="_related_links"><span data-i18n="e15056d80f2a0b8dec6dccb928557e4b9fd2f41febd403b42ee636f4a18a7625/86" data-source="Related links" onmousemove="i18n(this)">Related links</span></h2> <div> <p><span data-i18n="3ad19da4ead3e00b1e2c55ab80c43d241db80cc438df8504401bb0c8e51ba75e/80" data-source="[0] &lt;a href=&quot;https://bugs.chromium.org/p/git/issues/detail?id=6&quot;&gt;https://bugs.chromium.org/p/git/issues/detail?id=6&lt;/a&gt; Chromium work item for: Multi-Pack Index (MIDX)" onmousemove="i18n(this)">[0]  <a href="https://bugs.chromium.org/p/git/issues/detail?id=6">https://bugs.chromium.org/p/git/issues/detail?id=6</a>  &Rcy;&acy;&bcy;&ocy;&chcy;&icy;&jcy; &ecy;&lcy;&iecy;&mcy;&iecy;&ncy;&tcy; Chromium &dcy;&lcy;&yacy;: Multi-Pack Index (MIDX)</span></p> <p><span data-i18n="d64bee6674cef1ef92e45922d24a0582d1387eb1099f089bff8fc893563e69da/f1" data-source="[1] &lt;a href=&quot;https://lore.kernel.org/git/20180107181459.222909-1-dstolee@microsoft.com/&quot;&gt;https://lore.kernel.org/git/20180107181459.222909-1-dstolee@microsoft.com/&lt;/a&gt; An earlier RFC for the multi-pack-index feature" onmousemove="i18n(this)">[1]  <a href="https://lore.kernel.org/git/20180107181459.222909-1-dstolee@microsoft.com/">https://lore.kernel.org/git/<span class="__cf_email__" data-cfemail="9eacaeafa6aeafaea9afa6afaaaba7b0acacaca7aea7b3afb3faedeaf1f2fbfbdef3f7fdecf1edf1f8eab0fdf1f3">[email&#160;protected]</span>/</a>  &Bcy;&ocy;&lcy;&iecy;&iecy; &rcy;&acy;&ncy;&ncy;&icy;&jcy; RFC &dcy;&lcy;&yacy; &fcy;&ucy;&ncy;&kcy;&tscy;&icy;&icy; &icy;&ncy;&dcy;&iecy;&kcy;&scy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&icy;&khcy; &pcy;&acy;&kcy;&iecy;&tcy;&ocy;&vcy;.</span></p> <p><span data-i18n="c218a5b5d9fd6c9161d9a8dfe59c5c73f3d390154f812440360f2100116e0f65/cf" data-source="[2] &lt;a href=&quot;https://lore.kernel.org/git/alpine.DEB.2.20.1803091557510.23109@alexmv-linux/&quot;&gt;https://lore.kernel.org/git/alpine.DEB.2.20.1803091557510.23109@alexmv-linux/&lt;/a&gt; Git Merge 2018 Contributor&amp;rsquo;s summit notes (includes discussion of MIDX)" onmousemove="i18n(this)">[2]  <a href="https://lore.kernel.org/git/alpine.DEB.2.20.1803091557510.23109@alexmv-linux/">https://lore.kernel.org/git/alpine.DEB.2.20.1803091557510.23109@alexmv-linux/</a>   Git  &Zcy;&acy;&mcy;&iecy;&tcy;&kcy;&icy; &ucy;&chcy;&acy;&scy;&tcy;&ncy;&icy;&kcy;&ocy;&vcy; &scy;&acy;&mcy;&mcy;&icy;&tcy;&acy; Merge 2018 (&vcy;&kcy;&lcy;&yucy;&chcy;&acy;&yacy; &ocy;&bcy;&scy;&ucy;&zhcy;&dcy;&iecy;&ncy;&icy;&iecy; MIDX)</span></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/multi-pack-index">https://git-scm.com/docs/multi-pack-index</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="partial-clone.html">
+                            partial clone                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="scalar.html">
+                            scalar                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="user-manual.html">
+                            User Manual                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="multi-pack-index.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

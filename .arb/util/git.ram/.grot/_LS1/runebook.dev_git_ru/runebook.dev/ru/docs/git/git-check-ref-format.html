@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:14:26 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git check-ref-format</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="d60c9742cc3ea3b733a1e84317053c26a4acd2beecde1089e6efd7e46732e09b/e0" data-source="git-check-ref-format" onmousemove="i18n(this)">git-check-ref-format</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="ba6de8104da1d0a8f877cd78af56caff6193367b5bf69475cf6e8a8344775df9/7f" data-source="git-check-ref-format - Ensures that a reference name is well formed" onmousemove="i18n(this)">git-check-ref-format &mdash; &gcy;&acy;&rcy;&acy;&ncy;&tcy;&icy;&rcy;&ucy;&iecy;&tcy;, &chcy;&tcy;&ocy; &icy;&mcy;&yacy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &icy;&mcy;&iecy;&iecy;&tcy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&softcy;&ncy;&ycy;&jcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-sql">git <span class="hljs-keyword">check</span><span class="hljs-operator">-</span><span class="hljs-keyword">ref</span><span class="hljs-operator">-</span>format [<span class="hljs-comment">--normalize]</span>
+       [<span class="hljs-comment">--[no-]allow-onelevel] [--refspec-pattern]</span>
+       <span class="hljs-operator">&lt;</span>refname<span class="hljs-operator">&gt;</span>
+git <span class="hljs-keyword">check</span><span class="hljs-operator">-</span><span class="hljs-keyword">ref</span><span class="hljs-operator">-</span>format <span class="hljs-comment">--branch &lt;branchname-shorthand&gt;</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="60c42897a07183c17b0023a23aad45969dea3827f49203c22f53f67b79504b0e/b6" data-source="Checks if a given &lt;code&gt;refname&lt;/code&gt; is acceptable, and exits with a non-zero status if it is not." onmousemove="i18n(this)">&Pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&yacy;&iecy;&tcy;, &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &lcy;&icy; &dcy;&acy;&ncy;&ncy;&ycy;&jcy;  <code>refname</code>  &pcy;&rcy;&icy;&iecy;&mcy;&lcy;&iecy;&mcy;&ycy;&mcy;, &icy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&acy;&iecy;&tcy; &rcy;&acy;&bcy;&ocy;&tcy;&ucy; &scy; &ncy;&iecy;&ncy;&ucy;&lcy;&iecy;&vcy;&ycy;&mcy; &scy;&tcy;&acy;&tcy;&ucy;&scy;&ocy;&mcy;, &iecy;&scy;&lcy;&icy; &ecy;&tcy;&ocy; &ncy;&iecy; &tcy;&acy;&kcy;.</span></p> <p><span data-i18n="90c1430436b269320b1111aab44139d373f255288b6028d6270d345071ef5392/9a" data-source="A reference is used in Git to specify branches and tags. A branch head is stored in the &lt;code&gt;refs/heads&lt;/code&gt; hierarchy, while a tag is stored in the &lt;code&gt;refs/tags&lt;/code&gt; hierarchy of the ref namespace (typically in &lt;code&gt;$GIT_DIR/refs/heads&lt;/code&gt; and &lt;code&gt;$GIT_DIR/refs/tags&lt;/code&gt; directories or, as entries in file &lt;code&gt;$GIT_DIR/packed-refs&lt;/code&gt; if refs are packed by &lt;code&gt;git gc&lt;/code&gt;)." onmousemove="i18n(this)">&Scy;&scy;&ycy;&lcy;&kcy;&acy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &vcy;  Git  &dcy;&lcy;&yacy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&icy;&yacy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy; &icy; &tcy;&iecy;&gcy;&ocy;&vcy;. &Zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&ocy;&kcy; &vcy;&iecy;&tcy;&kcy;&icy; &khcy;&rcy;&acy;&ncy;&icy;&tcy;&scy;&yacy; &vcy; &icy;&iecy;&rcy;&acy;&rcy;&khcy;&icy;&icy;  <code>refs/heads</code> , &acy; &tcy;&iecy;&gcy; &mdash; &vcy; &icy;&iecy;&rcy;&acy;&rcy;&khcy;&icy;&icy;  <code>refs/tags</code>  &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&acy; &icy;&mcy;&iecy;&ncy; ref (&ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &vcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&acy;&khcy;  <code>$GIT_DIR/refs/heads</code>  &icy;  <code>$GIT_DIR/refs/tags</code>  &icy;&lcy;&icy; &vcy; &vcy;&icy;&dcy;&iecy; &zcy;&acy;&pcy;&icy;&scy;&iecy;&jcy; &vcy; &fcy;&acy;&jcy;&lcy;&iecy;  <code>$GIT_DIR/packed-refs</code> , &iecy;&scy;&lcy;&icy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&acy;&ncy;&ycy;  <code>git gc</code> ).</span></p> <p><span data-i18n="4e412368724479d75d572628bcda6bb62ea532961ac60fba65d803bac1354184/78" data-source="Git imposes the following rules on how references are named:" onmousemove="i18n(this)">Git  &ncy;&acy;&lcy;&acy;&gcy;&acy;&iecy;&tcy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&iecy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&acy; &ncy;&acy; &icy;&mcy;&iecy;&ncy;&ocy;&vcy;&acy;&ncy;&icy;&iecy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;:</span></p> <div> <ol> <li> <p><span data-i18n="0ccad1c9ad806f25f2d7bcd3998da793f34efe2e7b19c9b75603b77eb515b2c7/2e" data-source="They can include slash &lt;code&gt;/&lt;/code&gt; for hierarchical (directory) grouping, but no slash-separated component can begin with a dot &lt;code&gt;.&lt;/code&gt; or end with the sequence &lt;code&gt;.lock&lt;/code&gt;." onmousemove="i18n(this)">&Ocy;&ncy;&icy; &mcy;&ocy;&gcy;&ucy;&tcy; &vcy;&kcy;&lcy;&yucy;&chcy;&acy;&tcy;&softcy; &kcy;&ocy;&scy;&ucy;&yucy; &chcy;&iecy;&rcy;&tcy;&ucy;  <code>/</code>  &dcy;&lcy;&yacy; &icy;&iecy;&rcy;&acy;&rcy;&khcy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&jcy; &gcy;&rcy;&ucy;&pcy;&pcy;&icy;&rcy;&ocy;&vcy;&kcy;&icy; (&kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&ocy;&vcy;), &ncy;&ocy; &ncy;&icy; &ocy;&dcy;&icy;&ncy; &kcy;&ocy;&mcy;&pcy;&ocy;&ncy;&iecy;&ncy;&tcy;, &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&iecy;&ncy;&ncy;&ycy;&jcy; &kcy;&ocy;&scy;&ocy;&jcy; &chcy;&iecy;&rcy;&tcy;&ocy;&jcy;, &ncy;&iecy; &mcy;&ocy;&zhcy;&iecy;&tcy; &ncy;&acy;&chcy;&icy;&ncy;&acy;&tcy;&softcy;&scy;&yacy; &scy; &tcy;&ocy;&chcy;&kcy;&icy;  <code>.</code>  &icy;&lcy;&icy; &zcy;&acy;&kcy;&acy;&ncy;&chcy;&icy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&scy;&tcy;&softcy;&yucy;  <code>.lock</code> .</span></p> </li> <li> <p><span data-i18n="290e2d2ef0f8f7b1ba658d9f122a4dfd1397482437375728664b9cf65b54f2a6/10" data-source="They must contain at least one &lt;code&gt;/&lt;/code&gt;. This enforces the presence of a category like &lt;code&gt;heads/&lt;/code&gt;, &lt;code&gt;tags/&lt;/code&gt; etc. but the actual names are not restricted. If the &lt;code&gt;--allow-onelevel&lt;/code&gt; option is used, this rule is waived." onmousemove="i18n(this)">&Ocy;&ncy;&icy; &dcy;&ocy;&lcy;&zhcy;&ncy;&ycy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy; &khcy;&ocy;&tcy;&yacy; &bcy;&ycy; &ocy;&dcy;&icy;&ncy;  <code>/</code> . &Ecy;&tcy;&ocy; &ocy;&bcy;&iecy;&scy;&pcy;&iecy;&chcy;&icy;&vcy;&acy;&iecy;&tcy; &ncy;&acy;&lcy;&icy;&chcy;&icy;&iecy; &tcy;&acy;&kcy;&ocy;&jcy; &kcy;&acy;&tcy;&iecy;&gcy;&ocy;&rcy;&icy;&icy;, &kcy;&acy;&kcy;  <code>heads/</code> ,  <code>tags/</code>  &icy; &tcy;. &dcy;., &ncy;&ocy; &fcy;&acy;&kcy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&iecy; &icy;&mcy;&iecy;&ncy;&acy; &ncy;&iecy; &ocy;&gcy;&rcy;&acy;&ncy;&icy;&chcy;&icy;&vcy;&acy;&yucy;&tcy;&scy;&yacy;. &IEcy;&scy;&lcy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &ocy;&pcy;&tscy;&icy;&yacy;  <code>--allow-onelevel</code> , &ecy;&tcy;&ocy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&ocy; &ocy;&tcy;&mcy;&iecy;&ncy;&yacy;&iecy;&tcy;&scy;&yacy;.</span></p> </li> <li> <p><span data-i18n="bc4e750cb8e63d19500adfd2e948fd054fcb4f5a16327ad49cc5a80aac899a00/43" data-source="They cannot have two consecutive dots &lt;code&gt;..&lt;/code&gt; anywhere." onmousemove="i18n(this)">&Ucy; &ncy;&icy;&khcy; &ncy;&icy;&gcy;&dcy;&iecy; &ncy;&iecy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &dcy;&vcy;&ucy;&khcy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&khcy; &tcy;&ocy;&chcy;&iecy;&kcy;  <code>..</code> .</span></p> </li> <li> <p><span data-i18n="5b5bff18cfd47eb9831a5c11e8d768a7f1e1d8cab295af9c50f8d920ed695e4c/93" data-source="They cannot have ASCII control characters (i.e. bytes whose values are lower than \040, or \177 &lt;code&gt;DEL&lt;/code&gt;), space, tilde &lt;code&gt;~&lt;/code&gt;, caret &lt;code&gt;^&lt;/code&gt;, or colon &lt;code&gt;:&lt;/code&gt; anywhere." onmousemove="i18n(this)">&Ocy;&ncy;&icy; &ncy;&iecy; &mcy;&ocy;&gcy;&ucy;&tcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy; &ucy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&yucy;&shchcy;&icy;&iecy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&ycy; ASCII (&tcy;.&nbsp;&iecy;. &bcy;&acy;&jcy;&tcy;&ycy;, &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&khcy; &mcy;&iecy;&ncy;&softcy;&shcy;&iecy; \040 &icy;&lcy;&icy; \177  <code>DEL</code> ), &pcy;&rcy;&ocy;&bcy;&iecy;&lcy;, &tcy;&icy;&lcy;&softcy;&dcy;&ucy;  <code>~</code> , &kcy;&acy;&rcy;&iecy;&tcy;&kcy;&ucy;  <code>^</code>  &icy;&lcy;&icy; &dcy;&vcy;&ocy;&iecy;&tcy;&ocy;&chcy;&icy;&iecy;  <code>:</code>  &gcy;&dcy;&iecy; &ucy;&gcy;&ocy;&dcy;&ncy;&ocy;.</span></p> </li> <li> <p><span data-i18n="e3c8483615d221d3151037fbe4af1f3664f84a7c6cabbfd08c56dae4c4d7d6ab/f0" data-source="They cannot have question-mark &lt;code&gt;?&lt;/code&gt;, asterisk &lt;code&gt;*&lt;/code&gt;, or open bracket &lt;code&gt;[&lt;/code&gt; anywhere. See the &lt;code&gt;--refspec-pattern&lt;/code&gt; option below for an exception to this rule." onmousemove="i18n(this)">&Ucy; &ncy;&icy;&khcy; &ncy;&icy;&gcy;&dcy;&iecy; &ncy;&iecy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &vcy;&ocy;&pcy;&rcy;&ocy;&scy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&gcy;&ocy; &zcy;&ncy;&acy;&kcy;&acy;  <code>?</code> , &zcy;&vcy;&iecy;&zcy;&dcy;&ocy;&chcy;&kcy;&icy;  <code>*</code>  &icy;&lcy;&icy; &ocy;&tcy;&kcy;&rcy;&ycy;&tcy;&ocy;&jcy; &scy;&kcy;&ocy;&bcy;&kcy;&icy;  <code>[</code> . &Scy;&mcy;. &ocy;&pcy;&tscy;&icy;&yucy;  <code>--refspec-pattern</code>  &ncy;&icy;&zhcy;&iecy;, &chcy;&tcy;&ocy;&bcy;&ycy; &ucy;&zcy;&ncy;&acy;&tcy;&softcy; &ocy;&bcy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&icy; &icy;&zcy; &ecy;&tcy;&ocy;&gcy;&ocy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&acy;.</span></p> </li> <li> <p><span data-i18n="a6515bc3ddd6ceed56b094c0f730e996510cd70bf0820ed82fe7ea0d2029d787/80" data-source="They cannot begin or end with a slash &lt;code&gt;/&lt;/code&gt; or contain multiple consecutive slashes (see the &lt;code&gt;--normalize&lt;/code&gt; option below for an exception to this rule)." onmousemove="i18n(this)">&Ocy;&ncy;&icy; &ncy;&iecy; &mcy;&ocy;&gcy;&ucy;&tcy; &ncy;&acy;&chcy;&icy;&ncy;&acy;&tcy;&softcy;&scy;&yacy; &icy;&lcy;&icy; &zcy;&acy;&kcy;&acy;&ncy;&chcy;&icy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &kcy;&ocy;&scy;&ocy;&jcy; &chcy;&iecy;&rcy;&tcy;&ocy;&jcy;  <code>/</code>  &icy;&lcy;&icy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ocy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&khcy; &kcy;&ocy;&scy;&ycy;&khcy; &chcy;&iecy;&rcy;&tcy; (&icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&iecy; &icy;&zcy; &ecy;&tcy;&ocy;&gcy;&ocy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&acy; &scy;&mcy;. &vcy; &ocy;&pcy;&tscy;&icy;&icy;  <code>--normalize</code>  &ncy;&icy;&zhcy;&iecy;).</span></p> </li> <li> <p><span data-i18n="9e41a5f56a965aac3454e7fed904c5b2dded928c5ae825a77772220c32e197cd/df" data-source="They cannot end with a dot &lt;code&gt;.&lt;/code&gt;." onmousemove="i18n(this)">&Ocy;&ncy;&icy; &ncy;&iecy; &mcy;&ocy;&gcy;&ucy;&tcy; &zcy;&acy;&kcy;&acy;&ncy;&chcy;&icy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &tcy;&ocy;&chcy;&kcy;&ocy;&jcy;  <code>.</code> .</span></p> </li> <li> <p><span data-i18n="58c1255145c7be1ae6221e155359437eba398e7a377b241daeaea5d30121e800/0a" data-source="They cannot contain a sequence &lt;code&gt;@{&lt;/code&gt;." onmousemove="i18n(this)">&Ocy;&ncy;&icy; &ncy;&iecy; &mcy;&ocy;&gcy;&ucy;&tcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&scy;&tcy;&softcy;  <code>@{</code> .</span></p> </li> <li> <p><span data-i18n="8048c318fb7277e49cac66ea491cd05d0bdcdee7f1b00511816b3e7325800632/fa" data-source="They cannot be the single character &lt;code&gt;@&lt;/code&gt;." onmousemove="i18n(this)">&Ocy;&ncy;&icy; &ncy;&iecy; &mcy;&ocy;&gcy;&ucy;&tcy; &bcy;&ycy;&tcy;&softcy; &ocy;&dcy;&ncy;&icy;&mcy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&ocy;&mcy;  <code>@</code> .</span></p> </li> <li> <p><span data-i18n="602c71ddd90ed8d4afb45dcd6a4c1f7de0954fa3df95dc0333922fb7e5303e6c/ef" data-source="They cannot contain a &lt;code&gt;\&lt;/code&gt;." onmousemove="i18n(this)">&Ocy;&ncy;&icy; &ncy;&iecy; &mcy;&ocy;&gcy;&ucy;&tcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy;  <code>\</code> .</span></p> </li> </ol> </div> <p><span data-i18n="9497419fe73e1954629c4ec4710e3e4935a038a4234edfd8acffb269daf58fbd/3e" data-source="These rules make it easy for shell script based tools to parse reference names, pathname expansion by the shell when a reference name is used unquoted (by mistake), and also avoid ambiguities in certain reference name expressions (see &lt;a href=&quot;gitrevisions&quot;&gt;gitrevisions[7]&lt;/a&gt;):" onmousemove="i18n(this)">&Ecy;&tcy;&icy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&acy; &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&yucy;&tcy; &icy;&ncy;&scy;&tcy;&rcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy;&mcy; &ncy;&acy; &ocy;&scy;&ncy;&ocy;&vcy;&iecy; &scy;&tscy;&iecy;&ncy;&acy;&rcy;&icy;&iecy;&vcy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&icy; &acy;&ncy;&acy;&lcy;&icy;&zcy;&icy;&rcy;&ocy;&vcy;&acy;&tcy;&softcy; &scy;&scy;&ycy;&lcy;&ocy;&chcy;&ncy;&ycy;&iecy; &icy;&mcy;&iecy;&ncy;&acy;, &rcy;&acy;&scy;&shcy;&icy;&rcy;&yacy;&tcy;&softcy; &pcy;&ucy;&tcy;&softcy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&ocy;&jcy;, &kcy;&ocy;&gcy;&dcy;&acy; &scy;&scy;&ycy;&lcy;&ocy;&chcy;&ncy;&ocy;&iecy; &icy;&mcy;&yacy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &bcy;&iecy;&zcy; &kcy;&acy;&vcy;&ycy;&chcy;&iecy;&kcy; (&pcy;&ocy; &ocy;&shcy;&icy;&bcy;&kcy;&iecy;), &acy; &tcy;&acy;&kcy;&zhcy;&iecy; &icy;&zcy;&bcy;&iecy;&gcy;&acy;&tcy;&softcy; &dcy;&vcy;&ucy;&scy;&mcy;&ycy;&scy;&lcy;&iecy;&ncy;&ncy;&ocy;&scy;&tcy;&icy; &vcy; &ncy;&iecy;&kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&khcy; &vcy;&ycy;&rcy;&acy;&zhcy;&iecy;&ncy;&icy;&yacy;&khcy; &scy;&scy;&ycy;&lcy;&ocy;&chcy;&ncy;&ocy;&gcy;&ocy; &icy;&mcy;&iecy;&ncy;&icy; (&scy;&mcy;.  <a href="gitrevisions.html">gitrevisions[7]</a> ):</span></p> <div> <ol> <li> <p><span data-i18n="c586e76e55cb30d39b3f48f0d45585d0347d4d45010b63cec5a2edb3e8a4dc02/71" data-source="A double-dot &lt;code&gt;..&lt;/code&gt; is often used as in &lt;code&gt;ref1..ref2&lt;/code&gt;, and in some contexts this notation means &lt;code&gt;^ref1 ref2&lt;/code&gt; (i.e. not in &lt;code&gt;ref1&lt;/code&gt; and in &lt;code&gt;ref2&lt;/code&gt;)." onmousemove="i18n(this)">&CHcy;&acy;&scy;&tcy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &ocy;&bcy;&ocy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy;  <code>..</code>  &scy; &dcy;&vcy;&ocy;&jcy;&ncy;&ocy;&jcy; &tcy;&ocy;&chcy;&kcy;&ocy;&jcy;, &kcy;&acy;&kcy; &vcy;  <code>ref1..ref2</code> , &icy; &vcy; &ncy;&iecy;&kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&khcy; &kcy;&ocy;&ncy;&tcy;&iecy;&kcy;&scy;&tcy;&acy;&khcy; &ecy;&tcy;&ocy; &ocy;&bcy;&ocy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &ocy;&zcy;&ncy;&acy;&chcy;&acy;&iecy;&tcy;  <code>^ref1 ref2</code>  (&tcy;. &iecy;. &ncy;&iecy; &vcy;  <code>ref1</code> , &acy; &vcy;  <code>ref2</code> ).</span></p> </li> <li> <p><span data-i18n="ab88bfd4edf01243ea8986a43096d491618a1b4ae76e9ee0061f2a811e96735b/ab" data-source="A tilde &lt;code&gt;~&lt;/code&gt; and caret &lt;code&gt;^&lt;/code&gt; are used to introduce the postfix &lt;code&gt;nth parent&lt;/code&gt; and &lt;code&gt;peel onion&lt;/code&gt; operation." onmousemove="i18n(this)">&Tcy;&icy;&lcy;&softcy;&dcy;&acy;  <code>~</code>  &icy; &kcy;&acy;&rcy;&iecy;&tcy;&kcy;&acy;  <code>^</code>  &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yucy;&tcy;&scy;&yacy; &dcy;&lcy;&yacy; &ocy;&bcy;&ocy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy; &pcy;&ocy;&scy;&tcy;&fcy;&icy;&kcy;&scy;&ncy;&ycy;&khcy; &ocy;&pcy;&iecy;&rcy;&acy;&tscy;&icy;&jcy;  <code>nth parent</code>  &icy;  <code>peel onion</code> .</span></p> </li> <li> <p><span data-i18n="a517cda057a27e02c61aae991f3104ba7cac233b42ff63df2bc21339b262e50a/2b" data-source="A colon &lt;code&gt;:&lt;/code&gt; is used as in &lt;code&gt;srcref:dstref&lt;/code&gt; to mean &amp;quot;use srcref&amp;rsquo;s value and store it in dstref&amp;quot; in fetch and push operations. It may also be used to select a specific object such as with &amp;apos;git cat-file&amp;apos;: &amp;quot;git cat-file blob v1.3.3:refs.c&amp;quot;." onmousemove="i18n(this)">&Dcy;&vcy;&ocy;&iecy;&tcy;&ocy;&chcy;&icy;&iecy;  <code>:</code>  &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy;, &kcy;&acy;&kcy; &icy; &vcy;  <code>srcref:dstref</code> , &dcy;&lcy;&yacy; &ocy;&bcy;&ocy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy;  &quot;use srcref&rsquo;s value and store it in dstref&quot;  &vcy; &ocy;&pcy;&iecy;&rcy;&acy;&tscy;&icy;&yacy;&khcy; &vcy;&ycy;&bcy;&ocy;&rcy;&kcy;&icy; &icy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&kcy;&icy;. &IEcy;&gcy;&ocy; &tcy;&acy;&kcy;&zhcy;&iecy; &mcy;&ocy;&zhcy;&ncy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &dcy;&lcy;&yacy; &vcy;&ycy;&bcy;&ocy;&rcy;&acy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy;, &ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &laquo;git cat-file&raquo;:  &quot;git cat-file blob v1.3.3:refs.c&quot; .</span></p> </li> <li> <p><span data-i18n="96a98f8480cf09d6f94ee0f1fb25d3d85f2725629c8b4a8afff5199c492b181d/7c" data-source="at-open-brace &lt;code&gt;@{&lt;/code&gt; is used as a notation to access a reflog entry." onmousemove="i18n(this)">at-open-brace  <code>@{</code>  &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &ocy;&bcy;&ocy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy; &dcy;&lcy;&yacy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&acy; &kcy; &zcy;&acy;&pcy;&icy;&scy;&icy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&jcy;.</span></p> </li> </ol> </div> <p><span data-i18n="139402e83a67e96ac6bc35f2b3d0aa7bc57f7628ee192ae44ba6a701888d66e4/d6" data-source="With the &lt;code&gt;--branch&lt;/code&gt; option, the command takes a name and checks if it can be used as a valid branch name (e.g. when creating a new branch). But be cautious when using the previous checkout syntax that may refer to a detached HEAD state. The rule &lt;code&gt;git check-ref-format --branch $name&lt;/code&gt; implements may be stricter than what &lt;code&gt;git check-ref-format refs/heads/$name&lt;/code&gt; says (e.g. a dash may appear at the beginning of a ref component, but it is explicitly forbidden at the beginning of a branch name). When run with the &lt;code&gt;--branch&lt;/code&gt; option in a repository, the input is first expanded for the &amp;ldquo;previous checkout syntax&amp;rdquo; &lt;code&gt;@{-n}&lt;/code&gt;. For example, &lt;code&gt;@{-1}&lt;/code&gt; is a way to refer the last thing that was checked out using &amp;quot;git switch&amp;quot; or &amp;quot;git checkout&amp;quot; operation. This option should be used by porcelains to accept this syntax anywhere a branch name is expected, so they can act as if you typed the branch name. As an exception note that, the &amp;ldquo;previous checkout operation&amp;rdquo; might result in a commit object name when the N-th last thing checked out was not a branch." onmousemove="i18n(this)">&Scy; &ocy;&pcy;&tscy;&icy;&iecy;&jcy;  <code>--branch</code>  &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &pcy;&rcy;&icy;&ncy;&icy;&mcy;&acy;&iecy;&tcy; &icy;&mcy;&yacy; &icy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&yacy;&iecy;&tcy;, &mcy;&ocy;&zhcy;&ncy;&ocy; &lcy;&icy; &iecy;&gcy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &dcy;&ocy;&pcy;&ucy;&scy;&tcy;&icy;&mcy;&ocy;&gcy;&ocy; &icy;&mcy;&iecy;&ncy;&icy; &vcy;&iecy;&tcy;&kcy;&icy; (&ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &pcy;&rcy;&icy; &scy;&ocy;&zcy;&dcy;&acy;&ncy;&icy;&icy; &ncy;&ocy;&vcy;&ocy;&jcy; &vcy;&iecy;&tcy;&kcy;&icy;). &Ncy;&ocy; &bcy;&ucy;&dcy;&softcy;&tcy;&iecy; &ocy;&scy;&tcy;&ocy;&rcy;&ocy;&zhcy;&ncy;&ycy; &pcy;&rcy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&icy; &pcy;&rcy;&iecy;&dcy;&ycy;&dcy;&ucy;&shchcy;&iecy;&gcy;&ocy; &scy;&icy;&ncy;&tcy;&acy;&kcy;&scy;&icy;&scy;&acy; &icy;&zcy;&vcy;&lcy;&iecy;&chcy;&iecy;&ncy;&icy;&yacy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &mcy;&ocy;&zhcy;&iecy;&tcy; &ocy;&tcy;&ncy;&ocy;&scy;&icy;&tcy;&softcy;&scy;&yacy; &kcy; &ocy;&tcy;&scy;&ocy;&iecy;&dcy;&icy;&ncy;&iecy;&ncy;&ncy;&ocy;&mcy;&ucy; &scy;&ocy;&scy;&tcy;&ocy;&yacy;&ncy;&icy;&yucy; HEAD. &Pcy;&rcy;&acy;&vcy;&icy;&lcy;&ocy;, &rcy;&iecy;&acy;&lcy;&icy;&zcy;&ucy;&iecy;&mcy;&ocy;&iecy;  <code>git check-ref-format --branch $name</code> , &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &bcy;&ocy;&lcy;&iecy;&iecy; &scy;&tcy;&rcy;&ocy;&gcy;&icy;&mcy;, &chcy;&iecy;&mcy; &tcy;&ocy;, &chcy;&tcy;&ocy; &gcy;&ocy;&vcy;&ocy;&rcy;&icy;&tcy;  <code>git check-ref-format refs/heads/$name</code>  (&ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &tcy;&icy;&rcy;&iecy; &mcy;&ocy;&zhcy;&iecy;&tcy; &pcy;&ocy;&yacy;&vcy;&lcy;&yacy;&tcy;&softcy;&scy;&yacy; &vcy; &ncy;&acy;&chcy;&acy;&lcy;&iecy; &kcy;&ocy;&mcy;&pcy;&ocy;&ncy;&iecy;&ncy;&tcy;&acy; ref, &ncy;&ocy; &ecy;&tcy;&ocy; &yacy;&vcy;&ncy;&ocy; &zcy;&acy;&pcy;&rcy;&iecy;&shchcy;&iecy;&ncy;&ocy; &vcy; &ncy;&acy;&chcy;&acy;&lcy;&iecy; &icy;&mcy;&iecy;&ncy;&icy; &vcy;&iecy;&tcy;&kcy;&icy;). &Pcy;&rcy;&icy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&iecy; &scy; &ocy;&pcy;&tscy;&icy;&iecy;&jcy;  <code>--branch</code>  &vcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy; &vcy;&khcy;&ocy;&dcy;&ncy;&ycy;&iecy; &dcy;&acy;&ncy;&ncy;&ycy;&iecy; &scy;&ncy;&acy;&chcy;&acy;&lcy;&acy; &rcy;&acy;&scy;&shcy;&icy;&rcy;&yacy;&yucy;&tcy;&scy;&yacy; &dcy;&lcy;&yacy; &laquo;&scy;&icy;&ncy;&tcy;&acy;&kcy;&scy;&icy;&scy;&acy; &pcy;&rcy;&iecy;&dcy;&ycy;&dcy;&ucy;&shchcy;&iecy;&jcy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&icy;&raquo;  <code>@{-n}</code> . &Ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;,  <code>@{-1}</code>  &mdash; &ecy;&tcy;&ocy; &scy;&pcy;&ocy;&scy;&ocy;&bcy; &scy;&ocy;&scy;&lcy;&acy;&tcy;&softcy;&scy;&yacy; &ncy;&acy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ncy;&icy;&jcy; &ecy;&lcy;&iecy;&mcy;&iecy;&ncy;&tcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &bcy;&ycy;&lcy; &icy;&zcy;&vcy;&lcy;&iecy;&chcy;&iecy;&ncy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &ocy;&pcy;&iecy;&rcy;&acy;&tscy;&icy;&icy;  &quot;git switch&quot;  &icy;&lcy;&icy;  &quot;git checkout&quot; . &Ecy;&tcy;&acy; &ocy;&pcy;&tscy;&icy;&yacy; &dcy;&ocy;&lcy;&zhcy;&ncy;&acy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &fcy;&acy;&rcy;&fcy;&ocy;&rcy;&acy;&mcy;&icy; &dcy;&lcy;&yacy; &pcy;&rcy;&icy;&ncy;&yacy;&tcy;&icy;&yacy; &ecy;&tcy;&ocy;&gcy;&ocy; &scy;&icy;&ncy;&tcy;&acy;&kcy;&scy;&icy;&scy;&acy; &vcy;&iecy;&zcy;&dcy;&iecy;, &gcy;&dcy;&iecy; &ocy;&zhcy;&icy;&dcy;&acy;&iecy;&tcy;&scy;&yacy; &icy;&mcy;&yacy; &vcy;&iecy;&tcy;&kcy;&icy;, &chcy;&tcy;&ocy;&bcy;&ycy; &ocy;&ncy;&icy; &mcy;&ocy;&gcy;&lcy;&icy; &dcy;&iecy;&jcy;&scy;&tcy;&vcy;&ocy;&vcy;&acy;&tcy;&softcy; &tcy;&acy;&kcy;, &kcy;&acy;&kcy; &iecy;&scy;&lcy;&icy; &bcy;&ycy; &vcy;&ycy; &vcy;&vcy;&iecy;&lcy;&icy; &icy;&mcy;&yacy; &vcy;&iecy;&tcy;&kcy;&icy;. &Vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&yacy; &ocy;&bcy;&rcy;&acy;&tcy;&icy;&tcy;&iecy; &vcy;&ncy;&icy;&mcy;&acy;&ncy;&icy;&iecy;, &chcy;&tcy;&ocy; &laquo;&pcy;&rcy;&iecy;&dcy;&ycy;&dcy;&ucy;&shchcy;&acy;&yacy; &ocy;&pcy;&iecy;&rcy;&acy;&tscy;&icy;&yacy; &icy;&zcy;&vcy;&lcy;&iecy;&chcy;&iecy;&ncy;&icy;&yacy;&raquo; &mcy;&ocy;&zhcy;&iecy;&tcy; &pcy;&rcy;&icy;&vcy;&iecy;&scy;&tcy;&icy; &kcy; &pcy;&rcy;&icy;&scy;&vcy;&ocy;&iecy;&ncy;&icy;&yucy; &icy;&mcy;&iecy;&ncy;&icy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy;, &iecy;&scy;&lcy;&icy; N-&iecy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ncy;&iecy;&iecy; &icy;&zcy;&vcy;&lcy;&iecy;&chcy;&iecy;&ncy;&ncy;&ocy;&iecy; &scy;&ocy;&bcy;&ycy;&tcy;&icy;&iecy; &ncy;&iecy; &bcy;&ycy;&lcy;&ocy; &vcy;&iecy;&tcy;&kcy;&ocy;&jcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-check-ref-format.txt---no-allow-onelevel"><span data-i18n="747265953d33bccc23ecbb4e2262f01283a03545974a764048509625c0bfe295/38" data-source="--[no-]allow-onelevel" onmousemove="i18n(this)">--[no-]allow-onelevel</span></dt> <dd> <p><span data-i18n="0500553b397763f0cf448ddb95b89a3e7b428220fd7b06c892ed99cf3439a3c3/45" data-source="Controls whether one-level refnames are accepted (i.e., refnames that do not contain multiple &lt;code&gt;/&lt;/code&gt;-separated components). The default is &lt;code&gt;--no-allow-onelevel&lt;/code&gt;." onmousemove="i18n(this)">&Ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy;, &pcy;&rcy;&icy;&ncy;&icy;&mcy;&acy;&yucy;&tcy;&scy;&yacy; &lcy;&icy; &ocy;&dcy;&ncy;&ocy;&ucy;&rcy;&ocy;&vcy;&ncy;&iecy;&vcy;&ycy;&iecy; &icy;&mcy;&iecy;&ncy;&acy; &scy;&scy;&ycy;&lcy;&ocy;&kcy; (&tcy;. &iecy;. &icy;&mcy;&iecy;&ncy;&acy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ncy;&iecy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ocy; &kcy;&ocy;&mcy;&pcy;&ocy;&ncy;&iecy;&ncy;&tcy;&ocy;&vcy;, &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&iecy;&ncy;&ncy;&ycy;&khcy;  <code>/</code> ). &Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &mdash;  <code>--no-allow-onelevel</code> .</span></p> </dd> <dt id="Documentation/git-check-ref-format.txt---refspec-pattern"><span data-i18n="66cb842e3ad9354e74e3651eb759a7a91a00b2234b4c0bdfa7f12d42a166a91f/32" data-source="--refspec-pattern" onmousemove="i18n(this)">--refspec-pattern</span></dt> <dd> <p><span data-i18n="b516d82f463b19e128e4ddaf8c5bdc338ce5aea4318a8900244622e0b9d2ffa8/49" data-source="Interpret &amp;lt;refname&amp;gt; as a reference name pattern for a refspec (as used with remote repositories). If this option is enabled, &amp;lt;refname&amp;gt; is allowed to contain a single &lt;code&gt;*&lt;/code&gt; in the refspec (e.g., &lt;code&gt;foo/bar*/baz&lt;/code&gt; or &lt;code&gt;foo/bar*baz/&lt;/code&gt; but not &lt;code&gt;foo/bar*/baz*&lt;/code&gt;)." onmousemove="i18n(this)">&Icy;&ncy;&tcy;&iecy;&rcy;&pcy;&rcy;&iecy;&tcy;&icy;&rcy;&ucy;&jcy;&tcy;&iecy; &lt;refname&gt; &kcy;&acy;&kcy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy; &scy;&scy;&ycy;&lcy;&ocy;&chcy;&ncy;&ocy;&gcy;&ocy; &icy;&mcy;&iecy;&ncy;&icy; &dcy;&lcy;&yacy; &scy;&pcy;&iecy;&tscy;&icy;&fcy;&icy;&kcy;&acy;&tscy;&icy;&icy; &scy;&scy;&ycy;&lcy;&kcy;&icy; (&kcy;&acy;&kcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &vcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&khcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;&khcy;). &IEcy;&scy;&lcy;&icy; &ecy;&tcy;&acy; &ocy;&pcy;&tscy;&icy;&yacy; &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&acy;, &lt;refname&gt; &mcy;&ocy;&zhcy;&iecy;&tcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy; &ocy;&dcy;&icy;&ncy;  <code>*</code>  &vcy; &scy;&pcy;&iecy;&tscy;&icy;&fcy;&icy;&kcy;&acy;&tscy;&icy;&icy; &scy;&scy;&ycy;&lcy;&kcy;&icy; (&ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;,  <code>foo/bar*/baz</code>  &icy;&lcy;&icy;  <code>foo/bar*baz/</code> , &ncy;&ocy; &ncy;&iecy;  <code>foo/bar*/baz*</code> ).</span></p> </dd> <dt id="Documentation/git-check-ref-format.txt---normalize"><span data-i18n="46f328cd8c790a38787c940e5cd8aa76ce427de16ec7bbebb2cd03bdd023eab0/80" data-source="--normalize" onmousemove="i18n(this)">--normalize</span></dt> <dd> <p><span data-i18n="7530bfb8e6cb707105854bc94d99cc90193b8d468fa3e10c87c0ec3330adc5e1/2c" data-source="Normalize &lt;code&gt;refname&lt;/code&gt; by removing any leading slash (&lt;code&gt;/&lt;/code&gt;) characters and collapsing runs of adjacent slashes between name components into a single slash. If the normalized refname is valid then print it to standard output and exit with a status of 0, otherwise exit with a non-zero status. (&lt;code&gt;--print&lt;/code&gt; is a deprecated way to spell &lt;code&gt;--normalize&lt;/code&gt;.)" onmousemove="i18n(this)">&Ncy;&ocy;&rcy;&mcy;&acy;&lcy;&icy;&zcy;&ucy;&jcy;&tcy;&iecy;  <code>refname</code> , &ucy;&dcy;&acy;&lcy;&icy;&vcy; &vcy;&scy;&iecy; &vcy;&iecy;&dcy;&ucy;&shchcy;&icy;&iecy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&ycy; &kcy;&ocy;&scy;&ocy;&jcy; &chcy;&iecy;&rcy;&tcy;&ycy; (  <code>/</code>  ) &icy; &scy;&vcy;&iecy;&rcy;&ncy;&ucy;&vcy; &rcy;&yacy;&dcy;&ycy; &scy;&ocy;&scy;&iecy;&dcy;&ncy;&icy;&khcy; &kcy;&ocy;&scy;&ycy;&khcy; &chcy;&iecy;&rcy;&tcy; &mcy;&iecy;&zhcy;&dcy;&ucy; &kcy;&ocy;&mcy;&pcy;&ocy;&ncy;&iecy;&ncy;&tcy;&acy;&mcy;&icy; &icy;&mcy;&iecy;&ncy;&icy; &vcy; &ocy;&dcy;&ncy;&ucy; &kcy;&ocy;&scy;&ucy;&yucy; &chcy;&iecy;&rcy;&tcy;&ucy;. &IEcy;&scy;&lcy;&icy; &ncy;&ocy;&rcy;&mcy;&acy;&lcy;&icy;&zcy;&ocy;&vcy;&acy;&ncy;&ncy;&ocy;&iecy; &icy;&mcy;&yacy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &dcy;&ocy;&pcy;&ucy;&scy;&tcy;&icy;&mcy;&ocy;, &vcy;&ycy;&vcy;&iecy;&dcy;&icy;&tcy;&iecy; &iecy;&gcy;&ocy; &ncy;&acy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&jcy; &vcy;&ycy;&vcy;&ocy;&dcy; &icy; &vcy;&ycy;&jcy;&dcy;&icy;&tcy;&iecy; &scy;&ocy; &scy;&tcy;&acy;&tcy;&ucy;&scy;&ocy;&mcy; 0, &vcy; &pcy;&rcy;&ocy;&tcy;&icy;&vcy;&ncy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &vcy;&ycy;&jcy;&dcy;&icy;&tcy;&iecy; &scy; &ncy;&iecy;&ncy;&ucy;&lcy;&iecy;&vcy;&ycy;&mcy; &scy;&tcy;&acy;&tcy;&ucy;&scy;&ocy;&mcy;. (  <code>--print</code>  &mdash; &ucy;&scy;&tcy;&acy;&rcy;&iecy;&vcy;&shcy;&icy;&jcy; &scy;&pcy;&ocy;&scy;&ocy;&bcy; &ncy;&acy;&pcy;&icy;&scy;&acy;&ncy;&icy;&yacy;  <code>--normalize</code>  .)</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_examples"><span data-i18n="e68ee04dff59551b7d1ae07a2f8a00dc61d841628948da3d2781630706a05e92/38" data-source="Examples" onmousemove="i18n(this)">Examples</span></h2> <div> <div> <ul> <li> <p><span data-i18n="6c5bd3477e6c34f6e066d60dfbe352758ef4f269a4e91f59e34a60128086f18c/8d" data-source="Print the name of the previous thing checked out:" onmousemove="i18n(this)">&Vcy;&ycy;&vcy;&iecy;&dcy;&icy;&tcy;&iecy; &icy;&mcy;&yacy; &pcy;&rcy;&iecy;&dcy;&ycy;&dcy;&ucy;&shchcy;&iecy;&jcy; &icy;&zcy;&vcy;&lcy;&iecy;&chcy;&iecy;&ncy;&ncy;&ocy;&jcy; &vcy;&iecy;&shchcy;&icy;:</span></p> <div> <div> <pre class="hljs language-sql">$ git <span class="hljs-keyword">check</span><span class="hljs-operator">-</span><span class="hljs-keyword">ref</span><span class="hljs-operator">-</span>format <span class="hljs-comment">--branch @{-1}</span></pre> </div> </div> </li> <li> <p><span data-i18n="fa67e19c29c945f14e3fc2de89c90d1df2d26c2e7382b0c0c9a060fdcd3babd5/6c" data-source="Determine the reference name to use for a new branch:" onmousemove="i18n(this)">&Ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&icy;&tcy;&iecy; &scy;&scy;&ycy;&lcy;&ocy;&chcy;&ncy;&ocy;&iecy; &icy;&mcy;&yacy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&iecy; &bcy;&ucy;&dcy;&iecy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &dcy;&lcy;&yacy; &ncy;&ocy;&vcy;&ocy;&jcy; &vcy;&iecy;&tcy;&kcy;&icy;:</span></p> <div> <div> <pre class="hljs language-perl">$ <span class="hljs-keyword">ref</span>=$(git check-<span class="hljs-keyword">ref</span>-<span class="hljs-keyword">format</span> --normalize <span class="hljs-string">&quot;refs/heads/$newbranch&quot;</span>)||
+{ echo <span class="hljs-string">&quot;we do not like &apos;$newbranch&apos; as a branch name.&quot;</span> &gt;&amp;<span class="hljs-number">2</span> ; <span class="hljs-keyword">exit</span> <span class="hljs-number">1</span> ; }</pre> </div> </div> </li> </ul> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-check-ref-format">https://git-scm.com/docs/git-check-ref-format</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-checkout.html">
+                            git checkout                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-checkout-index.html">
+                            git checkout-index                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-cherry.html">
+                            git cherry                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-cherry-pick.html">
+                            git cherry-pick                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-citool.html">
+                            git citool                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-clean.html">
+                            git clean                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-clone.html">
+                            git clone                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-check-ref-format.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

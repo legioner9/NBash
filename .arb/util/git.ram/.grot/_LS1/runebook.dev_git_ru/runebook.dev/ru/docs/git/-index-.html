@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:06:29 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Git 2.43 Русский</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    
+<br>
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col">
+            <div class="row">
+                <div class="col-md-9">
+                    <h1 class="text-body-emphasis">
+                        Git                        <span class="fw-normal">2.43</span>
+                        <span class="fi fi-ru"></span>                        <span class="fw-normal text-body-secondary">Русский</span>
+                    </h1>
+
+                    <div id="entries">
+                                                        <div class="entry-group" id="">
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="index.html" title="Git">
+                                                    Git                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="Miscellaneous">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Miscellaneous                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="api-index.html" title="api index">
+                                                    api index                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="api-simple-ipc.html" title="api simple-ipc">
+                                                    api simple-ipc                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="api-trace2.html" title="api trace2">
+                                                    api trace2                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="bundle-uri.html" title="bundle uri">
+                                                    bundle uri                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitcore-tutorial.html" title="gitcore tutorial">
+                                                    gitcore tutorial                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitcredentials.html" title="gitcredentials">
+                                                    gitcredentials                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitcvs-migration.html" title="gitcvs migration">
+                                                    gitcvs migration                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitdiffcore.html" title="gitdiffcore">
+                                                    gitdiffcore                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitformat-bundle.html" title="gitformat bundle">
+                                                    gitformat bundle                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitformat-chunk.html" title="gitformat chunk">
+                                                    gitformat chunk                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitformat-commit-graph.html" title="gitformat commit-graph">
+                                                    gitformat commit-graph                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitformat-index.html" title="gitformat index">
+                                                    gitformat index                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitformat-pack.html" title="gitformat pack">
+                                                    gitformat pack                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitformat-signature.html" title="gitformat signature">
+                                                    gitformat signature                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitk.html" title="gitk">
+                                                    gitk                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitmailmap.html" title="gitmailmap">
+                                                    gitmailmap                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitnamespaces.html" title="gitnamespaces">
+                                                    gitnamespaces                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitprotocol-capabilities.html" title="gitprotocol capabilities">
+                                                    gitprotocol capabilities                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitprotocol-common.html" title="gitprotocol common">
+                                                    gitprotocol common                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitprotocol-http.html" title="gitprotocol http">
+                                                    gitprotocol http                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitprotocol-pack.html" title="gitprotocol pack">
+                                                    gitprotocol pack                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitprotocol-v2.html" title="gitprotocol v2">
+                                                    gitprotocol v2                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitremote-helpers.html" title="gitremote helpers">
+                                                    gitremote helpers                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitrepository-layout.html" title="gitrepository layout">
+                                                    gitrepository layout                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gittutorial-2.html" title="gittutorial 2">
+                                                    gittutorial 2                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitweb.html" title="gitweb">
+                                                    gitweb                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitweb.conf.html" title="gitweb.conf">
+                                                    gitweb.conf                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="howto-index.html" title="howto index">
+                                                    howto index                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="multi-pack-index.html" title="multi pack-index">
+                                                    multi pack-index                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="partial-clone.html" title="partial clone">
+                                                    partial clone                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="scalar.html" title="scalar">
+                                                    scalar                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="user-manual.html" title="User Manual">
+                                                    User Manual                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="Setup_and_Config">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Setup and Config                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git.html" title="git">
+                                                    git                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-bugreport.html" title="git bugreport">
+                                                    git bugreport                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-config.html" title="git config">
+                                                    git config                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="Basic_Snapshotting">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Basic Snapshotting                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-add.html" title="git add">
+                                                    git add                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-commit.html" title="git commit">
+                                                    git commit                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-diff.html" title="git diff">
+                                                    git diff                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-mv.html" title="git mv">
+                                                    git mv                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-notes.html" title="git notes">
+                                                    git notes                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-reset.html" title="git reset">
+                                                    git reset                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-restore.html" title="git restore">
+                                                    git restore                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-rm.html" title="git rm">
+                                                    git rm                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-status.html" title="git status">
+                                                    git status                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="Email">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Email                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-am.html" title="git am">
+                                                    git am                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-format-patch.html" title="git format-patch">
+                                                    git format-patch                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-request-pull.html" title="git request-pull">
+                                                    git request-pull                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-send-email.html" title="git send-email">
+                                                    git send-email                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="Git">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Git                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-annotate.html" title="git annotate">
+                                                    git annotate                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-archimport.html" title="git archimport">
+                                                    git archimport                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-bisect-lk2009.html" title="git bisect-lk2009">
+                                                    git bisect-lk2009                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-check-attr.html" title="git check-attr">
+                                                    git check-attr                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-check-mailmap.html" title="git check-mailmap">
+                                                    git check-mailmap                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-check-ref-format.html" title="git check-ref-format">
+                                                    git check-ref-format                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-cherry.html" title="git cherry">
+                                                    git cherry                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-citool.html" title="git citool">
+                                                    git citool                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-column.html" title="git column">
+                                                    git column                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-commit-graph.html" title="git commit-graph">
+                                                    git commit-graph                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-credential.html" title="git credential">
+                                                    git credential                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-credential-cache.html" title="git credential-cache">
+                                                    git credential-cache                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-credential-store.html" title="git credential-store">
+                                                    git credential-store                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-cvsexportcommit.html" title="git cvsexportcommit">
+                                                    git cvsexportcommit                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-cvsimport.html" title="git cvsimport">
+                                                    git cvsimport                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-cvsserver.html" title="git cvsserver">
+                                                    git cvsserver                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-diagnose.html" title="git diagnose">
+                                                    git diagnose                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-diff-files.html" title="git diff-files">
+                                                    git diff-files                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-diff-tree.html" title="git diff-tree">
+                                                    git diff-tree                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-fast-export.html" title="git fast-export">
+                                                    git fast-export                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-fetch-pack.html" title="git fetch-pack">
+                                                    git fetch-pack                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-fmt-merge-msg.html" title="git fmt-merge-msg">
+                                                    git fmt-merge-msg                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-for-each-repo.html" title="git for-each-repo">
+                                                    git for-each-repo                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-fsmonitor--daemon.html" title="git fsmonitor--daemon">
+                                                    git fsmonitor--daemon                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-get-tar-commit-id.html" title="git get-tar-commit-id">
+                                                    git get-tar-commit-id                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-gui.html" title="git gui">
+                                                    git gui                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-hook.html" title="git hook">
+                                                    git hook                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-http-backend.html" title="git http-backend">
+                                                    git http-backend                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-http-fetch.html" title="git http-fetch">
+                                                    git http-fetch                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-http-push.html" title="git http-push">
+                                                    git http-push                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-imap-send.html" title="git imap-send">
+                                                    git imap-send                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-index-pack.html" title="git index-pack">
+                                                    git index-pack                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-interpret-trailers.html" title="git interpret-trailers">
+                                                    git interpret-trailers                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-ls-remote.html" title="git ls-remote">
+                                                    git ls-remote                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-mailinfo.html" title="git mailinfo">
+                                                    git mailinfo                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-mailsplit.html" title="git mailsplit">
+                                                    git mailsplit                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-maintenance.html" title="git maintenance">
+                                                    git maintenance                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-merge-file.html" title="git merge-file">
+                                                    git merge-file                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-merge-index.html" title="git merge-index">
+                                                    git merge-index                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-merge-one-file.html" title="git merge-one-file">
+                                                    git merge-one-file                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-merge-tree.html" title="git merge-tree">
+                                                    git merge-tree                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-mktag.html" title="git mktag">
+                                                    git mktag                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-mktree.html" title="git mktree">
+                                                    git mktree                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-multi-pack-index.html" title="git multi-pack-index">
+                                                    git multi-pack-index                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-name-rev.html" title="git name-rev">
+                                                    git name-rev                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-p4.html" title="git p4">
+                                                    git p4                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-pack-objects.html" title="git pack-objects">
+                                                    git pack-objects                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-pack-redundant.html" title="git pack-redundant">
+                                                    git pack-redundant                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-pack-refs.html" title="git pack-refs">
+                                                    git pack-refs                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-patch-id.html" title="git patch-id">
+                                                    git patch-id                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-prune.html" title="git prune">
+                                                    git prune                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-prune-packed.html" title="git prune-packed">
+                                                    git prune-packed                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-quiltimport.html" title="git quiltimport">
+                                                    git quiltimport                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-receive-pack.html" title="git receive-pack">
+                                                    git receive-pack                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-remote-ext.html" title="git remote-ext">
+                                                    git remote-ext                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-remote-fd.html" title="git remote-fd">
+                                                    git remote-fd                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-repack.html" title="git repack">
+                                                    git repack                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-replace.html" title="git replace">
+                                                    git replace                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-rerere.html" title="git rerere">
+                                                    git rerere                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-send-pack.html" title="git send-pack">
+                                                    git send-pack                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-sh-i18n.html" title="git sh-i18n">
+                                                    git sh-i18n                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-sh-i18n--envsubst.html" title="git sh-i18n--envsubst">
+                                                    git sh-i18n--envsubst                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-sh-setup.html" title="git sh-setup">
+                                                    git sh-setup                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-shell.html" title="git shell">
+                                                    git shell                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-show-branch.html" title="git show-branch">
+                                                    git show-branch                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-show-index.html" title="git show-index">
+                                                    git show-index                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-sparse-checkout.html" title="git sparse-checkout">
+                                                    git sparse-checkout                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-stripspace.html" title="git stripspace">
+                                                    git stripspace                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-unpack-file.html" title="git unpack-file">
+                                                    git unpack-file                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-unpack-objects.html" title="git unpack-objects">
+                                                    git unpack-objects                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-upload-archive.html" title="git upload-archive">
+                                                    git upload-archive                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-upload-pack.html" title="git upload-pack">
+                                                    git upload-pack                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-var.html" title="git var">
+                                                    git var                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-verify-commit.html" title="git verify-commit">
+                                                    git verify-commit                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-verify-tag.html" title="git verify-tag">
+                                                    git verify-tag                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-version.html" title="git version">
+                                                    git version                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-web--browse.html" title="git web--browse">
+                                                    git web--browse                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-whatchanged.html" title="git whatchanged">
+                                                    git whatchanged                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="Patching">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Patching                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-apply.html" title="git apply">
+                                                    git apply                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-cherry-pick.html" title="git cherry-pick">
+                                                    git cherry-pick                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-rebase.html" title="git rebase">
+                                                    git rebase                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-revert.html" title="git revert">
+                                                    git revert                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="Administration">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Administration                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-archive.html" title="git archive">
+                                                    git archive                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-bundle.html" title="git bundle">
+                                                    git bundle                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-clean.html" title="git clean">
+                                                    git clean                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-filter-branch.html" title="git filter-branch">
+                                                    git filter-branch                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-fsck.html" title="git fsck">
+                                                    git fsck                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-gc.html" title="git gc">
+                                                    git gc                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-instaweb.html" title="git instaweb">
+                                                    git instaweb                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-reflog.html" title="git reflog">
+                                                    git reflog                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="Debugging">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Debugging                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-bisect.html" title="git bisect">
+                                                    git bisect                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-blame.html" title="git blame">
+                                                    git blame                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-grep.html" title="git grep">
+                                                    git grep                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="Branching_and_Merging">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Branching and Merging                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-branch.html" title="git branch">
+                                                    git branch                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-checkout.html" title="git checkout">
+                                                    git checkout                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-log.html" title="git log">
+                                                    git log                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-merge.html" title="git merge">
+                                                    git merge                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-mergetool.html" title="git mergetool">
+                                                    git mergetool                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-stash.html" title="git stash">
+                                                    git stash                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-switch.html" title="git switch">
+                                                    git switch                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-tag.html" title="git tag">
+                                                    git tag                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="Plumbing_Commands">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Plumbing Commands                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-cat-file.html" title="git cat-file">
+                                                    git cat-file                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-check-ignore.html" title="git check-ignore">
+                                                    git check-ignore                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-checkout-index.html" title="git checkout-index">
+                                                    git checkout-index                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-commit-tree.html" title="git commit-tree">
+                                                    git commit-tree                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-count-objects.html" title="git count-objects">
+                                                    git count-objects                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-diff-index.html" title="git diff-index">
+                                                    git diff-index                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-for-each-ref.html" title="git for-each-ref">
+                                                    git for-each-ref                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-hash-object.html" title="git hash-object">
+                                                    git hash-object                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-ls-files.html" title="git ls-files">
+                                                    git ls-files                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-ls-tree.html" title="git ls-tree">
+                                                    git ls-tree                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-merge-base.html" title="git merge-base">
+                                                    git merge-base                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-read-tree.html" title="git read-tree">
+                                                    git read-tree                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-rev-list.html" title="git rev-list">
+                                                    git rev-list                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-rev-parse.html" title="git rev-parse">
+                                                    git rev-parse                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-show-ref.html" title="git show-ref">
+                                                    git show-ref                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-symbolic-ref.html" title="git symbolic-ref">
+                                                    git symbolic-ref                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-update-index.html" title="git update-index">
+                                                    git update-index                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-update-ref.html" title="git update-ref">
+                                                    git update-ref                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-verify-pack.html" title="git verify-pack">
+                                                    git verify-pack                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-write-tree.html" title="git write-tree">
+                                                    git write-tree                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="Getting_and_Creating_Projects">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Getting and Creating Projects                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-clone.html" title="git clone">
+                                                    git clone                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="Server_Admin">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Server Admin                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-daemon.html" title="git daemon">
+                                                    git daemon                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-update-server-info.html" title="git update-server-info">
+                                                    git update-server-info                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="Inspection_and_Comparison">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Inspection and Comparison                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-describe.html" title="git describe">
+                                                    git describe                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-difftool.html" title="git difftool">
+                                                    git difftool                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-range-diff.html" title="git range-diff">
+                                                    git range-diff                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-shortlog.html" title="git shortlog">
+                                                    git shortlog                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="External_Systems">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            External Systems                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-fast-import.html" title="git fast-import">
+                                                    git fast-import                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-svn.html" title="git svn">
+                                                    git svn                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="Sharing_and_Updating_Projects">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Sharing and Updating Projects                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-fetch.html" title="git fetch">
+                                                    git fetch                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-pull.html" title="git pull">
+                                                    git pull                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-push.html" title="git push">
+                                                    git push                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="git-remote.html" title="git remote">
+                                                    git remote                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="________________________">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Настройка и конфигурация                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-help.html" title="git help">
+                                                    git help                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="_____________________________">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Получение и создание проектов                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-init.html" title="git init">
+                                                    git init                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="__________________">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Осмотр и сравнение                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-show.html" title="git show">
+                                                    git show                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="______________________________________________">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Совместное использование и обновление проектов                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-submodule.html" title="git submodule">
+                                                    git submodule                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="___________________">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Ветвление и слияние                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="git-worktree.html" title="git worktree">
+                                                    git worktree                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                                    <div class="entry-group" id="Guides">
+                                                                            <h2 class="h3 sticky-top bg-body">
+                                            Guides                                        </h2>
+                                                                        <ul>
+                                                                                    <li>
+                                                <a href="gitattributes.html" title="gitattributes">
+                                                    gitattributes                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitcli.html" title="gitcli">
+                                                    gitcli                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="giteveryday.html" title="giteveryday">
+                                                    giteveryday                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitfaq.html" title="gitfaq">
+                                                    gitfaq                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitglossary.html" title="gitglossary">
+                                                    gitglossary                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="githooks.html" title="githooks">
+                                                    githooks                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitignore.html" title="gitignore">
+                                                    gitignore                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitmodules.html" title="gitmodules">
+                                                    gitmodules                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitrevisions.html" title="gitrevisions">
+                                                    gitrevisions                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitsubmodules.html" title="gitsubmodules">
+                                                    gitsubmodules                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gittutorial.html" title="gittutorial">
+                                                    gittutorial                                                </a>
+                                            </li>
+                                                                                    <li>
+                                                <a href="gitworkflows.html" title="gitworkflows">
+                                                    gitworkflows                                                </a>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                                        </div>
+
+                    <hr>
+
+                    <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>                </div>
+                <div class="col-md-3">
+                    <aside class="sidebar">
+                        <div class="sticky-top bg-body">
+                            <form class="d-flex" action="-index-.html">
+                                <div class="input-group mb-3">
+                                    <input class="form-control" type="search" name="q" id="q" placeholder="Search for Git" value="" autofocus>
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                                                    <div class="list-group list-group-flush">
+                                                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#Miscellaneous">
+                                            Miscellaneous                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#Setup_and_Config">
+                                            Setup and Config                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#Basic_Snapshotting">
+                                            Basic Snapshotting                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#Email">
+                                            Email                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#Git">
+                                            Git                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#Patching">
+                                            Patching                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#Administration">
+                                            Administration                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#Debugging">
+                                            Debugging                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#Branching_and_Merging">
+                                            Branching and Merging                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#Plumbing_Commands">
+                                            Plumbing Commands                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#Getting_and_Creating_Projects">
+                                            Getting and Creating Projects                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#Server_Admin">
+                                            Server Admin                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#Inspection_and_Comparison">
+                                            Inspection and Comparison                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#External_Systems">
+                                            External Systems                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#Sharing_and_Updating_Projects">
+                                            Sharing and Updating Projects                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#________________________">
+                                            Настройка и конфигурация                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#_____________________________">
+                                            Получение и создание проектов                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#__________________">
+                                            Осмотр и сравнение                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#______________________________________________">
+                                            Совместное использование и обновление проектов                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#___________________">
+                                            Ветвление и слияние                                        </a>
+                                                                                                                                                <a class="list-group-item list-group-item-action " href="-index-.html#Guides">
+                                            Guides                                        </a>
+                                                                                                </div>
+                                            </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="-index-.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

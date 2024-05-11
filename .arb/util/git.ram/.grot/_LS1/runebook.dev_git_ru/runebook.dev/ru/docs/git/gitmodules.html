@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:17:46 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Git - gitmodules</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Guides">
+                                Guides                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="b63184ed1885bae2329939675544bafbfcc71df061ee1f4487bd1fcdddd3880c/11" data-source="gitmodules" onmousemove="i18n(this)">gitmodules</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="da8269638aef917db4830a12cecfc0d388a6e7784cc7c17a09c893cda5cf598c/d3" data-source="gitmodules - Defining submodule properties" onmousemove="i18n(this)">gitmodules &mdash; &Ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&iecy;&ncy;&icy;&iecy; &scy;&vcy;&ocy;&jcy;&scy;&tcy;&vcy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy;</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <p><span data-i18n="99b912df1f421cca34b762b5444d314f2e2822d16d20d4ffa28696e8c5e4f140/65" data-source="$GIT_WORK_TREE/.gitmodules" onmousemove="i18n(this)">$GIT_WORK_TREE/.gitmodules</span></p> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="078b206e23a143f6b761b4a458bda4fc5d08a2772c2120ae5a8a7b56195a867b/63" data-source="The &lt;code&gt;.gitmodules&lt;/code&gt; file, located in the top-level directory of a Git working tree, is a text file with a syntax matching the requirements of &lt;a href=&quot;git-config&quot;&gt;git-config[1]&lt;/a&gt;." onmousemove="i18n(this)">&Fcy;&acy;&jcy;&lcy;  <code>.gitmodules</code> , &rcy;&acy;&scy;&pcy;&ocy;&lcy;&ocy;&zhcy;&iecy;&ncy;&ncy;&ycy;&jcy; &vcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy; &vcy;&iecy;&rcy;&khcy;&ncy;&iecy;&gcy;&ocy; &ucy;&rcy;&ocy;&vcy;&ncy;&yacy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&gcy;&ocy; &dcy;&iecy;&rcy;&iecy;&vcy;&acy;  Git , &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &scy;&ocy;&bcy;&ocy;&jcy; &tcy;&iecy;&kcy;&scy;&tcy;&ocy;&vcy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy; &scy; &scy;&icy;&ncy;&tcy;&acy;&kcy;&scy;&icy;&scy;&ocy;&mcy;, &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&mcy; &tcy;&rcy;&iecy;&bcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy;&mcy;  <a href="git-config.html">git-config[1]</a> .</span></p> <p><span data-i18n="fd49479239446dc55540ebe89c25e8debd87f71551ab9b03ad13ad5a1b2e9e9b/93" data-source="The file contains one subsection per submodule, and the subsection value is the name of the submodule. The name is set to the path where the submodule has been added unless it was customized with the &lt;code&gt;--name&lt;/code&gt; option of &lt;code&gt;git submodule add&lt;/code&gt;. Each submodule section also contains the following required keys:" onmousemove="i18n(this)">&Fcy;&acy;&jcy;&lcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&tcy; &ocy;&dcy;&icy;&ncy; &pcy;&ocy;&dcy;&rcy;&acy;&zcy;&dcy;&iecy;&lcy; &dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy;, &acy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&ocy;&dcy;&rcy;&acy;&zcy;&dcy;&iecy;&lcy;&acy; &mdash; &ecy;&tcy;&ocy; &icy;&mcy;&yacy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy;. &Vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &icy;&mcy;&iecy;&ncy;&icy; &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &pcy;&ucy;&tcy;&softcy;, &pcy;&ocy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&mcy;&ucy; &bcy;&ycy;&lcy; &dcy;&ocy;&bcy;&acy;&vcy;&lcy;&iecy;&ncy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&softcy;, &iecy;&scy;&lcy;&icy; &ocy;&ncy; &ncy;&iecy; &bcy;&ycy;&lcy; &ncy;&acy;&scy;&tcy;&rcy;&ocy;&iecy;&ncy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &ocy;&pcy;&tscy;&icy;&icy;  <code>--name</code>  &vcy;  <code>git submodule add</code> . &Kcy;&acy;&zhcy;&dcy;&ycy;&jcy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy; &tcy;&acy;&kcy;&zhcy;&iecy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&tcy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&iecy; &ocy;&bcy;&yacy;&zcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&iecy; &kcy;&lcy;&yucy;&chcy;&icy;:</span></p> <div> <dl> <dt id="Documentation/gitmodules.txt-submoduleltnamegtpath"><span data-i18n="c3beff8327f389150a581ab7383bb67ff602f3821e14c95db63ab3acf09c0156/61" data-source="submodule.&amp;lt;name&amp;gt;.path" onmousemove="i18n(this)">submodule.&lt;name&gt;.path</span></dt> <dd> <p><span data-i18n="d2c0919999bc9ae2c4c383865522a06cff887ca18f11cfc94cb6e73c15ba38f5/d2" data-source="Defines the path, relative to the top-level directory of the Git working tree, where the submodule is expected to be checked out. The path name must not end with a &lt;code&gt;/&lt;/code&gt;. All submodule paths must be unique within the &lt;code&gt;.gitmodules&lt;/code&gt; file." onmousemove="i18n(this)">&Ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy; &pcy;&ucy;&tcy;&softcy; &ocy;&tcy;&ncy;&ocy;&scy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&acy; &vcy;&iecy;&rcy;&khcy;&ncy;&iecy;&gcy;&ocy; &ucy;&rcy;&ocy;&vcy;&ncy;&yacy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&gcy;&ocy; &dcy;&iecy;&rcy;&iecy;&vcy;&acy;  Git , &kcy;&ucy;&dcy;&acy; &pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&lcy;&acy;&gcy;&acy;&iecy;&tcy;&scy;&yacy; &icy;&zcy;&vcy;&lcy;&iecy;&chcy;&softcy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&softcy;. &Icy;&mcy;&yacy; &pcy;&ucy;&tcy;&icy; &ncy;&iecy; &dcy;&ocy;&lcy;&zhcy;&ncy;&ocy; &zcy;&acy;&kcy;&acy;&ncy;&chcy;&icy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &ncy;&acy;  <code>/</code> . &Vcy;&scy;&iecy; &pcy;&ucy;&tcy;&icy; &kcy; &scy;&ucy;&bcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy;&mcy; &dcy;&ocy;&lcy;&zhcy;&ncy;&ycy; &bcy;&ycy;&tcy;&softcy; &ucy;&ncy;&icy;&kcy;&acy;&lcy;&softcy;&ncy;&ycy;&mcy;&icy; &vcy; &fcy;&acy;&jcy;&lcy;&iecy;  <code>.gitmodules</code> .</span></p> </dd> <dt id="Documentation/gitmodules.txt-submoduleltnamegturl"><span data-i18n="51571527736d84dda1b825afb0a885ac55fe408a3e122ba5aa5f06a9394db884/55" data-source="submodule.&amp;lt;name&amp;gt;.url" onmousemove="i18n(this)">submodule.&lt;name&gt;.url</span></dt> <dd> <p><span data-i18n="9c3626178f00ec3f12ce6c536781d7fbb9b4a9976ea93f36fd42e68cce401b63/9b" data-source="Defines a URL from which the submodule repository can be cloned. This may be either an absolute URL ready to be passed to &lt;a href=&quot;git-clone&quot;&gt;git-clone[1]&lt;/a&gt; or (if it begins with &lt;code&gt;./&lt;/code&gt; or &lt;code&gt;../&lt;/code&gt;) a location relative to the superproject&amp;rsquo;s origin repository." onmousemove="i18n(this)">&Ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy; URL-&acy;&dcy;&rcy;&iecy;&scy;, &scy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&gcy;&ocy; &mcy;&ocy;&zhcy;&ncy;&ocy; &kcy;&lcy;&ocy;&ncy;&icy;&rcy;&ocy;&vcy;&acy;&tcy;&softcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy;. &Ecy;&tcy;&ocy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &lcy;&icy;&bcy;&ocy; &acy;&bcy;&scy;&ocy;&lcy;&yucy;&tcy;&ncy;&ycy;&jcy; URL-&acy;&dcy;&rcy;&iecy;&scy;, &gcy;&ocy;&tcy;&ocy;&vcy;&ycy;&jcy; &dcy;&lcy;&yacy; &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&chcy;&icy; &vcy;  <a href="git-clone.html">git-clone[1]</a> , &lcy;&icy;&bcy;&ocy; (&iecy;&scy;&lcy;&icy; &ocy;&ncy; &ncy;&acy;&chcy;&icy;&ncy;&acy;&iecy;&tcy;&scy;&yacy; &scy;  <code>./</code>  &icy;&lcy;&icy;  <code>../</code>  ) &mcy;&iecy;&scy;&tcy;&ocy;&pcy;&ocy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&iecy; &ocy;&tcy;&ncy;&ocy;&scy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy; &icy;&scy;&khcy;&ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy; &scy;&ucy;&pcy;&iecy;&rcy;&pcy;&rcy;&ocy;&iecy;&kcy;&tcy;&acy;.</span></p> </dd> </dl> </div> <p><span data-i18n="a1957f6fdd2f93e5d879583b98ed164f694a92362226842db793f595e2f6c93f/ae" data-source="In addition, there are a number of optional keys:" onmousemove="i18n(this)">&Kcy;&rcy;&ocy;&mcy;&iecy; &tcy;&ocy;&gcy;&ocy;, &icy;&mcy;&iecy;&iecy;&tcy;&scy;&yacy; &rcy;&yacy;&dcy; &dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&khcy; &kcy;&lcy;&acy;&vcy;&icy;&shcy;:</span></p> <div> <dl> <dt id="Documentation/gitmodules.txt-submoduleltnamegtupdate"><span data-i18n="dc3de90f35fbfe67ccd304cb6b8d3d65f7759dbb77ee24be96e610edb520e2cc/97" data-source="submodule.&amp;lt;name&amp;gt;.update" onmousemove="i18n(this)">submodule.&lt;name&gt;.update</span></dt> <dd> <p><span data-i18n="a3b505d2d2b47b4bbc61b4a5fc76bf560e8c1b917a65d2023cb87baceb7a2a47/4e" data-source="Defines the default update procedure for the named submodule, i.e. how the submodule is updated by the &lt;code&gt;git submodule update&lt;/code&gt; command in the superproject. This is only used by &lt;code&gt;git
+submodule init&lt;/code&gt; to initialize the configuration variable of the same name. Allowed values here are &lt;code&gt;checkout&lt;/code&gt;, &lt;code&gt;rebase&lt;/code&gt;, &lt;code&gt;merge&lt;/code&gt; or &lt;code&gt;none&lt;/code&gt;, but not &lt;code&gt;!command&lt;/code&gt; (for security reasons). See the description of the &lt;code&gt;update&lt;/code&gt; command in &lt;a href=&quot;git-submodule&quot;&gt;git-submodule[1]&lt;/a&gt; for more details." onmousemove="i18n(this)">&Ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy; &pcy;&rcy;&ocy;&tscy;&iecy;&dcy;&ucy;&rcy;&ucy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &dcy;&lcy;&yacy; &icy;&mcy;&iecy;&ncy;&ocy;&vcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &scy;&ucy;&bcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy;, &tcy;. &iecy;. &tcy;&ocy;, &kcy;&acy;&kcy; &scy;&ucy;&bcy;&mcy;&ocy;&dcy;&ucy;&lcy;&softcy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ocy;&jcy;  <code>git submodule update</code>  &vcy; &scy;&ucy;&pcy;&iecy;&rcy;&pcy;&rcy;&ocy;&iecy;&kcy;&tcy;&iecy;. &Ecy;&tcy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy;  <code>git
+submodule init</code>  &dcy;&lcy;&yacy; &icy;&ncy;&icy;&tscy;&icy;&acy;&lcy;&icy;&zcy;&acy;&tscy;&icy;&icy; &ocy;&dcy;&ncy;&ocy;&icy;&mcy;&iecy;&ncy;&ncy;&ocy;&jcy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ocy;&jcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;. &Dcy;&ocy;&pcy;&ucy;&scy;&tcy;&icy;&mcy;&ycy;&iecy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy; &zcy;&dcy;&iecy;&scy;&softcy;:  <code>checkout</code> ,  <code>rebase</code> ,  <code>merge</code>  &icy;&lcy;&icy;  <code>none</code> , &ncy;&ocy; &ncy;&iecy;  <code>!command</code>  (&pcy;&ocy; &scy;&ocy;&ocy;&bcy;&rcy;&acy;&zhcy;&iecy;&ncy;&icy;&yacy;&mcy; &bcy;&iecy;&zcy;&ocy;&pcy;&acy;&scy;&ncy;&ocy;&scy;&tcy;&icy;). &Dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&iecy; &scy;&vcy;&iecy;&dcy;&iecy;&ncy;&icy;&yacy; &scy;&mcy;. &vcy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&icy;&icy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ycy;  <code>update</code>  &vcy;  <a href="git-submodule.html">git-submodule[1]</a> .</span></p> </dd> <dt id="Documentation/gitmodules.txt-submoduleltnamegtbranch"><span data-i18n="a2e509c3cbea5b86b9d1ff49820508d6cfc506fed5bfc8bb0318cb314e02311c/a6" data-source="submodule.&amp;lt;name&amp;gt;.branch" onmousemove="i18n(this)">submodule.&lt;name&gt;.branch</span></dt> <dd> <p><span data-i18n="94a12bbfdec84bf39d67911bbb2ef3da1630bf415f0c6171d0b315aeedf0db2a/91" data-source="A remote branch name for tracking updates in the upstream submodule. If the option is not specified, it defaults to the remote &lt;code&gt;HEAD&lt;/code&gt;. A special value of &lt;code&gt;.&lt;/code&gt; is used to indicate that the name of the branch in the submodule should be the same name as the current branch in the current repository. See the &lt;code&gt;--remote&lt;/code&gt; documentation in &lt;a href=&quot;git-submodule&quot;&gt;git-submodule[1]&lt;/a&gt; for details." onmousemove="i18n(this)">&Icy;&mcy;&yacy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&jcy; &vcy;&iecy;&tcy;&kcy;&icy; &dcy;&lcy;&yacy; &ocy;&tcy;&scy;&lcy;&iecy;&zhcy;&icy;&vcy;&acy;&ncy;&icy;&yacy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&jcy; &vcy; &vcy;&ycy;&shcy;&iecy;&scy;&tcy;&ocy;&yacy;&shchcy;&iecy;&mcy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&iecy;. &IEcy;&scy;&lcy;&icy; &ocy;&pcy;&tscy;&icy;&yacy; &ncy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&acy;, &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&jcy;  <code>HEAD</code> . &Scy;&pcy;&iecy;&tscy;&icy;&acy;&lcy;&softcy;&ncy;&ocy;&iecy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy;  <code>.</code>  &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &dcy;&lcy;&yacy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&icy;&yacy; &tcy;&ocy;&gcy;&ocy;, &chcy;&tcy;&ocy; &icy;&mcy;&yacy; &vcy;&iecy;&tcy;&kcy;&icy; &vcy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&iecy; &dcy;&ocy;&lcy;&zhcy;&ncy;&ocy; &scy;&ocy;&vcy;&pcy;&acy;&dcy;&acy;&tcy;&softcy; &scy; &icy;&mcy;&iecy;&ncy;&iecy;&mcy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&jcy; &vcy;&iecy;&tcy;&kcy;&icy; &vcy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&mcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy;. &Pcy;&ocy;&dcy;&rcy;&ocy;&bcy;&ncy;&ocy;&scy;&tcy;&icy; &scy;&mcy;. &vcy; &dcy;&ocy;&kcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy;&tscy;&icy;&icy;  <code>--remote</code>  &vcy;  <a href="git-submodule.html">git-submodule[1]</a> .</span></p> </dd> <dt id="Documentation/gitmodules.txt-submoduleltnamegtfetchRecurseSubmodules"><span data-i18n="d7a10957c870e21c1660aaf779c6891ddfd880b8430c9a6bc47fc695b70c8b43/bb" data-source="submodule.&amp;lt;name&amp;gt;.fetchRecurseSubmodules" onmousemove="i18n(this)">submodule.&lt;name&gt;.fetchRecurseSubmodules</span></dt> <dd> <p><span data-i18n="cf20e2728a3a10fa5d9d43f4eb0450ee248c40107dab86b95c6e74f091821c2b/87" data-source="This option can be used to control recursive fetching of this submodule. If this option is also present in the submodule&amp;rsquo;s entry in &lt;code&gt;.git/config&lt;/code&gt; of the superproject, the setting there will override the one found in &lt;code&gt;.gitmodules&lt;/code&gt;. Both settings can be overridden on the command line by using the &lt;code&gt;--[no-]recurse-submodules&lt;/code&gt; option to &lt;code&gt;git fetch&lt;/code&gt; and &lt;code&gt;git pull&lt;/code&gt;." onmousemove="i18n(this)">&Ecy;&tcy;&ucy; &ocy;&pcy;&tscy;&icy;&yucy; &mcy;&ocy;&zhcy;&ncy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &dcy;&lcy;&yacy; &ucy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy; &rcy;&iecy;&kcy;&ucy;&rcy;&scy;&icy;&vcy;&ncy;&ocy;&jcy; &vcy;&ycy;&bcy;&ocy;&rcy;&kcy;&ocy;&jcy; &ecy;&tcy;&ocy;&gcy;&ocy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy;. &IEcy;&scy;&lcy;&icy; &ecy;&tcy;&acy; &ocy;&pcy;&tscy;&icy;&yacy; &tcy;&acy;&kcy;&zhcy;&iecy; &pcy;&rcy;&icy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &vcy; &zcy;&acy;&pcy;&icy;&scy;&icy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy; &vcy;  <code>.git/config</code>  &scy;&ucy;&pcy;&iecy;&rcy;&pcy;&rcy;&ocy;&iecy;&kcy;&tcy;&acy;, &ncy;&acy;&scy;&tcy;&rcy;&ocy;&jcy;&kcy;&acy; &tcy;&acy;&mcy; &bcy;&ucy;&dcy;&iecy;&tcy; &pcy;&iecy;&rcy;&iecy;&ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&tcy;&softcy; &ncy;&acy;&scy;&tcy;&rcy;&ocy;&jcy;&kcy;&ucy;, &ncy;&acy;&jcy;&dcy;&iecy;&ncy;&ncy;&ucy;&yucy; &vcy;  <code>.gitmodules</code>  . &Ocy;&bcy;&iecy; &ncy;&acy;&scy;&tcy;&rcy;&ocy;&jcy;&kcy;&icy; &mcy;&ocy;&zhcy;&ncy;&ocy; &pcy;&iecy;&rcy;&iecy;&ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&icy;&tcy;&softcy; &vcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy;, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yacy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;  <code>--[no-]recurse-submodules</code>  &dcy;&lcy;&yacy;  <code>git fetch</code>  &icy;  <code>git pull</code> .</span></p> </dd> <dt id="Documentation/gitmodules.txt-submoduleltnamegtignore"><span data-i18n="554ec04f63002834dd6b2be62318387bfc85a92bfa970e7a53778b70a8243c7a/fd" data-source="submodule.&amp;lt;name&amp;gt;.ignore" onmousemove="i18n(this)">submodule.&lt;name&gt;.ignore</span></dt> <dd> <p><span data-i18n="4446726b8732fd87a0433053d7710c7d9b10c9214dbd50ddf27a7d81f5726a88/de" data-source="Defines under what circumstances &lt;code&gt;git status&lt;/code&gt; and the diff family show a submodule as modified. The following values are supported:" onmousemove="i18n(this)">&Ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy;, &pcy;&rcy;&icy; &kcy;&acy;&kcy;&icy;&khcy; &ocy;&bcy;&scy;&tcy;&ocy;&yacy;&tcy;&iecy;&lcy;&softcy;&scy;&tcy;&vcy;&acy;&khcy;  <code>git status</code>  &icy; &scy;&iecy;&mcy;&iecy;&jcy;&scy;&tcy;&vcy;&ocy; diff &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&acy;&yucy;&tcy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&softcy; &kcy;&acy;&kcy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&ncy;&ycy;&jcy;. &Pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&icy;&vcy;&acy;&yucy;&tcy;&scy;&yacy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&iecy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy;:</span></p> <div> <div> <div> <dl> <dt id="Documentation/gitmodules.txt-all"><span data-i18n="5ef5ef0364b6939c4ca61f34b393f7b368d1be8619647aaf83d5b395919ab629/48" data-source="all" onmousemove="i18n(this)">all</span></dt> <dd> <p><span data-i18n="cee0b2d2fe255f4c6a470c3ae610d1582a42b5db216cb7c306a8a98069c25f33/28" data-source="The submodule will never be considered modified (but will nonetheless show up in the output of status and commit when it has been staged)." onmousemove="i18n(this)">&Scy;&ucy;&bcy;&mcy;&ocy;&dcy;&ucy;&lcy;&softcy; &ncy;&icy;&kcy;&ocy;&gcy;&dcy;&acy; &ncy;&iecy; &bcy;&ucy;&dcy;&iecy;&tcy; &scy;&chcy;&icy;&tcy;&acy;&tcy;&softcy;&scy;&yacy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&ncy;&ycy;&mcy; (&ncy;&ocy;, &tcy;&iecy;&mcy; &ncy;&iecy; &mcy;&iecy;&ncy;&iecy;&iecy;, &ocy;&ncy; &bcy;&ucy;&dcy;&iecy;&tcy; &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&acy;&tcy;&softcy;&scy;&yacy; &vcy; &vcy;&ycy;&vcy;&ocy;&dcy;&iecy; &scy;&tcy;&acy;&tcy;&ucy;&scy;&acy; &icy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy; &pcy;&ocy;&scy;&lcy;&iecy; &iecy;&gcy;&ocy; &pcy;&ocy;&dcy;&gcy;&ocy;&tcy;&ocy;&vcy;&kcy;&icy;).</span></p> </dd> <dt id="Documentation/gitmodules.txt-dirty"><span data-i18n="d0c92c764c5647d43d7166efc3e7d350751de063c1388bd2e113fab4865529d3/7a" data-source="dirty" onmousemove="i18n(this)">dirty</span></dt> <dd> <p><span data-i18n="589949eba65133f95faeab75cd911937e363a7cebe2b23779593cb46f098e253/47" data-source="All changes to the submodule&amp;rsquo;s work tree will be ignored, only committed differences between the &lt;code&gt;HEAD&lt;/code&gt; of the submodule and its recorded state in the superproject are taken into account." onmousemove="i18n(this)">&Vcy;&scy;&iecy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy; &vcy; &dcy;&iecy;&rcy;&iecy;&vcy;&iecy; &rcy;&acy;&bcy;&ocy;&tcy;&ycy; &scy;&ucy;&bcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy; &bcy;&ucy;&dcy;&ucy;&tcy; &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ocy;&vcy;&acy;&tcy;&softcy;&scy;&yacy;, &ucy;&chcy;&icy;&tcy;&ycy;&vcy;&acy;&yucy;&tcy;&scy;&yacy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &zcy;&acy;&fcy;&icy;&kcy;&scy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&iecy; &rcy;&acy;&zcy;&lcy;&icy;&chcy;&icy;&yacy; &mcy;&iecy;&zhcy;&dcy;&ucy;  <code>HEAD</code>  &scy;&ucy;&bcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy; &icy; &iecy;&gcy;&ocy; &zcy;&acy;&pcy;&icy;&scy;&acy;&ncy;&ncy;&ycy;&mcy; &scy;&ocy;&scy;&tcy;&ocy;&yacy;&ncy;&icy;&iecy;&mcy; &vcy; &scy;&ucy;&pcy;&iecy;&rcy;&pcy;&rcy;&ocy;&iecy;&kcy;&tcy;&iecy;.</span></p> </dd> <dt id="Documentation/gitmodules.txt-untracked"><span data-i18n="86ed2df8017823dff5b258f8082cf4be80ad80fed3388b6818d9a631a49e464e/24" data-source="untracked" onmousemove="i18n(this)">untracked</span></dt> <dd> <p><span data-i18n="4ae2f15a211a096f2349c2c59c6d2233e15774192a2723536154b34fbe01cb5c/e0" data-source="Only untracked files in submodules will be ignored. Committed differences and modifications to tracked files will show up." onmousemove="i18n(this)">&Bcy;&ucy;&dcy;&ucy;&tcy; &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ocy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &ncy;&iecy;&ocy;&tcy;&scy;&lcy;&iecy;&zhcy;&icy;&vcy;&acy;&iecy;&mcy;&ycy;&iecy; &fcy;&acy;&jcy;&lcy;&ycy; &vcy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy;&khcy;. &Ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zcy;&yacy;&tcy;&scy;&yacy; &zcy;&acy;&fcy;&icy;&kcy;&scy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&iecy; &rcy;&acy;&zcy;&lcy;&icy;&chcy;&icy;&yacy; &icy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy; &vcy; &ocy;&tcy;&scy;&lcy;&iecy;&zhcy;&icy;&vcy;&acy;&iecy;&mcy;&ycy;&khcy; &fcy;&acy;&jcy;&lcy;&acy;&khcy;.</span></p> </dd> <dt id="Documentation/gitmodules.txt-none"><span data-i18n="140bedbf9c3f6d56a9846d2ba7088798683f4da0c248231336e6a05679e4fdfe/07" data-source="none" onmousemove="i18n(this)">none</span></dt> <dd> <p><span data-i18n="ba954fc81ae869ab6113a06710a4d439769633590b83008bf9f69211e1bc149d/02" data-source="No modifications to submodules are ignored, all of committed differences, and modifications to tracked and untracked files are shown. This is the default option." onmousemove="i18n(this)">&Ncy;&icy;&kcy;&acy;&kcy;&icy;&iecy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy; &vcy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy;&khcy; &ncy;&iecy; &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ucy;&yucy;&tcy;&scy;&yacy;, &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&acy;&yucy;&tcy;&scy;&yacy; &vcy;&scy;&iecy; &zcy;&acy;&fcy;&icy;&kcy;&scy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&iecy; &rcy;&acy;&zcy;&lcy;&icy;&chcy;&icy;&yacy;, &acy; &tcy;&acy;&kcy;&zhcy;&iecy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy; &vcy; &ocy;&tcy;&scy;&lcy;&iecy;&zhcy;&icy;&vcy;&acy;&iecy;&mcy;&ycy;&khcy; &icy; &ncy;&iecy;&ocy;&tcy;&scy;&lcy;&iecy;&zhcy;&icy;&vcy;&acy;&iecy;&mcy;&ycy;&khcy; &fcy;&acy;&jcy;&lcy;&acy;&khcy;. &Ecy;&tcy;&ocy; &ocy;&pcy;&tscy;&icy;&yacy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;.</span></p> </dd> </dl> </div> <p><span data-i18n="708db9387a2f1c327ca3a2efe13236cb25ae03bddaadff312f920d09c25e1a12/9e" data-source="If this option is also present in the submodule&amp;rsquo;s entry in &lt;code&gt;.git/config&lt;/code&gt; of the superproject, the setting there will override the one found in &lt;code&gt;.gitmodules&lt;/code&gt;." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &ecy;&tcy;&acy; &ocy;&pcy;&tscy;&icy;&yacy; &tcy;&acy;&kcy;&zhcy;&iecy; &pcy;&rcy;&icy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &vcy; &zcy;&acy;&pcy;&icy;&scy;&icy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy; &vcy;  <code>.git/config</code>  &scy;&ucy;&pcy;&iecy;&rcy;&pcy;&rcy;&ocy;&iecy;&kcy;&tcy;&acy;, &ncy;&acy;&scy;&tcy;&rcy;&ocy;&jcy;&kcy;&acy; &tcy;&acy;&mcy; &bcy;&ucy;&dcy;&iecy;&tcy; &pcy;&iecy;&rcy;&iecy;&ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&tcy;&softcy; &ncy;&acy;&scy;&tcy;&rcy;&ocy;&jcy;&kcy;&ucy;, &ncy;&acy;&jcy;&dcy;&iecy;&ncy;&ncy;&ucy;&yucy; &vcy;  <code>.gitmodules</code>  .</span></p> <p><span data-i18n="9a5e23af62c71feada585b98b8dfa0ac9b9e1c23aaf4248dd2b08b5d8f0b928b/b3" data-source="Both settings can be overridden on the command line by using the &lt;code&gt;--ignore-submodules&lt;/code&gt; option. The &lt;code&gt;git submodule&lt;/code&gt; commands are not affected by this setting." onmousemove="i18n(this)">&Ocy;&bcy;&iecy; &ncy;&acy;&scy;&tcy;&rcy;&ocy;&jcy;&kcy;&icy; &mcy;&ocy;&zhcy;&ncy;&ocy; &pcy;&iecy;&rcy;&iecy;&ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&icy;&tcy;&softcy; &vcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;&acy;  <code>--ignore-submodules</code> . &Ecy;&tcy;&acy; &ncy;&acy;&scy;&tcy;&rcy;&ocy;&jcy;&kcy;&acy; &ncy;&iecy; &vcy;&lcy;&icy;&yacy;&iecy;&tcy; &ncy;&acy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ycy;  <code>git submodule</code> .</span></p> </div> </div> </dd> <dt id="Documentation/gitmodules.txt-submoduleltnamegtshallow"><span data-i18n="cbe864958e6faf53185f9e979c4604c1b595cdb3de36617217186e7b804fef8d/76" data-source="submodule.&amp;lt;name&amp;gt;.shallow" onmousemove="i18n(this)">submodule.&lt;name&gt;.shallow</span></dt> <dd> <p><span data-i18n="dcf4ad01516e60406020239611eb7b2f2424ce55efac8ce9ff45ae465511520b/9d" data-source="When set to true, a clone of this submodule will be performed as a shallow clone (with a history depth of 1) unless the user explicitly asks for a non-shallow clone." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; true, &kcy;&lcy;&ocy;&ncy; &ecy;&tcy;&ocy;&gcy;&ocy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy; &bcy;&ucy;&dcy;&iecy;&tcy; &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&yacy;&tcy;&softcy;&scy;&yacy; &kcy;&acy;&kcy; &pcy;&ocy;&vcy;&iecy;&rcy;&khcy;&ncy;&ocy;&scy;&tcy;&ncy;&ocy;&iecy; &kcy;&lcy;&ocy;&ncy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy; (&scy; &gcy;&lcy;&ucy;&bcy;&icy;&ncy;&ocy;&jcy; &icy;&scy;&tcy;&ocy;&rcy;&icy;&icy; 1), &iecy;&scy;&lcy;&icy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy; &yacy;&vcy;&ncy;&ocy; &ncy;&iecy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&icy;&tcy; &ncy;&iecy;&mcy;&iecy;&lcy;&kcy;&ocy;&iecy; &kcy;&lcy;&ocy;&ncy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_notes"><span data-i18n="8a7525b1492fb84833f5c4a69b30f4bfbb134f9b666b61a2c1872d63d234c085/bb" data-source="Notes" onmousemove="i18n(this)">Notes</span></h2> <div> <p><span data-i18n="5475a68f4e87889137376257457ed94634a934c16d34dfde60c78f8ee6441535/f6" data-source="Git does not allow the &lt;code&gt;.gitmodules&lt;/code&gt; file within a working tree to be a symbolic link, and will refuse to check out such a tree entry. This keeps behavior consistent when the file is accessed from the index or a tree versus from the filesystem, and helps Git reliably enforce security checks of the file contents." onmousemove="i18n(this)">Git  &ncy;&iecy; &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&iecy;&tcy; &fcy;&acy;&jcy;&lcy;&ucy;  <code>.gitmodules</code>  &vcy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&mcy; &dcy;&iecy;&rcy;&iecy;&vcy;&iecy; &bcy;&ycy;&tcy;&softcy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&jcy; &scy;&scy;&ycy;&lcy;&kcy;&ocy;&jcy; &icy; &ocy;&tcy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &icy;&zcy;&vcy;&lcy;&iecy;&kcy;&acy;&tcy;&softcy; &tcy;&acy;&kcy;&ucy;&yucy; &ZeroWidthSpace;&ZeroWidthSpace;&zcy;&acy;&pcy;&icy;&scy;&softcy; &dcy;&iecy;&rcy;&iecy;&vcy;&acy;. &Ecy;&tcy;&ocy; &ocy;&bcy;&iecy;&scy;&pcy;&iecy;&chcy;&icy;&vcy;&acy;&iecy;&tcy; &iecy;&dcy;&icy;&ncy;&ocy;&ocy;&bcy;&rcy;&acy;&zcy;&icy;&iecy; &pcy;&ocy;&vcy;&iecy;&dcy;&iecy;&ncy;&icy;&yacy; &pcy;&rcy;&icy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&iecy; &kcy; &fcy;&acy;&jcy;&lcy;&ucy; &icy;&zcy; &icy;&ncy;&dcy;&iecy;&kcy;&scy;&acy; &icy;&lcy;&icy; &dcy;&iecy;&rcy;&iecy;&vcy;&acy;, &acy; &ncy;&iecy; &icy;&zcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ocy;&jcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ycy;, &icy; &pcy;&ocy;&mcy;&ocy;&gcy;&acy;&iecy;&tcy;  Git  &ncy;&acy;&dcy;&iecy;&zhcy;&ncy;&ocy; &ocy;&bcy;&iecy;&scy;&pcy;&iecy;&chcy;&icy;&vcy;&acy;&tcy;&softcy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&ucy; &bcy;&iecy;&zcy;&ocy;&pcy;&acy;&scy;&ncy;&ocy;&scy;&tcy;&icy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&mcy;&ocy;&gcy;&ocy; &fcy;&acy;&jcy;&lcy;&acy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_examples"><span data-i18n="e68ee04dff59551b7d1ae07a2f8a00dc61d841628948da3d2781630706a05e92/38" data-source="Examples" onmousemove="i18n(this)">Examples</span></h2> <div> <p><span data-i18n="9e0e33d513169334d5769a882d484f685785069bb5481cecd0317a045f3d0a1b/ca" data-source="Consider the following &lt;code&gt;.gitmodules&lt;/code&gt; file:" onmousemove="i18n(this)">&Rcy;&acy;&scy;&scy;&mcy;&ocy;&tcy;&rcy;&icy;&mcy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&jcy; &fcy;&acy;&jcy;&lcy;  <code>.gitmodules</code> :</span></p> <div> <div> <pre class="hljs language-ini"><span class="hljs-section">[submodule &quot;libfoo&quot;]</span>
+        <span class="hljs-attr">path</span> = include/foo
+        <span class="hljs-attr">url</span> = git://foo.com/git/lib.git
+
+<span class="hljs-section">[submodule &quot;libbar&quot;]</span>
+        <span class="hljs-attr">path</span> = include/bar
+        <span class="hljs-attr">url</span> = git://bar.com/git/lib.git</pre> </div> </div> <p><span data-i18n="3ca6aa973b7576a9ced0179a6776fa26e3bd493b6c0cab2c8eea7a61dd6c1bf4/4b" data-source="This defines two submodules, &lt;code&gt;libfoo&lt;/code&gt; and &lt;code&gt;libbar&lt;/code&gt;. These are expected to be checked out in the paths &lt;code&gt;include/foo&lt;/code&gt; and &lt;code&gt;include/bar&lt;/code&gt;, and for both submodules a URL is specified which can be used for cloning the submodules." onmousemove="i18n(this)">&Ecy;&tcy;&ocy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy; &dcy;&vcy;&acy; &scy;&ucy;&bcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy;:  <code>libfoo</code>  &icy;  <code>libbar</code> . &Ocy;&zhcy;&icy;&dcy;&acy;&iecy;&tcy;&scy;&yacy;, &chcy;&tcy;&ocy; &ocy;&ncy;&icy; &bcy;&ucy;&dcy;&ucy;&tcy; &icy;&zcy;&vcy;&lcy;&iecy;&chcy;&iecy;&ncy;&ycy; &pcy;&ocy; &pcy;&ucy;&tcy;&yacy;&mcy;  <code>include/foo</code>  &icy;  <code>include/bar</code> , &icy; &dcy;&lcy;&yacy; &ocy;&bcy;&ocy;&icy;&khcy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&iecy;&jcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy; URL-&acy;&dcy;&rcy;&iecy;&scy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &mcy;&ocy;&zhcy;&ncy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &dcy;&lcy;&yacy; &kcy;&lcy;&ocy;&ncy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&iecy;&jcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_see_also"><span data-i18n="2fa97693b70fa87b95b2d1bdf9558e4ac65d5e82d145f13a03849c4d9c4957a9/40" data-source="See also" onmousemove="i18n(this)">See also</span></h2> <div> <p><span data-i18n="d25d925e5373f5131f9423afe4dd34eb84ebb7d2def0729e06d0e26a5574f07b/e8" data-source="&lt;a href=&quot;git-submodule&quot;&gt;git-submodule[1]&lt;/a&gt;, &lt;a href=&quot;gitsubmodules&quot;&gt;gitsubmodules[7]&lt;/a&gt;, &lt;a href=&quot;git-config&quot;&gt;git-config[1]&lt;/a&gt;" onmousemove="i18n(this)"><a href="git-submodule.html">git-submodule[1]</a> ,  <a href="gitsubmodules.html">gitsubmodules[7]</a> ,  <a href="git-config.html">git-config[1]</a></span></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/gitmodules">https://git-scm.com/docs/gitmodules</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitnamespaces.html">
+                            gitnamespaces                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitprotocol-capabilities.html">
+                            gitprotocol capabilities                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitprotocol-common.html">
+                            gitprotocol common                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitprotocol-http.html">
+                            gitprotocol http                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitprotocol-pack.html">
+                            gitprotocol pack                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitprotocol-v2.html">
+                            gitprotocol v2                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitremote-helpers.html">
+                            gitremote helpers                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="gitmodules.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

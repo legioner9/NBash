@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:14:39 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git cvsexportcommit</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="2bcea008312155682458d65f257930b8644ee4b6c4071b8954d7e3b3393aafaf/bc" data-source="git-cvsexportcommit" onmousemove="i18n(this)">git-cvsexportcommit</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="23d9efd033a7c91917f3a66eefa2249affd4b4db2a46b31313c56173e684676a/2f" data-source="git-cvsexportcommit - Export a single commit to a CVS checkout" onmousemove="i18n(this)">git-cvsexportcommit &mdash; &ecy;&kcy;&scy;&pcy;&ocy;&rcy;&tcy;&icy;&rcy;&ocy;&vcy;&acy;&tcy;&softcy; &ocy;&dcy;&icy;&ncy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy; &vcy; &kcy;&acy;&scy;&scy;&ucy; CVS.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git cvsexportcommit <span class="hljs-selector-attr">[-h]</span> <span class="hljs-selector-attr">[-u]</span> <span class="hljs-selector-attr">[-v]</span> <span class="hljs-selector-attr">[-c]</span> <span class="hljs-selector-attr">[-P]</span> <span class="hljs-selector-attr">[-p]</span> <span class="hljs-selector-attr">[-a]</span> <span class="hljs-selector-attr">[-d &lt;cvsroot&gt;]</span>
+        <span class="hljs-selector-attr">[-w &lt;cvs-workdir&gt;]</span> <span class="hljs-selector-attr">[-W]</span> <span class="hljs-selector-attr">[-f]</span> <span class="hljs-selector-attr">[-m &lt;msgprefix&gt;]</span> <span class="hljs-selector-attr">[&lt;parent-commit&gt;]</span> &lt;commit-id&gt;</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="3887dd886ad2491ea724f10d253995afa5673f399749f0f04acce9481aafce1e/a5" data-source="Exports a commit from Git to a CVS checkout, making it easier to merge patches from a Git repository into a CVS repository." onmousemove="i18n(this)">&Ecy;&kcy;&scy;&pcy;&ocy;&rcy;&tcy;&icy;&rcy;&ucy;&iecy;&tcy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&yucy; &icy;&zcy;  Git  &vcy; &khcy;&rcy;&acy;&ncy;&icy;&lcy;&icy;&shchcy;&iecy; CVS, &chcy;&tcy;&ocy; &ucy;&pcy;&rcy;&ocy;&shchcy;&acy;&iecy;&tcy; &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&iecy;&ncy;&icy;&iecy; &icy;&scy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&jcy; &icy;&zcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;  Git  &vcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy; CVS.</span></p> <p><span data-i18n="8cfe9624cfab45de9b635516ab680d3a83f28deea2489a0ae722f2006404bed7/f7" data-source="Specify the name of a CVS checkout using the -w switch or execute it from the root of the CVS working copy. In the latter case GIT_DIR must be defined. See examples below." onmousemove="i18n(this)">&Ucy;&kcy;&acy;&zhcy;&icy;&tcy;&iecy; &icy;&mcy;&yacy; &icy;&zcy;&vcy;&lcy;&iecy;&chcy;&iecy;&ncy;&icy;&yacy; CVS &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &kcy;&lcy;&yucy;&chcy;&acy; -w &icy;&lcy;&icy; &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy; &iecy;&gcy;&ocy; &icy;&zcy; &kcy;&ocy;&rcy;&ncy;&yacy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&jcy; &kcy;&ocy;&pcy;&icy;&icy; CVS. &Vcy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ncy;&iecy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ocy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&icy;&tcy;&softcy; GIT_DIR. &Scy;&mcy;. &pcy;&rcy;&icy;&mcy;&iecy;&rcy;&ycy; &ncy;&icy;&zhcy;&iecy;.</span></p> <p><span data-i18n="27aed652119ee2c35230b77788b6f29f48b8ca47f1ec1b9468dbe183a88da944/27" data-source="It does its best to do the safe thing, it will check that the files are unchanged and up to date in the CVS checkout, and it will not autocommit by default." onmousemove="i18n(this)">&Ocy;&ncy; &dcy;&iecy;&lcy;&acy;&iecy;&tcy; &vcy;&scy;&iecy; &vcy;&ocy;&zcy;&mcy;&ocy;&zhcy;&ncy;&ocy;&iecy;, &chcy;&tcy;&ocy;&bcy;&ycy; &ocy;&bcy;&iecy;&scy;&pcy;&iecy;&chcy;&icy;&tcy;&softcy; &bcy;&iecy;&zcy;&ocy;&pcy;&acy;&scy;&ncy;&ocy;&scy;&tcy;&softcy;: &ocy;&ncy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&icy;&tcy;, &chcy;&tcy;&ocy; &fcy;&acy;&jcy;&lcy;&ycy; &ncy;&iecy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&ycy; &icy; &ncy;&iecy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&ycy; &pcy;&rcy;&icy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&iecy; CVS, &icy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &ncy;&iecy; &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&yacy;&iecy;&tcy; &acy;&vcy;&tcy;&ocy;&mcy;&acy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&ucy;&yucy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&yucy;.</span></p> <p><span data-i18n="119a7e0381cc8f8aa03905cf82678ed4106c2660ca22f1a55f13f8deca52a366/2f" data-source="Supports file additions, removals, and commits that affect binary files." onmousemove="i18n(this)">&Pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&icy;&vcy;&acy;&iecy;&tcy; &dcy;&ocy;&bcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&iecy;, &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&icy;&iecy; &icy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&yucy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;, &vcy;&lcy;&icy;&yacy;&yucy;&shchcy;&icy;&khcy; &ncy;&acy; &dcy;&vcy;&ocy;&icy;&chcy;&ncy;&ycy;&iecy; &fcy;&acy;&jcy;&lcy;&ycy;.</span></p> <p><span data-i18n="af67520db70716461d6dfec61a307211fb2081a81d8d359b3522a55f22770fe6/22" data-source="If the commit is a merge commit, you must tell &lt;code&gt;git cvsexportcommit&lt;/code&gt; what parent the changeset should be done against." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&yacy; &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&iecy;&jcy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy;, &vcy;&ycy; &dcy;&ocy;&lcy;&zhcy;&ncy;&ycy; &ucy;&kcy;&acy;&zcy;&acy;&tcy;&softcy;  <code>git cvsexportcommit</code> , &pcy;&rcy;&ocy;&tcy;&icy;&vcy; &kcy;&acy;&kcy;&ocy;&gcy;&ocy; &rcy;&ocy;&dcy;&icy;&tcy;&iecy;&lcy;&yacy; &scy;&lcy;&iecy;&dcy;&ucy;&iecy;&tcy; &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&softcy; &ncy;&acy;&bcy;&ocy;&rcy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&jcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-cvsexportcommit.txt--c"><span data-i18n="0c3603e13e24a40b4bf215e3795a9a40d60a8456fb7b63c2d11e81701a231e85/4d" data-source="-c" onmousemove="i18n(this)">-c</span></dt> <dd> <p><span data-i18n="836493bd85e7b3327a5891b56dc2c7797edb91c69c10a9e7f6b1149de072b495/dc" data-source="Commit automatically if the patch applied cleanly. It will not commit if any hunks fail to apply or there were other problems." onmousemove="i18n(this)">&Zcy;&acy;&fcy;&icy;&kcy;&scy;&icy;&rcy;&ucy;&jcy;&tcy;&iecy; &acy;&vcy;&tcy;&ocy;&mcy;&acy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;, &iecy;&scy;&lcy;&icy; &pcy;&acy;&tcy;&chcy; &pcy;&rcy;&icy;&mcy;&iecy;&ncy;&icy;&lcy;&scy;&yacy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&softcy;&ncy;&ocy;. &Ocy;&ncy; &ncy;&iecy; &bcy;&ucy;&dcy;&iecy;&tcy; &zcy;&acy;&fcy;&icy;&kcy;&scy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;, &iecy;&scy;&lcy;&icy; &kcy;&acy;&kcy;&icy;&iecy;-&lcy;&icy;&bcy;&ocy; &fcy;&rcy;&acy;&gcy;&mcy;&iecy;&ncy;&tcy;&ycy; &ncy;&iecy; &bcy;&ucy;&dcy;&ucy;&tcy; &pcy;&rcy;&icy;&mcy;&iecy;&ncy;&iecy;&ncy;&ycy; &icy;&lcy;&icy; &vcy;&ocy;&zcy;&ncy;&icy;&kcy;&ncy;&ucy;&tcy; &dcy;&rcy;&ucy;&gcy;&icy;&iecy; &pcy;&rcy;&ocy;&bcy;&lcy;&iecy;&mcy;&ycy;.</span></p> </dd> <dt id="Documentation/git-cvsexportcommit.txt--p"><span data-i18n="567479c447e472328522a1d759aabb9b579e4522a6da547c983d29e94c1604c2/a3" data-source="-p" onmousemove="i18n(this)">-p</span></dt> <dd> <p><span data-i18n="e1696dcdeeed759bd8cfdbc0ffae569e1e13c3847584fbaeadc0aaf8cb2c2f0b/8e" data-source="Be pedantic (paranoid) when applying patches. Invokes patch with --fuzz=0" onmousemove="i18n(this)">&Bcy;&ucy;&dcy;&softcy;&tcy;&iecy; &pcy;&iecy;&dcy;&acy;&ncy;&tcy;&icy;&chcy;&ncy;&ycy; (&pcy;&acy;&rcy;&acy;&ncy;&ocy;&icy;&kcy;&ocy;&mcy;) &pcy;&rcy;&icy; &pcy;&rcy;&icy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&icy; &pcy;&acy;&tcy;&chcy;&iecy;&jcy;. &Vcy;&ycy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy; &pcy;&acy;&tcy;&chcy; &scy; --fuzz=0</span></p> </dd> <dt id="Documentation/git-cvsexportcommit.txt--a"><span data-i18n="c274891790345c56cef3b53c026bdc48150948fa60c56306073d6fea7766ad6a/1a" data-source="-a" onmousemove="i18n(this)">-a</span></dt> <dd> <p><span data-i18n="2d8c671c152f88094ed1e2005c92f7005f86d8383c24733ab979502ee31679a4/51" data-source="Add authorship information. Adds Author line, and Committer (if different from Author) to the message." onmousemove="i18n(this)">&Dcy;&ocy;&bcy;&acy;&vcy;&softcy;&tcy;&iecy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&yucy; &ocy;&bcy; &acy;&vcy;&tcy;&ocy;&rcy;&scy;&tcy;&vcy;&iecy;. &Dcy;&ocy;&bcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &vcy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &scy;&tcy;&rcy;&ocy;&kcy;&ucy; &laquo;&Acy;&vcy;&tcy;&ocy;&rcy;&raquo; &icy; &laquo;&Kcy;&ocy;&mcy;&mcy;&icy;&tcy;&tcy;&iecy;&rcy;&raquo; (&iecy;&scy;&lcy;&icy; &ocy;&tcy;&lcy;&icy;&chcy;&acy;&iecy;&tcy;&scy;&yacy; &ocy;&tcy; &laquo;&Acy;&vcy;&tcy;&ocy;&rcy;&raquo;).</span></p> </dd> <dt id="Documentation/git-cvsexportcommit.txt--d"><span data-i18n="50e09407a18bedd64baf0b99825a8178d7446731615b85452ea6b99573469dcc/b1" data-source="-d" onmousemove="i18n(this)">-d</span></dt> <dd> <p><span data-i18n="c84c2ed623d555fd15a77b978b54cb5d22767115911f3f2e23f626502c0e7978/0e" data-source="Set an alternative CVSROOT to use. This corresponds to the CVS -d parameter. Usually users will not want to set this, except if using CVS in an asymmetric fashion." onmousemove="i18n(this)">&Ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&icy;&tcy;&iecy; &acy;&lcy;&softcy;&tcy;&iecy;&rcy;&ncy;&acy;&tcy;&icy;&vcy;&ncy;&ycy;&jcy; CVSROOT &dcy;&lcy;&yacy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy;. &Ecy;&tcy;&ocy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;&ucy; CVS -d. &Ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&icy; &ncy;&iecy; &zcy;&acy;&khcy;&ocy;&tcy;&yacy;&tcy; &ucy;&scy;&tcy;&acy;&ncy;&acy;&vcy;&lcy;&icy;&vcy;&acy;&tcy;&softcy; &ecy;&tcy;&ocy;, &zcy;&acy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&iecy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy;&vcy; &acy;&scy;&icy;&mcy;&mcy;&iecy;&tcy;&rcy;&icy;&chcy;&ncy;&ocy;&gcy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; CVS.</span></p> </dd> <dt id="Documentation/git-cvsexportcommit.txt--f"><span data-i18n="0e6503c1ece40e4ea7668463248ea2716eb37643f2c2c605f8bcee4d195a1705/83" data-source="-f" onmousemove="i18n(this)">-f</span></dt> <dd> <p><span data-i18n="127cf173a46b0cd87e642b53120c29e80978206eb341f7488862497d17daeb65/13" data-source="Force the merge even if the files are not up to date." onmousemove="i18n(this)">&Pcy;&rcy;&icy;&ncy;&ucy;&dcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy; &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&softcy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&iecy;, &dcy;&acy;&zhcy;&iecy; &iecy;&scy;&lcy;&icy; &fcy;&acy;&jcy;&lcy;&ycy; &ncy;&iecy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&ycy;.</span></p> </dd> <dt id="Documentation/git-cvsexportcommit.txt--P"><span data-i18n="fcfe5f8210a246fa78e04f33d0f468a3678350988ff153fa9a255ddb171dc9e5/6b" data-source="-P" onmousemove="i18n(this)">-P</span></dt> <dd> <p><span data-i18n="63919ced24a25141743e24b2cc94167a11de05895d6a982193fdc76e1d1aa339/94" data-source="Force the parent commit, even if it is not a direct parent." onmousemove="i18n(this)">&Pcy;&rcy;&icy;&ncy;&ucy;&dcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy; &zcy;&acy;&fcy;&icy;&kcy;&scy;&icy;&rcy;&ocy;&vcy;&acy;&tcy;&softcy; &rcy;&ocy;&dcy;&icy;&tcy;&iecy;&lcy;&softcy;&scy;&kcy;&icy;&jcy; &ecy;&lcy;&iecy;&mcy;&iecy;&ncy;&tcy;, &dcy;&acy;&zhcy;&iecy; &iecy;&scy;&lcy;&icy; &ocy;&ncy; &ncy;&iecy; &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &pcy;&rcy;&yacy;&mcy;&ycy;&mcy; &rcy;&ocy;&dcy;&icy;&tcy;&iecy;&lcy;&iecy;&mcy;.</span></p> </dd> <dt id="Documentation/git-cvsexportcommit.txt--m"><span data-i18n="c4e153afb4aeaa5818fb08325ebff59f883a0482006aa3cc1c17c9b393e54efa/11" data-source="-m" onmousemove="i18n(this)">-m</span></dt> <dd> <p><span data-i18n="2316f1ab353ee896cea5883bffd053ef8a71e66c473b4f6b7b1496ece3a0b392/56" data-source="Prepend the commit message with the provided prefix. Useful for patch series and the like." onmousemove="i18n(this)">&Dcy;&ocy;&bcy;&acy;&vcy;&softcy;&tcy;&iecy; &kcy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yucy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ycy;&jcy; &pcy;&rcy;&iecy;&fcy;&icy;&kcy;&scy;. &Pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ocy; &dcy;&lcy;&yacy; &scy;&iecy;&rcy;&icy;&jcy; &pcy;&acy;&tcy;&chcy;&iecy;&jcy; &icy; &tcy;&ocy;&mcy;&ucy; &pcy;&ocy;&dcy;&ocy;&bcy;&ncy;&ocy;&gcy;&ocy;.</span></p> </dd> <dt id="Documentation/git-cvsexportcommit.txt--u"><span data-i18n="99f14531f2599afdb9ace38c18c10740fd29ca1bdcdb7d0460fd799001d567bd/0f" data-source="-u" onmousemove="i18n(this)">-u</span></dt> <dd> <p><span data-i18n="b6a206535369842a3d41a8cfc49080a3f983fac62ba7c0735986d8f4ffc6e26e/38" data-source="Update affected files from CVS repository before attempting export." onmousemove="i18n(this)">&Pcy;&iecy;&rcy;&iecy;&dcy; &pcy;&ocy;&pcy;&ycy;&tcy;&kcy;&ocy;&jcy; &ecy;&kcy;&scy;&pcy;&ocy;&rcy;&tcy;&acy; &ocy;&bcy;&ncy;&ocy;&vcy;&icy;&tcy;&iecy; &zcy;&acy;&tcy;&rcy;&ocy;&ncy;&ucy;&tcy;&ycy;&iecy; &fcy;&acy;&jcy;&lcy;&ycy; &icy;&zcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy; CVS.</span></p> </dd> <dt id="Documentation/git-cvsexportcommit.txt--k"><span data-i18n="2491456786e2f980156bb6d6932d5f25deea5b8b234c1a89766ff9280ab1f280/02" data-source="-k" onmousemove="i18n(this)">-k</span></dt> <dd> <p><span data-i18n="8c9b657670b02c61535ab8b001f677505291ade8c810dfa08cd7f7c8d0dc1b33/33" data-source="Reverse CVS keyword expansion (e.g. $Revision: 1.2.3.4$ becomes $Revision$) in working CVS checkout before applying patch." onmousemove="i18n(this)">&Ocy;&tcy;&mcy;&iecy;&ncy;&icy;&tcy;&iecy; &rcy;&acy;&scy;&shcy;&icy;&rcy;&iecy;&ncy;&icy;&iecy; &kcy;&lcy;&yucy;&chcy;&iecy;&vcy;&ocy;&gcy;&ocy; &scy;&lcy;&ocy;&vcy;&acy; CVS (&ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, $Revision: 1.2.3.4$ &scy;&tcy;&acy;&ncy;&ocy;&vcy;&icy;&tcy;&scy;&yacy; $Revision$) &pcy;&rcy;&icy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&jcy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&iecy; CVS &pcy;&iecy;&rcy;&iecy;&dcy; &pcy;&rcy;&icy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&iecy;&mcy; &icy;&scy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy;.</span></p> </dd> <dt id="Documentation/git-cvsexportcommit.txt--w"><span data-i18n="65da4e192c92112906479883f0b4740c6434367e3d4a1da77a21dece77ab34f1/ba" data-source="-w" onmousemove="i18n(this)">-w</span></dt> <dd> <p><span data-i18n="b4af79bbf3b18c22104ca280a1df7cdf999c472e93c17f2557112619584ab49e/5f" data-source="Specify the location of the CVS checkout to use for the export. This option does not require GIT_DIR to be set before execution if the current directory is within a Git repository. The default is the value of &lt;code&gt;cvsexportcommit.cvsdir&lt;/code&gt;." onmousemove="i18n(this)">&Ucy;&kcy;&acy;&zhcy;&icy;&tcy;&iecy; &rcy;&acy;&scy;&pcy;&ocy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&iecy; &ocy;&fcy;&ocy;&rcy;&mcy;&lcy;&iecy;&ncy;&icy;&yacy; CVS, &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&iecy; &bcy;&ucy;&dcy;&iecy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &dcy;&lcy;&yacy; &ecy;&kcy;&scy;&pcy;&ocy;&rcy;&tcy;&acy;. &Ecy;&tcy;&ocy;&tcy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy; &ncy;&iecy; &tcy;&rcy;&iecy;&bcy;&ucy;&iecy;&tcy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&kcy;&icy; GIT_DIR &pcy;&iecy;&rcy;&iecy;&dcy; &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&iecy;&ncy;&icy;&iecy;&mcy;, &iecy;&scy;&lcy;&icy; &tcy;&iecy;&kcy;&ucy;&shchcy;&icy;&jcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy; &ncy;&acy;&khcy;&ocy;&dcy;&icy;&tcy;&scy;&yacy; &vcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy;  Git . &Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy;  <code>cvsexportcommit.cvsdir</code> .</span></p> </dd> <dt id="Documentation/git-cvsexportcommit.txt--W"><span data-i18n="5671c9b05916ba4c093a158dd36b2d9f703ad98b4a2ebef4a0864014d3839060/df" data-source="-W" onmousemove="i18n(this)">-W</span></dt> <dd> <p><span data-i18n="e264e9abf3d0bd01039c50cd30e42acb208d38fefb3755efe7080251344008f5/da" data-source="Tell cvsexportcommit that the current working directory is not only a Git checkout, but also the CVS checkout. Therefore, Git will reset the working directory to the parent commit before proceeding." onmousemove="i18n(this)">&Scy;&ocy;&ocy;&bcy;&shchcy;&icy;&tcy;&iecy; cvsexportcommit, &chcy;&tcy;&ocy; &tcy;&iecy;&kcy;&ucy;&shchcy;&icy;&jcy; &rcy;&acy;&bcy;&ocy;&chcy;&icy;&jcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy; &mdash; &ecy;&tcy;&ocy; &ncy;&iecy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&acy;  Git , &ncy;&ocy; &icy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&acy; CVS. &Pcy;&ocy;&ecy;&tcy;&ocy;&mcy;&ucy;  Git  &scy;&bcy;&rcy;&ocy;&scy;&icy;&tcy; &rcy;&acy;&bcy;&ocy;&chcy;&icy;&jcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy; &dcy;&ocy; &rcy;&ocy;&dcy;&icy;&tcy;&iecy;&lcy;&softcy;&scy;&kcy;&ocy;&gcy;&ocy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&acy;, &pcy;&rcy;&iecy;&zhcy;&dcy;&iecy; &chcy;&iecy;&mcy; &pcy;&rcy;&ocy;&dcy;&ocy;&lcy;&zhcy;&icy;&tcy;&softcy;.</span></p> </dd> <dt id="Documentation/git-cvsexportcommit.txt--v"><span data-i18n="81c36ccd44ef18baabad6e2d87038b72d606263bd6a3432b964a872023654fff/7c" data-source="-v" onmousemove="i18n(this)">-v</span></dt> <dd> <p><span data-i18n="70970728e21e0dd36046db866d77d2e2d2d5745c7748dfc0b060e7e5f583e36a/bc" data-source="Verbose." onmousemove="i18n(this)">Verbose.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_configuration"><span data-i18n="b332c3492d5eb10a118eb6d8b0dcd689bc2477ce2ae16b303753b942b54377bc/aa" data-source="Configuration" onmousemove="i18n(this)">Configuration</span></h2> <div> <div> <dl> <dt id="Documentation/git-cvsexportcommit.txt-cvsexportcommitcvsdir"><span data-i18n="b4c12e88e8f2bdf1b7f60f55a32af54692c5606d55fd3b4c1d2a86ec982b5353/26" data-source="cvsexportcommit.cvsdir" onmousemove="i18n(this)">cvsexportcommit.cvsdir</span></dt> <dd> <p><span data-i18n="d9a1b1f55f09bff4a1eb387641ff87f457e1864ce72a7d5b6a071b4d2efa844c/7a" data-source="The default location of the CVS checkout to use for the export." onmousemove="i18n(this)">&Mcy;&iecy;&scy;&tcy;&ocy;&pcy;&ocy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&iecy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &ocy;&fcy;&ocy;&rcy;&mcy;&lcy;&iecy;&ncy;&icy;&yacy; &zcy;&acy;&kcy;&acy;&zcy;&acy; CVS, &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&iecy; &bcy;&ucy;&dcy;&iecy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &dcy;&lcy;&yacy; &ecy;&kcy;&scy;&pcy;&ocy;&rcy;&tcy;&acy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_examples"><span data-i18n="e68ee04dff59551b7d1ae07a2f8a00dc61d841628948da3d2781630706a05e92/38" data-source="Examples" onmousemove="i18n(this)">Examples</span></h2> <div> <div> <dl> <dt id="Documentation/git-cvsexportcommit.txt-MergeonepatchintoCVS"><span data-i18n="94c120e024cb783c3fe15c4818824291ba074cd630f31d50d5cf8b97448e62fe/2a" data-source="Merge one patch into CVS" onmousemove="i18n(this)">&Ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&icy;&tcy;&softcy; &ocy;&dcy;&icy;&ncy; &pcy;&acy;&tcy;&chcy; &vcy; CVS</span></dt> <dd> <div> <div> <pre class="hljs language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">export</span> GIT_DIR=~/project/.git</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cd</span> ~/project_cvs_checkout</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git cvsexportcommit -v &lt;commit-sha1&gt;</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">cvs commit -F .msg &lt;files&gt;</span></pre> </div> </div> </dd> <dt id="Documentation/git-cvsexportcommit.txt-MergeonepatchintoCVS-cand-woptionsTheworkingdirectoryiswithintheGitRepo"><span data-i18n="2ffba904a6151a6ab88e6030721c102779302c7ab84a0ed05a9c2a47bff79fae/2c" data-source="Merge one patch into CVS (-c and -w options). The working directory is within the Git Repo" onmousemove="i18n(this)">&Ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&icy;&tcy;&iecy; &ocy;&dcy;&icy;&ncy; &pcy;&acy;&tcy;&chcy; &vcy; CVS (&ocy;&pcy;&tscy;&icy;&icy; -c &icy; -w). &Rcy;&acy;&bcy;&ocy;&chcy;&icy;&jcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy; &ncy;&acy;&khcy;&ocy;&dcy;&icy;&tcy;&scy;&yacy; &vcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy;  Git .</span></dt> <dd> <div> <div> <pre class="hljs language-bash">        $ git cvsexportcommit -v -c -w ~/project_cvs_checkout &lt;commit-sha1&gt;</pre> </div> </div> </dd> <dt id="Documentation/git-cvsexportcommit.txt-MergependingpatchesintoCVSautomatically820182128201onlyifyoureallyknowwhatyouaredoing"><span data-i18n="1bec99e6277809c4f0d536f8810057f74b237385e04cf62a111a9bb05cdd3316/9d" data-source="Merge pending patches into CVS automatically &amp;mdash; only if you really know what you are doing" onmousemove="i18n(this)">&Acy;&vcy;&tcy;&ocy;&mcy;&acy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&icy; &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&yacy;&jcy;&tcy;&iecy; &ocy;&zhcy;&icy;&dcy;&acy;&yucy;&shchcy;&icy;&iecy; &icy;&scy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy; &vcy; CVS &mdash; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &iecy;&scy;&lcy;&icy; &vcy;&ycy; &dcy;&iecy;&jcy;&scy;&tcy;&vcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy; &zcy;&ncy;&acy;&iecy;&tcy;&iecy;, &chcy;&tcy;&ocy; &dcy;&iecy;&lcy;&acy;&iecy;&tcy;&iecy;.</span></dt> <dd> <div> <div> <pre class="hljs language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">export</span> GIT_DIR=~/project/.git</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cd</span> ~/project_cvs_checkout</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git cherry cvshead myhead | sed -n <span class="hljs-string">&apos;s/^+ //p&apos;</span> | xargs -l1 git cvsexportcommit -c -p -v</span></pre> </div> </div> </dd> </dl> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-cvsexportcommit">https://git-scm.com/docs/git-cvsexportcommit</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-cvsimport.html">
+                            git cvsimport                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-cvsserver.html">
+                            git cvsserver                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-daemon.html">
+                            git daemon                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-describe.html">
+                            git describe                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-diagnose.html">
+                            git diagnose                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-diff.html">
+                            git diff                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-diff-files.html">
+                            git diff-files                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-cvsexportcommit.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

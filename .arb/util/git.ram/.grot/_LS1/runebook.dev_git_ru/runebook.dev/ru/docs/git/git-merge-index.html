@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:15:11 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git merge-index</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="fe1578ccef5506728d0237368bceb787d06833576b56746a68c646d181392c4a/50" data-source="git-merge-index" onmousemove="i18n(this)">git-merge-index</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="451b911c2daa82ed80692c48daa5b496cc23636ba6cc559947dd169c2dd84f20/17" data-source="git-merge-index - Run a merge for files needing merging" onmousemove="i18n(this)">git-merge-index &mdash; &zcy;&acy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;&softcy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&iecy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;, &ncy;&ucy;&zhcy;&dcy;&acy;&yucy;&shchcy;&icy;&khcy;&scy;&yacy; &vcy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&icy;</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-scss">git merge-index <span class="hljs-selector-attr">[-o]</span> <span class="hljs-selector-attr">[-q]</span> &lt;merge-program&gt; (-a | ( [--] &lt;file&gt;&hellip;&ZeroWidthSpace;) )</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="1c37e165685eb640c72d265245b5ea42f5f6de00870f9668af62da6f9d3243a6/3d" data-source="This looks up the &amp;lt;file&amp;gt;(s) in the index and, if there are any merge entries, passes the SHA-1 hash for those files as arguments 1, 2, 3 (empty argument if no file), and &amp;lt;file&amp;gt; as argument 4. File modes for the three files are passed as arguments 5, 6 and 7." onmousemove="i18n(this)">&Pcy;&rcy;&icy; &ecy;&tcy;&ocy;&mcy; &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&yacy;&iecy;&tcy;&scy;&yacy; &pcy;&ocy;&icy;&scy;&kcy; &lt;&fcy;&acy;&jcy;&lcy;&acy;&gt;(&ocy;&vcy;) &vcy; &icy;&ncy;&dcy;&iecy;&kcy;&scy;&iecy; &icy;, &iecy;&scy;&lcy;&icy; &iecy;&scy;&tcy;&softcy; &kcy;&acy;&kcy;&icy;&iecy;-&lcy;&icy;&bcy;&ocy; &zcy;&acy;&pcy;&icy;&scy;&icy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy;, &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&iecy;&tcy;&scy;&yacy; &khcy;&ecy;&shcy; SHA-1 &dcy;&lcy;&yacy; &ecy;&tcy;&icy;&khcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ocy;&vcy; 1, 2, 3 (&pcy;&ucy;&scy;&tcy;&ocy;&jcy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;, &iecy;&scy;&lcy;&icy; &fcy;&acy;&jcy;&lcy;&acy; &ncy;&iecy;&tcy;) &icy; &lt;&fcy;&acy;&jcy;&lcy;&gt;. &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy; 4. &Rcy;&iecy;&zhcy;&icy;&mcy;&ycy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &dcy;&lcy;&yacy; &tcy;&rcy;&iecy;&khcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&yucy;&tcy;&scy;&yacy; &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ocy;&vcy; 5, 6 &icy; 7.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-merge-index.txt---"><span data-i18n="d8156bae0c4243d3742fc4e9774d8aceabe0410249d720c855f98afc88ff846c/71" data-source="--" onmousemove="i18n(this)">--</span></dt> <dd> <p><span data-i18n="0ea53dd4a1fb9384edae11ed9c03b5411457806a0ae358d444eb80e48fbc0c0c/07" data-source="Do not interpret any more arguments as options." onmousemove="i18n(this)">&Ncy;&iecy; &icy;&ncy;&tcy;&iecy;&rcy;&pcy;&rcy;&iecy;&tcy;&icy;&rcy;&ucy;&jcy;&tcy;&iecy; &dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&iecy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ycy; &kcy;&acy;&kcy; &vcy;&acy;&rcy;&icy;&acy;&ncy;&tcy;&ycy;.</span></p> </dd> <dt id="Documentation/git-merge-index.txt--a"><span data-i18n="c274891790345c56cef3b53c026bdc48150948fa60c56306073d6fea7766ad6a/1a" data-source="-a" onmousemove="i18n(this)">-a</span></dt> <dd> <p><span data-i18n="0517fd6d4b60b6fde0eb4ac2c70713fa7022acf344bd0c39decb7a8648655c13/fa" data-source="Run merge against all files in the index that need merging." onmousemove="i18n(this)">&Zcy;&acy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;&iecy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&iecy; &dcy;&lcy;&yacy; &vcy;&scy;&iecy;&khcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &vcy; &icy;&ncy;&dcy;&iecy;&kcy;&scy;&iecy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ocy; &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&icy;&tcy;&softcy;.</span></p> </dd> <dt id="Documentation/git-merge-index.txt--o"><span data-i18n="29272c47115b5a93be87e3a9d8739fb2e8a1fea6aa31852af190389734c51946/1d" data-source="-o" onmousemove="i18n(this)">-o</span></dt> <dd> <p><span data-i18n="0535086e5384f38327818c43c5391a39c1b0aa7bef888b3e767b7049543bc415/fc" data-source="Instead of stopping at the first failed merge, do all of them in one shot - continue with merging even when previous merges returned errors, and only return the error code after all the merges." onmousemove="i18n(this)">&Vcy;&mcy;&iecy;&scy;&tcy;&ocy; &tcy;&ocy;&gcy;&ocy;, &chcy;&tcy;&ocy;&bcy;&ycy; &ocy;&scy;&tcy;&acy;&ncy;&acy;&vcy;&lcy;&icy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &ncy;&acy; &pcy;&iecy;&rcy;&vcy;&ocy;&mcy; &ncy;&iecy;&ucy;&dcy;&acy;&chcy;&ncy;&ocy;&mcy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&icy;, &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy; &vcy;&scy;&iecy; &dcy;&iecy;&jcy;&scy;&tcy;&vcy;&icy;&yacy; &zcy;&acy; &ocy;&dcy;&icy;&ncy; &rcy;&acy;&zcy; &mdash; &pcy;&rcy;&ocy;&dcy;&ocy;&lcy;&zhcy;&acy;&jcy;&tcy;&iecy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&iecy;, &dcy;&acy;&zhcy;&iecy; &iecy;&scy;&lcy;&icy; &pcy;&rcy;&iecy;&dcy;&ycy;&dcy;&ucy;&shchcy;&icy;&iecy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy; &vcy;&ocy;&zcy;&vcy;&rcy;&acy;&shchcy;&acy;&lcy;&icy; &ocy;&shcy;&icy;&bcy;&kcy;&icy;, &icy; &vcy;&ocy;&zcy;&vcy;&rcy;&acy;&shchcy;&acy;&jcy;&tcy;&iecy; &kcy;&ocy;&dcy; &ocy;&shcy;&icy;&bcy;&kcy;&icy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &pcy;&ocy;&scy;&lcy;&iecy; &vcy;&scy;&iecy;&khcy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&jcy;.</span></p> </dd> <dt id="Documentation/git-merge-index.txt--q"><span data-i18n="5ce681666a15a41274346f65b8bcbf56f8e8170ac00706a44a09ee4d786a8609/cd" data-source="-q" onmousemove="i18n(this)">-q</span></dt> <dd> <p><span data-i18n="8dc7e3db33df88ab6b693f8f50f831f4837fb38280889400a0a3b99a47ca1271/9e" data-source="Do not complain about a failed merge program (a merge program failure usually indicates conflicts during the merge). This is for porcelains which might want to emit custom messages." onmousemove="i18n(this)">&Ncy;&iecy; &zhcy;&acy;&lcy;&ucy;&jcy;&tcy;&iecy;&scy;&softcy; &ncy;&acy; &ncy;&iecy;&ucy;&dcy;&acy;&chcy;&ncy;&ucy;&yucy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ucy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy; (&scy;&bcy;&ocy;&jcy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ycy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy; &ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy; &ncy;&acy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy;&ycy; &vcy;&ocy; &vcy;&rcy;&iecy;&mcy;&yacy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy;). &Ecy;&tcy;&ocy; &dcy;&lcy;&yacy; &fcy;&acy;&rcy;&fcy;&ocy;&rcy;&acy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &mcy;&ocy;&zhcy;&iecy;&tcy; &zcy;&acy;&khcy;&ocy;&tcy;&iecy;&tcy;&softcy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&tcy;&softcy; &scy;&ocy;&bcy;&scy;&tcy;&vcy;&iecy;&ncy;&ncy;&ycy;&iecy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy;.</span></p> </dd> </dl> </div> <p><span data-i18n="2f7030b4e6f2d091edd0a409cf56bf81e1ee8500e226428624ca02620518dd37/08" data-source="If &lt;code&gt;git merge-index&lt;/code&gt; is called with multiple &amp;lt;file&amp;gt;s (or -a) then it processes them in turn only stopping if merge returns a non-zero exit code." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy;  <code>git merge-index</code>  &vcy;&ycy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &scy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&icy;&mcy;&icy; &lt;file&gt; (&icy;&lcy;&icy; -a), &tcy;&ocy; &ocy;&ncy; &ocy;&bcy;&rcy;&acy;&bcy;&acy;&tcy;&ycy;&vcy;&acy;&iecy;&tcy; &icy;&khcy; &pcy;&ocy; &ocy;&chcy;&iecy;&rcy;&iecy;&dcy;&icy;, &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &ocy;&scy;&tcy;&acy;&ncy;&acy;&vcy;&lcy;&icy;&vcy;&acy;&yacy;&scy;&softcy;, &iecy;&scy;&lcy;&icy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&iecy; &vcy;&ocy;&zcy;&vcy;&rcy;&acy;&shchcy;&acy;&iecy;&tcy; &ncy;&iecy;&ncy;&ucy;&lcy;&iecy;&vcy;&ocy;&jcy; &kcy;&ocy;&dcy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&iecy;&ncy;&icy;&yacy;.</span></p> <p><span data-i18n="cb8930d283120bce8eea30f1c2b4dd34161fc56110a4a57e16f91117c233ab71/a5" data-source="Typically this is run with a script calling Git&amp;rsquo;s imitation of the &lt;code&gt;merge&lt;/code&gt; command from the RCS package." onmousemove="i18n(this)">&Ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &ecy;&tcy;&ocy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy;&iecy;&tcy;&scy;&yacy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &scy;&tscy;&iecy;&ncy;&acy;&rcy;&icy;&yacy;, &vcy;&ycy;&zcy;&ycy;&vcy;&acy;&yucy;&shchcy;&iecy;&gcy;&ocy; &icy;&mcy;&icy;&tcy;&acy;&tscy;&icy;&yucy; Git &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ycy;  <code>merge</code>  &icy;&zcy; &pcy;&acy;&kcy;&iecy;&tcy;&acy; RCS.</span></p> <p><span data-i18n="bbd4ff19d634cd00542756760c7f2770ea4245c098fe137c51003ff916ae863e/82" data-source="A sample script called &lt;code&gt;git merge-one-file&lt;/code&gt; is included in the distribution." onmousemove="i18n(this)">&Vcy; &dcy;&icy;&scy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy;&icy;&vcy; &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy; &ocy;&bcy;&rcy;&acy;&zcy;&iecy;&tscy; &scy;&tscy;&iecy;&ncy;&acy;&rcy;&icy;&yacy; &pcy;&ocy;&dcy; &ncy;&acy;&zcy;&vcy;&acy;&ncy;&icy;&iecy;&mcy;  <code>git merge-one-file</code> .</span></p> <p><span data-i18n="e58c86266ff5c5f29d1224dfc1d3fe073398504932094f201db2c4e84456d123/a1" data-source="ALERT ALERT ALERT! The Git &amp;quot;merge object order&amp;quot; is different from the RCS &lt;code&gt;merge&lt;/code&gt; program merge object order. In the above ordering, the original is first. But the argument order to the 3-way merge program &lt;code&gt;merge&lt;/code&gt; is to have the original in the middle. Don&amp;rsquo;t ask me why." onmousemove="i18n(this)">&Vcy;&Ncy;&Icy;&Mcy;&Acy;&Ncy;&Icy;&IEcy; &Vcy;&Ncy;&Icy;&Mcy;&Acy;&Ncy;&Icy;&IEcy; &Vcy;&Ncy;&Icy;&Mcy;&Acy;&Ncy;&Icy;&IEcy;!  Git   &quot;merge object order&quot;  &ocy;&tcy;&lcy;&icy;&chcy;&acy;&iecy;&tcy;&scy;&yacy; &ocy;&tcy; &pcy;&ocy;&rcy;&yacy;&dcy;&kcy;&acy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ycy; RCS  <code>merge</code> . &Vcy; &pcy;&rcy;&icy;&vcy;&iecy;&dcy;&iecy;&ncy;&ncy;&ocy;&mcy; &vcy;&ycy;&shcy;&iecy; &pcy;&ocy;&rcy;&yacy;&dcy;&kcy;&iecy; &ocy;&rcy;&icy;&gcy;&icy;&ncy;&acy;&lcy; &scy;&tcy;&ocy;&icy;&tcy; &pcy;&iecy;&rcy;&vcy;&ycy;&mcy;. &Ncy;&ocy; &pcy;&ocy;&rcy;&yacy;&dcy;&ocy;&kcy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ocy;&vcy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ycy; &tcy;&rcy;&iecy;&khcy;&scy;&tcy;&ocy;&rcy;&ocy;&ncy;&ncy;&iecy;&gcy;&ocy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy;  <code>merge</code>  &tcy;&acy;&kcy;&ocy;&vcy;: &ocy;&rcy;&icy;&gcy;&icy;&ncy;&acy;&lcy; &ncy;&acy;&khcy;&ocy;&dcy;&icy;&tcy;&scy;&yacy; &pcy;&ocy;&scy;&iecy;&rcy;&iecy;&dcy;&icy;&ncy;&iecy;. &Ncy;&iecy; &scy;&pcy;&rcy;&acy;&shcy;&icy;&vcy;&acy;&jcy;&tcy;&iecy; &mcy;&iecy;&ncy;&yacy;, &pcy;&ocy;&chcy;&iecy;&mcy;&ucy;.</span></p> <p><span data-i18n="1889f03338b79bbad8bdcdc925ef5e83069569c17e433174ef9a49f62e7d5ee7/a6" data-source="Examples:" onmousemove="i18n(this)">Examples:</span></p> <div> <div> <pre class="hljs language-ruby">torvalds<span class="hljs-variable">@ppc970</span><span class="hljs-symbol">:~/merge-test&gt;</span> git merge-index cat <span class="hljs-variable constant_">MM</span>
+<span class="hljs-title class_">This</span> is <span class="hljs-variable constant_">MM</span> from the original tree.                <span class="hljs-comment"># original</span>
+<span class="hljs-title class_">This</span> is modified <span class="hljs-variable constant_">MM</span> <span class="hljs-keyword">in</span> the branch A.                <span class="hljs-comment"># merge1</span>
+<span class="hljs-title class_">This</span> is modified <span class="hljs-variable constant_">MM</span> <span class="hljs-keyword">in</span> the branch B.                <span class="hljs-comment"># merge2</span>
+<span class="hljs-title class_">This</span> is modified <span class="hljs-variable constant_">MM</span> <span class="hljs-keyword">in</span> the branch B.                <span class="hljs-comment" title="# current contents"># &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&iecy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&mcy;&ocy;&iecy;</span></pre> </div> </div> <p><span data-i18n="7175517a370b5cd2e664e3fd29c4ea9db5ce17058eb9772fe090a5485e49dad6/33" data-source="or" onmousemove="i18n(this)">or</span></p> <div> <div> <pre class="hljs language-ruby">torvalds<span class="hljs-variable">@ppc970</span><span class="hljs-symbol">:~/merge-test&gt;</span> git merge-index cat <span class="hljs-variable constant_">AA</span> <span class="hljs-variable constant_">MM</span>
+<span class="hljs-symbol">cat:</span> : <span class="hljs-title class_">No</span> such file <span class="hljs-keyword">or</span> directory
+<span class="hljs-title class_">This</span> is added <span class="hljs-variable constant_">AA</span> <span class="hljs-keyword">in</span> the branch A.
+<span class="hljs-title class_">This</span> is added <span class="hljs-variable constant_">AA</span> <span class="hljs-keyword">in</span> the branch B.
+<span class="hljs-title class_">This</span> is added <span class="hljs-variable constant_">AA</span> <span class="hljs-keyword">in</span> the branch B.
+<span class="hljs-symbol">fatal:</span> merge program failed</pre> </div> </div> <p><span data-i18n="39706d49e375dc1bdbf4bc1caf8550b277194db5f2bc9f913b499182c8fed962/a2" data-source="where the latter example shows how &lt;code&gt;git merge-index&lt;/code&gt; will stop trying to merge once anything has returned an error (i.e., &lt;code&gt;cat&lt;/code&gt; returned an error for the AA file, because it didn&amp;rsquo;t exist in the original, and thus &lt;code&gt;git merge-index&lt;/code&gt; didn&amp;rsquo;t even try to merge the MM thing)." onmousemove="i18n(this)">&gcy;&dcy;&iecy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ncy;&icy;&jcy; &pcy;&rcy;&icy;&mcy;&iecy;&rcy; &pcy;&ocy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy;, &kcy;&acy;&kcy;  <code>git merge-index</code>  &pcy;&rcy;&iecy;&kcy;&rcy;&acy;&tcy;&icy;&tcy; &pcy;&ocy;&pcy;&ycy;&tcy;&kcy;&icy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy;, &iecy;&scy;&lcy;&icy; &chcy;&tcy;&ocy;-&tcy;&ocy; &vcy;&iecy;&rcy;&ncy;&ucy;&lcy;&ocy; &ocy;&shcy;&icy;&bcy;&kcy;&ucy; (&tcy;. &iecy;.  <code>cat</code>  &vcy;&iecy;&rcy;&ncy;&ucy;&lcy; &ocy;&shcy;&icy;&bcy;&kcy;&ucy; &dcy;&lcy;&yacy; &fcy;&acy;&jcy;&lcy;&acy; AA, &pcy;&ocy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ucy; &iecy;&gcy;&ocy; &ncy;&iecy; &bcy;&ycy;&lcy;&ocy; &vcy; &ocy;&rcy;&icy;&gcy;&icy;&ncy;&acy;&lcy;&iecy;, &icy;, &scy;&lcy;&iecy;&dcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;,  <code>git merge-index</code>  &dcy;&acy;&zhcy;&iecy; &ncy;&iecy; &pcy;&ycy;&tcy;&acy;&lcy;&scy;&yacy; &scy;&lcy;&icy;&tcy;&softcy; &vcy;&iecy;&shchcy;&softcy; &Mcy;&Mcy;).</span></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-merge-index">https://git-scm.com/docs/git-merge-index</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge-one-file.html">
+                            git merge-one-file                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge-tree.html">
+                            git merge-tree                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-mergetool.html">
+                            git mergetool                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-mktag.html">
+                            git mktag                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-mktree.html">
+                            git mktree                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-multi-pack-index.html">
+                            git multi-pack-index                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-mv.html">
+                            git mv                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-merge-index.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

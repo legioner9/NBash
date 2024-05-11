@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:14:23 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git check-mailmap</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="34f51144c238c5b5d1dfffba7c1bf4d555eba96231fc08674aa161b6fb41ad14/83" data-source="git-check-mailmap" onmousemove="i18n(this)">git-check-mailmap</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="59d45fe490eaac7e96bebe01b566e5bb7aa2dc6243d6db4a0afcff2e7b2e1007/3b" data-source="git-check-mailmap - Show canonical names and email addresses of contacts" onmousemove="i18n(this)">git-check-mailmap &mdash; &Pcy;&ocy;&kcy;&acy;&zcy;&acy;&tcy;&softcy; &kcy;&acy;&ncy;&ocy;&ncy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&iecy; &icy;&mcy;&iecy;&ncy;&acy; &icy; &acy;&dcy;&rcy;&iecy;&scy;&acy; &ecy;&lcy;&iecy;&kcy;&tcy;&rcy;&ocy;&ncy;&ncy;&ocy;&jcy; &pcy;&ocy;&chcy;&tcy;&ycy; &kcy;&ocy;&ncy;&tcy;&acy;&kcy;&tcy;&ocy;&vcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-xml">git check-mailmap [<span class="hljs-tag">&lt;<span class="hljs-name">options</span>&gt;</span>] <span class="hljs-tag">&lt;<span class="hljs-name">contact</span>&gt;</span>&hellip;&ZeroWidthSpace;</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="e74b127c33b48a4dd1653ce3a4667b05d56ccaf50679db221f00d14fb2d791cb/99" data-source="For each &amp;ldquo;Name &amp;lt;user@host&amp;gt;&amp;rdquo; or &amp;ldquo;&amp;lt;user@host&amp;gt;&amp;rdquo; from the command-line or standard input (when using &lt;code&gt;--stdin&lt;/code&gt;), look up the person&amp;rsquo;s canonical name and email address (see &amp;quot;Mapping Authors&amp;quot; below). If found, print them; otherwise print the input as-is." onmousemove="i18n(this)">&Dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &laquo;&Icy;&mcy;&yacy; &lt;user@host&gt;&raquo; &icy;&lcy;&icy; &laquo;&lt;user@host&gt;&raquo; &icy;&zcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &icy;&lcy;&icy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ocy;&gcy;&ocy; &vcy;&vcy;&ocy;&dcy;&acy; (&pcy;&rcy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&icy;  <code>--stdin</code>  ) &ncy;&acy;&jcy;&dcy;&icy;&tcy;&iecy; &kcy;&acy;&ncy;&ocy;&ncy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&iecy; &icy;&mcy;&yacy; &icy; &acy;&dcy;&rcy;&iecy;&scy; &ecy;&lcy;&iecy;&kcy;&tcy;&rcy;&ocy;&ncy;&ncy;&ocy;&jcy; &pcy;&ocy;&chcy;&tcy;&ycy; &chcy;&iecy;&lcy;&ocy;&vcy;&iecy;&kcy;&acy; (&scy;&mcy;.  &quot;Mapping Authors&quot;  &ncy;&icy;&zhcy;&iecy;). &IEcy;&scy;&lcy;&icy; &ocy;&ncy;&icy; &ncy;&acy;&jcy;&dcy;&iecy;&ncy;&ycy;, &rcy;&acy;&scy;&pcy;&iecy;&chcy;&acy;&tcy;&acy;&jcy;&tcy;&iecy; &icy;&khcy;; &vcy; &pcy;&rcy;&ocy;&tcy;&icy;&vcy;&ncy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &rcy;&acy;&scy;&pcy;&iecy;&chcy;&acy;&tcy;&acy;&jcy;&tcy;&iecy; &vcy;&vcy;&ocy;&dcy; &kcy;&acy;&kcy; &iecy;&scy;&tcy;&softcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-check-mailmap.txt---stdin"><span data-i18n="06cc2377ccb785d93fd1515e188ca4dfe8c83def25a0c91bd36731a3b50c77f2/d9" data-source="--stdin" onmousemove="i18n(this)">--stdin</span></dt> <dd> <p><span data-i18n="5a3946eb9b53c78b5d41d2bd553a29da715429f2b8003d6363ca12c5dcf401c1/ed" data-source="Read contacts, one per line, from the standard input after exhausting contacts provided on the command-line." onmousemove="i18n(this)">&Scy;&chcy;&icy;&tcy;&acy;&jcy;&tcy;&iecy; &kcy;&ocy;&ncy;&tcy;&acy;&kcy;&tcy;&ycy;, &pcy;&ocy; &ocy;&dcy;&ncy;&ocy;&mcy;&ucy; &ncy;&acy; &scy;&tcy;&rcy;&ocy;&kcy;&ucy;, &icy;&zcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ocy;&gcy;&ocy; &vcy;&vcy;&ocy;&dcy;&acy; &pcy;&ocy;&scy;&lcy;&iecy; &icy;&scy;&chcy;&iecy;&rcy;&pcy;&acy;&ncy;&icy;&yacy; &kcy;&ocy;&ncy;&tcy;&acy;&kcy;&tcy;&ocy;&vcy;, &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ycy;&khcy; &vcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_output"><span data-i18n="b2439bcb8dee14b685f137f294b0e0cb62f5aadf45143ce01d79777d435a93b4/6b" data-source="Output" onmousemove="i18n(this)">Output</span></h2> <div> <p><span data-i18n="f149c3e5f99936120294bf1a915002211a116b207cd1f27b317ccdcbbc895687/60" data-source="For each contact, a single line is output, terminated by a newline. If the name is provided or known to the &lt;code&gt;mailmap&lt;/code&gt;, &amp;ldquo;Name &amp;lt;user@host&amp;gt;&amp;rdquo; is printed; otherwise only &amp;ldquo;&amp;lt;user@host&amp;gt;&amp;rdquo; is printed." onmousemove="i18n(this)">&Dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &kcy;&ocy;&ncy;&tcy;&acy;&kcy;&tcy;&acy; &vcy;&ycy;&vcy;&ocy;&dcy;&icy;&tcy;&scy;&yacy; &ocy;&dcy;&ncy;&acy; &scy;&tcy;&rcy;&ocy;&kcy;&acy;, &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&acy;&yucy;&shchcy;&acy;&yacy;&scy;&yacy; &ncy;&ocy;&vcy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&ocy;&jcy;. &IEcy;&scy;&lcy;&icy; &icy;&mcy;&yacy; &pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&iecy;&ncy;&ocy; &icy;&lcy;&icy; &icy;&zcy;&vcy;&iecy;&scy;&tcy;&ncy;&ocy;  <code>mailmap</code> , &pcy;&iecy;&chcy;&acy;&tcy;&acy;&iecy;&tcy;&scy;&yacy; &laquo;&Icy;&mcy;&yacy; &lt;user@host&gt;&raquo;; &vcy; &pcy;&rcy;&ocy;&tcy;&icy;&vcy;&ncy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &pcy;&iecy;&chcy;&acy;&tcy;&acy;&iecy;&tcy;&scy;&yacy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &laquo;&lt;user@host&gt;&raquo;.</span></p> </div> <h2 class="text-body-emphasis"  id="_configuration"><span data-i18n="b332c3492d5eb10a118eb6d8b0dcd689bc2477ce2ae16b303753b942b54377bc/aa" data-source="Configuration" onmousemove="i18n(this)">Configuration</span></h2> <div> <p><span data-i18n="590576008c7f0c9e26d89b95fec08a851f4d923a8404165b3b26b4ee3cc23acd/d2" data-source="See &lt;code&gt;mailmap.file&lt;/code&gt; and &lt;code&gt;mailmap.blob&lt;/code&gt; in &lt;a href=&quot;git-config&quot;&gt;git-config[1]&lt;/a&gt; for how to specify a custom &lt;code&gt;.mailmap&lt;/code&gt; target file or object." onmousemove="i18n(this)">&Scy;&mcy;.  <code>mailmap.file</code>  &icy;  <code>mailmap.blob</code>  &vcy;  <a href="git-config.html">git-config[1]</a> , &chcy;&tcy;&ocy;&bcy;&ycy; &ucy;&zcy;&ncy;&acy;&tcy;&softcy;, &kcy;&acy;&kcy; &ucy;&kcy;&acy;&zcy;&acy;&tcy;&softcy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&scy;&kcy;&icy;&jcy; &tscy;&iecy;&lcy;&iecy;&vcy;&ocy;&jcy; &fcy;&acy;&jcy;&lcy; &icy;&lcy;&icy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;  <code>.mailmap</code> .</span></p> </div> <h2 class="text-body-emphasis"  id="_mapping_authors"><span data-i18n="a504f124a15fda185aa20a85490b75842c5ef2d2b11fe4ae41fd9465e340cd87/3c" data-source="Mapping authors" onmousemove="i18n(this)">Mapping authors</span></h2> <div> <p><span data-i18n="08d0c955eb366275c7dab6a8452e04ea6d94f4865937d67a9f6e763b3e73d485/a9" data-source="See &lt;a href=&quot;gitmailmap&quot;&gt;gitmailmap[5]&lt;/a&gt;." onmousemove="i18n(this)">See <a href="gitmailmap.html">gitmailmap[5]</a>.</span></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-check-mailmap">https://git-scm.com/docs/git-check-mailmap</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-check-ref-format.html">
+                            git check-ref-format                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-checkout.html">
+                            git checkout                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-checkout-index.html">
+                            git checkout-index                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-cherry.html">
+                            git cherry                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-cherry-pick.html">
+                            git cherry-pick                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-citool.html">
+                            git citool                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-clean.html">
+                            git clean                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-check-mailmap.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

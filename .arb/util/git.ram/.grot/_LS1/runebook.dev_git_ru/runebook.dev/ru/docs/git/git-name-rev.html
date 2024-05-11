@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:15:21 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git name-rev</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="0b6c24e24fc113003a0516b616726dc122617bc7e1c7e2417f93e673b5692810/ec" data-source="git-name-rev" onmousemove="i18n(this)">git-name-rev</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="6d4278f355b75c83d7ddc69981c1bd3cce53eba7a168b3f2c3368bbefa7f438a/ca" data-source="git-name-rev - Find symbolic names for given revs" onmousemove="i18n(this)">git-name-rev &mdash; &Ncy;&acy;&jcy;&tcy;&icy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&iecy; &icy;&mcy;&iecy;&ncy;&acy; &dcy;&lcy;&yacy; &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ycy;&khcy; &vcy;&iecy;&rcy;&scy;&icy;&jcy;</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-scss">git name-rev <span class="hljs-selector-attr">[--tags]</span> <span class="hljs-selector-attr">[--refs=&lt;pattern&gt;]</span>
+               ( --all | --annotate-stdin | &lt;commit-ish&gt;&hellip;)</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="7bab45064c92e6441222130c5e349c08f818279a4fe680c0100770a222beed53/79" data-source="Finds symbolic names suitable for human digestion for revisions given in any format parsable by &lt;code&gt;git rev-parse&lt;/code&gt;." onmousemove="i18n(this)">&Ncy;&acy;&khcy;&ocy;&dcy;&icy;&tcy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&iecy; &icy;&mcy;&iecy;&ncy;&acy;, &pcy;&ocy;&dcy;&khcy;&ocy;&dcy;&yacy;&shchcy;&icy;&iecy; &dcy;&lcy;&yacy; &chcy;&iecy;&lcy;&ocy;&vcy;&iecy;&chcy;&iecy;&scy;&kcy;&ocy;&gcy;&ocy; &vcy;&ocy;&scy;&pcy;&rcy;&icy;&yacy;&tcy;&icy;&yacy;, &dcy;&lcy;&yacy; &rcy;&iecy;&vcy;&icy;&zcy;&icy;&jcy;, &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ycy;&khcy; &vcy; &lcy;&yucy;&bcy;&ocy;&mcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;&iecy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &pcy;&rcy;&ocy;&acy;&ncy;&acy;&lcy;&icy;&zcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;  <code>git rev-parse</code> .</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-name-rev.txt---tags"><span data-i18n="ca2ed6721d83f4f364916ec2259d24adfdba6b230be747d80ed87a4797650daf/8c" data-source="--tags" onmousemove="i18n(this)">--tags</span></dt> <dd> <p><span data-i18n="df123f263ff80d2430896488684506c4bd1abbbf569c5f05c6c7341d7e7236e0/88" data-source="Do not use branch names, but only tags to name the commits" onmousemove="i18n(this)">&Ncy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy; &icy;&mcy;&iecy;&ncy;&acy; &vcy;&iecy;&tcy;&ocy;&kcy;, &acy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &tcy;&iecy;&gcy;&icy; &dcy;&lcy;&yacy; &icy;&mcy;&iecy;&ncy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy;.</span></p> </dd> <dt id="Documentation/git-name-rev.txt---refsltpatterngt"><span data-i18n="73cb8159b8586e19f5828d550f613165d320233799057f3cb11d31e5bbb33a8a/92" data-source="--refs=&amp;lt;pattern&amp;gt;" onmousemove="i18n(this)">--refs=&lt;pattern&gt;</span></dt> <dd> <p><span data-i18n="f23c4b916295e281cc522b461623dd762882e1b3de4bdef5ac491a98db5c58b1/4f" data-source="Only use refs whose names match a given shell pattern. The pattern can be a branch name, a tag name, or a fully qualified ref name. If given multiple times, use refs whose names match any of the given shell patterns. Use &lt;code&gt;--no-refs&lt;/code&gt; to clear any previous ref patterns given." onmousemove="i18n(this)">&Icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &icy;&mcy;&iecy;&ncy;&acy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&khcy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&tcy; &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ocy;&mcy;&ucy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ucy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&icy;. &SHcy;&acy;&bcy;&lcy;&ocy;&ncy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &icy;&mcy;&iecy;&ncy;&iecy;&mcy; &vcy;&iecy;&tcy;&kcy;&icy;, &icy;&mcy;&iecy;&ncy;&iecy;&mcy; &tcy;&iecy;&gcy;&acy; &icy;&lcy;&icy; &pcy;&ocy;&lcy;&ncy;&ycy;&mcy; &icy;&mcy;&iecy;&ncy;&iecy;&mcy; &scy;&scy;&ycy;&lcy;&kcy;&icy;. &IEcy;&scy;&lcy;&icy; &zcy;&acy;&dcy;&acy;&ncy;&ocy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ocy; &rcy;&acy;&zcy;, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &icy;&mcy;&iecy;&ncy;&acy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&khcy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&tcy; &lcy;&yucy;&bcy;&ocy;&mcy;&ucy; &icy;&zcy; &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ycy;&khcy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ocy;&vcy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&icy;. &Icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy;  <code>--no-refs</code> , &chcy;&tcy;&ocy;&bcy;&ycy; &ucy;&dcy;&acy;&lcy;&icy;&tcy;&softcy; &vcy;&scy;&iecy; &pcy;&rcy;&iecy;&dcy;&ycy;&dcy;&ucy;&shchcy;&icy;&iecy; &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ycy;&iecy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ycy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;.</span></p> </dd> <dt id="Documentation/git-name-rev.txt---excludeltpatterngt"><span data-i18n="7d834caccba2719c55989ed6a800e2113404176367f0d3ce9fc1a8960862bdb9/f5" data-source="--exclude=&amp;lt;pattern&amp;gt;" onmousemove="i18n(this)">--exclude=&lt;pattern&gt;</span></dt> <dd> <p><span data-i18n="b8e163e4a118b2b206bea60a86c43fffb815ed9b8e94b03c20d9e5ddad02bb22/36" data-source="Do not use any ref whose name matches a given shell pattern. The pattern can be one of branch name, tag name or fully qualified ref name. If given multiple times, a ref will be excluded when it matches any of the given patterns. When used together with --refs, a ref will be used as a match only when it matches at least one --refs pattern and does not match any --exclude patterns. Use &lt;code&gt;--no-exclude&lt;/code&gt; to clear the list of exclude patterns." onmousemove="i18n(this)">&Ncy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &icy;&mcy;&yacy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&khcy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ocy;&mcy;&ucy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ucy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&icy;. &SHcy;&acy;&bcy;&lcy;&ocy;&ncy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &ocy;&dcy;&ncy;&icy;&mcy; &icy;&zcy; &icy;&mcy;&iecy;&ncy;&icy; &vcy;&iecy;&tcy;&kcy;&icy;, &icy;&mcy;&iecy;&ncy;&icy; &tcy;&iecy;&gcy;&acy; &icy;&lcy;&icy; &pcy;&ocy;&lcy;&ncy;&ocy;&gcy;&ocy; &icy;&mcy;&iecy;&ncy;&icy; &scy;&scy;&ycy;&lcy;&kcy;&icy;. &IEcy;&scy;&lcy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ocy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ocy; &rcy;&acy;&zcy;, &scy;&scy;&ycy;&lcy;&kcy;&acy; &bcy;&ucy;&dcy;&iecy;&tcy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&acy;, &iecy;&scy;&lcy;&icy; &ocy;&ncy;&acy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &lcy;&yucy;&bcy;&ocy;&mcy;&ucy; &icy;&zcy; &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ycy;&khcy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ocy;&vcy;. &Pcy;&rcy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&icy; &vcy;&mcy;&iecy;&scy;&tcy;&iecy; &scy; --refs &scy;&scy;&ycy;&lcy;&kcy;&acy; &bcy;&ucy;&dcy;&iecy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &kcy;&acy;&kcy; &scy;&ocy;&vcy;&pcy;&acy;&dcy;&iecy;&ncy;&icy;&iecy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &vcy; &tcy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy;, &iecy;&scy;&lcy;&icy; &ocy;&ncy;&acy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &khcy;&ocy;&tcy;&yacy; &bcy;&ycy; &ocy;&dcy;&ncy;&ocy;&mcy;&ucy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ucy; --refs &icy; &ncy;&iecy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &ncy;&icy; &ocy;&dcy;&ncy;&ocy;&mcy;&ucy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ucy; --exclude. &Icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy;  <code>--no-exclude</code> , &chcy;&tcy;&ocy;&bcy;&ycy; &ocy;&chcy;&icy;&scy;&tcy;&icy;&tcy;&softcy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ocy;&vcy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&yacy;.</span></p> </dd> <dt id="Documentation/git-name-rev.txt---all"><span data-i18n="7dbf56c38208e33a9193b210245465f7729af0d59b9df556e7f1f7138a6d6e93/a1" data-source="--all" onmousemove="i18n(this)">--all</span></dt> <dd> <p><span data-i18n="4507e945190a5232c26cf07cb83971f39cc6a450b1dbafebc38d27ad97ddb454/fd" data-source="List all commits reachable from all refs" onmousemove="i18n(this)">&Scy;&pcy;&icy;&scy;&ocy;&kcy; &vcy;&scy;&iecy;&khcy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy;, &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy;&khcy; &icy;&zcy; &vcy;&scy;&iecy;&khcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;</span></p> </dd> <dt id="Documentation/git-name-rev.txt---annotate-stdin"><span data-i18n="473dfd3827678602cdd8786436e1a45cfc8be4d82f3c22411e51c7a489e680d0/72" data-source="--annotate-stdin" onmousemove="i18n(this)">--annotate-stdin</span></dt> <dd> <p><span data-i18n="89b4a948e2c7ddd28d9895da14dd8bf8cd2110ad7c5ac5097125103102d3eec0/05" data-source="Transform stdin by substituting all the 40-character SHA-1 hexes (say $hex) with &amp;quot;$hex ($rev_name)&amp;quot;. When used with --name-only, substitute with &amp;quot;$rev_name&amp;quot;, omitting $hex altogether. This option was called &lt;code&gt;--stdin&lt;/code&gt; in older versions of Git." onmousemove="i18n(this)">&Pcy;&rcy;&iecy;&ocy;&bcy;&rcy;&acy;&zcy;&ucy;&jcy;&tcy;&iecy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&jcy; &vcy;&vcy;&ocy;&dcy;, &zcy;&acy;&mcy;&iecy;&ncy;&icy;&vcy; &vcy;&scy;&iecy; 40-&scy;&icy;&mcy;&vcy;&ocy;&lcy;&softcy;&ncy;&ycy;&iecy; &shcy;&iecy;&scy;&tcy;&ncy;&acy;&dcy;&tscy;&acy;&tcy;&iecy;&rcy;&icy;&chcy;&ncy;&ycy;&iecy; &kcy;&ocy;&dcy;&ycy; SHA-1 (&scy;&kcy;&acy;&zhcy;&iecy;&mcy;, $hex) &ncy;&acy;  &quot;$hex ($rev_name)&quot; . &Pcy;&rcy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&icy; &scy; --name-only &zcy;&acy;&mcy;&iecy;&ncy;&icy;&tcy;&iecy; &ncy;&acy;  &quot;$rev_name&quot; , &pcy;&ocy;&lcy;&ncy;&ocy;&scy;&tcy;&softcy;&yucy; &ocy;&pcy;&ucy;&scy;&kcy;&acy;&yacy; $hex. &Vcy; &scy;&tcy;&acy;&rcy;&ycy;&khcy; &vcy;&iecy;&rcy;&scy;&icy;&yacy;&khcy; Git &ecy;&tcy;&acy; &ocy;&pcy;&tscy;&icy;&yacy; &ncy;&acy;&zcy;&ycy;&vcy;&acy;&lcy;&acy;&scy;&softcy;  <code>--stdin</code> .</span></p> <p><span data-i18n="652744a2ab28954bbafd780fd76c15c2bd557594532f907f10ead1989727af95/0f" data-source="For example:" onmousemove="i18n(this)">For example:</span></p> <div> <div> <pre class="hljs language-csharp">$ cat sample.txt
+
+An abbreviated revision <span class="hljs-number">2</span>ae0a9cb82 will <span class="hljs-keyword">not</span> be substituted.
+The full name after substitution <span class="hljs-keyword">is</span> <span class="hljs-number">2</span>ae0a9cb8298185a94e5998086f380a355dd8907,
+<span class="hljs-keyword">while</span> its tree <span class="hljs-built_in">object</span> <span class="hljs-keyword">is</span> <span class="hljs-number">70</span>d105cc79e63b81cfdcb08a15297c23e60b07ad
+
+$ git name-rev --annotate-stdin &lt;sample.txt
+
+An abbreviated revision <span class="hljs-number">2</span>ae0a9cb82 will <span class="hljs-keyword">not</span> be substituted.
+The full name after substitution <span class="hljs-keyword">is</span> <span class="hljs-number">2</span>ae0a9cb8298185a94e5998086f380a355dd8907 (master),
+<span class="hljs-keyword">while</span> its tree <span class="hljs-built_in">object</span> <span class="hljs-keyword">is</span> <span class="hljs-number">70</span>d105cc79e63b81cfdcb08a15297c23e60b07ad
+
+$ git name-rev --name-only --annotate-stdin &lt;sample.txt
+
+An abbreviated revision <span class="hljs-number">2</span>ae0a9cb82 will <span class="hljs-keyword">not</span> be substituted.
+The full name after substitution <span class="hljs-keyword">is</span> master,
+<span class="hljs-keyword">while</span> its tree <span class="hljs-built_in">object</span> <span class="hljs-keyword">is</span> <span class="hljs-number">70</span>d105cc79e63b81cfdcb08a15297c23e60b07ad</pre> </div> </div> </dd> <dt id="Documentation/git-name-rev.txt---name-only"><span data-i18n="d365c3a369d47879148ac4de53dc2b93a87ec4a61961daf205bf06c642280fcc/91" data-source="--name-only" onmousemove="i18n(this)">--name-only</span></dt> <dd> <p><span data-i18n="216cf22dd7672a107ee576057a5b06e56eba16d361f1330dbe885f5449b0e2f7/a9" data-source="Instead of printing both the SHA-1 and the name, print only the name. If given with --tags the usual tag prefix of &amp;quot;tags/&amp;quot; is also omitted from the name, matching the output of &lt;code&gt;git-describe&lt;/code&gt; more closely." onmousemove="i18n(this)">&Vcy;&mcy;&iecy;&scy;&tcy;&ocy; &tcy;&ocy;&gcy;&ocy;, &chcy;&tcy;&ocy;&bcy;&ycy; &pcy;&iecy;&chcy;&acy;&tcy;&acy;&tcy;&softcy; SHA-1 &icy; &icy;&mcy;&yacy;, &pcy;&iecy;&chcy;&acy;&tcy;&acy;&jcy;&tcy;&iecy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &icy;&mcy;&yacy;. &IEcy;&scy;&lcy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ocy; &scy; --tags, &ocy;&bcy;&ycy;&chcy;&ncy;&ycy;&jcy; &pcy;&rcy;&iecy;&fcy;&icy;&kcy;&scy; &tcy;&iecy;&gcy;&acy;  &quot;tags/&quot;  &tcy;&acy;&kcy;&zhcy;&iecy; &ocy;&pcy;&ucy;&scy;&kcy;&acy;&iecy;&tcy;&scy;&yacy; &icy;&zcy; &icy;&mcy;&iecy;&ncy;&icy;, &chcy;&tcy;&ocy; &bcy;&ocy;&lcy;&iecy;&iecy; &tcy;&ocy;&chcy;&ncy;&ocy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &vcy;&ycy;&vcy;&ocy;&dcy;&ucy;  <code>git-describe</code> .</span></p> </dd> <dt id="Documentation/git-name-rev.txt---no-undefined"><span data-i18n="b055e661cd4b815cdad126432e051ba9310b14c45b54c6d1268a2555dbaad98e/07" data-source="--no-undefined" onmousemove="i18n(this)">--no-undefined</span></dt> <dd> <p><span data-i18n="bdf3238dad08fdd1c9206885e9aed5870d592175f778867746da7333b8bd27c2/d2" data-source="Die with error code != 0 when a reference is undefined, instead of printing &lt;code&gt;undefined&lt;/code&gt;." onmousemove="i18n(this)">&Ucy;&mcy;&rcy;&iecy;&tcy; &scy; &kcy;&ocy;&dcy;&ocy;&mcy; &ocy;&shcy;&icy;&bcy;&kcy;&icy; != 0, &kcy;&ocy;&gcy;&dcy;&acy; &scy;&scy;&ycy;&lcy;&kcy;&acy; &ncy;&iecy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&iecy;&ncy;&acy;, &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &pcy;&iecy;&chcy;&acy;&tcy;&icy;  <code>undefined</code>  .</span></p> </dd> <dt id="Documentation/git-name-rev.txt---always"><span data-i18n="0b07a462a9bfa0603340c2a1a3a6defbf93fce22d038b8f58e7cb6252fb39eb3/05" data-source="--always" onmousemove="i18n(this)">--always</span></dt> <dd> <p><span data-i18n="64738db1d705cf9e2b2b3bc50970537870acc0d961916730f942c9fb25d8614b/ef" data-source="Show uniquely abbreviated commit object as fallback." onmousemove="i18n(this)">&Pcy;&ocy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&tcy;&softcy; &ucy;&ncy;&icy;&kcy;&acy;&lcy;&softcy;&ncy;&ycy;&jcy; &scy;&ocy;&kcy;&rcy;&acy;&shchcy;&iecy;&ncy;&ncy;&ycy;&jcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy; &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &rcy;&iecy;&zcy;&iecy;&rcy;&vcy;&ncy;&ocy;&gcy;&ocy; &vcy;&acy;&rcy;&icy;&acy;&ncy;&tcy;&acy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_examples"><span data-i18n="e68ee04dff59551b7d1ae07a2f8a00dc61d841628948da3d2781630706a05e92/38" data-source="Examples" onmousemove="i18n(this)">Examples</span></h2> <div> <p><span data-i18n="fefd801ef1692e6785606c143e9e106fd7fa703c460a00dab57f94fb8512e05f/34" data-source="Given a commit, find out where it is relative to the local refs. Say somebody wrote you about that fantastic commit 33db5f4d9027a10e477ccf054b2c1ab94f74c85a. Of course, you look into the commit, but that only tells you what happened, but not the context." onmousemove="i18n(this)">&Ucy;&chcy;&icy;&tcy;&ycy;&vcy;&acy;&yacy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;, &vcy;&ycy;&yacy;&scy;&ncy;&icy;&tcy;&iecy;, &gcy;&dcy;&iecy; &ocy;&ncy; &ncy;&acy;&khcy;&ocy;&dcy;&icy;&tcy;&scy;&yacy; &ocy;&tcy;&ncy;&ocy;&scy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ycy;&khcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;. &Dcy;&ocy;&pcy;&ucy;&scy;&tcy;&icy;&mcy;, &kcy;&tcy;&ocy;-&tcy;&ocy; &ncy;&acy;&pcy;&icy;&scy;&acy;&lcy; &vcy;&acy;&mcy; &ocy;&bcy; &ecy;&tcy;&ocy;&mcy; &fcy;&acy;&ncy;&tcy;&acy;&scy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&mcy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&iecy; 33db5f4d9027a10e477ccf054b2c1ab94f74c85a. &Kcy;&ocy;&ncy;&iecy;&chcy;&ncy;&ocy;, &vcy;&ycy; &pcy;&rcy;&ocy;&scy;&mcy;&acy;&tcy;&rcy;&icy;&vcy;&acy;&iecy;&tcy;&iecy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;, &ncy;&ocy; &ecy;&tcy;&ocy; &gcy;&ocy;&vcy;&ocy;&rcy;&icy;&tcy; &vcy;&acy;&mcy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &ocy; &tcy;&ocy;&mcy;, &chcy;&tcy;&ocy; &pcy;&rcy;&ocy;&icy;&zcy;&ocy;&shcy;&lcy;&ocy;, &ncy;&ocy; &ncy;&iecy; &ocy; &kcy;&ocy;&ncy;&tcy;&iecy;&kcy;&scy;&tcy;&iecy;.</span></p> <p><span data-i18n="3858aaa64e8623c92bdcad7a99baef460a4de616ffa075bd5bd6f0885855e33f/de" data-source="Enter &lt;code&gt;git name-rev&lt;/code&gt;:" onmousemove="i18n(this)">&Vcy;&vcy;&iecy;&dcy;&icy;&tcy;&iecy;  <code>git name-rev</code> :</span></p> <div> <div> <pre class="hljs language-bash">% git name-rev 33db5f4d9027a10e477ccf054b2c1ab94f74c85a
+33db5f4d9027a10e477ccf054b2c1ab94f74c85a tags/v0.99~940</pre> </div> </div> <p><span data-i18n="e6c9eb3ce0c676b8feb1a3071d66475b39199bf5fd2c2d5f1361fdd163376809/cd" data-source="Now you are wiser, because you know that it happened 940 revisions before v0.99." onmousemove="i18n(this)">&Tcy;&iecy;&pcy;&iecy;&rcy;&softcy; &vcy;&ycy; &scy;&tcy;&acy;&lcy;&icy; &mcy;&ucy;&dcy;&rcy;&iecy;&iecy;, &pcy;&ocy;&tcy;&ocy;&mcy;&ucy; &chcy;&tcy;&ocy; &zcy;&ncy;&acy;&iecy;&tcy;&iecy;, &chcy;&tcy;&ocy; &ecy;&tcy;&ocy; &pcy;&rcy;&ocy;&icy;&zcy;&ocy;&shcy;&lcy;&ocy; &zcy;&acy; 940 &rcy;&iecy;&vcy;&icy;&zcy;&icy;&jcy; &dcy;&ocy; &vcy;&iecy;&rcy;&scy;&icy;&icy; 0.99.</span></p> <p><span data-i18n="b8a4efea12c409653d6ba18b9b150cb155a4cbc4ce78e114a351f97c1d35b32c/28" data-source="Another nice thing you can do is:" onmousemove="i18n(this)">&IEcy;&shchcy;&iecy; &ocy;&dcy;&ncy;&acy; &pcy;&rcy;&icy;&yacy;&tcy;&ncy;&acy;&yacy; &vcy;&iecy;&shchcy;&softcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ucy;&yucy; &vcy;&ycy; &mcy;&ocy;&zhcy;&iecy;&tcy;&iecy; &scy;&dcy;&iecy;&lcy;&acy;&tcy;&softcy;, &ecy;&tcy;&ocy;:</span></p> <div> <div> <pre class="hljs language-lua">% git <span class="hljs-built_in">log</span> | git name-rev <span class="hljs-comment">--annotate-stdin</span></pre> </div> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-name-rev">https://git-scm.com/docs/git-name-rev</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-notes.html">
+                            git notes                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-p4.html">
+                            git p4                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-pack-objects.html">
+                            git pack-objects                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-pack-redundant.html">
+                            git pack-redundant                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-pack-refs.html">
+                            git pack-refs                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-patch-id.html">
+                            git patch-id                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-prune.html">
+                            git prune                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-name-rev.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

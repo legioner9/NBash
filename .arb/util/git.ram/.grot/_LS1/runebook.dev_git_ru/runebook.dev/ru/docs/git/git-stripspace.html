@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:15:54 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git stripspace</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="770d474ec3c4637b75d5a720c496951c88761bbc71b9db5006708ae2d85b1b3b/32" data-source="git-stripspace" onmousemove="i18n(this)">git-stripspace</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="753d716f975a128ec8baedb22d9ef4b1966cdfe0ef6f8d2608a9fb67f19da45a/6c" data-source="git-stripspace - Remove unnecessary whitespace" onmousemove="i18n(this)">git-stripspace &mdash; &ucy;&dcy;&acy;&lcy;&icy;&tcy;&softcy; &ncy;&iecy;&ncy;&ucy;&zhcy;&ncy;&ycy;&iecy; &pcy;&rcy;&ocy;&bcy;&iecy;&lcy;&ycy;</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git stripspace <span class="hljs-selector-attr">[-s | --strip-comments]</span>
+git stripspace <span class="hljs-selector-attr">[-c | --comment-lines]</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="8186fa2ee6f21b2a41386d185f5eeb1cbd9a330e4ed3ee60ac1b63de91ac3aa2/da" data-source="Read text, such as commit messages, notes, tags and branch descriptions, from the standard input and clean it in the manner used by Git." onmousemove="i18n(this)">&Scy;&chcy;&icy;&tcy;&acy;&jcy;&tcy;&iecy; &tcy;&iecy;&kcy;&scy;&tcy;, &ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy; &ocy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy;, &zcy;&acy;&mcy;&iecy;&tcy;&kcy;&icy;, &tcy;&iecy;&gcy;&icy; &icy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&icy;&yacy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy;, &icy;&zcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ocy;&gcy;&ocy; &vcy;&vcy;&ocy;&dcy;&acy; &icy; &ocy;&chcy;&icy;&scy;&tcy;&icy;&tcy;&iecy; &iecy;&gcy;&ocy; &scy;&pcy;&ocy;&scy;&ocy;&bcy;&ocy;&mcy;, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&mcy;&ycy;&mcy; Git.</span></p> <p><span data-i18n="a4f2933da5b347b4e2ddf8e4e5e8d67512fdb925b7a577342a7f05765972f70c/31" data-source="With no arguments, this will:" onmousemove="i18n(this)">&Bcy;&iecy;&zcy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ocy;&vcy; &ecy;&tcy;&ocy; &bcy;&ucy;&dcy;&iecy;&tcy;:</span></p> <div> <ul> <li> <p><span data-i18n="45e1fca94b0aac0143bd030593f405ba5ce425497ca1e1965ce6e25ac42ba4b1/1f" data-source="remove trailing whitespace from all lines" onmousemove="i18n(this)">&ucy;&dcy;&acy;&lcy;&icy;&tcy;&softcy; &kcy;&ocy;&ncy;&iecy;&chcy;&ncy;&ycy;&iecy; &pcy;&rcy;&ocy;&bcy;&iecy;&lcy;&ycy; &icy;&zcy; &vcy;&scy;&iecy;&khcy; &scy;&tcy;&rcy;&ocy;&kcy;</span></p> </li> <li> <p><span data-i18n="613ebd0329d895611cf16d2fc542366cda27ae4c9b2a9535b80efb9abe3ec722/fd" data-source="collapse multiple consecutive empty lines into one empty line" onmousemove="i18n(this)">&scy;&vcy;&iecy;&rcy;&ncy;&ucy;&tcy;&softcy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ocy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&khcy; &pcy;&ucy;&scy;&tcy;&ycy;&khcy; &scy;&tcy;&rcy;&ocy;&kcy; &vcy; &ocy;&dcy;&ncy;&ucy; &pcy;&ucy;&scy;&tcy;&ucy;&yucy; &scy;&tcy;&rcy;&ocy;&kcy;&ucy;</span></p> </li> <li> <p><span data-i18n="47f084ce210106d043aba174a5653241cbf551ebfbd7226adb96b73fbd7fa51d/c1" data-source="remove empty lines from the beginning and end of the input" onmousemove="i18n(this)">&ucy;&dcy;&acy;&lcy;&icy;&tcy;&softcy; &pcy;&ucy;&scy;&tcy;&ycy;&iecy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &icy;&zcy; &ncy;&acy;&chcy;&acy;&lcy;&acy; &icy; &kcy;&ocy;&ncy;&tscy;&acy; &vcy;&vcy;&ocy;&dcy;&acy;</span></p> </li> <li> <p><span data-i18n="d54be2d554f443ab1988d675444f239ef63bd440390487016e308b61c3cf6102/36" data-source="add a missing &lt;code&gt;\n&lt;/code&gt; to the last line if necessary." onmousemove="i18n(this)">&pcy;&rcy;&icy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ocy;&scy;&tcy;&icy; &dcy;&ocy;&bcy;&acy;&vcy;&softcy;&tcy;&iecy; &ncy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&yucy;&shchcy;&icy;&jcy;  <code>\n</code>  &vcy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ncy;&yucy;&yucy; &scy;&tcy;&rcy;&ocy;&kcy;&ucy;.</span></p> </li> </ul> </div> <p><span data-i18n="9e24db3f4792e0829a4603a3015a06914fa7ef26c9dc3d545584d003195b8a08/dd" data-source="In the case where the input consists entirely of whitespace characters, no output will be produced." onmousemove="i18n(this)">&Vcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy;, &kcy;&ocy;&gcy;&dcy;&acy; &vcy;&khcy;&ocy;&dcy;&ncy;&ycy;&iecy; &dcy;&acy;&ncy;&ncy;&ycy;&iecy; &pcy;&ocy;&lcy;&ncy;&ocy;&scy;&tcy;&softcy;&yucy; &scy;&ocy;&scy;&tcy;&ocy;&yacy;&tcy; &icy;&zcy; &pcy;&rcy;&ocy;&bcy;&iecy;&lcy;&softcy;&ncy;&ycy;&khcy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&ocy;&vcy;, &vcy;&ycy;&khcy;&ocy;&dcy;&ncy;&ycy;&iecy; &dcy;&acy;&ncy;&ncy;&ycy;&iecy; &ncy;&iecy; &bcy;&ucy;&dcy;&ucy;&tcy; &pcy;&rcy;&ocy;&icy;&zcy;&vcy;&iecy;&dcy;&iecy;&ncy;&ycy;.</span></p> <p><span data-i18n="fdb2644e8de75fc2317f00a34cf409aa4f21da0962bd6958adff756f9ad8c1cc/95" data-source="&lt;strong&gt;NOTE&lt;/strong&gt;: This is intended for cleaning metadata. Prefer the &lt;code&gt;--whitespace=fix&lt;/code&gt; mode of &lt;a href=&quot;git-apply&quot;&gt;git-apply[1]&lt;/a&gt; for correcting whitespace of patches or files in the repository." onmousemove="i18n(this)">&Pcy;&Rcy;&Icy;&Mcy;&IEcy;&CHcy;&Acy;&Ncy;&Icy;&IEcy;. &Ecy;&tcy;&ocy; &pcy;&rcy;&iecy;&dcy;&ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&ocy; &dcy;&lcy;&yacy; &ocy;&chcy;&icy;&scy;&tcy;&kcy;&icy; &mcy;&iecy;&tcy;&acy;&dcy;&acy;&ncy;&ncy;&ycy;&khcy;. &Pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&chcy;&icy;&tcy;&acy;&jcy;&tcy;&iecy; &rcy;&iecy;&zhcy;&icy;&mcy;  <code>--whitespace=fix</code>  &vcy;&mcy;&iecy;&scy;&tcy;&ocy;  <a href="git-apply.html">git-apply[1]</a>  &dcy;&lcy;&yacy; &icy;&scy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy; &pcy;&rcy;&ocy;&bcy;&iecy;&lcy;&ocy;&vcy; &vcy; &pcy;&acy;&tcy;&chcy;&acy;&khcy; &icy;&lcy;&icy; &fcy;&acy;&jcy;&lcy;&acy;&khcy; &vcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-stripspace.txt--s"><span data-i18n="922e17b4edd60ff0277a57db2cdf26a407350a6ffbd4129318f293841d289609/7a" data-source="-s" onmousemove="i18n(this)">-s</span></dt> <dt id="Documentation/git-stripspace.txt---strip-comments"><span data-i18n="306ff579f11671b89be732f6563cca9d11a49684a6de032ac69de5a93dad0d94/dd" data-source="--strip-comments" onmousemove="i18n(this)">--strip-comments</span></dt> <dd> <p><span data-i18n="51a099531fdea048997af1a6578eb24ca81d5d265c55e8ceaafdf264bef067d5/01" data-source="Skip and remove all lines starting with a comment character (default &lt;code&gt;#&lt;/code&gt;)." onmousemove="i18n(this)">&Pcy;&rcy;&ocy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;&iecy; &icy; &ucy;&dcy;&acy;&lcy;&icy;&tcy;&iecy; &vcy;&scy;&iecy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;, &ncy;&acy;&chcy;&icy;&ncy;&acy;&yucy;&shchcy;&icy;&iecy;&scy;&yacy; &scy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&acy; &kcy;&ocy;&mcy;&mcy;&iecy;&ncy;&tcy;&acy;&rcy;&icy;&yacy; (&pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;  <code>#</code> ).</span></p> </dd> <dt id="Documentation/git-stripspace.txt--c"><span data-i18n="0c3603e13e24a40b4bf215e3795a9a40d60a8456fb7b63c2d11e81701a231e85/4d" data-source="-c" onmousemove="i18n(this)">-c</span></dt> <dt id="Documentation/git-stripspace.txt---comment-lines"><span data-i18n="c7721f6e7cfc82f5fac0fe852718b039312454016cbb8a8ebef71963b8400210/d6" data-source="--comment-lines" onmousemove="i18n(this)">--comment-lines</span></dt> <dd> <p><span data-i18n="abf9ca3d5596d18b7b663c6b668a2cb15223bef89ffd14dd1bb7eb510e93346b/ad" data-source="Prepend the comment character and a blank space to each line. Lines will automatically be terminated with a newline. On empty lines, only the comment character will be prepended." onmousemove="i18n(this)">&Dcy;&ocy;&bcy;&acy;&vcy;&softcy;&tcy;&iecy; &pcy;&iecy;&rcy;&iecy;&dcy; &kcy;&acy;&zhcy;&dcy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&ocy;&jcy; &scy;&icy;&mcy;&vcy;&ocy;&lcy; &kcy;&ocy;&mcy;&mcy;&iecy;&ncy;&tcy;&acy;&rcy;&icy;&yacy; &icy; &pcy;&rcy;&ocy;&bcy;&iecy;&lcy;. &Scy;&tcy;&rcy;&ocy;&kcy;&icy; &acy;&vcy;&tcy;&ocy;&mcy;&acy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&icy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&acy;&yucy;&tcy;&scy;&yacy; &ncy;&ocy;&vcy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&ocy;&jcy;. &Vcy; &pcy;&ucy;&scy;&tcy;&ycy;&khcy; &scy;&tcy;&rcy;&ocy;&kcy;&acy;&khcy; &bcy;&ucy;&dcy;&iecy;&tcy; &dcy;&ocy;&bcy;&acy;&vcy;&lcy;&iecy;&ncy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &scy;&icy;&mcy;&vcy;&ocy;&lcy; &kcy;&ocy;&mcy;&mcy;&iecy;&ncy;&tcy;&acy;&rcy;&icy;&yacy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_examples"><span data-i18n="e68ee04dff59551b7d1ae07a2f8a00dc61d841628948da3d2781630706a05e92/38" data-source="Examples" onmousemove="i18n(this)">Examples</span></h2> <div> <p><span data-i18n="4116c75a64cb79bbba4bc4c4cd3a0566442eb3957b372be11cd9ec5e04dce92b/90" data-source="Given the following noisy input with &lt;code&gt;$&lt;/code&gt; indicating the end of a line:" onmousemove="i18n(this)">&Ucy;&chcy;&icy;&tcy;&ycy;&vcy;&acy;&yacy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&jcy; &shcy;&ucy;&mcy;&ncy;&ycy;&jcy; &vcy;&vcy;&ocy;&dcy; &scy;  <code>$</code> , &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&yucy;&shchcy;&icy;&mcy; &kcy;&ocy;&ncy;&iecy;&tscy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;:</span></p> <div> <div> <pre class="hljs language-ruby">|<span class="hljs-params">A brief introduction   $
+</span>|   <span class="hljs-variable">$
+</span>|<span class="hljs-params">$
+</span>|A new paragraph<span class="hljs-variable">$
+</span>|<span class="hljs-params"># with a commented-out line    $
+</span>|explaining lots of stuff.<span class="hljs-variable">$
+</span>|<span class="hljs-params">$
+</span>|<span class="hljs-comment" title="# An old paragraph, also commented-out. $"># &Scy;&tcy;&acy;&rcy;&ycy;&jcy; &acy;&bcy;&zcy;&acy;&tscy;, &tcy;&ocy;&zhcy;&iecy; &zcy;&acy;&kcy;&ocy;&mcy;&mcy;&iecy;&ncy;&tcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&jcy;. $</span>
+|<span class="hljs-params">      $
+</span>|<span class="hljs-title class_">The</span> <span class="hljs-keyword">end</span>.<span class="hljs-variable">$
+</span>|<span class="hljs-params">  $</span></pre> </div> </div> <p><span data-i18n="652dd8447b4a7a7185fe35f523729f11ea95831a42de38bcc3345e448687c477/c1" data-source="Use &lt;code&gt;git stripspace&lt;/code&gt; with no arguments to obtain:" onmousemove="i18n(this)">&Icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy;  <code>git stripspace</code>  &bcy;&iecy;&zcy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ocy;&vcy;, &chcy;&tcy;&ocy;&bcy;&ycy; &pcy;&ocy;&lcy;&ucy;&chcy;&icy;&tcy;&softcy;:</span></p> <div> <div> <pre class="hljs language-ruby">|<span class="hljs-params">A brief introduction$
+</span>|<span class="hljs-variable">$
+</span>|<span class="hljs-params">A new paragraph$
+</span>|<span class="hljs-comment" title="# with a commented-out line$"># &scy; &zcy;&acy;&kcy;&ocy;&mcy;&mcy;&iecy;&ncy;&tcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&ocy;&jcy;$</span>
+|<span class="hljs-params">explaining lots of stuff.$
+</span>|<span class="hljs-variable">$
+</span>|<span class="hljs-params"># An old paragraph, also commented-out.$
+</span>|<span class="hljs-variable">$
+</span>|<span class="hljs-params">The <span class="hljs-keyword">end</span>.$</span></pre> </div> </div> <p><span data-i18n="1a50781792339f6833b55b5f23d3fb3d7cf208bcd394a20348a3df4f5ebf8e23/08" data-source="Use &lt;code&gt;git stripspace --strip-comments&lt;/code&gt; to obtain:" onmousemove="i18n(this)">&Icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy;  <code>git stripspace --strip-comments</code> , &chcy;&tcy;&ocy;&bcy;&ycy; &pcy;&ocy;&lcy;&ucy;&chcy;&icy;&tcy;&softcy;:</span></p> <div> <div> <pre class="hljs language-ruby">|<span class="hljs-params">A brief introduction$
+</span>|<span class="hljs-variable">$
+</span>|<span class="hljs-params">A new paragraph$
+</span>|explaining lots of stuff.<span class="hljs-variable">$
+</span>|<span class="hljs-params">$
+</span>|<span class="hljs-title class_">The</span> <span class="hljs-keyword">end</span>.$</pre> </div> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-stripspace">https://git-scm.com/docs/git-stripspace</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-submodule.html">
+                            git submodule                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-svn.html">
+                            git svn                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-switch.html">
+                            git switch                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-symbolic-ref.html">
+                            git symbolic-ref                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-tag.html">
+                            git tag                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-unpack-file.html">
+                            git unpack-file                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-unpack-objects.html">
+                            git unpack-objects                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-stripspace.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

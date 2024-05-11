@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:15:46 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git sh-setup</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="c7d6b352c6c08f061ac67b41604f45c46d523e550258da662c6358378568c1e2/93" data-source="git-sh-setup" onmousemove="i18n(this)">git-sh-setup</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="1f8ea07207f7a1b73d0989aeda9afd0b2e3b11fdedb36b1a49789bbc09194cac/72" data-source="git-sh-setup - Common Git shell script setup code" onmousemove="i18n(this)">git-sh-setup &mdash; &ocy;&bcy;&shchcy;&icy;&jcy; &kcy;&ocy;&dcy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&kcy;&icy; &scy;&tscy;&iecy;&ncy;&acy;&rcy;&icy;&yacy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&icy;  Git</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-bash">. <span class="hljs-string">&quot;<span class="hljs-subst">$(git --exec-path)</span>/git-sh-setup&quot;</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="3f6c43ca37b50416d3b429b845b288db7b49f8e548f556c10125c9f9495f8fea/7c" data-source="This is not a command the end user would want to run. Ever. This documentation is meant for people who are studying the Porcelain-ish scripts and/or are writing new ones." onmousemove="i18n(this)">&Ecy;&tcy;&ocy; &ncy;&iecy; &tcy;&acy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ucy;&yucy; &khcy;&ocy;&tcy;&iecy;&lcy; &bcy;&ycy; &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&softcy; &kcy;&ocy;&ncy;&iecy;&chcy;&ncy;&ycy;&jcy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;. &Vcy;&scy;&iecy;&gcy;&dcy;&acy;. &Ecy;&tcy;&acy; &dcy;&ocy;&kcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy;&tscy;&icy;&yacy; &pcy;&rcy;&iecy;&dcy;&ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&acy; &dcy;&lcy;&yacy; &lcy;&yucy;&dcy;&iecy;&jcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &icy;&zcy;&ucy;&chcy;&acy;&yucy;&tcy; &scy;&tscy;&iecy;&ncy;&acy;&rcy;&icy;&icy; Porcelain &icy;/&icy;&lcy;&icy; &pcy;&icy;&shcy;&ucy;&tcy; &ncy;&ocy;&vcy;&ycy;&iecy;.</span></p> <p><span data-i18n="c6f9d5eb1331b039cd844b5a0b5bfdae8c773ef970b98e01c2f62cc7eed1caaf/79" data-source="The &lt;code&gt;git sh-setup&lt;/code&gt; scriptlet is designed to be sourced (using &lt;code&gt;.&lt;/code&gt;) by other shell scripts to set up some variables pointing at the normal Git directories and a few helper shell functions." onmousemove="i18n(this)">&Scy;&tscy;&iecy;&ncy;&acy;&rcy;&icy;&jcy;  <code>git sh-setup</code>  &pcy;&rcy;&iecy;&dcy;&ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy; &dcy;&lcy;&yacy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; (&scy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy;&mcy;  <code>.</code> ) &icy;&zcy; &dcy;&rcy;&ucy;&gcy;&icy;&khcy; &scy;&tscy;&iecy;&ncy;&acy;&rcy;&icy;&iecy;&vcy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&icy; &dcy;&lcy;&yacy; &ncy;&acy;&scy;&tcy;&rcy;&ocy;&jcy;&kcy;&icy; &ncy;&iecy;&kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&khcy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ycy;&khcy;, &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&yucy;&shchcy;&icy;&khcy; &ncy;&acy; &ocy;&bcy;&ycy;&chcy;&ncy;&ycy;&iecy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&icy;  Git , &icy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&icy;&khcy; &vcy;&scy;&pcy;&ocy;&mcy;&ocy;&gcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&khcy; &fcy;&ucy;&ncy;&kcy;&tscy;&icy;&jcy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&icy;.</span></p> <p><span data-i18n="f8f8b255f4bb8f9e35671eb88769e3238a15fe3bf2eda87333a432dfbb46685e/66" data-source="Before sourcing it, your script should set up a few variables; &lt;code&gt;USAGE&lt;/code&gt; (and &lt;code&gt;LONG_USAGE&lt;/code&gt;, if any) is used to define the message given by &lt;code&gt;usage()&lt;/code&gt; shell function. &lt;code&gt;SUBDIRECTORY_OK&lt;/code&gt; can be set if the script can run from a subdirectory of the working tree (some commands do not)." onmousemove="i18n(this)">&Pcy;&rcy;&iecy;&zhcy;&dcy;&iecy; &chcy;&iecy;&mcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &iecy;&gcy;&ocy;, &vcy;&acy;&shcy; &scy;&kcy;&rcy;&icy;&pcy;&tcy; &dcy;&ocy;&lcy;&zhcy;&iecy;&ncy; &ncy;&acy;&scy;&tcy;&rcy;&ocy;&icy;&tcy;&softcy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ocy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ycy;&khcy;;  <code>USAGE</code>  (&icy;  <code>LONG_USAGE</code> , &iecy;&scy;&lcy;&icy; &tcy;&acy;&kcy;&ocy;&vcy;&ocy;&jcy; &icy;&mcy;&iecy;&iecy;&tcy;&scy;&yacy;) &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &dcy;&lcy;&yacy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&iecy;&ncy;&icy;&yacy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy;, &vcy;&ycy;&dcy;&acy;&vcy;&acy;&iecy;&mcy;&ocy;&gcy;&ocy; &fcy;&ucy;&ncy;&kcy;&tscy;&icy;&iecy;&jcy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&icy;  <code>usage()</code> .  <code>SUBDIRECTORY_OK</code>  &mcy;&ocy;&zhcy;&ncy;&ocy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&icy;&tcy;&softcy;, &iecy;&scy;&lcy;&icy; &scy;&tscy;&iecy;&ncy;&acy;&rcy;&icy;&jcy; &mcy;&ocy;&zhcy;&iecy;&tcy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy;&tcy;&softcy;&scy;&yacy; &icy;&zcy; &pcy;&ocy;&dcy;&kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&acy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&gcy;&ocy; &dcy;&iecy;&rcy;&iecy;&vcy;&acy; (&ncy;&iecy;&kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ycy; &ecy;&tcy;&ocy;&gcy;&ocy; &ncy;&iecy; &dcy;&iecy;&lcy;&acy;&yucy;&tcy;).</span></p> <p><span data-i18n="840665da78e599ebf886bc0cbe227d4257b6ccb2b392b4e71edaf813a0b16b67/ed" data-source="The scriptlet sets &lt;code&gt;GIT_DIR&lt;/code&gt; and &lt;code&gt;GIT_OBJECT_DIRECTORY&lt;/code&gt; shell variables, but does &lt;strong&gt;not&lt;/strong&gt; export them to the environment." onmousemove="i18n(this)">&Scy;&kcy;&rcy;&icy;&pcy;&tcy;&lcy;&iecy;&tcy; &ucy;&scy;&tcy;&acy;&ncy;&acy;&vcy;&lcy;&icy;&vcy;&acy;&iecy;&tcy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ycy;&iecy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&icy;  <code>GIT_DIR</code>  &icy;  <code>GIT_OBJECT_DIRECTORY</code> , &ncy;&ocy; &ncy;&iecy; &ecy;&kcy;&scy;&pcy;&ocy;&rcy;&tcy;&icy;&rcy;&ucy;&iecy;&tcy; &icy;&khcy; &vcy; &scy;&rcy;&iecy;&dcy;&ucy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_functions"><span data-i18n="75e942e5b366227eccb9def7fcea18422c7c5e164812c112c921461b2c587727/8e" data-source="Functions" onmousemove="i18n(this)">Functions</span></h2> <div> <div> <dl> <dt id="Documentation/git-sh-setup.txt-die"><span data-i18n="a8d79f40ddb79de569d778f1c0b832f9cc266b32274b702cff4ba2b8a0dd1549/0c" data-source="die" onmousemove="i18n(this)">die</span></dt> <dd> <p><span data-i18n="1efa46aa428432442809fa5ec3526078ebd7b60d1813def869fdaa467aa0db72/31" data-source="exit after emitting the supplied error message to the standard error stream." onmousemove="i18n(this)">&vcy;&ycy;&jcy;&tcy;&icy; &pcy;&ocy;&scy;&lcy;&iecy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&kcy;&icy; &pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy; &ocy;&bcy; &ocy;&shcy;&icy;&bcy;&kcy;&iecy; &vcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&jcy; &pcy;&ocy;&tcy;&ocy;&kcy; &ocy;&shcy;&icy;&bcy;&ocy;&kcy;.</span></p> </dd> <dt id="Documentation/git-sh-setup.txt-usage"><span data-i18n="0a4e4c29432ecb01b95f87d87ffaff9cb4f36ce4b89ff1a1a136ad1c7392ae07/7f" data-source="usage" onmousemove="i18n(this)">usage</span></dt> <dd> <p><span data-i18n="f73dea9f116f9a5c3231fb392021585017677a5e1a10b09a20471de35031151e/39" data-source="die with the usage message." onmousemove="i18n(this)">&ucy;&mcy;&iecy;&rcy;&iecy;&tcy;&softcy; &scy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy;&mcy; &ocy;&bcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&icy;.</span></p> </dd> <dt id="Documentation/git-sh-setup.txt-setreflogaction"><span data-i18n="f1745b7d54f9d91ec7969763008cf137ae3dff80c7fd3a759fe9f439d42b4260/0a" data-source="set_reflog_action" onmousemove="i18n(this)">set_reflog_action</span></dt> <dd> <p><span data-i18n="9d04c58b86e377a134d1aad1da2bbb45f435ea244e7fc9413d657b325d234449/a8" data-source="Set &lt;code&gt;GIT_REFLOG_ACTION&lt;/code&gt; environment to a given string (typically the name of the program) unless it is already set. Whenever the script runs a &lt;code&gt;git&lt;/code&gt; command that updates refs, a reflog entry is created using the value of this string to leave the record of what command updated the ref." onmousemove="i18n(this)">&Ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&icy;&tcy;&iecy; &dcy;&lcy;&yacy; &scy;&rcy;&iecy;&dcy;&ycy;  <code>GIT_REFLOG_ACTION</code>  &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ucy;&yucy; &scy;&tcy;&rcy;&ocy;&kcy;&ucy; (&ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &icy;&mcy;&yacy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ycy;), &iecy;&scy;&lcy;&icy; &ocy;&ncy;&acy; &iecy;&shchcy;&iecy; &ncy;&iecy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&acy;. &Vcy;&scy;&yacy;&kcy;&icy;&jcy; &rcy;&acy;&zcy;, &kcy;&ocy;&gcy;&dcy;&acy; &scy;&tscy;&iecy;&ncy;&acy;&rcy;&icy;&jcy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy;&iecy;&tcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ucy;  <code>git</code> , &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&yacy;&yucy;&shchcy;&ucy;&yucy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &scy;&ocy;&zcy;&dcy;&acy;&iecy;&tcy;&scy;&yacy; &zcy;&acy;&pcy;&icy;&scy;&softcy; &vcy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&iecy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yucy;&shchcy;&acy;&yacy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &ecy;&tcy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;, &chcy;&tcy;&ocy;&bcy;&ycy; &ocy;&scy;&tcy;&acy;&vcy;&icy;&tcy;&softcy; &zcy;&acy;&pcy;&icy;&scy;&softcy; &ocy; &tcy;&ocy;&mcy;, &kcy;&acy;&kcy;&acy;&yacy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &ocy;&bcy;&ncy;&ocy;&vcy;&icy;&lcy;&acy; &scy;&scy;&ycy;&lcy;&kcy;&ucy;.</span></p> </dd> <dt id="Documentation/git-sh-setup.txt-giteditor"><span data-i18n="e68a045f438d2debb8d0278895c244fee3dd0d0519f5137a3c07c2a5009eb5c2/8f" data-source="git_editor" onmousemove="i18n(this)">git_editor</span></dt> <dd> <p><span data-i18n="a94bd686690c06c0cdd85a63992531d9c4a544404bd41c70dedca910fb2e0057/10" data-source="runs an editor of user&amp;rsquo;s choice (GIT_EDITOR, core.editor, VISUAL or EDITOR) on a given file, but error out if no editor is specified and the terminal is dumb." onmousemove="i18n(this)">&zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy;&iecy;&tcy; &rcy;&iecy;&dcy;&acy;&kcy;&tcy;&ocy;&rcy; &pcy;&ocy; &vcy;&ycy;&bcy;&ocy;&rcy;&ucy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&yacy; (GIT_EDITOR, core.editor, VISUAL &icy;&lcy;&icy; EDITOR) &dcy;&lcy;&yacy; &dcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &fcy;&acy;&jcy;&lcy;&acy;, &ncy;&ocy; &vcy;&ycy;&dcy;&acy;&iecy;&tcy; &ocy;&shcy;&icy;&bcy;&kcy;&ucy;, &iecy;&scy;&lcy;&icy; &rcy;&iecy;&dcy;&acy;&kcy;&tcy;&ocy;&rcy; &ncy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy; &icy; &tcy;&iecy;&rcy;&mcy;&icy;&ncy;&acy;&lcy; &tcy;&ucy;&pcy;&ocy;&jcy;.</span></p> </dd> <dt id="Documentation/git-sh-setup.txt-isbarerepository"><span data-i18n="43faefb3b41268e3197d236f094e4ee2f4f5f20ae17772d978e4b50d4b9aa20c/1c" data-source="is_bare_repository" onmousemove="i18n(this)">is_bare_repository</span></dt> <dd> <p><span data-i18n="aa61e291a36769843bc8d8252f95d9ef7c2d08f9ab1a166ac8e0e4bd5f40cf8d/29" data-source="outputs &lt;code&gt;true&lt;/code&gt; or &lt;code&gt;false&lt;/code&gt; to the standard output stream to indicate if the repository is a bare repository (i.e. without an associated working tree)." onmousemove="i18n(this)">&vcy;&ycy;&vcy;&ocy;&dcy;&icy;&tcy;  <code>true</code>  &icy;&lcy;&icy;  <code>false</code>  &vcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&jcy; &pcy;&ocy;&tcy;&ocy;&kcy; &vcy;&ycy;&vcy;&ocy;&dcy;&acy;, &chcy;&tcy;&ocy;&bcy;&ycy; &ucy;&kcy;&acy;&zcy;&acy;&tcy;&softcy;, &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &lcy;&icy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy; &pcy;&ucy;&scy;&tcy;&ycy;&mcy; (&tcy;. &iecy;. &bcy;&iecy;&zcy; &scy;&vcy;&yacy;&zcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&gcy;&ocy; &dcy;&iecy;&rcy;&iecy;&vcy;&acy;).</span></p> </dd> <dt id="Documentation/git-sh-setup.txt-cdtotoplevel"><span data-i18n="252dd8551ebc7e0c840567210c0a8c62a1bc1296de2c0036fb6f7cebe3345bde/fa" data-source="cd_to_toplevel" onmousemove="i18n(this)">cd_to_toplevel</span></dt> <dd> <p><span data-i18n="519811bb3a867f473f5c3e14bc0112ded1e195a7a4bf4a54bf4612c92f433352/1f" data-source="runs chdir to the toplevel of the working tree." onmousemove="i18n(this)">&zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy;&iecy;&tcy; chdir &ncy;&acy; &vcy;&iecy;&rcy;&khcy;&ncy;&icy;&jcy; &ucy;&rcy;&ocy;&vcy;&iecy;&ncy;&softcy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&gcy;&ocy; &dcy;&iecy;&rcy;&iecy;&vcy;&acy;.</span></p> </dd> <dt id="Documentation/git-sh-setup.txt-requireworktree"><span data-i18n="911ddeab754eeaa1b56a2701a756cc26653601c1ddcf29bc6a1f2207b00631c2/ac" data-source="require_work_tree" onmousemove="i18n(this)">require_work_tree</span></dt> <dd> <p><span data-i18n="026dbdac24f876e35a49c93b94d27741c50941f556f27f377fd0fc23376754ec/16" data-source="checks if the current directory is within the working tree of the repository, and otherwise dies." onmousemove="i18n(this)">&pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&yacy;&iecy;&tcy;, &ncy;&acy;&khcy;&ocy;&dcy;&icy;&tcy;&scy;&yacy; &lcy;&icy; &tcy;&iecy;&kcy;&ucy;&shchcy;&icy;&jcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy; &vcy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&mcy; &dcy;&iecy;&rcy;&iecy;&vcy;&iecy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;, &icy; &vcy; &pcy;&rcy;&ocy;&tcy;&icy;&vcy;&ncy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &ucy;&mcy;&icy;&rcy;&acy;&iecy;&tcy;.</span></p> </dd> <dt id="Documentation/git-sh-setup.txt-requireworktreeexists"><span data-i18n="c7f0ffec36fa2cb214967e5ccb35422138e7dee99d5f402db68c08ec048f29ed/b4" data-source="require_work_tree_exists" onmousemove="i18n(this)">require_work_tree_exists</span></dt> <dd> <p><span data-i18n="ab6f09cf1f1f5663c11b1df5d32c6b363293625a0f14fe04ad0ac0ab05ba63a2/88" data-source="checks if the working tree associated with the repository exists, and otherwise dies. Often done before calling cd_to_toplevel, which is impossible to do if there is no working tree." onmousemove="i18n(this)">&pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&yacy;&iecy;&tcy;, &scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &lcy;&icy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&iecy; &dcy;&iecy;&rcy;&iecy;&vcy;&ocy;, &scy;&vcy;&yacy;&zcy;&acy;&ncy;&ncy;&ocy;&iecy; &scy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&iecy;&mcy;, &icy; &vcy; &pcy;&rcy;&ocy;&tcy;&icy;&vcy;&ncy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &ucy;&mcy;&icy;&rcy;&acy;&iecy;&tcy;. &CHcy;&acy;&scy;&tcy;&ocy; &dcy;&iecy;&lcy;&acy;&iecy;&tcy;&scy;&yacy; &pcy;&iecy;&rcy;&iecy;&dcy; &vcy;&ycy;&zcy;&ocy;&vcy;&ocy;&mcy; cd_to_toplevel, &chcy;&tcy;&ocy; &ncy;&iecy;&vcy;&ocy;&zcy;&mcy;&ocy;&zhcy;&ncy;&ocy; &scy;&dcy;&iecy;&lcy;&acy;&tcy;&softcy;, &iecy;&scy;&lcy;&icy; &ncy;&iecy;&tcy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&gcy;&ocy; &dcy;&iecy;&rcy;&iecy;&vcy;&acy;.</span></p> </dd> <dt id="Documentation/git-sh-setup.txt-requirecleanworktreeltactiongtlthintgt"><span data-i18n="69a11c1c094b9cc75f7a0e07daa262800d1520b5de58fb9f9da91073e01654a6/14" data-source="require_clean_work_tree &amp;lt;action&amp;gt; [&amp;lt;hint&amp;gt;]" onmousemove="i18n(this)">require_clean_work_tree &lt;&dcy;&iecy;&jcy;&scy;&tcy;&vcy;&icy;&iecy;&gt; [&lt;&pcy;&ocy;&dcy;&scy;&kcy;&acy;&zcy;&kcy;&acy;&gt;]</span></dt> <dd> <p><span data-i18n="39a5b6080c4a1bc6dba769063514086700ca9779646cf14c01333f7c33bf7415/77" data-source="checks that the working tree and index associated with the repository have no uncommitted changes to tracked files. Otherwise it emits an error message of the form &lt;code&gt;Cannot
+&amp;lt;action&amp;gt;: &amp;lt;reason&amp;gt;. &amp;lt;hint&amp;gt;&lt;/code&gt;, and dies. Example:" onmousemove="i18n(this)">&pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&yacy;&iecy;&tcy;, &chcy;&tcy;&ocy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&iecy; &dcy;&iecy;&rcy;&iecy;&vcy;&ocy; &icy; &icy;&ncy;&dcy;&iecy;&kcy;&scy;, &scy;&vcy;&yacy;&zcy;&acy;&ncy;&ncy;&ycy;&iecy; &scy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&iecy;&mcy;, &ncy;&iecy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy; &ncy;&iecy;&zcy;&acy;&fcy;&icy;&kcy;&scy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&khcy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&jcy; &vcy; &ocy;&tcy;&scy;&lcy;&iecy;&zhcy;&icy;&vcy;&acy;&iecy;&mcy;&ycy;&khcy; &fcy;&acy;&jcy;&lcy;&acy;&khcy;. &Vcy; &pcy;&rcy;&ocy;&tcy;&icy;&vcy;&ncy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &ocy;&ncy; &vcy;&ycy;&dcy;&acy;&iecy;&tcy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &ocy;&bcy; &ocy;&shcy;&icy;&bcy;&kcy;&iecy; &vcy;&icy;&dcy;&acy;  <code>Cannot
+&lt;action&gt;: &lt;reason&gt;. &lt;hint&gt;</code>  &icy; &ucy;&mcy;&icy;&rcy;&acy;&iecy;&tcy;. &Pcy;&rcy;&icy;&mcy;&iecy;&rcy;:</span></p> <div> <div> <pre class="hljs language-bash">require_clean_work_tree rebase <span class="hljs-string">&quot;Please commit or stash them.&quot;</span></pre> </div> </div> </dd> <dt id="Documentation/git-sh-setup.txt-getauthoridentfromcommit"><span data-i18n="1c82c7dcc4a190dbaaf26e35b24b8d92d063956692f849ee370295738f65abeb/c1" data-source="get_author_ident_from_commit" onmousemove="i18n(this)">get_author_ident_from_commit</span></dt> <dd> <p><span data-i18n="567990b044ffc2ff99cf8c26cacb11d09c40468c6073148bfa28a9c44dd9d258/c0" data-source="outputs code for use with eval to set the GIT_AUTHOR_NAME, GIT_AUTHOR_EMAIL and GIT_AUTHOR_DATE variables for a given commit." onmousemove="i18n(this)">&vcy;&ycy;&vcy;&ocy;&dcy;&icy;&tcy; &kcy;&ocy;&dcy; &dcy;&lcy;&yacy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &scy; eval &dcy;&lcy;&yacy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&kcy;&icy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ycy;&khcy; GIT_AUTHOR_NAME, GIT_AUTHOR_EMAIL &icy; GIT_AUTHOR_DATE &dcy;&lcy;&yacy; &dcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&acy;.</span></p> </dd> <dt id="Documentation/git-sh-setup.txt-createvirtualbase"><span data-i18n="0b8b92c04c5a162ee124065ffc3a9d63aa2a6573fbbe5e9e12facdea6eb9628f/8f" data-source="create_virtual_base" onmousemove="i18n(this)">create_virtual_base</span></dt> <dd> <p><span data-i18n="63dd3e5b811d74b7967cb7787f551c08f86380c744f867351b7197ac7d5f8ccb/53" data-source="modifies the first file so only lines in common with the second file remain. If there is insufficient common material, then the first file is left empty. The result is suitable as a virtual base input for a 3-way merge." onmousemove="i18n(this)">&icy;&zcy;&mcy;&iecy;&ncy;&yacy;&iecy;&tcy; &pcy;&iecy;&rcy;&vcy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy; &tcy;&acy;&kcy;, &chcy;&tcy;&ocy; &ocy;&scy;&tcy;&acy;&yucy;&tcy;&scy;&yacy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &ocy;&bcy;&shchcy;&icy;&iecy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &scy;&ocy; &vcy;&tcy;&ocy;&rcy;&ycy;&mcy; &fcy;&acy;&jcy;&lcy;&ocy;&mcy;. &IEcy;&scy;&lcy;&icy; &ocy;&bcy;&shchcy;&iecy;&gcy;&ocy; &mcy;&acy;&tcy;&iecy;&rcy;&icy;&acy;&lcy;&acy; &ncy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&tcy;&ocy;&chcy;&ncy;&ocy;, &tcy;&ocy; &pcy;&iecy;&rcy;&vcy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy; &ocy;&scy;&tcy;&acy;&iecy;&tcy;&scy;&yacy; &pcy;&ucy;&scy;&tcy;&ycy;&mcy;. &Rcy;&iecy;&zcy;&ucy;&lcy;&softcy;&tcy;&acy;&tcy; &pcy;&ocy;&dcy;&khcy;&ocy;&dcy;&icy;&tcy; &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &vcy;&icy;&rcy;&tcy;&ucy;&acy;&lcy;&softcy;&ncy;&ocy;&gcy;&ocy; &bcy;&acy;&zcy;&ocy;&vcy;&ocy;&gcy;&ocy; &vcy;&khcy;&ocy;&dcy;&acy; &dcy;&lcy;&yacy; &tcy;&rcy;&iecy;&khcy;&scy;&tcy;&ocy;&rcy;&ocy;&ncy;&ncy;&iecy;&gcy;&ocy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy;.</span></p> </dd> </dl> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-sh-setup">https://git-scm.com/docs/git-sh-setup</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-shell.html">
+                            git shell                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-shortlog.html">
+                            git shortlog                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-show.html">
+                            git show                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-show-branch.html">
+                            git show-branch                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-show-index.html">
+                            git show-index                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-show-ref.html">
+                            git show-ref                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-sparse-checkout.html">
+                            git sparse-checkout                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-sh-setup.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

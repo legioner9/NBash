@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-10 12:26:31 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git remote-fd</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="5633f096e2f2b5b089b1f7186a0b76892333750e24d8cffaf559cce2a375657a/8a" data-source="git-remote-fd" onmousemove="i18n(this)">git-remote-fd</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="aeb8f210507f34205c026cb6d96dcad20faee49b20e786f8af107480cdfff83d/ec" data-source="git-remote-fd - Reflect smart transport stream back to caller" onmousemove="i18n(this)">git-remote-fd &mdash; &Ocy;&tcy;&rcy;&acy;&zhcy;&acy;&tcy;&softcy; &icy;&ncy;&tcy;&iecy;&lcy;&lcy;&iecy;&kcy;&tcy;&ucy;&acy;&lcy;&softcy;&ncy;&ycy;&jcy; &tcy;&rcy;&acy;&ncy;&scy;&pcy;&ocy;&rcy;&tcy;&ncy;&ycy;&jcy; &pcy;&ocy;&tcy;&ocy;&kcy; &ocy;&bcy;&rcy;&acy;&tcy;&ncy;&ocy; &vcy;&ycy;&zcy;&ycy;&vcy;&acy;&yucy;&shchcy;&iecy;&mcy;&ucy; &acy;&bcy;&ocy;&ncy;&iecy;&ncy;&tcy;&ucy;</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <p><span data-i18n="d78e1cdb47a61e52dc293995e0a97a1b0b860920c101fa51d2fa8db27787151e/d8" data-source="&amp;quot;fd::&amp;lt;infd&amp;gt;[,&amp;lt;outfd&amp;gt;][/&amp;lt;anything&amp;gt;]&amp;quot; (as URL)" onmousemove="i18n(this)">&quot;fd::&lt;infd&gt;[,&lt;outfd&gt;][/&lt;anything&gt;]&quot;  (&kcy;&acy;&kcy; URL)</span></p> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="8bc4b6eda46ab9a05b46b03fc0f1e2c6adb396e8a4e3525626c69c74db62eaed/16" data-source="This helper uses specified file descriptors to connect to a remote Git server. This is not meant for end users but for programs and scripts calling git fetch, push, or archive." onmousemove="i18n(this)">&Ecy;&tcy;&ocy;&tcy; &pcy;&ocy;&mcy;&ocy;&shchcy;&ncy;&icy;&kcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ycy;&iecy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ycy;&iecy; &dcy;&iecy;&scy;&kcy;&rcy;&icy;&pcy;&tcy;&ocy;&rcy;&ycy; &dcy;&lcy;&yacy; &pcy;&ocy;&dcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&yacy; &kcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&mcy;&ucy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&ucy;  Git . &Ecy;&tcy;&ocy; &pcy;&rcy;&iecy;&dcy;&ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&ocy; &ncy;&iecy; &dcy;&lcy;&yacy; &kcy;&ocy;&ncy;&iecy;&chcy;&ncy;&ycy;&khcy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&iecy;&jcy;, &acy; &dcy;&lcy;&yacy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy; &icy; &scy;&tscy;&iecy;&ncy;&acy;&rcy;&icy;&iecy;&vcy;, &vcy;&ycy;&zcy;&ycy;&vcy;&acy;&yucy;&shchcy;&icy;&khcy; &vcy;&ycy;&bcy;&ocy;&rcy;&kcy;&ucy;, &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&kcy;&ucy; &icy;&lcy;&icy; &acy;&rcy;&khcy;&icy;&vcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy;  git .</span></p> <p><span data-i18n="be1cdd722b9f9ebd8c59a1d2cd694361ecf2b66853a3e9099253191db5168802/fc" data-source="If only &amp;lt;infd&amp;gt; is given, it is assumed to be a bidirectional socket connected to a remote Git server (git-upload-pack, git-receive-pack, or git-upload-archive). If both &amp;lt;infd&amp;gt; and &amp;lt;outfd&amp;gt; are given, they are assumed to be pipes connected to a remote Git server (&amp;lt;infd&amp;gt; being the inbound pipe and &amp;lt;outfd&amp;gt; being the outbound pipe)." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &lt;infd&gt;, &pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&lcy;&acy;&gcy;&acy;&iecy;&tcy;&scy;&yacy;, &chcy;&tcy;&ocy; &ecy;&tcy;&ocy; &dcy;&vcy;&ucy;&ncy;&acy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&ncy;&ycy;&jcy; &scy;&ocy;&kcy;&iecy;&tcy;, &pcy;&ocy;&dcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&ncy;&ycy;&jcy; &kcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&mcy;&ucy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&ucy;  Git  (git-upload-pack, git-receive-pack &icy;&lcy;&icy; git-upload-archive). &IEcy;&scy;&lcy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ycy; &icy; &lt;infd&gt;, &icy; &lt;outfd&gt;, &pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&lcy;&acy;&gcy;&acy;&iecy;&tcy;&scy;&yacy;, &chcy;&tcy;&ocy; &ocy;&ncy;&icy; &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&yucy;&tcy; &scy;&ocy;&bcy;&ocy;&jcy; &kcy;&acy;&ncy;&acy;&lcy;&ycy;, &pcy;&ocy;&dcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&ncy;&ycy;&iecy; &kcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&mcy;&ucy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&ucy;  Git  (&lt;infd&gt; &mdash; &ecy;&tcy;&ocy; &vcy;&khcy;&ocy;&dcy;&yacy;&shchcy;&icy;&jcy; &kcy;&acy;&ncy;&acy;&lcy;, &acy; &lt;outfd&gt; &mdash; &icy;&scy;&khcy;&ocy;&dcy;&yacy;&shchcy;&icy;&jcy; &kcy;&acy;&ncy;&acy;&lcy;).</span></p> <p><span data-i18n="1b17020392697a6b0c649325b0c89ef39581a2f06191c8aa7c7d891aed95482b/fc" data-source="It is assumed that any handshaking procedures have already been completed (such as sending service request for git://) before this helper is started." onmousemove="i18n(this)">&Pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&lcy;&acy;&gcy;&acy;&iecy;&tcy;&scy;&yacy;, &chcy;&tcy;&ocy; &vcy;&scy;&iecy; &pcy;&rcy;&ocy;&tscy;&iecy;&dcy;&ucy;&rcy;&ycy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy; &scy;&vcy;&yacy;&zcy;&icy; &ucy;&zhcy;&iecy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&iecy;&ncy;&ycy; (&ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&kcy;&acy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&acy; &ncy;&acy; &ocy;&bcy;&scy;&lcy;&ucy;&zhcy;&icy;&vcy;&acy;&ncy;&icy;&iecy; &dcy;&lcy;&yacy; git://) &dcy;&ocy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy; &ecy;&tcy;&ocy;&gcy;&ocy; &pcy;&ocy;&mcy;&ocy;&shchcy;&ncy;&icy;&kcy;&acy;.</span></p> <p><span data-i18n="afb55a92f78d59b586d0a2fd30af0196fda0f09c474b97536bc872f7e7c6a00b/25" data-source="&amp;lt;anything&amp;gt; can be any string. It is ignored. It is meant for providing information to the user in the URL in case that URL is displayed in some context." onmousemove="i18n(this)">&lt;&chcy;&tcy;&ocy;-&ncy;&icy;&bcy;&ucy;&dcy;&softcy;&gt; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &lcy;&yucy;&bcy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&ocy;&jcy;. &Ecy;&tcy;&ocy; &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ucy;&iecy;&tcy;&scy;&yacy;. &Ocy;&ncy; &pcy;&rcy;&iecy;&dcy;&ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy; &dcy;&lcy;&yacy; &pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&yucy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&icy; &vcy; URL-&acy;&dcy;&rcy;&iecy;&scy;&iecy; &vcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy;, &iecy;&scy;&lcy;&icy; &ecy;&tcy;&ocy;&tcy; URL-&acy;&dcy;&rcy;&iecy;&scy; &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&acy;&iecy;&tcy;&scy;&yacy; &vcy; &ncy;&iecy;&kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&mcy; &kcy;&ocy;&ncy;&tcy;&iecy;&kcy;&scy;&tcy;&iecy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_environment_variables"><span data-i18n="aac7246f5e97142c3f257b7d8b84976f10c29e1b89804bb9d3eb7c43cc03cb8e/17" data-source="Environment variables" onmousemove="i18n(this)">Environment variables</span></h2> <div> <div> <dl> <dt id="Documentation/git-remote-fd.txt-GITTRANSLOOPDEBUG"><span data-i18n="9ab1b6fb871a177ebf353ef89bb20e465ded23aeae1f061002aefa6ceed45fda/09" data-source="GIT_TRANSLOOP_DEBUG" onmousemove="i18n(this)">GIT_TRANSLOOP_DEBUG</span></dt> <dd> <p><span data-i18n="195411fa8ff306c38f8d2d5a00a2d6a6ca32a5e212f9ac949c7b510d7ce34743/44" data-source="If set, prints debugging information about various reads/writes." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&ocy;, &vcy;&ycy;&vcy;&ocy;&dcy;&icy;&tcy; &ocy;&tcy;&lcy;&acy;&dcy;&ocy;&chcy;&ncy;&ucy;&yucy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&yucy; &ocy; &rcy;&acy;&zcy;&lcy;&icy;&chcy;&ncy;&ycy;&khcy; &ocy;&pcy;&iecy;&rcy;&acy;&tscy;&icy;&yacy;&khcy; &chcy;&tcy;&iecy;&ncy;&icy;&yacy;/&zcy;&acy;&pcy;&icy;&scy;&icy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_examples"><span data-i18n="e68ee04dff59551b7d1ae07a2f8a00dc61d841628948da3d2781630706a05e92/38" data-source="Examples" onmousemove="i18n(this)">Examples</span></h2> <div> <div> <dl> <dt id="Documentation/git-remote-fd.txt-codegitfetchfd17mastercode"> <code>git fetch fd::17 master</code> </dt> <dd> <p><span data-i18n="6d22146bd0a8697b8c614f2182f141c5bb5fed718a5301e48172c05aa687e3e5/89" data-source="Fetch master, using file descriptor #17 to communicate with git-upload-pack." onmousemove="i18n(this)">&Pcy;&ocy;&lcy;&ucy;&chcy;&icy;&tcy;&iecy; &mcy;&acy;&scy;&tcy;&iecy;&rcy;-&fcy;&acy;&jcy;&lcy;, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yacy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ycy;&jcy; &dcy;&iecy;&scy;&kcy;&rcy;&icy;&pcy;&tcy;&ocy;&rcy; &numero; 17 &dcy;&lcy;&yacy; &scy;&vcy;&yacy;&zcy;&icy; &scy; git-upload-pack.</span></p> </dd> <dt id="Documentation/git-remote-fd.txt-codegitfetchfd17foomastercode"> <code>git fetch fd::17/foo master</code> </dt> <dd> <p><span data-i18n="db7a40274cbeb2d8cda98beff2670df5b5675ca1b5c29805ecc0df4e75826f36/aa" data-source="Same as above." onmousemove="i18n(this)">&Tcy;&ocy; &zhcy;&iecy;, &chcy;&tcy;&ocy; &icy; &vcy;&ycy;&shcy;&iecy;.</span></p> </dd> <dt id="Documentation/git-remote-fd.txt-codegitpushfd78masterasURLcode"> <code>git push fd::7,8 master (as URL)</code> </dt> <dd> <p><span data-i18n="546fe9526639e4213134d071a39524606300763c3820fa13e68ed79236b10d53/f1" data-source="Push master, using file descriptor #7 to read data from git-receive-pack and file descriptor #8 to write data to the same service." onmousemove="i18n(this)">&Ncy;&acy;&zhcy;&mcy;&icy;&tcy;&iecy; master, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yacy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ycy;&jcy; &dcy;&iecy;&scy;&kcy;&rcy;&icy;&pcy;&tcy;&ocy;&rcy; &numero;7 &dcy;&lcy;&yacy; &chcy;&tcy;&iecy;&ncy;&icy;&yacy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy; &icy;&zcy; git-receive-pack &icy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ycy;&jcy; &dcy;&iecy;&scy;&kcy;&rcy;&icy;&pcy;&tcy;&ocy;&rcy; &numero;8 &dcy;&lcy;&yacy; &zcy;&acy;&pcy;&icy;&scy;&icy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy; &vcy; &tcy;&ocy;&tcy; &zhcy;&iecy; &scy;&iecy;&rcy;&vcy;&icy;&scy;.</span></p> </dd> <dt id="Documentation/git-remote-fd.txt-codegitpushfd78barmastercode"> <code>git push fd::7,8/bar master</code> </dt> <dd> <p><span data-i18n="db7a40274cbeb2d8cda98beff2670df5b5675ca1b5c29805ecc0df4e75826f36/aa" data-source="Same as above." onmousemove="i18n(this)">&Tcy;&ocy; &zhcy;&iecy;, &chcy;&tcy;&ocy; &icy; &vcy;&ycy;&shcy;&iecy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_see_also"><span data-i18n="2fa97693b70fa87b95b2d1bdf9558e4ac65d5e82d145f13a03849c4d9c4957a9/40" data-source="See also" onmousemove="i18n(this)">See also</span></h2> <div> <p><a href="gitremote-helpers.html"><span data-i18n="48adc6f27f488d583491efbc2b09f9c4e29fd944f3313c154d0b7dd43c42254b/b5" data-source="gitremote-helpers[7]" onmousemove="i18n(this)">gitremote-helpers[7]</span></a></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-remote-fd">https://git-scm.com/docs/git-remote-fd</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-repack.html">
+                            git repack                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-replace.html">
+                            git replace                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-request-pull.html">
+                            git request-pull                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-rerere.html">
+                            git rerere                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-reset.html">
+                            git reset                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-restore.html">
+                            git restore                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-rev-list.html">
+                            git rev-list                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-remote-fd.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:15:29 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git quiltimport</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="290547ca3f56af8bb61b03930db01d7f9b8f4dcdafb473cbfb276a697df76b29/bc" data-source="git-quiltimport" onmousemove="i18n(this)">git-quiltimport</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="bdddc3dcca57a3cc72b48f5d051a4216ee2da93aa4af23afd648e46021f420eb/00" data-source="git-quiltimport - Applies a quilt patchset onto the current branch" onmousemove="i18n(this)">git-quiltimport &mdash; &pcy;&rcy;&icy;&mcy;&iecy;&ncy;&yacy;&iecy;&tcy; &ncy;&acy;&bcy;&ocy;&rcy; &pcy;&acy;&tcy;&chcy;&iecy;&jcy; quilt &kcy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&jcy; &vcy;&iecy;&tcy;&kcy;&iecy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git quiltimport <span class="hljs-selector-attr">[--dry-run | -n]</span> <span class="hljs-selector-attr">[--author &lt;author&gt;]</span> <span class="hljs-selector-attr">[--patches &lt;dir&gt;]</span>
+                <span class="hljs-selector-attr">[--series &lt;file&gt;]</span> <span class="hljs-selector-attr">[--keep-non-patch]</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="c38b6069fa43d0daaed05066ac9b7a31d556742862432bade2934d99f4cfdc7e/cf" data-source="Applies a quilt patchset onto the current Git branch, preserving the patch boundaries, patch order, and patch descriptions present in the quilt patchset." onmousemove="i18n(this)">&Pcy;&rcy;&icy;&mcy;&iecy;&ncy;&yacy;&iecy;&tcy; &ncy;&acy;&bcy;&ocy;&rcy; &pcy;&acy;&tcy;&chcy;&iecy;&jcy; quilt &kcy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&jcy; &vcy;&iecy;&tcy;&kcy;&iecy;  Git , &scy;&ocy;&khcy;&rcy;&acy;&ncy;&yacy;&yacy; &gcy;&rcy;&acy;&ncy;&icy;&tscy;&ycy; &pcy;&acy;&tcy;&chcy;&iecy;&jcy;, &pcy;&ocy;&rcy;&yacy;&dcy;&ocy;&kcy; &pcy;&acy;&tcy;&chcy;&iecy;&jcy; &icy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&icy;&yacy; &pcy;&acy;&tcy;&chcy;&iecy;&jcy;, &pcy;&rcy;&icy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&iecy; &vcy; &ncy;&acy;&bcy;&ocy;&rcy;&iecy; quilt patchset.</span></p> <p><span data-i18n="fdc58b84c1b6d7bfb453d42b7d041145b64b3efc9142e4d806353c3fd781ea29/80" data-source="For each patch the code attempts to extract the author from the patch description. If that fails it falls back to the author specified with --author. If the --author flag was not given the patch description is displayed and the user is asked to interactively enter the author of the patch." onmousemove="i18n(this)">&Dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &pcy;&acy;&tcy;&chcy;&acy; &kcy;&ocy;&dcy; &pcy;&ycy;&tcy;&acy;&iecy;&tcy;&scy;&yacy; &icy;&zcy;&vcy;&lcy;&iecy;&chcy;&softcy; &acy;&vcy;&tcy;&ocy;&rcy;&acy; &icy;&zcy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&icy;&yacy; &pcy;&acy;&tcy;&chcy;&acy;. &IEcy;&scy;&lcy;&icy; &ecy;&tcy;&ocy; &ncy;&iecy; &ucy;&dcy;&acy;&iecy;&tcy;&scy;&yacy;, &ocy;&ncy; &vcy;&ocy;&zcy;&vcy;&rcy;&acy;&shchcy;&acy;&iecy;&tcy;&scy;&yacy; &kcy; &acy;&vcy;&tcy;&ocy;&rcy;&ucy;, &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ocy;&mcy;&ucy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; --author. &IEcy;&scy;&lcy;&icy; &fcy;&lcy;&acy;&gcy; --author &ncy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;, &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&acy;&iecy;&tcy;&scy;&yacy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&icy;&iecy; &pcy;&acy;&tcy;&chcy;&acy; &icy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&yucy; &pcy;&rcy;&iecy;&dcy;&lcy;&acy;&gcy;&acy;&iecy;&tcy;&scy;&yacy; &icy;&ncy;&tcy;&iecy;&rcy;&acy;&kcy;&tcy;&icy;&vcy;&ncy;&ocy; &vcy;&vcy;&iecy;&scy;&tcy;&icy; &acy;&vcy;&tcy;&ocy;&rcy;&acy; &pcy;&acy;&tcy;&chcy;&acy;.</span></p> <p><span data-i18n="37740808302486b5d681d5aad061936232b904ca89d9d3ee484e80aad786a650/9d" data-source="If a subject is not found in the patch description the patch name is preserved as the 1 line subject in the Git description." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &tcy;&iecy;&mcy;&acy; &ncy;&iecy; &ncy;&acy;&jcy;&dcy;&iecy;&ncy;&acy; &vcy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&icy;&icy; &icy;&scy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy;, &icy;&mcy;&yacy; &icy;&scy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy; &scy;&ocy;&khcy;&rcy;&acy;&ncy;&yacy;&iecy;&tcy;&scy;&yacy; &vcy; &vcy;&icy;&dcy;&iecy; &tcy;&iecy;&mcy;&ycy; &vcy; &ocy;&dcy;&ncy;&ucy; &scy;&tcy;&rcy;&ocy;&kcy;&ucy; &vcy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&icy;&icy;  Git .</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-quiltimport.txt--n"><span data-i18n="5249f4fcc629efa0e6d6b2bf746b6c5de61611ce719ad61ac820fbe5c8cece66/28" data-source="-n" onmousemove="i18n(this)">-n</span></dt> <dt id="Documentation/git-quiltimport.txt---dry-run"><span data-i18n="675ca48430023bf861e914e0cf5bbe183efe84bd9d831affc574394bf4edc690/c1" data-source="--dry-run" onmousemove="i18n(this)">--dry-run</span></dt> <dd> <p><span data-i18n="ba55ce380f719e100eca3d5e63bc31140a1dbb1827026388ee3241fdd07be09d/26" data-source="Walk through the patches in the series and warn if we cannot find all of the necessary information to commit a patch. At the time of this writing only missing author information is warned about." onmousemove="i18n(this)">&Pcy;&rcy;&ocy;&scy;&mcy;&ocy;&tcy;&rcy;&icy;&tcy;&iecy; &pcy;&acy;&tcy;&chcy;&icy; &vcy; &scy;&iecy;&rcy;&icy;&icy; &icy; &pcy;&rcy;&iecy;&dcy;&ucy;&pcy;&rcy;&iecy;&dcy;&icy;&tcy;&iecy;, &iecy;&scy;&lcy;&icy; &mcy;&ycy; &ncy;&iecy; &scy;&mcy;&ocy;&zhcy;&iecy;&mcy; &ncy;&acy;&jcy;&tcy;&icy; &vcy;&scy;&yucy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ucy;&yucy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&yucy; &dcy;&lcy;&yacy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy; &pcy;&acy;&tcy;&chcy;&acy;. &Ncy;&acy; &mcy;&ocy;&mcy;&iecy;&ncy;&tcy; &ncy;&acy;&pcy;&icy;&scy;&acy;&ncy;&icy;&yacy; &scy;&tcy;&acy;&tcy;&softcy;&icy; &pcy;&rcy;&iecy;&dcy;&ucy;&pcy;&rcy;&iecy;&zhcy;&dcy;&acy;&iecy;&tcy;&scy;&yacy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &ocy;&bcy; &ocy;&tcy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&icy;&icy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&icy; &ocy;&bcy; &acy;&vcy;&tcy;&ocy;&rcy;&iecy;.</span></p> </dd> <dt id="Documentation/git-quiltimport.txt---authoremAuthorNameltAuthorEmailgtem"><span data-i18n="c7f2211c56363e2a3fe9b742b777d682dbc43fb05135e42d628ff9b32169e4b8/8d" data-source="--author &lt;em&gt;Author Name &amp;lt;Author Email&amp;gt;&lt;/em&gt;" onmousemove="i18n(this)">--author &Icy;&mcy;&yacy; &acy;&vcy;&tcy;&ocy;&rcy;&acy; &lt;&Ecy;&lcy;&iecy;&kcy;&tcy;&rcy;&ocy;&ncy;&ncy;&acy;&yacy; &pcy;&ocy;&chcy;&tcy;&acy; &acy;&vcy;&tcy;&ocy;&rcy;&acy;&gt;</span> </dt> <dd> <p><span data-i18n="7c562f374c1ea7f099eba350792d1c690540656fbe605e9c1c2b8c8610906171/03" data-source="The author name and email address to use when no author information can be found in the patch description." onmousemove="i18n(this)">&Icy;&mcy;&yacy; &acy;&vcy;&tcy;&ocy;&rcy;&acy; &icy; &acy;&dcy;&rcy;&iecy;&scy; &ecy;&lcy;&iecy;&kcy;&tcy;&rcy;&ocy;&ncy;&ncy;&ocy;&jcy; &pcy;&ocy;&chcy;&tcy;&ycy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &scy;&lcy;&iecy;&dcy;&ucy;&iecy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;, &iecy;&scy;&lcy;&icy; &vcy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&icy;&icy; &pcy;&acy;&tcy;&chcy;&acy; &ncy;&iecy;&tcy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&icy; &ocy;&bcy; &acy;&vcy;&tcy;&ocy;&rcy;&iecy;.</span></p> </dd> <dt id="Documentation/git-quiltimport.txt---patchesltdirgt"><span data-i18n="d98b15c9df758dc7e45781a7dbcd3540e9d633692f601ebc3709e1f07fcadb9f/23" data-source="--patches &amp;lt;dir&amp;gt;" onmousemove="i18n(this)">--patches &lt;dir&gt;</span></dt> <dd> <p><span data-i18n="3f8267b3a199924f278ffacafc30c83c3ee24ae8de9ec12f15980a2e6bd57190/84" data-source="The directory to find the quilt patches." onmousemove="i18n(this)">&Kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy; &dcy;&lcy;&yacy; &pcy;&ocy;&icy;&scy;&kcy;&acy; &pcy;&acy;&tcy;&chcy;&iecy;&jcy; quilt.</span></p> <p><span data-i18n="bb22b1ed6464d1c67c41c16875ba2e84168ae30b4986a6dcc39b2898150d2785/04" data-source="The default for the patch directory is &lt;code&gt;patches&lt;/code&gt; or the value of the &lt;code&gt;$QUILT_PATCHES&lt;/code&gt; environment variable." onmousemove="i18n(this)">&Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &dcy;&lcy;&yacy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&acy; &icy;&scy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&jcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy;  <code>patches</code>  &icy;&lcy;&icy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ocy;&jcy; &scy;&rcy;&iecy;&dcy;&ycy;  <code>$QUILT_PATCHES</code> .</span></p> </dd> <dt id="Documentation/git-quiltimport.txt---seriesltfilegt"><span data-i18n="cf776394bd1107c64c474b2aefa0650ec605f930408e6a1e121d22614188e797/68" data-source="--series &amp;lt;file&amp;gt;" onmousemove="i18n(this)">--series &lt;file&gt;</span></dt> <dd> <p><span data-i18n="cf4f49062a3da89d758aad698100f3dea12c32cee5cde1081a02bb722214067e/34" data-source="The quilt series file." onmousemove="i18n(this)">&Fcy;&acy;&jcy;&lcy; &scy;&iecy;&rcy;&icy;&icy; &lcy;&ocy;&scy;&kcy;&ucy;&tcy;&ncy;&ycy;&khcy; &ocy;&dcy;&iecy;&yacy;&lcy;.</span></p> <p><span data-i18n="c356140069ab2286bd0fdf45f76ea96bd557ef6158187c906357c4db468f5e12/7d" data-source="The default for the series file is &amp;lt;patches&amp;gt;/series or the value of the &lt;code&gt;$QUILT_SERIES&lt;/code&gt; environment variable." onmousemove="i18n(this)">&Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &dcy;&lcy;&yacy; &fcy;&acy;&jcy;&lcy;&acy; &scy;&iecy;&rcy;&icy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &lt;patches&gt;/series &icy;&lcy;&icy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ocy;&jcy; &scy;&rcy;&iecy;&dcy;&ycy;  <code>$QUILT_SERIES</code> .</span></p> </dd> <dt id="Documentation/git-quiltimport.txt---keep-non-patch"><span data-i18n="2d38cfb0b8f45418f6381c658d65fc13501b726a4b2111fa926a56c323039a02/d0" data-source="--keep-non-patch" onmousemove="i18n(this)">--keep-non-patch</span></dt> <dd> <p><span data-i18n="3aa0fd32d296332defa348495ceef3b29551b3ff12ca66fefa091f70bba10cbc/dc" data-source="Pass &lt;code&gt;-b&lt;/code&gt; flag to &lt;code&gt;git mailinfo&lt;/code&gt; (see &lt;a href=&quot;git-mailinfo&quot;&gt;git-mailinfo[1]&lt;/a&gt;)." onmousemove="i18n(this)">&Pcy;&iecy;&rcy;&iecy;&dcy;&acy;&jcy;&tcy;&iecy; &fcy;&lcy;&acy;&gcy;  <code>-b</code>  &vcy;  <code>git mailinfo</code>  (&scy;&mcy;.  <a href="git-mailinfo.html">git-mailinfo[1]</a> ).</span></p> </dd> </dl> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-quiltimport">https://git-scm.com/docs/git-quiltimport</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-range-diff.html">
+                            git range-diff                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-read-tree.html">
+                            git read-tree                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-rebase.html">
+                            git rebase                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-receive-pack.html">
+                            git receive-pack                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-reflog.html">
+                            git reflog                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-remote.html">
+                            git remote                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-remote-ext.html">
+                            git remote-ext                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-quiltimport.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:12:58 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Git - api simple-ipc</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Miscellaneous">
+                                Miscellaneous                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="c341aa2dcca85272dfa1399ea7f82ecd43a34183c7cbf0a447ccef317451988f/be" data-source="api-simple-ipc" onmousemove="i18n(this)">api-simple-ipc</span></h1> <div> <p><span data-i18n="a6f65bbe1d5da525a6751357000d462cf896ebe169e74c26507945e0e9807db9/45" data-source="The Simple-IPC API is a collection of &lt;code&gt;ipc_&lt;/code&gt; prefixed library routines and a basic communication protocol that allows an IPC-client process to send an application-specific IPC-request message to an IPC-server process and receive an application-specific IPC-response message." onmousemove="i18n(this)">API Simple-IPC &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &scy;&ocy;&bcy;&ocy;&jcy; &ncy;&acy;&bcy;&ocy;&rcy; &pcy;&ocy;&dcy;&pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;  library  &scy; &pcy;&rcy;&iecy;&fcy;&icy;&kcy;&scy;&ocy;&mcy;  <code>ipc_</code>  &icy; &bcy;&acy;&zcy;&ocy;&vcy;&ocy;&gcy;&ocy; &pcy;&rcy;&ocy;&tcy;&ocy;&kcy;&ocy;&lcy;&acy; &scy;&vcy;&yacy;&zcy;&icy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&iecy;&tcy; &pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;&ucy; IPC-&kcy;&lcy;&icy;&iecy;&ncy;&tcy;&acy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&tcy;&softcy; &scy;&pcy;&iecy;&tscy;&icy;&fcy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&iecy; &dcy;&lcy;&yacy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&yacy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&acy; IPC &pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;&ucy; IPC-&scy;&iecy;&rcy;&vcy;&iecy;&rcy;&acy; &icy; &pcy;&ocy;&lcy;&ucy;&chcy;&acy;&tcy;&softcy; &scy;&pcy;&iecy;&tscy;&icy;&fcy;&icy;&chcy;&ncy;&ycy;&jcy; &dcy;&lcy;&yacy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&yacy; IPC-&ocy;&tcy;&vcy;&iecy;&tcy;. &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy;.</span></p> <p><span data-i18n="ffa4c10e884b84d6a5a82923c284b3824b716f7735a46b01005692f51db46462/89" data-source="Communication occurs over a named pipe on Windows and a Unix domain socket on other platforms. IPC-clients and IPC-servers rendezvous at a previously agreed-to application-specific pathname (which is outside the scope of this design) that is local to the computer system." onmousemove="i18n(this)">&Scy;&vcy;&yacy;&zcy;&softcy; &pcy;&rcy;&ocy;&icy;&scy;&khcy;&ocy;&dcy;&icy;&tcy; &chcy;&iecy;&rcy;&iecy;&zcy; &icy;&mcy;&iecy;&ncy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&jcy; &kcy;&acy;&ncy;&acy;&lcy; &vcy; Windows &icy; &scy;&ocy;&kcy;&iecy;&tcy; &dcy;&ocy;&mcy;&iecy;&ncy;&acy; Unix &ncy;&acy; &dcy;&rcy;&ucy;&gcy;&icy;&khcy; &pcy;&lcy;&acy;&tcy;&fcy;&ocy;&rcy;&mcy;&acy;&khcy;. IPC-&kcy;&lcy;&icy;&iecy;&ncy;&tcy;&ycy; &icy; IPC-&scy;&iecy;&rcy;&vcy;&iecy;&rcy;&ycy; &vcy;&scy;&tcy;&rcy;&iecy;&chcy;&acy;&yucy;&tcy;&scy;&yacy; &pcy;&ocy; &zcy;&acy;&rcy;&acy;&ncy;&iecy;&iecy; &scy;&ocy;&gcy;&lcy;&acy;&scy;&ocy;&vcy;&acy;&ncy;&ncy;&ocy;&mcy;&ucy; &pcy;&ucy;&tcy;&icy; &dcy;&lcy;&yacy; &kcy;&ocy;&ncy;&kcy;&rcy;&iecy;&tcy;&ncy;&ocy;&gcy;&ocy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&yacy; (&kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &vcy;&ycy;&khcy;&ocy;&dcy;&icy;&tcy; &zcy;&acy; &rcy;&acy;&mcy;&kcy;&icy; &dcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &pcy;&rcy;&ocy;&iecy;&kcy;&tcy;&acy;), &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ycy;&mcy; &dcy;&lcy;&yacy; &kcy;&ocy;&mcy;&pcy;&softcy;&yucy;&tcy;&iecy;&rcy;&ncy;&ocy;&jcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ycy;.</span></p> <p><span data-i18n="11b5ec4a4144a989388fb4d083d471dbe98ee65a83dad26f48696aecc6d29c06/ce" data-source="The IPC-server routines within the server application process create a thread pool to listen for connections and receive request messages from multiple concurrent IPC-clients. When received, these messages are dispatched up to the server application callbacks for handling. IPC-server routines then incrementally relay responses back to the IPC-client." onmousemove="i18n(this)">&Pcy;&ocy;&dcy;&pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ycy; IPC-&scy;&iecy;&rcy;&vcy;&iecy;&rcy;&acy; &vcy; &pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;&iecy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&ncy;&ocy;&gcy;&ocy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&yacy; &scy;&ocy;&zcy;&dcy;&acy;&yucy;&tcy; &pcy;&ucy;&lcy; &pcy;&ocy;&tcy;&ocy;&kcy;&ocy;&vcy; &dcy;&lcy;&yacy; &pcy;&rcy;&ocy;&scy;&lcy;&ucy;&shcy;&icy;&vcy;&acy;&ncy;&icy;&yacy; &scy;&ocy;&iecy;&dcy;&icy;&ncy;&iecy;&ncy;&icy;&jcy; &icy; &pcy;&ocy;&lcy;&ucy;&chcy;&iecy;&ncy;&icy;&yacy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&jcy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&ocy;&vcy; &ocy;&tcy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&icy;&khcy; &ocy;&dcy;&ncy;&ocy;&vcy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ocy; &rcy;&acy;&bcy;&ocy;&tcy;&acy;&yucy;&shchcy;&icy;&khcy; IPC-&kcy;&lcy;&icy;&iecy;&ncy;&tcy;&ocy;&vcy;. &Pcy;&rcy;&icy; &pcy;&ocy;&lcy;&ucy;&chcy;&iecy;&ncy;&icy;&icy; &ecy;&tcy;&icy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy; &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&yucy;&tcy;&scy;&yacy; &ocy;&bcy;&rcy;&acy;&tcy;&ncy;&ycy;&mcy; &vcy;&ycy;&zcy;&ocy;&vcy;&acy;&mcy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&ncy;&ocy;&gcy;&ocy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&yacy; &dcy;&lcy;&yacy; &ocy;&bcy;&rcy;&acy;&bcy;&ocy;&tcy;&kcy;&icy;. &Zcy;&acy;&tcy;&iecy;&mcy; &pcy;&ocy;&dcy;&pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ycy; IPC-&scy;&iecy;&rcy;&vcy;&iecy;&rcy;&acy; &pcy;&ocy;&scy;&tcy;&iecy;&pcy;&iecy;&ncy;&ncy;&ocy; &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&yucy;&tcy; &ocy;&tcy;&vcy;&iecy;&tcy;&ycy; &ocy;&bcy;&rcy;&acy;&tcy;&ncy;&ocy; IPC-&kcy;&lcy;&icy;&iecy;&ncy;&tcy;&ucy;.</span></p> <p><span data-i18n="363e854d60e7d779b2f80d7c6dfbf020e7f6d5c2a52781cb9c6ade9c376285c2/7c" data-source="The IPC-client routines within a client application process connect to the IPC-server and send a request message and wait for a response. When received, the response is returned back to the caller." onmousemove="i18n(this)">&Pcy;&ocy;&dcy;&pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ycy; IPC-&kcy;&lcy;&icy;&iecy;&ncy;&tcy;&acy; &vcy; &pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;&iecy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy;&scy;&kcy;&ocy;&gcy;&ocy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&yacy; &pcy;&ocy;&dcy;&kcy;&lcy;&yucy;&chcy;&acy;&yucy;&tcy;&scy;&yacy; &kcy; IPC-&scy;&iecy;&rcy;&vcy;&iecy;&rcy;&ucy;, &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&yucy;&tcy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&acy; &icy; &zhcy;&dcy;&ucy;&tcy; &ocy;&tcy;&vcy;&iecy;&tcy;&acy;. &Pcy;&rcy;&icy; &pcy;&ocy;&lcy;&ucy;&chcy;&iecy;&ncy;&icy;&icy; &ocy;&tcy;&vcy;&iecy;&tcy; &vcy;&ocy;&zcy;&vcy;&rcy;&acy;&shchcy;&acy;&iecy;&tcy;&scy;&yacy; &ocy;&bcy;&rcy;&acy;&tcy;&ncy;&ocy; &vcy;&ycy;&zcy;&ycy;&vcy;&acy;&yucy;&shchcy;&iecy;&mcy;&ucy; &acy;&bcy;&ocy;&ncy;&iecy;&ncy;&tcy;&ucy;.</span></p> <p><span data-i18n="1517eb744c917f8c9c8937a460ed11eebe2ab1585643031bc310867a026f3226/e3" data-source="For example, the &lt;code&gt;fsmonitor--daemon&lt;/code&gt; feature will be built as a server application on top of the IPC-server library routines. It will have threads watching for file system events and a thread pool waiting for client connections. Clients, such as &lt;code&gt;git status&lt;/code&gt;, will request a list of file system events since a point in time and the server will respond with a list of changed files and directories. The formats of the request and response are application-specific; the IPC-client and IPC-server routines treat them as opaque byte streams." onmousemove="i18n(this)">&Ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &fcy;&ucy;&ncy;&kcy;&tscy;&icy;&yacy;  <code>fsmonitor--daemon</code>  &bcy;&ucy;&dcy;&iecy;&tcy; &pcy;&ocy;&scy;&tcy;&rcy;&ocy;&iecy;&ncy;&acy; &kcy;&acy;&kcy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&ncy;&ocy;&iecy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&iecy; &pcy;&ocy;&vcy;&iecy;&rcy;&khcy; &pcy;&ocy;&dcy;&pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy; IPC-&scy;&iecy;&rcy;&vcy;&iecy;&rcy;&acy;  library . &Ucy; &ncy;&iecy;&gcy;&ocy; &bcy;&ucy;&dcy;&ucy;&tcy; &pcy;&ocy;&tcy;&ocy;&kcy;&icy;, &ocy;&tcy;&scy;&lcy;&iecy;&zhcy;&icy;&vcy;&acy;&yucy;&shchcy;&icy;&iecy; &scy;&ocy;&bcy;&ycy;&tcy;&icy;&yacy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ocy;&jcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ycy;, &icy; &pcy;&ucy;&lcy; &pcy;&ocy;&tcy;&ocy;&kcy;&ocy;&vcy;, &ocy;&zhcy;&icy;&dcy;&acy;&yucy;&shchcy;&icy;&jcy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy;&scy;&kcy;&icy;&khcy; &pcy;&ocy;&dcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&jcy;. &Kcy;&lcy;&icy;&iecy;&ncy;&tcy;&ycy;, &tcy;&acy;&kcy;&icy;&iecy; &kcy;&acy;&kcy;  <code>git status</code> , &zcy;&acy;&pcy;&rcy;&ocy;&scy;&yacy;&tcy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &scy;&ocy;&bcy;&ycy;&tcy;&icy;&jcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ocy;&jcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ycy; &scy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &mcy;&ocy;&mcy;&iecy;&ncy;&tcy;&acy; &vcy;&rcy;&iecy;&mcy;&iecy;&ncy;&icy;, &acy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy; &ocy;&tcy;&vcy;&iecy;&tcy;&icy;&tcy; &scy;&pcy;&icy;&scy;&kcy;&ocy;&mcy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&ncy;&ycy;&khcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &icy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&ocy;&vcy;. &Fcy;&ocy;&rcy;&mcy;&acy;&tcy;&ycy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&acy; &icy; &ocy;&tcy;&vcy;&iecy;&tcy;&acy; &zcy;&acy;&vcy;&icy;&scy;&yacy;&tcy; &ocy;&tcy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&yacy;; &pcy;&rcy;&ocy;&tscy;&iecy;&dcy;&ucy;&rcy;&ycy; IPC-&kcy;&lcy;&icy;&iecy;&ncy;&tcy;&acy; &icy; IPC-&scy;&iecy;&rcy;&vcy;&iecy;&rcy;&acy; &rcy;&acy;&scy;&scy;&mcy;&acy;&tcy;&rcy;&icy;&vcy;&acy;&yucy;&tcy; &icy;&khcy; &kcy;&acy;&kcy; &ncy;&iecy;&pcy;&rcy;&ocy;&zcy;&rcy;&acy;&chcy;&ncy;&ycy;&iecy; &pcy;&ocy;&tcy;&ocy;&kcy;&icy; &bcy;&acy;&jcy;&tcy;&ocy;&vcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_comparison_with_sub_process_model"><span data-i18n="489ed47d406016c4c03e0f44b2a52cb8fa81e93833bdcd41c725a3f0111bef12/62" data-source="Comparison with sub-process model" onmousemove="i18n(this)">&Scy;&rcy;&acy;&vcy;&ncy;&iecy;&ncy;&icy;&iecy; &scy; &mcy;&ocy;&dcy;&iecy;&lcy;&softcy;&yucy; &pcy;&ocy;&dcy;&pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;&acy;</span></h2> <div> <p><span data-i18n="f9cf879b83cc536b3447f6f48ec12225b321039462f1e3fa7cc8a6d12748e69e/0f" data-source="The Simple-IPC mechanism differs from the existing &lt;code&gt;sub-process.c&lt;/code&gt; model (Documentation/technical/long-running-process-protocol.txt) and used by applications like Git-LFS. In the LFS-style sub-process model, the helper is started by the foreground process, communication happens via a pair of file descriptors bound to the stdin/stdout of the sub-process, the sub-process only serves the current foreground process, and the sub-process exits when the foreground process terminates." onmousemove="i18n(this)">&Mcy;&iecy;&khcy;&acy;&ncy;&icy;&zcy;&mcy; Simple-IPC &ocy;&tcy;&lcy;&icy;&chcy;&acy;&iecy;&tcy;&scy;&yacy; &ocy;&tcy; &scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&iecy;&jcy; &mcy;&ocy;&dcy;&iecy;&lcy;&icy;  <code>sub-process.c</code>  (Documentation/technical/long-running-process-protocol.txt) &icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &tcy;&acy;&kcy;&icy;&mcy;&icy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&yacy;&mcy;&icy;, &kcy;&acy;&kcy; Git-LFS. &Vcy; &mcy;&ocy;&dcy;&iecy;&lcy;&icy; &pcy;&ocy;&dcy;&pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;&acy; &vcy; &scy;&tcy;&icy;&lcy;&iecy; LFS &pcy;&ocy;&mcy;&ocy;&shchcy;&ncy;&icy;&kcy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy;&iecy;&tcy;&scy;&yacy; &pcy;&rcy;&icy;&ocy;&rcy;&icy;&tcy;&iecy;&tcy;&ncy;&ycy;&mcy; &pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;&ocy;&mcy;, &scy;&vcy;&yacy;&zcy;&softcy; &pcy;&rcy;&ocy;&icy;&scy;&khcy;&ocy;&dcy;&icy;&tcy; &chcy;&iecy;&rcy;&iecy;&zcy; &pcy;&acy;&rcy;&ucy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ycy;&khcy; &dcy;&iecy;&scy;&kcy;&rcy;&icy;&pcy;&tcy;&ocy;&rcy;&ocy;&vcy;, &pcy;&rcy;&icy;&vcy;&yacy;&zcy;&acy;&ncy;&ncy;&ycy;&khcy; &kcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ocy;&mcy;&ucy; &vcy;&vcy;&ocy;&dcy;&ucy;/&scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ocy;&mcy;&ucy; &vcy;&ycy;&vcy;&ocy;&dcy;&ucy; &pcy;&ocy;&dcy;&pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;&acy;, &pcy;&ocy;&dcy;&pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy; &ocy;&bcy;&scy;&lcy;&ucy;&zhcy;&icy;&vcy;&acy;&iecy;&tcy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &tcy;&iecy;&kcy;&ucy;&shchcy;&icy;&jcy; &pcy;&rcy;&icy;&ocy;&rcy;&icy;&tcy;&iecy;&tcy;&ncy;&ycy;&jcy; &pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;. &icy; &pcy;&ocy;&dcy;&pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&acy;&iecy;&tcy;&scy;&yacy;, &kcy;&ocy;&gcy;&dcy;&acy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&acy;&iecy;&tcy;&scy;&yacy; &pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy; &pcy;&iecy;&rcy;&iecy;&dcy;&ncy;&iecy;&gcy;&ocy; &pcy;&lcy;&acy;&ncy;&acy;.</span></p> <p><span data-i18n="00ea14f0751d9b2300dd41d3cf0e9688b4cba2a5eea5c8b7023fb7a3bee2847e/f8" data-source="In the Simple-IPC model the server is a very long-running service. It can service many clients at the same time and has a private socket or named pipe connection to each active client. It might be started (on-demand) by the current client process or it might have been started by a previous client or by the OS at boot time. The server process is not associated with a terminal and it persists after clients terminate. Clients do not have access to the stdin/stdout of the server process and therefore must communicate over sockets or named pipes." onmousemove="i18n(this)">&Vcy; &mcy;&ocy;&dcy;&iecy;&lcy;&icy; Simple-IPC &scy;&iecy;&rcy;&vcy;&iecy;&rcy; &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &scy;&ocy;&bcy;&ocy;&jcy; &ocy;&chcy;&iecy;&ncy;&softcy; &dcy;&ocy;&lcy;&gcy;&ocy; &rcy;&acy;&bcy;&ocy;&tcy;&acy;&yucy;&shchcy;&ucy;&yucy; &scy;&lcy;&ucy;&zhcy;&bcy;&ucy;. &Ocy;&ncy; &mcy;&ocy;&zhcy;&iecy;&tcy; &ocy;&bcy;&scy;&lcy;&ucy;&zhcy;&icy;&vcy;&acy;&tcy;&softcy; &mcy;&ncy;&ocy;&zhcy;&iecy;&scy;&tcy;&vcy;&ocy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy;&ocy;&vcy; &ocy;&dcy;&ncy;&ocy;&vcy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ocy; &icy; &icy;&mcy;&iecy;&iecy;&tcy; &scy;&ocy;&iecy;&dcy;&icy;&ncy;&iecy;&ncy;&icy;&iecy; &chcy;&iecy;&rcy;&iecy;&zcy; &scy;&ocy;&kcy;&iecy;&tcy;  private  &icy;&lcy;&icy; &icy;&mcy;&iecy;&ncy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&jcy; &kcy;&acy;&ncy;&acy;&lcy; &scy; &kcy;&acy;&zhcy;&dcy;&ycy;&mcy; &acy;&kcy;&tcy;&icy;&vcy;&ncy;&ycy;&mcy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy;&ocy;&mcy;. &Ocy;&ncy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &zcy;&acy;&pcy;&ucy;&shchcy;&iecy;&ncy; (&pcy;&ocy; &tcy;&rcy;&iecy;&bcy;&ocy;&vcy;&acy;&ncy;&icy;&yucy;) &tcy;&iecy;&kcy;&ucy;&shchcy;&icy;&mcy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy;&scy;&kcy;&icy;&mcy; &pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;&ocy;&mcy; &icy;&lcy;&icy; &pcy;&rcy;&iecy;&dcy;&ycy;&dcy;&ucy;&shchcy;&icy;&mcy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy;&ocy;&mcy; &icy;&lcy;&icy; &ocy;&pcy;&iecy;&rcy;&acy;&tscy;&icy;&ocy;&ncy;&ncy;&ocy;&jcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ocy;&jcy; &vcy;&ocy; &vcy;&rcy;&iecy;&mcy;&yacy; &zcy;&acy;&gcy;&rcy;&ucy;&zcy;&kcy;&icy;. &Scy;&iecy;&rcy;&vcy;&iecy;&rcy;&ncy;&ycy;&jcy; &pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy; &ncy;&iecy; &scy;&vcy;&yacy;&zcy;&acy;&ncy; &scy; &tcy;&iecy;&rcy;&mcy;&icy;&ncy;&acy;&lcy;&ocy;&mcy; &icy; &scy;&ocy;&khcy;&rcy;&acy;&ncy;&yacy;&iecy;&tcy;&scy;&yacy; &pcy;&ocy;&scy;&lcy;&iecy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&iecy;&ncy;&icy;&yacy; &rcy;&acy;&bcy;&ocy;&tcy;&ycy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy;&ocy;&vcy;. &Kcy;&lcy;&icy;&iecy;&ncy;&tcy;&ycy; &ncy;&iecy; &icy;&mcy;&iecy;&yucy;&tcy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&acy; &kcy; stdin/stdout &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&ncy;&ocy;&gcy;&ocy; &pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;&acy; &icy; &pcy;&ocy;&ecy;&tcy;&ocy;&mcy;&ucy; &dcy;&ocy;&lcy;&zhcy;&ncy;&ycy; &vcy;&zcy;&acy;&icy;&mcy;&ocy;&dcy;&iecy;&jcy;&scy;&tcy;&vcy;&ocy;&vcy;&acy;&tcy;&softcy; &chcy;&iecy;&rcy;&iecy;&zcy; &scy;&ocy;&kcy;&iecy;&tcy;&ycy; &icy;&lcy;&icy; &icy;&mcy;&iecy;&ncy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&iecy; &kcy;&acy;&ncy;&acy;&lcy;&ycy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_server_startup_and_shutdown"><span data-i18n="ce1eba6cd0154183b14d11ff9aa08efe12e701e23302a2bed3227c066102a59f/96" data-source="Server startup and shutdown" onmousemove="i18n(this)">&Zcy;&acy;&pcy;&ucy;&scy;&kcy; &icy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&iecy;&ncy;&icy;&iecy; &rcy;&acy;&bcy;&ocy;&tcy;&ycy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&acy;</span></h2> <div> <p><span data-i18n="9220dd315cb43807bd13d66f20bb3e8212bfe3dd5530bdcd04254f72e37ec958/36" data-source="How an application server based upon IPC-server is started is also outside the scope of the Simple-IPC design and is a property of the application using it. For example, the server might be started or restarted during routine maintenance operations, or it might be started as a system service during the system boot-up sequence, or it might be started on-demand by a foreground Git command when needed." onmousemove="i18n(this)">&Tcy;&ocy;, &kcy;&acy;&kcy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy;&iecy;&tcy;&scy;&yacy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&jcy; &ncy;&acy; &ocy;&scy;&ncy;&ocy;&vcy;&iecy; IPC-&scy;&iecy;&rcy;&vcy;&iecy;&rcy;&acy;, &tcy;&acy;&kcy;&zhcy;&iecy; &vcy;&ycy;&khcy;&ocy;&dcy;&icy;&tcy; &zcy;&acy; &rcy;&acy;&mcy;&kcy;&icy; &pcy;&rcy;&ocy;&iecy;&kcy;&tcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; Simple-IPC &icy; &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &scy;&vcy;&ocy;&jcy;&scy;&tcy;&vcy;&ocy;&mcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yucy;&shchcy;&iecy;&gcy;&ocy; &iecy;&gcy;&ocy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&yacy;. &Ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &scy;&iecy;&rcy;&vcy;&iecy;&rcy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &zcy;&acy;&pcy;&ucy;&shchcy;&iecy;&ncy; &icy;&lcy;&icy; &pcy;&iecy;&rcy;&iecy;&zcy;&acy;&pcy;&ucy;&shchcy;&iecy;&ncy; &vcy;&ocy; &vcy;&rcy;&iecy;&mcy;&yacy; &pcy;&lcy;&acy;&ncy;&ocy;&vcy;&ycy;&khcy; &ocy;&pcy;&iecy;&rcy;&acy;&tscy;&icy;&jcy; &ocy;&bcy;&scy;&lcy;&ucy;&zhcy;&icy;&vcy;&acy;&ncy;&icy;&yacy;, &icy;&lcy;&icy; &ocy;&ncy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &zcy;&acy;&pcy;&ucy;&shchcy;&iecy;&ncy; &kcy;&acy;&kcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ncy;&acy;&yacy; &scy;&lcy;&ucy;&zhcy;&bcy;&acy; &vcy;&ocy; &vcy;&rcy;&iecy;&mcy;&yacy; &zcy;&acy;&gcy;&rcy;&ucy;&zcy;&kcy;&icy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ycy;, &icy;&lcy;&icy; &ocy;&ncy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &zcy;&acy;&pcy;&ucy;&shchcy;&iecy;&ncy; &pcy;&ocy; &tcy;&rcy;&iecy;&bcy;&ocy;&vcy;&acy;&ncy;&icy;&yucy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ocy;&jcy;  Git  &ncy;&acy; &pcy;&iecy;&rcy;&iecy;&dcy;&ncy;&iecy;&mcy; &pcy;&lcy;&acy;&ncy;&iecy;, &kcy;&ocy;&gcy;&dcy;&acy; &ecy;&tcy;&ocy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ocy;.</span></p> <p><span data-i18n="904a7f32522137a1124632ba35eef711682ae240f3d4093d042b04a0e9fb8896/a8" data-source="Similarly, server shutdown is a property of the application using the simple-ipc routines. For example, the server might decide to shutdown when idle or only upon explicit request." onmousemove="i18n(this)">&Acy;&ncy;&acy;&lcy;&ocy;&gcy;&icy;&chcy;&ncy;&ycy;&mcy; &ocy;&bcy;&rcy;&acy;&zcy;&ocy;&mcy;, &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&iecy;&ncy;&icy;&iecy; &rcy;&acy;&bcy;&ocy;&tcy;&ycy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&acy; &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &scy;&vcy;&ocy;&jcy;&scy;&tcy;&vcy;&ocy;&mcy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&yacy;, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yucy;&shchcy;&iecy;&gcy;&ocy; &pcy;&rcy;&ocy;&tscy;&iecy;&dcy;&ucy;&rcy;&ycy; simple-ipc. &Ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &scy;&iecy;&rcy;&vcy;&iecy;&rcy; &mcy;&ocy;&zhcy;&iecy;&tcy; &rcy;&iecy;&shcy;&icy;&tcy;&softcy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&icy;&tcy;&softcy; &rcy;&acy;&bcy;&ocy;&tcy;&ucy; &vcy;&ocy; &vcy;&rcy;&iecy;&mcy;&yacy; &pcy;&rcy;&ocy;&scy;&tcy;&ocy;&yacy; &icy;&lcy;&icy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &pcy;&ocy; &yacy;&vcy;&ncy;&ocy;&mcy;&ucy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&ucy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_simple_ipc_protocol"><span data-i18n="834afeceafa6f6174a28531bfa0693b4f752835134be67fb5822e8055de89c07/5e" data-source="Simple-ipc protocol" onmousemove="i18n(this)">Simple-ipc protocol</span></h2> <div> <p><span data-i18n="b7b92273a4b7d53d496f180efd910add864a077a51fcdf9e38e0c9e8494997c8/87" data-source="The Simple-IPC protocol consists of a single request message from the client and an optional response message from the server. Both the client and server messages are unlimited in length and are terminated with a flush packet." onmousemove="i18n(this)">&Pcy;&rcy;&ocy;&tcy;&ocy;&kcy;&ocy;&lcy; Simple-IPC &scy;&ocy;&scy;&tcy;&ocy;&icy;&tcy; &icy;&zcy; &ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&acy; &ocy;&tcy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy;&acy; &icy; &dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&gcy;&ocy; &ocy;&tcy;&vcy;&iecy;&tcy;&ncy;&ocy;&gcy;&ocy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy; &ocy;&tcy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&acy;. &Scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy;&acy; &icy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&acy; &ncy;&iecy; &ocy;&gcy;&rcy;&acy;&ncy;&icy;&chcy;&iecy;&ncy;&ycy; &pcy;&ocy; &dcy;&lcy;&icy;&ncy;&iecy; &icy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&acy;&yucy;&tcy;&scy;&yacy; &fcy;&lcy;&iecy;&shcy;-&pcy;&acy;&kcy;&iecy;&tcy;&ocy;&mcy;.</span></p> <p><span data-i18n="82bcff3899b4c36f71d04347e8740d0bc71d94211d5bd3073f8dbc7c8575f5aa/c6" data-source="The pkt-line routines (&lt;a href=&quot;gitprotocol-common&quot;&gt;gitprotocol-common[5]&lt;/a&gt;) are used to simplify buffer management during message generation, transmission, and reception. A flush packet is used to mark the end of the message. This allows the sender to incrementally generate and transmit the message. It allows the receiver to incrementally receive the message in chunks and to know when they have received the entire message." onmousemove="i18n(this)">&Pcy;&ocy;&dcy;&pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ycy; pkt-line ( <a href="gitprotocol-common.html">gitprotocol-common[5]</a> ) &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yucy;&tcy;&scy;&yacy; &dcy;&lcy;&yacy; &ucy;&pcy;&rcy;&ocy;&shchcy;&iecy;&ncy;&icy;&yacy; &ucy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy; &bcy;&ucy;&fcy;&iecy;&rcy;&ocy;&mcy; &vcy;&ocy; &vcy;&rcy;&iecy;&mcy;&yacy; &gcy;&iecy;&ncy;&iecy;&rcy;&acy;&tscy;&icy;&icy;, &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&chcy;&icy; &icy; &pcy;&rcy;&icy;&iecy;&mcy;&acy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&jcy;. &Pcy;&acy;&kcy;&iecy;&tcy; &scy;&bcy;&rcy;&ocy;&scy;&acy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &dcy;&lcy;&yacy; &ocy;&bcy;&ocy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy; &kcy;&ocy;&ncy;&tscy;&acy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy;. &Ecy;&tcy;&ocy; &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&iecy;&tcy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&icy;&tcy;&iecy;&lcy;&yucy; &pcy;&ocy;&scy;&tcy;&iecy;&pcy;&iecy;&ncy;&ncy;&ocy; &gcy;&iecy;&ncy;&iecy;&rcy;&icy;&rcy;&ocy;&vcy;&acy;&tcy;&softcy; &icy; &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&vcy;&acy;&tcy;&softcy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy;. &Ecy;&tcy;&ocy; &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&iecy;&tcy; &pcy;&ocy;&lcy;&ucy;&chcy;&acy;&tcy;&iecy;&lcy;&yucy; &pcy;&ocy;&scy;&tcy;&iecy;&pcy;&iecy;&ncy;&ncy;&ocy; &pcy;&ocy;&lcy;&ucy;&chcy;&acy;&tcy;&softcy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &chcy;&acy;&scy;&tcy;&yacy;&mcy;&icy; &icy; &zcy;&ncy;&acy;&tcy;&softcy;, &kcy;&ocy;&gcy;&dcy;&acy; &ocy;&ncy; &pcy;&ocy;&lcy;&ucy;&chcy;&icy;&lcy; &vcy;&scy;&iecy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy;.</span></p> <p><span data-i18n="a11d64d270a00a82c2098310251e6937495e9b3bfa61e932b65854f15e2b95f8/fa" data-source="The actual byte format of the client request and server response messages are application specific. The IPC layer transmits and receives them as opaque byte buffers without any concern for the content within. It is the job of the calling application layer to understand the contents of the request and response messages." onmousemove="i18n(this)">&Fcy;&acy;&kcy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&jcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy; &bcy;&acy;&jcy;&tcy;&ocy;&vcy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&jcy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&acy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy;&acy; &icy; &ocy;&tcy;&vcy;&iecy;&tcy;&acy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&acy; &zcy;&acy;&vcy;&icy;&scy;&icy;&tcy; &ocy;&tcy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&yacy;. &Ucy;&rcy;&ocy;&vcy;&iecy;&ncy;&softcy; IPC &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&iecy;&tcy; &icy; &pcy;&rcy;&icy;&ncy;&icy;&mcy;&acy;&iecy;&tcy; &icy;&khcy; &vcy; &vcy;&icy;&dcy;&iecy; &ncy;&iecy;&pcy;&rcy;&ocy;&zcy;&rcy;&acy;&chcy;&ncy;&ycy;&khcy; &bcy;&acy;&jcy;&tcy;&ocy;&vcy;&ycy;&khcy; &bcy;&ucy;&fcy;&iecy;&rcy;&ocy;&vcy;, &ncy;&iecy; &zcy;&acy;&bcy;&ocy;&tcy;&yacy;&scy;&softcy; &ocy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&mcy;&ocy;&mcy; &vcy;&ncy;&ucy;&tcy;&rcy;&icy;. &Zcy;&acy;&dcy;&acy;&chcy;&acy; &ucy;&rcy;&ocy;&vcy;&ncy;&yacy; &vcy;&ycy;&zcy;&ycy;&vcy;&acy;&yucy;&shchcy;&iecy;&gcy;&ocy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&yacy; &mdash; &pcy;&ocy;&ncy;&yacy;&tcy;&softcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&mcy;&ocy;&iecy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&jcy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&acy; &icy; &ocy;&tcy;&vcy;&iecy;&tcy;&acy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_summary"><span data-i18n="8e76a94ac8320d515375e625bef1829238b097ecbd33611b59eeefd4ffefebfb/e0" data-source="Summary" onmousemove="i18n(this)">Summary</span></h2> <div> <p><span data-i18n="532ab415086f85284da94c2144bc91a4f382865c9595c966d473fc092b2ed39d/b5" data-source="Conceptually, the Simple-IPC protocol is similar to an HTTP REST request. Clients connect, make an application-specific and stateless request, receive an application-specific response, and disconnect. It is a one round trip facility for querying the server. The Simple-IPC routines hide the socket, named pipe, and thread pool details and allow the application layer to focus on the task at hand." onmousemove="i18n(this)">&Kcy;&ocy;&ncy;&tscy;&iecy;&pcy;&tcy;&ucy;&acy;&lcy;&softcy;&ncy;&ocy; &pcy;&rcy;&ocy;&tcy;&ocy;&kcy;&ocy;&lcy; Simple-IPC &acy;&ncy;&acy;&lcy;&ocy;&gcy;&icy;&chcy;&iecy;&ncy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&ucy; HTTP REST. &Kcy;&lcy;&icy;&iecy;&ncy;&tcy;&ycy; &pcy;&ocy;&dcy;&kcy;&lcy;&yucy;&chcy;&acy;&yucy;&tcy;&scy;&yacy;, &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&yucy;&tcy; &zcy;&acy;&pcy;&rcy;&ocy;&scy; &bcy;&iecy;&zcy; &scy;&ocy;&khcy;&rcy;&acy;&ncy;&iecy;&ncy;&icy;&yacy; &scy;&ocy;&scy;&tcy;&ocy;&yacy;&ncy;&icy;&yacy;, &scy;&pcy;&iecy;&tscy;&icy;&fcy;&icy;&chcy;&ncy;&ycy;&jcy; &dcy;&lcy;&yacy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&yacy;, &pcy;&ocy;&lcy;&ucy;&chcy;&acy;&yucy;&tcy; &ocy;&tcy;&vcy;&iecy;&tcy;, &scy;&pcy;&iecy;&tscy;&icy;&fcy;&icy;&chcy;&ncy;&ycy;&jcy; &dcy;&lcy;&yacy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&yacy;, &icy; &ocy;&tcy;&kcy;&lcy;&yucy;&chcy;&acy;&yucy;&tcy;&scy;&yacy;. &Ecy;&tcy;&ocy; &vcy;&ocy;&zcy;&mcy;&ocy;&zhcy;&ncy;&ocy;&scy;&tcy;&softcy; &ocy;&bcy;&rcy;&acy;&shchcy;&iecy;&ncy;&icy;&yacy; &kcy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&ucy; &vcy; &ocy;&dcy;&icy;&ncy; &kcy;&ocy;&ncy;&iecy;&tscy;. &Pcy;&ocy;&dcy;&pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ycy; Simple-IPC &scy;&kcy;&rcy;&ycy;&vcy;&acy;&yucy;&tcy; &scy;&vcy;&iecy;&dcy;&iecy;&ncy;&icy;&yacy; &ocy; &scy;&ocy;&kcy;&iecy;&tcy;&iecy;, &icy;&mcy;&iecy;&ncy;&ocy;&vcy;&acy;&ncy;&ncy;&ocy;&mcy; &kcy;&acy;&ncy;&acy;&lcy;&iecy; &icy; &pcy;&ucy;&lcy;&iecy; &pcy;&ocy;&tcy;&ocy;&kcy;&ocy;&vcy; &icy; &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&yucy;&tcy; &ucy;&rcy;&ocy;&vcy;&ncy;&yucy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&yacy; &scy;&ocy;&scy;&rcy;&iecy;&dcy;&ocy;&tcy;&ocy;&chcy;&icy;&tcy;&softcy;&scy;&yacy; &ncy;&acy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&jcy; &zcy;&acy;&dcy;&acy;&chcy;&iecy;.</span></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/api-simple-ipc">https://git-scm.com/docs/api-simple-ipc</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="api-trace2.html">
+                            api trace2                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="bundle-uri.html">
+                            bundle uri                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git.html">
+                            git                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-add.html">
+                            git add                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-am.html">
+                            git am                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-annotate.html">
+                            git annotate                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-apply.html">
+                            git apply                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="api-simple-ipc.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

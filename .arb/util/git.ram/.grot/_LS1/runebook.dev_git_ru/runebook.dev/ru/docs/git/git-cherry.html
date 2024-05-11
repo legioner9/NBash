@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:14:26 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git cherry</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="4ce0ac92c84b9c46724fc5b5b2a93112d127472596bb064ed9a5b8b64744fbdd/e9" data-source="git-cherry" onmousemove="i18n(this)">git-cherry</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="1c7ae6461aad62ce5f25ab5410b8fc58121f1b4f8a4296d4f46fafbe741be437/14" data-source="git-cherry - Find commits yet to be applied to upstream" onmousemove="i18n(this)">git-cherry &mdash; &ncy;&acy;&jcy;&tcy;&icy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ycy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &iecy;&shchcy;&iecy; &ncy;&iecy; &bcy;&ycy;&lcy;&icy; &pcy;&rcy;&icy;&mcy;&iecy;&ncy;&iecy;&ncy;&ycy; &kcy; &vcy;&ocy;&scy;&khcy;&ocy;&dcy;&yacy;&shchcy;&iecy;&mcy;&ucy; &pcy;&ocy;&tcy;&ocy;&kcy;&ucy;</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-xml">git cherry [-v] [<span class="hljs-tag">&lt;<span class="hljs-name">upstream</span>&gt;</span> [<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span> [<span class="hljs-tag">&lt;<span class="hljs-name">limit</span>&gt;</span>]]]</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="1f4bf92cc786b3e2c1b93a6d0d75660e84f502aebe6b45af238810c766c52cfd/ff" data-source="Determine whether there are commits in &lt;code&gt;&amp;lt;head&amp;gt;..&amp;lt;upstream&amp;gt;&lt;/code&gt; that are equivalent to those in the range &lt;code&gt;&amp;lt;limit&amp;gt;..&amp;lt;head&amp;gt;&lt;/code&gt;." onmousemove="i18n(this)">&Ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&icy;&tcy;&iecy;, &iecy;&scy;&tcy;&softcy; &lcy;&icy; &vcy;  <code>&lt;head&gt;..&lt;upstream&gt;</code>  &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ycy;, &ecy;&kcy;&vcy;&icy;&vcy;&acy;&lcy;&iecy;&ncy;&tcy;&ncy;&ycy;&iecy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&acy;&mcy; &vcy; &dcy;&icy;&acy;&pcy;&acy;&zcy;&ocy;&ncy;&iecy;  <code>&lt;limit&gt;..&lt;head&gt;</code> .</span></p> <p><span data-i18n="5ca6da854b704fc26ee203e9cd350ad0cfa6024c76ee789aec3fd0c243564bf7/de" data-source="The equivalence test is based on the diff, after removing whitespace and line numbers. git-cherry therefore detects when commits have been &amp;quot;copied&amp;quot; by means of &lt;a href=&quot;git-cherry-pick&quot;&gt;git-cherry-pick[1]&lt;/a&gt;, &lt;a href=&quot;git-am&quot;&gt;git-am[1]&lt;/a&gt; or &lt;a href=&quot;git-rebase&quot;&gt;git-rebase[1]&lt;/a&gt;." onmousemove="i18n(this)">&Pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&acy; &ecy;&kcy;&vcy;&icy;&vcy;&acy;&lcy;&iecy;&ncy;&tcy;&ncy;&ocy;&scy;&tcy;&icy; &ocy;&scy;&ncy;&ocy;&vcy;&acy;&ncy;&acy; &ncy;&acy; &rcy;&acy;&zcy;&ncy;&icy;&tscy;&iecy; &pcy;&ocy;&scy;&lcy;&iecy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&icy;&yacy; &pcy;&rcy;&ocy;&bcy;&iecy;&lcy;&ocy;&vcy; &icy; &ncy;&ocy;&mcy;&iecy;&rcy;&ocy;&vcy; &scy;&tcy;&rcy;&ocy;&kcy;. &Pcy;&ocy;&ecy;&tcy;&ocy;&mcy;&ucy; git-cherry &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy;, &kcy;&ocy;&gcy;&dcy;&acy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ycy; &bcy;&ycy;&lcy;&icy;  &quot;copied&quot; , &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy;  <a href="git-cherry-pick.html">git-cherry-pick[1]</a>  ,  <a href="git-am.html">git-am[1]</a>  &icy;&lcy;&icy;  <a href="git-rebase.html">git-rebase[1]</a>  .</span></p> <p><span data-i18n="8b95e5b451bc8f985e4ddb31152c9b682c1213da93fc96a8f42c6ad32bebf4b8/44" data-source="Outputs the SHA1 of every commit in &lt;code&gt;&amp;lt;limit&amp;gt;..&amp;lt;head&amp;gt;&lt;/code&gt;, prefixed with &lt;code&gt;-&lt;/code&gt; for commits that have an equivalent in &amp;lt;upstream&amp;gt;, and &lt;code&gt;+&lt;/code&gt; for commits that do not." onmousemove="i18n(this)">&Vcy;&ycy;&vcy;&ocy;&dcy;&icy;&tcy; SHA1 &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&acy; &vcy;  <code>&lt;limit&gt;..&lt;head&gt;</code>  &scy; &pcy;&rcy;&iecy;&fcy;&icy;&kcy;&scy;&ocy;&mcy;  <code>-</code>  &dcy;&lcy;&yacy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy;, &icy;&mcy;&iecy;&yucy;&shchcy;&icy;&khcy; &ecy;&kcy;&vcy;&icy;&vcy;&acy;&lcy;&iecy;&ncy;&tcy; &vcy; &lt;upstream&gt;, &icy;  <code>+</code>  &dcy;&lcy;&yacy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy;, &ucy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&khcy; &iecy;&gcy;&ocy; &ncy;&iecy;&tcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-cherry.txt--v"><span data-i18n="81c36ccd44ef18baabad6e2d87038b72d606263bd6a3432b964a872023654fff/7c" data-source="-v" onmousemove="i18n(this)">-v</span></dt> <dd> <p><span data-i18n="34d4e4ed7381d64239efdd7effbbff594f1f0e876818d757f03ce5de6816bb98/b9" data-source="Show the commit subjects next to the SHA1s." onmousemove="i18n(this)">&Pcy;&ocy;&kcy;&acy;&zhcy;&icy;&tcy;&iecy; &tcy;&iecy;&mcy;&ycy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy; &rcy;&yacy;&dcy;&ocy;&mcy; &scy; SHA1.</span></p> </dd> <dt id="Documentation/git-cherry.txt-ltupstreamgt"><span data-i18n="864dd8039b1917d6f3d999b725326d151ba8c6b14098c495b78d289ac77c51e8/5d" data-source="&amp;lt;upstream&amp;gt;" onmousemove="i18n(this)">&lt;upstream&gt;</span></dt> <dd> <p><span data-i18n="be2c5629ee874d9860c176dd8b6f4daa8fa73473802233189a22f64d5e6236a7/6a" data-source="Upstream branch to search for equivalent commits. Defaults to the upstream branch of HEAD." onmousemove="i18n(this)">&Vcy;&ocy;&scy;&khcy;&ocy;&dcy;&yacy;&shchcy;&acy;&yacy; &vcy;&iecy;&tcy;&vcy;&softcy; &dcy;&lcy;&yacy; &pcy;&ocy;&icy;&scy;&kcy;&acy; &ecy;&kcy;&vcy;&icy;&vcy;&acy;&lcy;&iecy;&ncy;&tcy;&ncy;&ycy;&khcy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy;. &Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &vcy;&ocy;&scy;&khcy;&ocy;&dcy;&yacy;&shchcy;&acy;&yacy; &vcy;&iecy;&tcy;&vcy;&softcy; HEAD.</span></p> </dd> <dt id="Documentation/git-cherry.txt-ltheadgt"><span data-i18n="b0007f6773a120900229e3bdd49445500659aa3b9b529ad68433c91262d2a476/80" data-source="&amp;lt;head&amp;gt;" onmousemove="i18n(this)">&lt;head&gt;</span></dt> <dd> <p><span data-i18n="de426436bcf5b5c9203ce9ededec4cc69ef5cc93ac3d2feb8eaba5c58179d57f/46" data-source="Working branch; defaults to HEAD." onmousemove="i18n(this)">&Rcy;&acy;&bcy;&ocy;&chcy;&acy;&yacy; &vcy;&iecy;&tcy;&kcy;&acy;; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &mdash; HEAD.</span></p> </dd> <dt id="Documentation/git-cherry.txt-ltlimitgt"><span data-i18n="908229ea7062b9f957955c0ef1ccccffc9fb6f8044223b45c11fa2d067bbe465/4b" data-source="&amp;lt;limit&amp;gt;" onmousemove="i18n(this)">&lt;limit&gt;</span></dt> <dd> <p><span data-i18n="62abb4625badc9b409954754ac174a636657e7b2e8397367118236b50d335ab1/73" data-source="Do not report commits up to (and including) limit." onmousemove="i18n(this)">&Ncy;&iecy; &scy;&ocy;&ocy;&bcy;&shchcy;&acy;&jcy;&tcy;&iecy; &ocy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&acy;&khcy; &dcy;&ocy; &pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&acy; (&vcy;&kcy;&lcy;&yucy;&chcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;).</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_examples"><span data-i18n="e68ee04dff59551b7d1ae07a2f8a00dc61d841628948da3d2781630706a05e92/38" data-source="Examples" onmousemove="i18n(this)">Examples</span></h2> <div> <div> <h3 class="text-body-emphasis"  id="_patch_workflows"><span data-i18n="a5ee1190c989d19b41bb29ba74a609d01febd8eb38852473e9a8c4cc6a09bf49/d4" data-source="Patch workflows" onmousemove="i18n(this)">Patch workflows</span></h3> <p><span data-i18n="cfe15f1c7810e115ac58720b0bdde7dee44b92e1fc21b4f0e8f8462777aaf965/67" data-source="git-cherry is frequently used in patch-based workflows (see &lt;a href=&quot;gitworkflows&quot;&gt;gitworkflows[7]&lt;/a&gt;) to determine if a series of patches has been applied by the upstream maintainer. In such a workflow you might create and send a topic branch like this:" onmousemove="i18n(this)">git-cherry &chcy;&acy;&scy;&tcy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &vcy; &rcy;&acy;&bcy;&ocy;&chcy;&icy;&khcy; &pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;&acy;&khcy; &ncy;&acy; &ocy;&scy;&ncy;&ocy;&vcy;&iecy; &icy;&scy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&jcy; (&scy;&mcy;.  <a href="gitworkflows.html">gitworkflows[7]</a> ), &chcy;&tcy;&ocy;&bcy;&ycy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&icy;&tcy;&softcy;, &bcy;&ycy;&lcy;&acy; &lcy;&icy; &pcy;&rcy;&icy;&mcy;&iecy;&ncy;&iecy;&ncy;&acy; &scy;&iecy;&rcy;&icy;&yacy; &icy;&scy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&jcy; &vcy;&ycy;&shcy;&iecy;&scy;&tcy;&ocy;&yacy;&shchcy;&icy;&mcy; &scy;&ocy;&pcy;&rcy;&ocy;&vcy;&ocy;&zhcy;&dcy;&acy;&yucy;&shchcy;&icy;&mcy;. &Vcy; &tcy;&acy;&kcy;&ocy;&mcy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&mcy; &pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;&iecy; &vcy;&ycy; &mcy;&ocy;&zhcy;&iecy;&tcy;&iecy; &scy;&ocy;&zcy;&dcy;&acy;&tcy;&softcy; &icy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&icy;&tcy;&softcy; &vcy;&iecy;&tcy;&kcy;&ucy; &tcy;&iecy;&mcy;&ycy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&mcy; &ocy;&bcy;&rcy;&acy;&zcy;&ocy;&mcy;:</span></p> <div> <div> <pre class="hljs language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">git checkout -b topic origin/master</span>
+<span class="hljs-meta prompt_"># </span><span class="language-bash">work and create some commits</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git format-patch origin/master</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git send-email ... 00*</span></pre> </div> </div> <p><span data-i18n="0b10da87174d66002ff09726883df662f33e632843f70d22fbd13d51ee1a8219/c7" data-source="Later, you can see whether your changes have been applied by saying (still on &lt;code&gt;topic&lt;/code&gt;):" onmousemove="i18n(this)">&Pcy;&ocy;&zcy;&zhcy;&iecy; &vcy;&ycy; &scy;&mcy;&ocy;&zhcy;&iecy;&tcy;&iecy; &ucy;&vcy;&icy;&dcy;&iecy;&tcy;&softcy;, &bcy;&ycy;&lcy;&icy; &lcy;&icy; &pcy;&rcy;&icy;&mcy;&iecy;&ncy;&iecy;&ncy;&ycy; &vcy;&acy;&shcy;&icy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy;, &scy;&kcy;&acy;&zcy;&acy;&vcy; (&vcy;&scy;&iecy; &iecy;&shchcy;&iecy; &ncy;&acy;  <code>topic</code> ):</span></p> <div> <div> <pre class="hljs language-ruby"><span class="hljs-variable">$ </span>git fetch  <span class="hljs-comment" title="# update your notion of origin/master"># &ocy;&bcy;&ncy;&ocy;&vcy;&icy;&tcy;&iecy; &vcy;&acy;&shcy;&iecy; &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&iecy; &ocy; &pcy;&rcy;&ocy;&icy;&scy;&khcy;&ocy;&zhcy;&dcy;&iecy;&ncy;&icy;&icy;/&khcy;&ocy;&zcy;&yacy;&icy;&ncy;&iecy;</span>
+<span class="hljs-variable">$ </span>git cherry -v</pre> </div> </div> </div> <div> <h3 class="text-body-emphasis"  id="_concrete_example"><span data-i18n="342f3ea27bbec1952e877158499fc77e02492704f3203e5fa9eb0253e419cdff/45" data-source="Concrete example" onmousemove="i18n(this)">Concrete example</span></h3> <p><span data-i18n="2ad60f2f490ed2f5916e034bd18eb51256d6d87d0f5ff3a7fd78f5b709d679a8/47" data-source="In a situation where topic consisted of three commits, and the maintainer applied two of them, the situation might look like:" onmousemove="i18n(this)">&Vcy; &scy;&icy;&tcy;&ucy;&acy;&tscy;&icy;&icy;, &kcy;&ocy;&gcy;&dcy;&acy; &tcy;&iecy;&mcy;&acy; &scy;&ocy;&scy;&tcy;&ocy;&yacy;&lcy;&acy; &icy;&zcy; &tcy;&rcy;&iecy;&khcy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy;, &acy; &mcy;&iecy;&jcy;&ncy;&tcy;&iecy;&jcy;&ncy;&iecy;&rcy; &pcy;&rcy;&icy;&mcy;&iecy;&ncy;&icy;&lcy; &dcy;&vcy;&acy; &icy;&zcy; &ncy;&icy;&khcy;, &scy;&icy;&tcy;&ucy;&acy;&tscy;&icy;&yacy; &mcy;&ocy;&zhcy;&iecy;&tcy; &vcy;&ycy;&gcy;&lcy;&yacy;&dcy;&iecy;&tcy;&softcy; &tcy;&acy;&kcy;:</span></p> <div> <div> <pre class="hljs language-sql">$ git log <span class="hljs-comment">--graph --oneline --decorate --boundary origin/master...topic</span>
+<span class="hljs-operator">*</span> <span class="hljs-number">7654321</span> (origin<span class="hljs-operator">/</span>master) upstream tip <span class="hljs-keyword">commit</span>
+[... snip <span class="hljs-keyword">some</span> other commits ...]
+<span class="hljs-operator">*</span> cccc111 cherry<span class="hljs-operator">-</span>pick <span class="hljs-keyword">of</span> C
+<span class="hljs-operator">*</span> aaaa111 cherry<span class="hljs-operator">-</span>pick <span class="hljs-keyword">of</span> A
+[... snip a lot more that has happened ...]
+<span class="hljs-operator">|</span> <span class="hljs-operator">*</span> cccc000 (topic) <span class="hljs-keyword">commit</span> C
+<span class="hljs-operator">|</span> <span class="hljs-operator">*</span> bbbb000 <span class="hljs-keyword">commit</span> B
+<span class="hljs-operator">|</span> <span class="hljs-operator">*</span> aaaa000 <span class="hljs-keyword">commit</span> A
+<span class="hljs-operator">|</span><span class="hljs-operator">/</span>
+o <span class="hljs-number">1234567</span> branch point</pre> </div> </div> <p><span data-i18n="08a1afbc74586bc3f85a4db3de9154aa58d6a7ddb291de3e380467c6ea219208/bd" data-source="In such cases, git-cherry shows a concise summary of what has yet to be applied:" onmousemove="i18n(this)">&Vcy; &tcy;&acy;&kcy;&icy;&khcy; &scy;&lcy;&ucy;&chcy;&acy;&yacy;&khcy; git-cherry &pcy;&ocy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy; &kcy;&rcy;&acy;&tcy;&kcy;&ocy;&iecy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&icy;&iecy; &tcy;&ocy;&gcy;&ocy;, &chcy;&tcy;&ocy; &iecy;&shchcy;&iecy; &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&ocy;&icy;&tcy; &pcy;&rcy;&icy;&mcy;&iecy;&ncy;&icy;&tcy;&softcy;:</span></p> <div> <div> <pre class="hljs language-diff">$ git cherry origin/master topic
+<span class="hljs-deletion">- cccc000... commit C</span>
+<span class="hljs-addition">+ bbbb000... commit B</span>
+<span class="hljs-deletion">- aaaa000... commit A</span></pre> </div> </div> <p><span data-i18n="3cbda4c6cc447c162d6e6862b0329b16aa3c29e8c3b02c0e3a6be316967227cd/0b" data-source="Here, we see that the commits A and C (marked with &lt;code&gt;-&lt;/code&gt;) can be dropped from your &lt;code&gt;topic&lt;/code&gt; branch when you rebase it on top of &lt;code&gt;origin/master&lt;/code&gt;, while the commit B (marked with &lt;code&gt;+&lt;/code&gt;) still needs to be kept so that it will be sent to be applied to &lt;code&gt;origin/master&lt;/code&gt;." onmousemove="i18n(this)">&Zcy;&dcy;&iecy;&scy;&softcy; &mcy;&ycy; &vcy;&icy;&dcy;&icy;&mcy;, &chcy;&tcy;&ocy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ycy; A &icy; C (&ocy;&tcy;&mcy;&iecy;&chcy;&iecy;&ncy;&ncy;&ycy;&iecy;  <code>-</code>  ) &mcy;&ocy;&gcy;&ucy;&tcy; &bcy;&ycy;&tcy;&softcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ycy; &icy;&zcy; &vcy;&acy;&shcy;&iecy;&jcy; &vcy;&iecy;&tcy;&kcy;&icy;  <code>topic</code>  &pcy;&rcy;&icy; &pcy;&iecy;&rcy;&iecy;&bcy;&acy;&zcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&icy; &iecy;&iecy; &pcy;&ocy;&vcy;&iecy;&rcy;&khcy;  <code>origin/master</code>  , &vcy; &tcy;&ocy; &vcy;&rcy;&iecy;&mcy;&yacy; &kcy;&acy;&kcy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy; B (&ocy;&tcy;&mcy;&iecy;&chcy;&iecy;&ncy;&ncy;&ycy;&jcy;  <code>+</code>  ) &vcy;&scy;&iecy; &iecy;&shchcy;&iecy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ocy; &scy;&ocy;&khcy;&rcy;&acy;&ncy;&icy;&tcy;&softcy;, &chcy;&tcy;&ocy;&bcy;&ycy; &ocy;&ncy; &bcy;&ycy;&lcy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&ocy; &dcy;&lcy;&yacy; &pcy;&rcy;&icy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy; &vcy;  <code>origin/master</code> .</span></p> </div> <div> <h3 class="text-body-emphasis"  id="_using_a_limit"><span data-i18n="f67ff3503aaa5caa96bca48695037e4191e54ab57bebbf60fd13703a11c46581/8f" data-source="Using a limit" onmousemove="i18n(this)">&Icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy; &lcy;&icy;&mcy;&icy;&tcy;&acy;</span></h3> <p><span data-i18n="ec5456ba43c931c441d1bb82dc211dd09145b2779cd209b8100ab0bd0540d6fd/3a" data-source="The optional &amp;lt;limit&amp;gt; is useful in cases where your topic is based on other work that is not in upstream. Expanding on the previous example, this might look like:" onmousemove="i18n(this)">&Ncy;&iecy;&ocy;&bcy;&yacy;&zcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&jcy; &lt;limit&gt; &pcy;&ocy;&lcy;&iecy;&zcy;&iecy;&ncy; &vcy; &tcy;&iecy;&khcy; &scy;&lcy;&ucy;&chcy;&acy;&yacy;&khcy;, &kcy;&ocy;&gcy;&dcy;&acy; &vcy;&acy;&shcy;&acy; &tcy;&iecy;&mcy;&acy; &ocy;&scy;&ncy;&ocy;&vcy;&acy;&ncy;&acy; &ncy;&acy; &dcy;&rcy;&ucy;&gcy;&ocy;&jcy; &rcy;&acy;&bcy;&ocy;&tcy;&iecy;, &ncy;&iecy; &vcy;&khcy;&ocy;&dcy;&yacy;&shchcy;&iecy;&jcy; &vcy; &scy;&ocy;&scy;&tcy;&acy;&vcy; &ocy;&scy;&ncy;&ocy;&vcy;&ncy;&ocy;&jcy; &vcy;&iecy;&tcy;&kcy;&icy; &rcy;&acy;&zcy;&rcy;&acy;&bcy;&ocy;&tcy;&kcy;&icy;. &IEcy;&scy;&lcy;&icy; &rcy;&acy;&scy;&shcy;&icy;&rcy;&icy;&tcy;&softcy; &pcy;&rcy;&iecy;&dcy;&ycy;&dcy;&ucy;&shchcy;&icy;&jcy; &pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &ecy;&tcy;&ocy; &mcy;&ocy;&zhcy;&iecy;&tcy; &vcy;&ycy;&gcy;&lcy;&yacy;&dcy;&iecy;&tcy;&softcy; &tcy;&acy;&kcy;:</span></p> <div> <div> <pre class="hljs language-sql">$ git log <span class="hljs-comment">--graph --oneline --decorate --boundary origin/master...topic</span>
+<span class="hljs-operator">*</span> <span class="hljs-number">7654321</span> (origin<span class="hljs-operator">/</span>master) upstream tip <span class="hljs-keyword">commit</span>
+[... snip <span class="hljs-keyword">some</span> other commits ...]
+<span class="hljs-operator">*</span> cccc111 cherry<span class="hljs-operator">-</span>pick <span class="hljs-keyword">of</span> C
+<span class="hljs-operator">*</span> aaaa111 cherry<span class="hljs-operator">-</span>pick <span class="hljs-keyword">of</span> A
+[... snip a lot more that has happened ...]
+<span class="hljs-operator">|</span> <span class="hljs-operator">*</span> cccc000 (topic) <span class="hljs-keyword">commit</span> C
+<span class="hljs-operator">|</span> <span class="hljs-operator">*</span> bbbb000 <span class="hljs-keyword">commit</span> B
+<span class="hljs-operator">|</span> <span class="hljs-operator">*</span> aaaa000 <span class="hljs-keyword">commit</span> A
+<span class="hljs-operator">|</span> <span class="hljs-operator">*</span> <span class="hljs-number">0000</span>fff (base) unpublished stuff F
+[... snip ...]
+<span class="hljs-operator">|</span> <span class="hljs-operator">*</span> <span class="hljs-number">0000</span>aaa unpublished stuff A
+<span class="hljs-operator">|</span><span class="hljs-operator">/</span>
+o <span class="hljs-number">1234567</span> <span class="hljs-keyword">merge</span><span class="hljs-operator">-</span>base <span class="hljs-keyword">between</span> upstream <span class="hljs-keyword">and</span> topic</pre> </div> </div> <p><span data-i18n="420317daf5d93ed2ee911ecf3b55d8c4bc2f03ae0fe37aee3d091185165c52d0/4e" data-source="By specifying &lt;code&gt;base&lt;/code&gt; as the limit, you can avoid listing commits between &lt;code&gt;base&lt;/code&gt; and &lt;code&gt;topic&lt;/code&gt;:" onmousemove="i18n(this)">&Ucy;&kcy;&acy;&zcy;&acy;&vcy;  <code>base</code>  &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &ocy;&gcy;&rcy;&acy;&ncy;&icy;&chcy;&iecy;&ncy;&icy;&yacy;, &vcy;&ycy; &mcy;&ocy;&zhcy;&iecy;&tcy;&iecy; &icy;&zcy;&bcy;&iecy;&zhcy;&acy;&tcy;&softcy; &pcy;&iecy;&rcy;&iecy;&chcy;&icy;&scy;&lcy;&iecy;&ncy;&icy;&yacy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy; &mcy;&iecy;&zhcy;&dcy;&ucy;  <code>base</code>  &icy;  <code>topic</code> :</span></p> <div> <div> <pre class="hljs language-diff">$ git cherry origin/master topic base
+<span class="hljs-deletion">- cccc000... commit C</span>
+<span class="hljs-addition">+ bbbb000... commit B</span>
+<span class="hljs-deletion">- aaaa000... commit A</span></pre> </div> </div> </div> </div> <h2 class="text-body-emphasis"  id="_see_also"><span data-i18n="2fa97693b70fa87b95b2d1bdf9558e4ac65d5e82d145f13a03849c4d9c4957a9/40" data-source="See also" onmousemove="i18n(this)">See also</span></h2> <div> <p><a href="git-patch-id.html"><span data-i18n="4adcedbb7e91910325e5d81455ab57721a642e84b2f3d8fecedee1871f2e2e7e/5f" data-source="git-patch-id[1]" onmousemove="i18n(this)">git-patch-id[1]</span></a></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-cherry">https://git-scm.com/docs/git-cherry</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-cherry-pick.html">
+                            git cherry-pick                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-citool.html">
+                            git citool                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-clean.html">
+                            git clean                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-clone.html">
+                            git clone                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-column.html">
+                            git column                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-commit.html">
+                            git commit                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-commit-graph.html">
+                            git commit-graph                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="3777011170"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-cherry.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:15:01 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git http-push</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="75e4b7adf31203320defada1e1a3b0a316d3df587feda09d7d9ffee9ff7f61b0/7d" data-source="git-http-push" onmousemove="i18n(this)">git-http-push</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="153ced30e914908975a73bf30ebb42a4d15bd8c81f268acd5456df7ec93f4418/f6" data-source="git-http-push - Push objects over HTTP/DAV to another repository" onmousemove="i18n(this)">git-http-push &mdash; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&tcy;&softcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy; &chcy;&iecy;&rcy;&iecy;&zcy; HTTP/DAV &vcy; &dcy;&rcy;&ucy;&gcy;&ocy;&jcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git http-push <span class="hljs-selector-attr">[--all]</span> <span class="hljs-selector-attr">[--dry-run]</span> <span class="hljs-selector-attr">[--force]</span> <span class="hljs-selector-attr">[--verbose]</span> &lt;URL&gt; &lt;ref&gt; <span class="hljs-selector-attr">[&lt;ref&gt;&hellip;&ZeroWidthSpace;]</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="f45fe34c115c0f3e4b32bdf8b45f3322eebe2a4ce733fc87ae625dfc234fad43/9a" data-source="Sends missing objects to the remote repository, and updates the remote branch." onmousemove="i18n(this)">&Ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &ncy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&yucy;&shchcy;&icy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy; &vcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&jcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy; &icy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&yacy;&iecy;&tcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ucy;&yucy; &vcy;&iecy;&tcy;&kcy;&ucy;.</span></p> <p><span data-i18n="cc3d382e4e4afd9e41f2c59acc64ff950a06765756ec4c47a48e92d086bddeac/8e" data-source="&lt;strong&gt;NOTE&lt;/strong&gt;: This command is temporarily disabled if your libcurl is older than 7.16, as the combination has been reported not to work and sometimes corrupts the repository." onmousemove="i18n(this)">&Pcy;&Rcy;&Icy;&Mcy;&IEcy;&CHcy;&Acy;&Ncy;&Icy;&IEcy;. &Ecy;&tcy;&acy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &vcy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ocy; &ocy;&tcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&acy;, &iecy;&scy;&lcy;&icy; &vcy;&acy;&shcy;&acy; &bcy;&icy;&bcy;&lcy;&icy;&ocy;&tcy;&iecy;&kcy;&acy; libcurl &scy;&tcy;&acy;&rcy;&shcy;&iecy; 7.16, &pcy;&ocy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ucy; &scy;&ocy;&ocy;&bcy;&shchcy;&acy;&iecy;&tcy;&scy;&yacy;, &chcy;&tcy;&ocy; &ecy;&tcy;&acy; &kcy;&ocy;&mcy;&bcy;&icy;&ncy;&acy;&tscy;&icy;&yacy; &ncy;&iecy; &rcy;&acy;&bcy;&ocy;&tcy;&acy;&iecy;&tcy; &icy; &icy;&ncy;&ocy;&gcy;&dcy;&acy; &pcy;&ocy;&vcy;&rcy;&iecy;&zhcy;&dcy;&acy;&iecy;&tcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-http-push.txt---all"><span data-i18n="7dbf56c38208e33a9193b210245465f7729af0d59b9df556e7f1f7138a6d6e93/a1" data-source="--all" onmousemove="i18n(this)">--all</span></dt> <dd> <p><span data-i18n="ea95f3057c7a5eb17d772db453f00d7e1e5b4c2e240b3915d720cd0218af6ff5/70" data-source="Do not assume that the remote repository is complete in its current state, and verify all objects in the entire local ref&amp;rsquo;s history exist in the remote repository." onmousemove="i18n(this)">&Ncy;&iecy; &pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&lcy;&acy;&gcy;&acy;&jcy;&tcy;&iecy;, &chcy;&tcy;&ocy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&jcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&iecy;&ncy; &vcy; &scy;&vcy;&ocy;&iecy;&mcy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&mcy; &scy;&ocy;&scy;&tcy;&ocy;&yacy;&ncy;&icy;&icy;, &icy; &ucy;&bcy;&iecy;&dcy;&icy;&tcy;&iecy;&scy;&softcy;, &chcy;&tcy;&ocy; &vcy;&scy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy; &vcy;&ocy; &vcy;&scy;&iecy;&jcy; &icy;&scy;&tcy;&ocy;&rcy;&icy;&icy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ycy;&khcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy; &scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ucy;&yucy;&tcy; &vcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&mcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy;.</span></p> </dd> <dt id="Documentation/git-http-push.txt---force"><span data-i18n="be262a109369ff4174b4b7a7aa917a83ca99dc94093be7d497384bb8c0f9cee6/ef" data-source="--force" onmousemove="i18n(this)">--force</span></dt> <dd> <p><span data-i18n="bae1680113c7e509d49cf3c131042e666cab3ef03afaef5bb4fc60a8bec66a75/ad" data-source="Usually, the command refuses to update a remote ref that is not an ancestor of the local ref used to overwrite it. This flag disables the check. What this means is that the remote repository can lose commits; use it with care." onmousemove="i18n(this)">&Ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &ocy;&tcy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&yacy;&tcy;&softcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ucy;&yucy; &scy;&scy;&ycy;&lcy;&kcy;&ucy;, &kcy;&ocy;&tcy;&ocy;&rcy;&acy;&yacy; &ncy;&iecy; &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &pcy;&rcy;&iecy;&dcy;&kcy;&ocy;&mcy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ocy;&jcy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&ncy;&ocy;&jcy; &dcy;&lcy;&yacy; &iecy;&iecy; &pcy;&iecy;&rcy;&iecy;&zcy;&acy;&pcy;&icy;&scy;&icy;. &Ecy;&tcy;&ocy;&tcy; &fcy;&lcy;&acy;&gcy; &ocy;&tcy;&kcy;&lcy;&yucy;&chcy;&acy;&iecy;&tcy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&ucy;. &Ecy;&tcy;&ocy; &ocy;&zcy;&ncy;&acy;&chcy;&acy;&iecy;&tcy;, &chcy;&tcy;&ocy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&jcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy; &mcy;&ocy;&zhcy;&iecy;&tcy; &pcy;&ocy;&tcy;&iecy;&rcy;&yacy;&tcy;&softcy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ycy;; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy; &iecy;&gcy;&ocy; &scy; &ocy;&scy;&tcy;&ocy;&rcy;&ocy;&zhcy;&ncy;&ocy;&scy;&tcy;&softcy;&yucy;.</span></p> </dd> <dt id="Documentation/git-http-push.txt---dry-run"><span data-i18n="675ca48430023bf861e914e0cf5bbe183efe84bd9d831affc574394bf4edc690/c1" data-source="--dry-run" onmousemove="i18n(this)">--dry-run</span></dt> <dd> <p><span data-i18n="db4a36a2f6f33b67bec62c0d6f95dc2bb9ba330ae374d15bff6982ff933c3bb0/20" data-source="Do everything except actually send the updates." onmousemove="i18n(this)">&Dcy;&iecy;&lcy;&acy;&jcy;&tcy;&iecy; &vcy;&scy;&iecy;, &kcy;&rcy;&ocy;&mcy;&iecy; &fcy;&acy;&kcy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&jcy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&kcy;&icy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&jcy;.</span></p> </dd> <dt id="Documentation/git-http-push.txt---verbose"><span data-i18n="bff1e8d3adf9e53481e9b21876983b359dc8a231bf7ebadde36a42dd7bd4db5c/93" data-source="--verbose" onmousemove="i18n(this)">--verbose</span></dt> <dd> <p><span data-i18n="e59df0e16a20bf011108956e321118605cea9cca88be7730f8910746d0ff1c7a/be" data-source="Report the list of objects being walked locally and the list of objects successfully sent to the remote repository." onmousemove="i18n(this)">&Scy;&ocy;&ocy;&bcy;&shchcy;&icy;&tcy;&iecy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;, &pcy;&rcy;&ocy;&scy;&mcy;&acy;&tcy;&rcy;&icy;&vcy;&acy;&iecy;&mcy;&ycy;&khcy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ocy;, &icy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;, &ucy;&scy;&pcy;&iecy;&shcy;&ncy;&ocy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&ncy;&ycy;&khcy; &vcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&jcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy;.</span></p> </dd> <dt id="Documentation/git-http-push.txt--d"><span data-i18n="50e09407a18bedd64baf0b99825a8178d7446731615b85452ea6b99573469dcc/b1" data-source="-d" onmousemove="i18n(this)">-d</span></dt> <dt id="Documentation/git-http-push.txt--D"><span data-i18n="cdded7231a0c512ed51b072e9982f725870905b7d5c8c6df5e258910a6d77f07/75" data-source="-D" onmousemove="i18n(this)">-D</span></dt> <dd> <p><span data-i18n="7cc00e00d6c4e2a0983def93c1dc886602ac504dfea2807e2bd01abaf49176dc/44" data-source="Remove &amp;lt;ref&amp;gt; from remote repository. The specified branch cannot be the remote HEAD. If -d is specified, the following other conditions must also be met:" onmousemove="i18n(this)">&Ucy;&dcy;&acy;&lcy;&icy;&tcy;&iecy; &lt;ref&gt; &icy;&zcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;. &Ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&acy;&yacy; &vcy;&iecy;&tcy;&kcy;&acy; &ncy;&iecy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&mcy; HEAD. &IEcy;&scy;&lcy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy; -d, &tcy;&acy;&kcy;&zhcy;&iecy; &dcy;&ocy;&lcy;&zhcy;&ncy;&ycy; &bcy;&ycy;&tcy;&softcy; &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&iecy;&ncy;&ycy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&iecy; &dcy;&rcy;&ucy;&gcy;&icy;&iecy; &ucy;&scy;&lcy;&ocy;&vcy;&icy;&yacy;:</span></p> <div> <ul> <li> <p><span data-i18n="95c382f6f4a5d28191f2fcce415e9d5a1d076af1ddb1a25d9ac113e506c1c48b/c2" data-source="Remote HEAD must resolve to an object that exists locally" onmousemove="i18n(this)">&Ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&jcy; HEAD &dcy;&ocy;&lcy;&zhcy;&iecy;&ncy; &rcy;&acy;&zcy;&rcy;&iecy;&shcy;&acy;&tcy;&softcy;&scy;&yacy; &vcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;, &scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&jcy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ocy;.</span></p> </li> <li> <p><span data-i18n="43cf52f7d2e7af8b57f45d37d13401eeda8598d959b0a2699faa75c4d3e9701b/3b" data-source="Specified branch resolves to an object that exists locally" onmousemove="i18n(this)">&Ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&acy;&yacy; &vcy;&iecy;&tcy;&vcy;&softcy; &rcy;&acy;&zcy;&rcy;&iecy;&shcy;&acy;&iecy;&tcy;&scy;&yacy; &vcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;, &scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&jcy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ocy;.</span></p> </li> <li> <p><span data-i18n="6dba70d78e43d07cb90f8b7b9c698536408efd458cad848fa7ce7d930f6c5e80/78" data-source="Specified branch is an ancestor of the remote HEAD" onmousemove="i18n(this)">&Ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&acy;&yacy; &vcy;&iecy;&tcy;&kcy;&acy; &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &pcy;&rcy;&iecy;&dcy;&kcy;&ocy;&mcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; HEAD.</span></p> </li> </ul> </div> </dd> <dt id="Documentation/git-http-push.txt-ltrefgt82308203"><span data-i18n="74ffaf858ce505d521a06eb8f765076062dec170eafd174b121bcbd424a47b52/91" data-source="&amp;lt;ref&amp;gt;&amp;hellip;" onmousemove="i18n(this)">&lt;ref&gt;&hellip;</span></dt> <dd> <p><span data-i18n="6dfbf0f47158bd651dfa181834d354cc72ac479c65cd2c08e14f8ae52c424950/23" data-source="The remote refs to update." onmousemove="i18n(this)">&Ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &dcy;&lcy;&yacy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_specifying_the_refs"><span data-i18n="1ee74e7c09e26f5f6823891d3f305695d4829565abd5949ea35eb04e99452555/5e" data-source="Specifying the refs" onmousemove="i18n(this)">&Ucy;&kcy;&acy;&zcy;&acy;&ncy;&icy;&iecy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;</span></h2> <div> <p><span data-i18n="c2631748ab13d85cc6063a285ad8b3ea58da5b3a304f43ad20c6a367979458b2/6d" data-source="A &lt;code&gt;&amp;lt;ref&amp;gt;&lt;/code&gt; specification can be either a single pattern, or a pair of such patterns separated by a colon &amp;quot;:&amp;quot; (this means that a ref name cannot have a colon in it). A single pattern &lt;code&gt;&amp;lt;name&amp;gt;&lt;/code&gt; is just a shorthand for &lt;code&gt;&amp;lt;name&amp;gt;:&amp;lt;name&amp;gt;&lt;/code&gt;." onmousemove="i18n(this)">&Scy;&pcy;&iecy;&tscy;&icy;&fcy;&icy;&kcy;&acy;&tscy;&icy;&yacy;  <code>&lt;ref&gt;</code>  &mcy;&ocy;&zhcy;&iecy;&tcy; &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&tcy;&softcy; &scy;&ocy;&bcy;&ocy;&jcy; &lcy;&icy;&bcy;&ocy; &ocy;&dcy;&icy;&ncy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;, &lcy;&icy;&bcy;&ocy; &pcy;&acy;&rcy;&ucy; &tcy;&acy;&kcy;&icy;&khcy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ocy;&vcy;, &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&iecy;&ncy;&ncy;&ycy;&khcy; &dcy;&vcy;&ocy;&iecy;&tcy;&ocy;&chcy;&icy;&iecy;&mcy;  &quot;:&quot;  (&ecy;&tcy;&ocy; &ocy;&zcy;&ncy;&acy;&chcy;&acy;&iecy;&tcy;, &chcy;&tcy;&ocy; &icy;&mcy;&yacy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &ncy;&iecy; &mcy;&ocy;&zhcy;&iecy;&tcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy; &dcy;&vcy;&ocy;&iecy;&tcy;&ocy;&chcy;&icy;&iecy;). &Ocy;&dcy;&icy;&ncy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;  <code>&lt;name&gt;</code>  &mdash; &ecy;&tcy;&ocy; &pcy;&rcy;&ocy;&scy;&tcy;&ocy; &scy;&ocy;&kcy;&rcy;&acy;&shchcy;&iecy;&ncy;&icy;&iecy; &ocy;&tcy;  <code>&lt;name&gt;:&lt;name&gt;</code> .</span></p> <p><span data-i18n="dbb923915b78b3c2d6ee24f0644bd10dac01bbb6dfdf9e36453124918561c40e/6d" data-source="Each pattern pair &lt;code&gt;&amp;lt;src&amp;gt;:&amp;lt;dst&amp;gt;&lt;/code&gt; consists of the source side (before the colon) and the destination side (after the colon). The ref to be pushed is determined by finding a match that matches the source side, and where it is pushed is determined by using the destination side." onmousemove="i18n(this)">&Kcy;&acy;&zhcy;&dcy;&acy;&yacy; &pcy;&acy;&rcy;&acy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ocy;&vcy;  <code>&lt;src&gt;:&lt;dst&gt;</code>  &scy;&ocy;&scy;&tcy;&ocy;&icy;&tcy; &icy;&zcy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&ycy; &icy;&scy;&tcy;&ocy;&chcy;&ncy;&icy;&kcy;&acy; (&dcy;&ocy; &dcy;&vcy;&ocy;&iecy;&tcy;&ocy;&chcy;&icy;&yacy;) &icy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&ycy; &ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy; (&pcy;&ocy;&scy;&lcy;&iecy; &dcy;&vcy;&ocy;&iecy;&tcy;&ocy;&chcy;&icy;&yacy;). &Scy;&scy;&ycy;&lcy;&kcy;&acy; &dcy;&lcy;&yacy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&kcy;&icy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &pcy;&ucy;&tcy;&iecy;&mcy; &pcy;&ocy;&icy;&scy;&kcy;&acy; &scy;&ocy;&vcy;&pcy;&acy;&dcy;&iecy;&ncy;&icy;&yacy;, &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&iecy;&gcy;&ocy; &icy;&scy;&khcy;&ocy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&iecy;, &acy; &mcy;&iecy;&scy;&tcy;&ocy; &iecy;&iecy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&kcy;&icy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &scy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy;&mcy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&ycy; &ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy;.</span></p> <div> <ul> <li> <p><span data-i18n="245fccfbf4fb22c229ef9e0107dfe95c9e892945503675cfc073609466b90361/03" data-source="It is an error if &lt;code&gt;&amp;lt;src&amp;gt;&lt;/code&gt; does not match exactly one of the local refs." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy;  <code>&lt;src&gt;</code>  &ncy;&iecy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &tcy;&ocy;&chcy;&ncy;&ocy; &ocy;&dcy;&ncy;&ocy;&jcy; &icy;&zcy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ycy;&khcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;, &ecy;&tcy;&ocy; &ocy;&shcy;&icy;&bcy;&kcy;&acy;.</span></p> </li> <li> <p><span data-i18n="aa55ea00c15e002989f31fe689a3914e238bea8c0d3fb676f605ec4997685f2e/a3" data-source="If &lt;code&gt;&amp;lt;dst&amp;gt;&lt;/code&gt; does not match any remote ref, either" onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy;  <code>&lt;dst&gt;</code>  &ncy;&iecy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &ncy;&icy; &ocy;&dcy;&ncy;&ocy;&mcy;&ucy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&mcy;&ucy; &zcy;&acy;&dcy;&acy;&ncy;&icy;&yucy;, &lcy;&icy;&bcy;&ocy;</span></p> <div> <ul> <li> <p><span data-i18n="9040a98cf40cb147101e0f38d6e59513769a5a46f1babe6ddba8718ac1a41b1c/75" data-source="it has to start with &amp;quot;refs/&amp;quot;; &amp;lt;dst&amp;gt; is used as the destination literally in this case." onmousemove="i18n(this)">&ocy;&ncy; &dcy;&ocy;&lcy;&zhcy;&iecy;&ncy; &ncy;&acy;&chcy;&icy;&ncy;&acy;&tcy;&softcy;&scy;&yacy; &scy;  &quot;refs/&quot; ; &Vcy; &ecy;&tcy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &lt;dst&gt; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &pcy;&ucy;&ncy;&kcy;&tcy;&acy; &ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy; &bcy;&ucy;&kcy;&vcy;&acy;&lcy;&softcy;&ncy;&ocy;.</span></p> </li> <li> <p><span data-i18n="7ca88d99011274177a4392b10e90a41e5242a8d5a8902a14beb514eb2db3cf65/21" data-source="&amp;lt;src&amp;gt; == &amp;lt;dst&amp;gt; and the ref that matched the &amp;lt;src&amp;gt; must not exist in the set of remote refs; the ref matched &amp;lt;src&amp;gt; locally is used as the name of the destination." onmousemove="i18n(this)">&lt;src&gt; == &lt;dst&gt; &icy; &scy;&scy;&ycy;&lcy;&kcy;&acy;, &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&acy;&yacy; &lt;src&gt;, &ncy;&iecy; &dcy;&ocy;&lcy;&zhcy;&ncy;&acy; &scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ocy;&vcy;&acy;&tcy;&softcy; &vcy; &ncy;&acy;&bcy;&ocy;&rcy;&iecy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&khcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;; &scy;&scy;&ycy;&lcy;&kcy;&acy;, &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&acy;&yacy; &lt;src&gt; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ocy;, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &icy;&mcy;&iecy;&ncy;&icy; &mcy;&iecy;&scy;&tcy;&acy; &ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy;.</span></p> </li> </ul> </div> </li> </ul> </div> <p><span data-i18n="63e62824784debf9ccafc09941ca2c188eacfada7e2f392482bcbfe1d413ab04/ed" data-source="Without &lt;code&gt;--force&lt;/code&gt;, the &amp;lt;src&amp;gt; ref is stored at the remote only if &amp;lt;dst&amp;gt; does not exist, or &amp;lt;dst&amp;gt; is a proper subset (i.e. an ancestor) of &amp;lt;src&amp;gt;. This check, known as &amp;quot;fast-forward check&amp;quot;, is performed to avoid accidentally overwriting the remote ref and losing other peoples&amp;apos; commits from there." onmousemove="i18n(this)">&Bcy;&iecy;&zcy;  <code>--force</code>  &scy;&scy;&ycy;&lcy;&kcy;&acy; &lt;src&gt; &scy;&ocy;&khcy;&rcy;&acy;&ncy;&yacy;&iecy;&tcy;&scy;&yacy; &ncy;&acy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&mcy; &kcy;&ocy;&mcy;&pcy;&softcy;&yucy;&tcy;&iecy;&rcy;&iecy;, &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &iecy;&scy;&lcy;&icy; &lt;dst&gt; &ncy;&iecy; &scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &icy;&lcy;&icy; &lt;dst&gt; &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&softcy;&ncy;&ycy;&mcy; &pcy;&ocy;&dcy;&mcy;&ncy;&ocy;&zhcy;&iecy;&scy;&tcy;&vcy;&ocy;&mcy; (&tcy;. &iecy;. &pcy;&rcy;&iecy;&dcy;&kcy;&ocy;&mcy;) &lt;src&gt;. &Ecy;&tcy;&acy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&acy;, &icy;&zcy;&vcy;&iecy;&scy;&tcy;&ncy;&acy;&yacy; &kcy;&acy;&kcy;  &quot;fast-forward check&quot; , &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&yacy;&iecy;&tcy;&scy;&yacy; &vcy;&ocy; &icy;&zcy;&bcy;&iecy;&zhcy;&acy;&ncy;&icy;&iecy; &scy;&lcy;&ucy;&chcy;&acy;&jcy;&ncy;&ocy;&jcy; &pcy;&iecy;&rcy;&iecy;&zcy;&acy;&pcy;&icy;&scy;&icy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&jcy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &icy; &pcy;&ocy;&tcy;&iecy;&rcy;&icy; &ocy;&tcy;&tcy;&ucy;&dcy;&acy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy; &dcy;&rcy;&ucy;&gcy;&icy;&khcy; &lcy;&yucy;&dcy;&iecy;&jcy;.</span></p> <p><span data-i18n="405e41fe7285098055437b176dcae1eab1c8237b64f17547ee936065f5ed7fea/4c" data-source="With &lt;code&gt;--force&lt;/code&gt;, the fast-forward check is disabled for all refs." onmousemove="i18n(this)">&Vcy;  <code>--force</code>  &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&acy; &pcy;&iecy;&rcy;&iecy;&mcy;&ocy;&tcy;&kcy;&icy; &vcy;&pcy;&iecy;&rcy;&iecy;&dcy; &ocy;&tcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&acy; &dcy;&lcy;&yacy; &vcy;&scy;&iecy;&khcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;.</span></p> <p><span data-i18n="4956ed248e0e15b6f7056b3020f2d0d482a27f0dba636a0a5d20d8cf832401ee/4f" data-source="Optionally, a &amp;lt;ref&amp;gt; parameter can be prefixed with a plus &lt;code&gt;+&lt;/code&gt; sign to disable the fast-forward check only on that ref." onmousemove="i18n(this)">&Pcy;&rcy;&icy; &zhcy;&iecy;&lcy;&acy;&ncy;&icy;&icy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy; &lt;ref&gt; &mcy;&ocy;&zhcy;&iecy;&tcy; &icy;&mcy;&iecy;&tcy;&softcy; &pcy;&rcy;&iecy;&fcy;&icy;&kcy;&scy; &scy;&ocy; &zcy;&ncy;&acy;&kcy;&ocy;&mcy; &pcy;&lcy;&yucy;&scy;  <code>+</code> , &chcy;&tcy;&ocy;&bcy;&ycy; &ocy;&tcy;&kcy;&lcy;&yucy;&chcy;&icy;&tcy;&softcy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&ucy; &bcy;&ycy;&scy;&tcy;&rcy;&ocy;&jcy; &pcy;&iecy;&rcy;&iecy;&mcy;&ocy;&tcy;&kcy;&icy; &vcy;&pcy;&iecy;&rcy;&iecy;&dcy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &dcy;&lcy;&yacy; &ecy;&tcy;&ocy;&jcy; &scy;&scy;&ycy;&lcy;&kcy;&icy;.</span></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-http-push">https://git-scm.com/docs/git-http-push</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-imap-send.html">
+                            git imap-send                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-index-pack.html">
+                            git index-pack                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-init.html">
+                            git init                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-instaweb.html">
+                            git instaweb                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-interpret-trailers.html">
+                            git interpret-trailers                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-log.html">
+                            git log                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-ls-files.html">
+                            git ls-files                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="3777011170"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-http-push.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

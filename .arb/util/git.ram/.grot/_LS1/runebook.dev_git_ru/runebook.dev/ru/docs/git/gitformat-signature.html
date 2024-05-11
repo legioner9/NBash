@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:13:16 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Git - gitformat signature</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Miscellaneous">
+                                Miscellaneous                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="c657b76d85216267880e5cc4c9f52e9fa996c295879a83c5ad5b6665f995ccb4/d7" data-source="gitformat-signature" onmousemove="i18n(this)">gitformat-signature</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="5cd5b62ded91502719e867a84b93a75cb40206f9565d9fe3eaac9f5039c28fe5/44" data-source="gitformat-signature - Git cryptographic signature formats" onmousemove="i18n(this)">gitformat-signature &mdash; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;&ycy; &kcy;&rcy;&icy;&pcy;&tcy;&ocy;&gcy;&rcy;&acy;&fcy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&jcy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&icy;  Git</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">&lt;<span class="hljs-selector-attr">[tag|commit]</span> <span class="hljs-selector-tag">object</span> <span class="hljs-selector-tag">header</span>(s)&gt;
+&lt;over-the-wire protocol&gt;</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="782bd8cea24adfe3a4ccf5407164b9ec8680096745273830f7a6ada3576fa84c/5a" data-source="Git uses cryptographic signatures in various places, currently objects (tags, commits, mergetags) and transactions (pushes). In every case, the command which is about to create an object or transaction determines a payload from that, calls an external program to obtain a detached signature for the payload (&lt;code&gt;gpg -bsa&lt;/code&gt; in the case of PGP signatures), and embeds the signature into the object or transaction." onmousemove="i18n(this)">Git  &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy; &kcy;&rcy;&icy;&pcy;&tcy;&ocy;&gcy;&rcy;&acy;&fcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&iecy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&icy; &vcy; &rcy;&acy;&zcy;&lcy;&icy;&chcy;&ncy;&ycy;&khcy; &mcy;&iecy;&scy;&tcy;&acy;&khcy;, &vcy; &ncy;&acy;&scy;&tcy;&ocy;&yacy;&shchcy;&iecy;&iecy; &vcy;&rcy;&iecy;&mcy;&yacy; &vcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy;&khcy; (&tcy;&iecy;&gcy;&icy;, &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy;, &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy; &tcy;&iecy;&gcy;&ocy;&vcy;) &icy; &tcy;&rcy;&acy;&ncy;&zcy;&acy;&kcy;&tscy;&icy;&yacy;&khcy; (push). &Vcy; &kcy;&acy;&zhcy;&dcy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy;, &kcy;&ocy;&tcy;&ocy;&rcy;&acy;&yacy; &scy;&ocy;&bcy;&icy;&rcy;&acy;&iecy;&tcy;&scy;&yacy; &scy;&ocy;&zcy;&dcy;&acy;&tcy;&softcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy; &icy;&lcy;&icy; &tcy;&rcy;&acy;&ncy;&zcy;&acy;&kcy;&tscy;&icy;&yucy;, &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy; &icy;&zcy; &ncy;&iecy;&gcy;&ocy; &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ucy;&yucy; &ncy;&acy;&gcy;&rcy;&ucy;&zcy;&kcy;&ucy;, &vcy;&ycy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy; &vcy;&ncy;&iecy;&shcy;&ncy;&yucy;&yucy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ucy; &dcy;&lcy;&yacy; &pcy;&ocy;&lcy;&ucy;&chcy;&iecy;&ncy;&icy;&yacy; &ocy;&tcy;&dcy;&iecy;&lcy;&softcy;&ncy;&ocy;&jcy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&icy; &dcy;&lcy;&yacy; &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ocy;&jcy; &ncy;&acy;&gcy;&rcy;&ucy;&zcy;&kcy;&icy; ( <code>gpg -bsa</code>  &vcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&iecy;&jcy; PGP) &icy; &vcy;&scy;&tcy;&rcy;&acy;&icy;&vcy;&acy;&iecy;&tcy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&softcy; &vcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;. &icy;&lcy;&icy; &tcy;&rcy;&acy;&ncy;&zcy;&acy;&kcy;&tscy;&icy;&yacy;.</span></p> <p><span data-i18n="6936a316f91dc4453fc050557026024f166f10559b97217c1dd2f2bef8c97425/80" data-source="Signatures begin with an &amp;quot;ASCII Armor&amp;quot; header line and end with a tail line, which differ depending on signature type (as selected by &lt;code&gt;gpg.format&lt;/code&gt;, see &lt;a href=&quot;git-config&quot;&gt;git-config[1]&lt;/a&gt;). These are, for &lt;code&gt;gpg.format&lt;/code&gt; values:" onmousemove="i18n(this)">&Pcy;&ocy;&dcy;&pcy;&icy;&scy;&icy; &ncy;&acy;&chcy;&icy;&ncy;&acy;&yucy;&tcy;&scy;&yacy; &scy;&ocy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&kcy;&acy;  &quot;ASCII Armor&quot;  &icy; &zcy;&acy;&kcy;&acy;&ncy;&chcy;&icy;&vcy;&acy;&yucy;&tcy;&scy;&yacy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&acy;&yucy;&shchcy;&iecy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&ocy;&jcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&acy;&yacy; &rcy;&acy;&zcy;&lcy;&icy;&chcy;&acy;&iecy;&tcy;&scy;&yacy; &vcy; &zcy;&acy;&vcy;&icy;&scy;&icy;&mcy;&ocy;&scy;&tcy;&icy; &ocy;&tcy; &tcy;&icy;&pcy;&acy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&icy; (&vcy;&ycy;&bcy;&rcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy;  <code>gpg.format</code> , &scy;&mcy;.  <a href="git-config.html">git-config[1]</a> ). &Ecy;&tcy;&ocy; &dcy;&lcy;&yacy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&jcy;  <code>gpg.format</code> :</span></p> <div> <dl> <dt id="Documentation/gitformat-signature.txt-codegpgcodePGP"> <span data-i18n="192becc88645dc19f0f02f2f6137161a4c4aadda346c57cbffd7bd6d77983360/57" data-source="&lt;code&gt;gpg&lt;/code&gt; (PGP)" onmousemove="i18n(this)"><code>gpg</code> (PGP)</span></dt> <dd> <p><span data-i18n="a55d3da2f334b6cf9c2e372e2cd47cb60992f070d746c0a8777e26920bc62ee6/9a" data-source="&lt;code&gt;-----BEGIN PGP SIGNATURE-----&lt;/code&gt; and &lt;code&gt;-----END PGP SIGNATURE-----&lt;/code&gt;. Or, if gpg is told to produce RFC1991 signatures, &lt;code&gt;-----BEGIN PGP MESSAGE-----&lt;/code&gt; and &lt;code&gt;-----END PGP MESSAGE-----&lt;/code&gt;" onmousemove="i18n(this)"><code>-----BEGIN PGP SIGNATURE-----</code>  &icy;  <code>-----END PGP SIGNATURE-----</code> . &Icy;&lcy;&icy;, &iecy;&scy;&lcy;&icy; gpg &pcy;&rcy;&icy;&kcy;&acy;&zcy;&acy;&ncy;&ocy; &scy;&ocy;&zcy;&dcy;&acy;&tcy;&softcy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&icy; RFC1991,  <code>-----BEGIN PGP MESSAGE-----</code>  &icy;  <code>-----END PGP MESSAGE-----</code> .</span></p> </dd> <dt id="Documentation/gitformat-signature.txt-codesshcodeSSH"> <span data-i18n="e9af431fa776f5460e5c66c8eefa94a318906feb1ed063baaf89ccc4b9856d45/0d" data-source="&lt;code&gt;ssh&lt;/code&gt; (SSH)" onmousemove="i18n(this)"><code>ssh</code> (SSH)</span></dt> <dd> <p><span data-i18n="440184a382db1445522556a5fce59d9b1d4d6788d7b4377b7c86c2e508b296f1/7b" data-source="&lt;code&gt;-----BEGIN SSH SIGNATURE-----&lt;/code&gt; and &lt;code&gt;-----END SSH SIGNATURE-----&lt;/code&gt;" onmousemove="i18n(this)"><code>-----BEGIN SSH SIGNATURE-----</code>  &icy;  <code>-----END SSH SIGNATURE-----</code></span></p> </dd> <dt id="Documentation/gitformat-signature.txt-codex509codeX509"> <span data-i18n="5d8443417f4d69a1818e81a06e0705a272001bb51ffa210244e841ed4d5397f1/9a" data-source="&lt;code&gt;x509&lt;/code&gt; (X.509)" onmousemove="i18n(this)"><code>x509</code> (X.509)</span></dt> <dd> <p><span data-i18n="00b24a03931d22b0e973476d6c1865caa0e4f7903d5195617b9335a612859c06/80" data-source="&lt;code&gt;-----BEGIN SIGNED MESSAGE-----&lt;/code&gt; and &lt;code&gt;-----END SIGNED MESSAGE-----&lt;/code&gt;" onmousemove="i18n(this)"><code>-----BEGIN SIGNED MESSAGE-----</code>  &icy;  <code>-----END SIGNED MESSAGE-----</code></span></p> </dd> </dl> </div> <p><span data-i18n="90f6722f3a79436475d1be9f090be07042505cb00379927c76abe7ef5657b4ac/08" data-source="Signatures sometimes appear as a part of the normal payload (e.g. a signed tag has the signature block appended after the payload that the signature applies to), and sometimes appear in the value of an object header (e.g. a merge commit that merged a signed tag would have the entire tag contents on its &amp;quot;mergetag&amp;quot; header). In the case of the latter, the usual multi-line formatting rule for object headers applies. I.e. the second and subsequent lines are prefixed with a SP to signal that the line is continued from the previous line." onmousemove="i18n(this)">&Pcy;&ocy;&dcy;&pcy;&icy;&scy;&icy; &icy;&ncy;&ocy;&gcy;&dcy;&acy; &pcy;&ocy;&yacy;&vcy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy; &kcy;&acy;&kcy; &chcy;&acy;&scy;&tcy;&softcy; &ocy;&bcy;&ycy;&chcy;&ncy;&ycy;&khcy; &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ycy;&khcy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy; (&ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &kcy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&acy;&ncy;&ncy;&ocy;&mcy;&ucy; &tcy;&iecy;&gcy;&ucy; &bcy;&lcy;&ocy;&kcy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&icy; &dcy;&ocy;&bcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &pcy;&ocy;&scy;&lcy;&iecy; &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ycy;&khcy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy;, &kcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&mcy; &pcy;&rcy;&icy;&mcy;&iecy;&ncy;&yacy;&iecy;&tcy;&scy;&yacy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&softcy;), &acy; &icy;&ncy;&ocy;&gcy;&dcy;&acy; &pcy;&ocy;&yacy;&vcy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy; &vcy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&icy; &zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&kcy;&acy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy; (&ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&yacy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy;, &kcy;&ocy;&tcy;&ocy;&rcy;&acy;&yacy; &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&icy;&lcy;&acy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&acy;&ncy;&ncy;&ycy;&jcy; &tcy;&iecy;&gcy;). &bcy;&ucy;&dcy;&iecy;&tcy; &icy;&mcy;&iecy;&tcy;&softcy; &vcy;&scy;&iecy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&mcy;&ocy;&iecy; &tcy;&iecy;&gcy;&acy; &vcy; &zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&kcy;&iecy;  &quot;mergetag&quot; ). &Vcy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ncy;&iecy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &pcy;&rcy;&icy;&mcy;&iecy;&ncy;&yacy;&iecy;&tcy;&scy;&yacy; &ocy;&bcy;&ycy;&chcy;&ncy;&ocy;&iecy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&ocy; &mcy;&ncy;&ocy;&gcy;&ocy;&scy;&tcy;&rcy;&ocy;&chcy;&ncy;&ocy;&gcy;&ocy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&kcy;&ocy;&vcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;. &Tcy;.&iecy;. &vcy;&tcy;&ocy;&rcy;&acy;&yacy; &icy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&iecy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &icy;&mcy;&iecy;&yucy;&tcy; &pcy;&rcy;&iecy;&fcy;&icy;&kcy;&scy; SP, &scy;&icy;&gcy;&ncy;&acy;&lcy;&icy;&zcy;&icy;&rcy;&ucy;&yucy;&shchcy;&icy;&jcy; &ocy; &tcy;&ocy;&mcy;, &chcy;&tcy;&ocy; &scy;&tcy;&rcy;&ocy;&kcy;&acy; &pcy;&rcy;&ocy;&dcy;&ocy;&lcy;&zhcy;&acy;&iecy;&tcy;&scy;&yacy; &scy; &pcy;&rcy;&iecy;&dcy;&ycy;&dcy;&ucy;&shchcy;&iecy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;.</span></p> <p><span data-i18n="1ee5141ea3a62b5e4aa80e9c564792dcf1d12bcce7f2d930725531f99b315197/81" data-source="This is even true for an originally empty line. In the following examples, the end of line that ends with a whitespace letter is highlighted with a &lt;code&gt;$&lt;/code&gt; sign; if you are trying to recreate these example by hand, do not cut and paste them&amp;mdash;&amp;ZeroWidthSpace;they are there primarily to highlight extra whitespace at the end of some lines." onmousemove="i18n(this)">&Ecy;&tcy;&ocy; &dcy;&acy;&zhcy;&iecy;  true  &dcy;&lcy;&yacy; &icy;&zcy;&ncy;&acy;&chcy;&acy;&lcy;&softcy;&ncy;&ocy; &pcy;&ucy;&scy;&tcy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;. &Vcy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&khcy; &pcy;&rcy;&icy;&mcy;&iecy;&rcy;&acy;&khcy; &kcy;&ocy;&ncy;&iecy;&tscy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;, &ocy;&kcy;&acy;&ncy;&chcy;&icy;&vcy;&acy;&yucy;&shchcy;&iecy;&jcy;&scy;&yacy; &pcy;&rcy;&ocy;&bcy;&iecy;&lcy;&softcy;&ncy;&ocy;&jcy; &bcy;&ucy;&kcy;&vcy;&ocy;&jcy;, &vcy;&ycy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &zcy;&ncy;&acy;&kcy;&ocy;&mcy;  <code>$</code> ; &iecy;&scy;&lcy;&icy; &vcy;&ycy; &pcy;&ycy;&tcy;&acy;&iecy;&tcy;&iecy;&scy;&softcy; &vcy;&ocy;&scy;&scy;&ocy;&zcy;&dcy;&acy;&tcy;&softcy; &ecy;&tcy;&icy; &pcy;&rcy;&icy;&mcy;&iecy;&rcy;&ycy; &vcy;&rcy;&ucy;&chcy;&ncy;&ucy;&yucy;, &ncy;&iecy; &vcy;&ycy;&rcy;&iecy;&zcy;&acy;&jcy;&tcy;&iecy; &icy; &ncy;&iecy; &vcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&jcy;&tcy;&iecy; &icy;&khcy; &mdash; &ocy;&ncy;&icy; &ncy;&ucy;&zhcy;&ncy;&ycy; &vcy; &pcy;&iecy;&rcy;&vcy;&ucy;&yucy; &ocy;&chcy;&iecy;&rcy;&iecy;&dcy;&softcy; &dcy;&lcy;&yacy; &vcy;&ycy;&dcy;&iecy;&lcy;&iecy;&ncy;&icy;&yacy; &lcy;&icy;&shcy;&ncy;&icy;&khcy; &pcy;&rcy;&ocy;&bcy;&iecy;&lcy;&ocy;&vcy; &vcy; &kcy;&ocy;&ncy;&tscy;&iecy; &ncy;&iecy;&kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&khcy; &scy;&tcy;&rcy;&ocy;&kcy;.</span></p> <p><span data-i18n="bd3fc02f6c30b429e37951ddd7357d30f1cf6ca7c4e7b571acc7499e564a04da/6f" data-source="The signed payload and the way the signature is embedded depends on the type of the object resp. transaction." onmousemove="i18n(this)">&Pcy;&ocy;&dcy;&pcy;&icy;&scy;&acy;&ncy;&ncy;&ycy;&iecy; &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ycy;&iecy; &dcy;&acy;&ncy;&ncy;&ycy;&iecy; &icy; &scy;&pcy;&ocy;&scy;&ocy;&bcy; &vcy;&ncy;&iecy;&dcy;&rcy;&iecy;&ncy;&icy;&yacy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&icy; &zcy;&acy;&vcy;&icy;&scy;&yacy;&tcy; &ocy;&tcy; &tcy;&icy;&pcy;&acy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy;, &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&iecy;&ncy;&ncy;&ocy;. &scy;&dcy;&iecy;&lcy;&kcy;&acy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_tag_signatures"><span data-i18n="db9d2a14223bdb173122d9ac701f1a8d9076554bd1c2e3b99625152bdcacbe2d/28" data-source="Tag signatures" onmousemove="i18n(this)">Tag signatures</span></h2> <div> <div> <ul> <li> <p><span data-i18n="635cb5382fc79256ee44c1e6010fb926c94d86d764f74bb1bddaa60ab96e309b/7f" data-source="created by: &lt;code&gt;git tag -s&lt;/code&gt;" onmousemove="i18n(this)">&scy;&ocy;&zcy;&dcy;&acy;&tcy;&iecy;&lcy;&softcy;:  <code>git tag -s</code></span></p> </li> <li> <p><span data-i18n="317b2feef3ada0adf38935f6d1baab314d691abe8a32a5fd61c56436f07f1cc5/ff" data-source="payload: annotated tag object" onmousemove="i18n(this)">&pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&acy;&yacy; &ncy;&acy;&gcy;&rcy;&ucy;&zcy;&kcy;&acy;: &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy; &acy;&ncy;&ncy;&ocy;&tcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &tcy;&iecy;&gcy;&acy;</span></p> </li> <li> <p><span data-i18n="dede70f055b3ab7475d6530986c2df95b8646b2632b14a1a67c8f3b6f267494c/d1" data-source="embedding: append the signature to the unsigned tag object" onmousemove="i18n(this)">&vcy;&scy;&tcy;&rcy;&acy;&icy;&vcy;&acy;&ncy;&icy;&iecy;: &dcy;&ocy;&bcy;&acy;&vcy;&icy;&tcy;&softcy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&softcy; &kcy; &ncy;&iecy;&pcy;&ocy;&dcy;&pcy;&icy;&scy;&acy;&ncy;&ncy;&ocy;&mcy;&ucy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ucy; &tcy;&iecy;&gcy;&acy;</span></p> </li> <li> <p><span data-i18n="d630c9717ef6a35f47aafa3e9cda14c066e677400794dc037cae116ad16d5c5d/0a" data-source="example: tag &lt;code&gt;signedtag&lt;/code&gt; with subject &lt;code&gt;signed tag&lt;/code&gt;" onmousemove="i18n(this)">&pcy;&rcy;&icy;&mcy;&iecy;&rcy;: &tcy;&iecy;&gcy;  <code>signedtag</code>  &scy; &tcy;&iecy;&mcy;&ocy;&jcy;  <code>signed tag</code></span></p> </li> </ul> </div> <div> <div> <pre class="hljs language-bash">object 04b871796dc0420f8e7561a895b52484b701d51a
+<span class="hljs-built_in">type</span> commit
+tag signedtag
+tagger C O Mitter &lt;<a href="https://runebook.dev/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="15767a78787c6161706755706d74786579703b767a78">[email&#160;protected]</a>&gt; 1465981006 +0000
+
+signed tag
+
+signed tag message body
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQEcBAABAgAGBQJXYRhOAAoJEGEJLoW3InGJklkIAIcnhL7RwEb/+QeX9enkXhxn
+rxfdqrvWd1K80sl2TOt8Bg/NYwrUBw/RWJ+sg/hhHp4WtvE1HDGHlkEz3y11Lkuh
+8tSxS3qKTxXUGozyPGuE90sJfExhZlW4knIQ1wt/yWqM+33E9pN4hzPqLwyrdods
+q8FWEqPPUbSJXoMbRPw04S5jrLtZSsUWbRYjmJCHzlhSfFWW4eFd37uquIaLUBS0
+rkC3Jrx7420jkIpgFcTI2s60uhSQLzgcCwdA2ukSYIRnjg/zDkj8+3h/GaROJ72x
+lZyI6HWixKJkWw8lE9aAOD9TmTW9sFJwcVAzmAuFX2kUreDUKMZduGcoRYGpD7E=
+=jpXa
+-----END PGP SIGNATURE-----</pre> </div> </div> <div> <ul> <li> <p><span data-i18n="352495f0d3317071d4fe38ca358a965e70ba98e19338f89111f68d9120cfef29/7f" data-source="verify with: &lt;code&gt;git verify-tag [-v]&lt;/code&gt; or &lt;code&gt;git tag -v&lt;/code&gt;" onmousemove="i18n(this)">&pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&softcy;&tcy;&iecy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy;:  <code>git verify-tag [-v]</code>  &icy;&lcy;&icy;  <code>git tag -v</code></span></p> </li> </ul> </div> <div> <div> <pre class="hljs language-vbnet"><span class="hljs-symbol">gpg:</span> Signature made Wed Jun <span class="hljs-number">15</span> <span class="hljs-number">10</span>:<span class="hljs-number">56</span>:<span class="hljs-number">46</span> <span class="hljs-number">2016</span> CEST <span class="hljs-keyword">using</span> RSA <span class="hljs-keyword">key</span> ID B7227189
+<span class="hljs-symbol">gpg:</span> Good signature <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;Eris Discordia &lt;<a href="https://runebook.dev/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e1858892828e9385a18499808c918d84cf8f8495">[email&#160;protected]</a>&gt;&quot;</span>
+<span class="hljs-symbol">gpg:</span> WARNING: This <span class="hljs-keyword">key</span> <span class="hljs-built_in">is</span> <span class="hljs-built_in">not</span> certified <span class="hljs-keyword">with</span> a trusted signature!
+<span class="hljs-symbol">gpg:</span>          There <span class="hljs-built_in">is</span> no indication that the signature belongs <span class="hljs-keyword">to</span> the owner.
+Primary <span class="hljs-keyword">key</span> fingerprint: D4BE <span class="hljs-number">2231</span> <span class="hljs-number">1</span>AD3 <span class="hljs-number">131</span>E <span class="hljs-number">5</span>EDA  <span class="hljs-number">29</span>A4 <span class="hljs-number">6109</span> <span class="hljs-number">2E85</span> B722 <span class="hljs-number">7189</span>
+<span class="hljs-type">object</span> <span class="hljs-number">04</span>b871796dc0420f8e7561a895b52484b701d51a
+type commit
+tag signedtag
+tagger C O Mitter &lt;<a href="https://runebook.dev/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f99a969494908d8d9c8bb99c81989489959cd79a9694">[email&#160;protected]</a>&gt; <span class="hljs-number">1465981006</span> +<span class="hljs-number">0000</span>
+
+signed tag
+
+signed tag message body</pre> </div> </div> </div> <h2 class="text-body-emphasis"  id="_commit_signatures"><span data-i18n="dbcfeddee0609c05798d0bd55a5c7484cf59f665ad5eff938d1a9d2ee1a8900d/21" data-source="Commit signatures" onmousemove="i18n(this)">Commit signatures</span></h2> <div> <div> <ul> <li> <p><span data-i18n="0364bf54d7e118ee2250a4ac157b6fbdf16428780edaa82b126e763b097c2302/88" data-source="created by: &lt;code&gt;git commit -S&lt;/code&gt;" onmousemove="i18n(this)">&scy;&ocy;&zcy;&dcy;&acy;&tcy;&iecy;&lcy;&softcy;:  <code>git commit -S</code></span></p> </li> <li> <p><span data-i18n="8ba090cf8d9d47506b6e6b854fbf5a0a8e8eb17da00fa944fc092ea846426e97/13" data-source="payload: commit object" onmousemove="i18n(this)">&pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&acy;&yacy; &ncy;&acy;&gcy;&rcy;&ucy;&zcy;&kcy;&acy;: &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy;</span></p> </li> <li> <p><span data-i18n="d439fc13dcfe4341a57d72125ad57e43596ac9c71fc1077442e12dcd171fc7e3/78" data-source="embedding: header entry &lt;code&gt;gpgsig&lt;/code&gt; (content is preceded by a space)" onmousemove="i18n(this)">&vcy;&scy;&tcy;&rcy;&acy;&icy;&vcy;&acy;&ncy;&icy;&iecy;: &zcy;&acy;&pcy;&icy;&scy;&softcy; &zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&kcy;&acy;  <code>gpgsig</code>  (&scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&mcy;&ocy;&mcy;&ucy; &pcy;&rcy;&iecy;&dcy;&shcy;&iecy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &pcy;&rcy;&ocy;&bcy;&iecy;&lcy;)</span></p> </li> <li> <p><span data-i18n="b13e920c8f6065ab6464ed261fa0840f9b0b36e013a1c45ef9dceffafc28b905/ff" data-source="example: commit with subject &lt;code&gt;signed commit&lt;/code&gt;" onmousemove="i18n(this)">&pcy;&rcy;&icy;&mcy;&iecy;&rcy;: &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&yacy; &scy; &scy;&ucy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&mcy;  <code>signed commit</code></span></p> </li> </ul> </div> <div> <div> <pre class="hljs language-sql">tree eebfed94e75e7760540d1485c740902590a00332
+parent <span class="hljs-number">04</span>b871796dc0420f8e7561a895b52484b701d51a
+author A U Thor <span class="hljs-operator">&lt;</span>author<span class="hljs-variable">@example</span>.com<span class="hljs-operator">&gt;</span> <span class="hljs-number">1465981137</span> <span class="hljs-operator">+</span><span class="hljs-number">0000</span>
+committer C O Mitter <span class="hljs-operator">&lt;</span>committer<span class="hljs-variable">@example</span>.com<span class="hljs-operator">&gt;</span> <span class="hljs-number">1465981137</span> <span class="hljs-operator">+</span><span class="hljs-number">0000</span>
+gpgsig <span class="hljs-comment" title="-----BEGIN PGP SIGNATURE-----">-----&Ncy;&Acy;&CHcy;&Acy;&Tcy;&SOFTcy; &Pcy;&Ocy;&Dcy;&Pcy;&Icy;&Scy;&SOFTcy; PGP-----</span>
+ Version: GnuPG v1
+ $
+ iQEcBAABAgAGBQJXYRjRAAoJEGEJLoW3InGJ3IwIAIY4SA6GxY3BjL60YyvsJPh<span class="hljs-operator">/</span>
+ HRCJwH<span class="hljs-operator">+</span>w7wt3Yc<span class="hljs-operator">/</span><span class="hljs-number">9</span><span class="hljs-operator">/</span>bW2F<span class="hljs-operator">+</span>gF72kdHOOs2jfv<span class="hljs-operator">+</span>OZhq0q4OAN6fvVSczISY<span class="hljs-operator">/</span><span class="hljs-number">82</span>LpS7
+ DVdMQj2<span class="hljs-operator">/</span>YcHDT4xrDNBnXnviDO9G7am<span class="hljs-operator">/</span><span class="hljs-number">9</span>OE77kEbXrp7QPxvhjkicHNwy2rEflAA
+ zn075rtEERDHr8nRYiDh8eVrefSO7D<span class="hljs-operator">+</span>bdQ7gv<span class="hljs-operator">+</span><span class="hljs-number">7</span>GsYMsd2auJWi1dHOSfTr9HIF4
+ HJhWXT9d2f8W<span class="hljs-operator">+</span>diRYXGh4X0wYiGg6na<span class="hljs-operator">/</span>soXc<span class="hljs-operator">+</span>vdtDYBzIxanRqjg8jCAeo1eOTk1
+ EdTwhcTZlI0x5pvJ3H0<span class="hljs-operator">+</span><span class="hljs-number">4</span>hA2jtldVtmPM4OTB0cTrEWBad7XV6YgiyuII73Ve3I<span class="hljs-operator">=</span>
+ <span class="hljs-operator">=</span>jKHM
+ <span class="hljs-comment" title="-----END PGP SIGNATURE-----">-----&Kcy;&Ocy;&Ncy;&IEcy;&TScy; &Pcy;&Ocy;&Dcy;&Pcy;&Icy;&Scy;&Icy; PGP-----</span>
+
+signed <span class="hljs-keyword">commit</span>
+
+signed <span class="hljs-keyword">commit</span> message body</pre> </div> </div> <div> <ul> <li> <p><span data-i18n="61a70f0cff19eb4e44883be5a0a6d142d35ae745f1b430387536a0f07f9b988f/49" data-source="verify with: &lt;code&gt;git verify-commit [-v]&lt;/code&gt; (or &lt;code&gt;git show --show-signature&lt;/code&gt;)" onmousemove="i18n(this)">&pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&softcy;&tcy;&iecy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy;:  <code>git verify-commit [-v]</code>  (&icy;&lcy;&icy;  <code>git show --show-signature</code> )</span></p> </li> </ul> </div> <div> <div> <pre class="hljs language-vbnet"><span class="hljs-symbol">gpg:</span> Signature made Wed Jun <span class="hljs-number">15</span> <span class="hljs-number">10</span>:<span class="hljs-number">58</span>:<span class="hljs-number">57</span> <span class="hljs-number">2016</span> CEST <span class="hljs-keyword">using</span> RSA <span class="hljs-keyword">key</span> ID B7227189
+<span class="hljs-symbol">gpg:</span> Good signature <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;Eris Discordia &lt;<a href="https://runebook.dev/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="14707d67777b667054716c75796478713a7a7160">[email&#160;protected]</a>&gt;&quot;</span>
+<span class="hljs-symbol">gpg:</span> WARNING: This <span class="hljs-keyword">key</span> <span class="hljs-built_in">is</span> <span class="hljs-built_in">not</span> certified <span class="hljs-keyword">with</span> a trusted signature!
+<span class="hljs-symbol">gpg:</span>          There <span class="hljs-built_in">is</span> no indication that the signature belongs <span class="hljs-keyword">to</span> the owner.
+Primary <span class="hljs-keyword">key</span> fingerprint: D4BE <span class="hljs-number">2231</span> <span class="hljs-number">1</span>AD3 <span class="hljs-number">131</span>E <span class="hljs-number">5</span>EDA  <span class="hljs-number">29</span>A4 <span class="hljs-number">6109</span> <span class="hljs-number">2E85</span> B722 <span class="hljs-number">7189</span>
+tree eebfed94e75e7760540d1485c740902590a00332
+parent <span class="hljs-number">04</span>b871796dc0420f8e7561a895b52484b701d51a
+author A U Thor &lt;<a href="https://runebook.dev/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9effebeaf6f1ecdefbe6fff3eef2fbb0fdf1f3">[email&#160;protected]</a>&gt; <span class="hljs-number">1465981137</span> +<span class="hljs-number">0000</span>
+committer C O Mitter &lt;<a href="https://runebook.dev/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7a19151717130e0e1f083a1f021b170a161f54191517">[email&#160;protected]</a>&gt; <span class="hljs-number">1465981137</span> +<span class="hljs-number">0000</span>
+
+signed commit
+
+signed commit message body</pre> </div> </div> </div> <h2 class="text-body-emphasis"  id="_mergetag_signatures"><span data-i18n="8f647123972bc689ba9e053ee674c93b71ec345a9da142d9cf4c71dfe0a62d6d/40" data-source="Mergetag signatures" onmousemove="i18n(this)">Mergetag signatures</span></h2> <div> <div> <ul> <li> <p><span data-i18n="92cf6de3e29c0a32189f18a8a388bad1d791fa4ff1145fbde971d71860fb676b/6f" data-source="created by: &lt;code&gt;git merge&lt;/code&gt; on signed tag" onmousemove="i18n(this)">&Scy;&ocy;&zcy;&dcy;&acy;&tcy;&iecy;&lcy;&softcy;:  <code>git merge</code>  &ncy;&acy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&acy;&ncy;&ncy;&ocy;&mcy; &tcy;&iecy;&gcy;&iecy;</span></p> </li> <li> <p><span data-i18n="655f9afd51ecdf37d024117e2e5e30e6a868cd1413a10b8811d37709a4b4d8dc/1b" data-source="payload/embedding: the whole signed tag object is embedded into the (merge) commit object as header entry &lt;code&gt;mergetag&lt;/code&gt;" onmousemove="i18n(this)">&pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&acy;&yacy; &ncy;&acy;&gcy;&rcy;&ucy;&zcy;&kcy;&acy;/&vcy;&scy;&tcy;&rcy;&acy;&icy;&vcy;&acy;&ncy;&icy;&iecy;: &vcy;&iecy;&scy;&softcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &tcy;&iecy;&gcy;&acy; &vcy;&scy;&tcy;&rcy;&ocy;&iecy;&ncy; &vcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy; (&scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy;) &vcy; &vcy;&icy;&dcy;&iecy; &zcy;&acy;&pcy;&icy;&scy;&icy; &zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&kcy;&acy;  <code>mergetag</code> .</span></p> </li> <li> <p><span data-i18n="724daabe4dc5fbeaf4fbaa293f687c03ba9a73811bc0f8139b1c44f8af1ba0bd/52" data-source="example: merge of the signed tag &lt;code&gt;signedtag&lt;/code&gt; as above" onmousemove="i18n(this)">&pcy;&rcy;&icy;&mcy;&iecy;&rcy;: &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&iecy;&ncy;&icy;&iecy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &tcy;&iecy;&gcy;&acy;  <code>signedtag</code> , &kcy;&acy;&kcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ocy; &vcy;&ycy;&shcy;&iecy;.</span></p> </li> </ul> </div> <div> <div> <pre class="hljs language-ruby">tree c7b1cff039a93f3600a1d18b82d26688668c7dea
+parent c33429be94b5f2d3ee9b0adad223f877f174b05d
+parent 04b871796dc0420f8e7561a895b52484b701d51a
+author A U <span class="hljs-title class_">Thor</span> &lt;author<span class="hljs-variable">@example</span>.com&gt; <span class="hljs-number">1465982009</span> +<span class="hljs-number">0000</span>
+committer C O <span class="hljs-title class_">Mitter</span> &lt;committer<span class="hljs-variable">@example</span>.com&gt; <span class="hljs-number">1465982009</span> +<span class="hljs-number">0000</span>
+mergetag object 04b871796dc0420f8e7561a895b52484b701d51a
+ type commit
+ tag signedtag
+ tagger C O <span class="hljs-title class_">Mitter</span> &lt;committer<span class="hljs-variable">@example</span>.com&gt; <span class="hljs-number">1465981006</span> +<span class="hljs-number">0000</span>
+ <span class="hljs-variable">$
+</span> signed tag
+ <span class="hljs-variable">$
+</span> signed tag message body
+ -----<span class="hljs-variable constant_">BEGIN</span> <span class="hljs-variable constant_">PGP</span> <span class="hljs-variable constant_">SIGNATURE</span>-----
+ <span class="hljs-title class_">Version</span>: <span class="hljs-title class_">Gnu</span>PG v1
+ <span class="hljs-variable">$
+</span> iQEcBAABAgAGBQJXYRhOAAoJEGEJLoW3InGJklkIAIcnhL7RwEb/+<span class="hljs-title class_">QeX9enkXhxn</span>
+ rxfdqrvWd1K80sl2TOt8Bg/<span class="hljs-title class_">NYwrUBw</span>/<span class="hljs-variable constant_">RWJ</span>+sg/hhHp4WtvE1HDGHlkEz3y11Lkuh
+ 8tSxS3qKTxXUGozyPGuE90sJfExhZlW4knIQ1wt/yWqM+33E9pN4hzPqLwyrdods
+ q8FWEqPPUbSJXoMbRPw04S5jrLtZSsUWbRYjmJCHzlhSfFWW4eFd37uquIaLUBS0
+ rkC3Jrx7420jkIpgFcTI2s60uhSQLzgcCwdA2ukSYIRnjg/zDkj8+3h/<span class="hljs-title class_">GaROJ72x</span>
+ lZyI6HWixKJkWw8lE9aAOD9TmTW9sFJwcVAzmAuFX2kUreDUKMZduGcoRYGpD7E=
+ =jpXa
+ -----<span class="hljs-variable constant_">END</span> <span class="hljs-variable constant_">PGP</span> <span class="hljs-variable constant_">SIGNATURE</span>-----
+
+<span class="hljs-title class_">Merge</span> tag <span class="hljs-string">&apos;signedtag&apos;</span> into downstream
+
+signed tag
+
+signed tag message body
+
+<span class="hljs-comment" title="# gpg: Signature made Wed Jun 15 08:56:46 2016 UTC using RSA key ID B7227189"># gpg: &Pcy;&ocy;&dcy;&pcy;&icy;&scy;&softcy; &scy;&dcy;&iecy;&lcy;&acy;&ncy;&acy; &vcy; &scy;&rcy;&iecy;&dcy;&ucy;, 15 &icy;&yucy;&ncy;&yacy;, 08:56:46 UTC, 2016 &gcy;., &scy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy;&mcy; &icy;&dcy;&iecy;&ncy;&tcy;&icy;&fcy;&icy;&kcy;&acy;&tcy;&ocy;&rcy;&acy; &kcy;&lcy;&yucy;&chcy;&acy; RSA B7227189.</span>
+<span class="hljs-comment" title="# gpg: Good signature from &quot;Eris Discordia &lt;discord@example.net&gt;&quot;">#gpg: &KHcy;&ocy;&rcy;&ocy;&shcy;&acy;&yacy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&softcy; &ocy;&tcy;  &quot;Eris Discordia &lt;<a href="https://runebook.dev/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3f5b564c5c504d5b7f5a475e524f535a11515a4b">[email&#160;protected]</a>&gt;&quot;</span>
+<span class="hljs-comment" title="# gpg: WARNING: This key is not certified with a trusted signature!"># gpg: &Vcy;&Ncy;&Icy;&Mcy;&Acy;&Ncy;&Icy;&IEcy;: &ecy;&tcy;&ocy;&tcy; &kcy;&lcy;&yucy;&chcy; &ncy;&iecy; &scy;&iecy;&rcy;&tcy;&icy;&fcy;&icy;&tscy;&icy;&rcy;&ocy;&vcy;&acy;&ncy; &dcy;&ocy;&vcy;&iecy;&rcy;&iecy;&ncy;&ncy;&ocy;&jcy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&softcy;&yucy;!</span>
+<span class="hljs-comment" title="# gpg:          There is no indication that the signature belongs to the owner."># gpg: &ncy;&iecy;&tcy; &ncy;&icy;&kcy;&acy;&kcy;&icy;&khcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&icy;&jcy; &ncy;&acy; &pcy;&rcy;&icy;&ncy;&acy;&dcy;&lcy;&iecy;&zhcy;&ncy;&ocy;&scy;&tcy;&softcy; &pcy;&ocy;&dcy;&pcy;&icy;&scy;&icy; &vcy;&lcy;&acy;&dcy;&iecy;&lcy;&softcy;&tscy;&ucy;.</span>
+<span class="hljs-comment" title="# Primary key fingerprint: D4BE 2231 1AD3 131E 5EDA  29A4 6109 2E85 B722 7189"># &Ocy;&tcy;&pcy;&iecy;&chcy;&acy;&tcy;&ocy;&kcy; &pcy;&iecy;&rcy;&vcy;&icy;&chcy;&ncy;&ocy;&gcy;&ocy; &kcy;&lcy;&yucy;&chcy;&acy;: D4BE 2231 1AD3 131E 5EDA 29A4 6109 2E85 B722 7189</span></pre> </div> </div> <div> <ul> <li> <p><span data-i18n="97735651747648445eb1da88ea11077206631126670bea5bd408336de2069661/ce" data-source="verify with: verification is embedded in merge commit message by default, alternatively with &lt;code&gt;git show --show-signature&lt;/code&gt;:" onmousemove="i18n(this)">&pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&icy;&tcy;&softcy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy;: &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&acy; &vcy;&scy;&tcy;&rcy;&ocy;&iecy;&ncy;&acy; &vcy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &ocy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;, &acy;&lcy;&softcy;&tcy;&iecy;&rcy;&ncy;&acy;&tcy;&icy;&vcy;&ncy;&ocy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy;  <code>git show --show-signature</code>  :</span></p> </li> </ul> </div> <div> <div> <pre class="hljs language-vbnet">commit <span class="hljs-number">9863</span>f0c76ff78712b6800e199a46aa56afbcbd49
+merged tag <span class="hljs-comment">&apos;signedtag&apos;</span>
+<span class="hljs-symbol">gpg:</span> Signature made Wed Jun <span class="hljs-number">15</span> <span class="hljs-number">10</span>:<span class="hljs-number">56</span>:<span class="hljs-number">46</span> <span class="hljs-number">2016</span> CEST <span class="hljs-keyword">using</span> RSA <span class="hljs-keyword">key</span> ID B7227189
+<span class="hljs-symbol">gpg:</span> Good signature <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;Eris Discordia &lt;<a href="https://runebook.dev/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f99d908a9a968b9db99c81989489959cd7979c8d">[email&#160;protected]</a>&gt;&quot;</span>
+<span class="hljs-symbol">gpg:</span> WARNING: This <span class="hljs-keyword">key</span> <span class="hljs-built_in">is</span> <span class="hljs-built_in">not</span> certified <span class="hljs-keyword">with</span> a trusted signature!
+<span class="hljs-symbol">gpg:</span>          There <span class="hljs-built_in">is</span> no indication that the signature belongs <span class="hljs-keyword">to</span> the owner.
+Primary <span class="hljs-keyword">key</span> fingerprint: D4BE <span class="hljs-number">2231</span> <span class="hljs-number">1</span>AD3 <span class="hljs-number">131</span>E <span class="hljs-number">5</span>EDA  <span class="hljs-number">29</span>A4 <span class="hljs-number">6109</span> <span class="hljs-number">2E85</span> B722 <span class="hljs-number">7189</span>
+<span class="hljs-symbol">Merge:</span> c33429b <span class="hljs-number">04</span>b8717
+<span class="hljs-symbol">Author:</span> A U Thor &lt;<a href="https://runebook.dev/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5a3b2f2e3235281a3f223b372a363f74393537">[email&#160;protected]</a>&gt;
+<span class="hljs-symbol">Date:</span>   Wed Jun <span class="hljs-number">15</span> <span class="hljs-number">09</span>:<span class="hljs-number">13</span>:<span class="hljs-number">29</span> <span class="hljs-number">2016</span> +<span class="hljs-number">0000</span>
+
+    Merge tag <span class="hljs-comment" title="&apos;signedtag&apos; into downstream">&apos;signedtag&apos; &vcy; &ncy;&icy;&scy;&khcy;&ocy;&dcy;&yacy;&shchcy;&icy;&jcy; &pcy;&ocy;&tcy;&ocy;&kcy;</span>
+
+    signed tag
+
+    signed tag message body
+
+    # gpg: Signature made Wed Jun <span class="hljs-number">15</span> <span class="hljs-number">08</span>:<span class="hljs-number">56</span>:<span class="hljs-number">46</span> <span class="hljs-number">2016</span> UTC <span class="hljs-keyword">using</span> RSA <span class="hljs-keyword">key</span> ID B7227189
+    # gpg: Good signature <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;Eris Discordia &lt;<a href="https://runebook.dev/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5c38352f3f332e381c39243d312c303972323928">[email&#160;protected]</a>&gt;&quot;</span>
+    # gpg: WARNING: This <span class="hljs-keyword">key</span> <span class="hljs-built_in">is</span> <span class="hljs-built_in">not</span> certified <span class="hljs-keyword">with</span> a trusted signature!
+    # gpg:          There <span class="hljs-built_in">is</span> no indication that the signature belongs <span class="hljs-keyword">to</span> the owner.
+    # Primary <span class="hljs-keyword">key</span> fingerprint: D4BE <span class="hljs-number">2231</span> <span class="hljs-number">1</span>AD3 <span class="hljs-number">131</span>E <span class="hljs-number">5</span>EDA  <span class="hljs-number">29</span>A4 <span class="hljs-number">6109</span> <span class="hljs-number">2E85</span> B722 <span class="hljs-number">7189</span></pre> </div> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/gitformat-signature">https://git-scm.com/docs/gitformat-signature</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitglossary.html">
+                            gitglossary                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="githooks.html">
+                            githooks                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitignore.html">
+                            gitignore                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitk.html">
+                            gitk                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitmailmap.html">
+                            gitmailmap                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitmodules.html">
+                            gitmodules                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitnamespaces.html">
+                            gitnamespaces                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="gitformat-signature.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

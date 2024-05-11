@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:15:08 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git mailsplit</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="1060e5d95d1eac105e66a30ebdaeae21a49ac9f7cce9e699cd25cc2a63e5fa16/10" data-source="git-mailsplit" onmousemove="i18n(this)">git-mailsplit</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="f5cc80dce660abca8fb07fb8e3f1f49546c71572cb8fd22965a39587a43e796c/6d" data-source="git-mailsplit - Simple UNIX mbox splitter program" onmousemove="i18n(this)">git-mailsplit &mdash; &pcy;&rcy;&ocy;&scy;&tcy;&acy;&yacy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&acy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&iecy;&ncy;&icy;&yacy; mbox &dcy;&lcy;&yacy; UNIX</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git mailsplit <span class="hljs-selector-attr">[-b]</span> <span class="hljs-selector-attr">[-f&lt;nn&gt;]</span> <span class="hljs-selector-attr">[-d&lt;prec&gt;]</span> <span class="hljs-selector-attr">[--keep-cr]</span> <span class="hljs-selector-attr">[--mboxrd]</span>
+                -o&lt;directory&gt; <span class="hljs-selector-attr">[--]</span> <span class="hljs-selector-attr">[(&lt;mbox&gt;|&lt;Maildir&gt;)&hellip;&ZeroWidthSpace;]</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="88df9c4554524b1e8222bdeecf0c995fa75fc8211586b318d01342e31b046a3e/72" data-source="Splits a mbox file or a Maildir into a list of files: &amp;quot;0001&amp;quot; &amp;quot;0002&amp;quot; .. in the specified directory so you can process them further from there." onmousemove="i18n(this)">&Rcy;&acy;&zcy;&bcy;&icy;&vcy;&acy;&iecy;&tcy; &fcy;&acy;&jcy;&lcy; mbox &icy;&lcy;&icy; Maildir &ncy;&acy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;:  &quot;0001&quot;   &quot;0002&quot;  .. &vcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ocy;&mcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy;, &chcy;&tcy;&ocy;&bcy;&ycy; &vcy;&ycy; &mcy;&ocy;&gcy;&lcy;&icy; &ocy;&bcy;&rcy;&acy;&bcy;&acy;&tcy;&ycy;&vcy;&acy;&tcy;&softcy; &icy;&khcy; &dcy;&acy;&lcy;&softcy;&shcy;&iecy;.</span></p> <div> <div class="table-responsive"><table class="table"> <tr> <td> <div><span data-i18n="ddca9a57e6760d266f27063c26072c168671f416b9b11762895fce04be4d98b5/55" data-source="Important" onmousemove="i18n(this)">Important</span></div> </td> <td><span data-i18n="73ee1200e931f045c99ae4c6c57b317c8191356f2b52ff66f4431f0724a1fc2f/51" data-source="Maildir splitting relies upon filenames being sorted to output patches in the correct order." onmousemove="i18n(this)">&Rcy;&acy;&zcy;&dcy;&iecy;&lcy;&iecy;&ncy;&icy;&iecy; Maildir &ocy;&scy;&ncy;&ocy;&vcy;&acy;&ncy;&ocy; &ncy;&acy; &scy;&ocy;&rcy;&tcy;&icy;&rcy;&ocy;&vcy;&kcy;&iecy; &icy;&mcy;&iecy;&ncy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &dcy;&lcy;&yacy; &vcy;&ycy;&vcy;&ocy;&dcy;&acy; &pcy;&acy;&tcy;&chcy;&iecy;&jcy; &vcy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&softcy;&ncy;&ocy;&mcy; &pcy;&ocy;&rcy;&yacy;&dcy;&kcy;&iecy;.</span></td> </tr> </table></div> </div> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-mailsplit.txt-ltmboxgt"><span data-i18n="f5e2bde26bbf561c8d62349347687b0d9cb6d9ee5a08400ee6187f8c7f282e48/04" data-source="&amp;lt;mbox&amp;gt;" onmousemove="i18n(this)">&lt;mbox&gt;</span></dt> <dd> <p><span data-i18n="503761186ee882dc1550af4679e4b883c0c5072051a6913cca1c86b92398bc48/b8" data-source="Mbox file to split. If not given, the mbox is read from the standard input." onmousemove="i18n(this)">Mbox-&fcy;&acy;&jcy;&lcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &ncy;&ucy;&zhcy;&ncy;&ocy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&icy;&tcy;&softcy;. &IEcy;&scy;&lcy;&icy; &ncy;&iecy; &zcy;&acy;&dcy;&acy;&ncy;&ocy;, mbox &scy;&chcy;&icy;&tcy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &scy;&ocy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ocy;&gcy;&ocy; &vcy;&vcy;&ocy;&dcy;&acy;.</span></p> </dd> <dt id="Documentation/git-mailsplit.txt-ltMaildirgt"><span data-i18n="59cbe98d5d08edcb10440bdfa3821ee65d14ed278adf2b4607e44ac849b9fe24/32" data-source="&amp;lt;Maildir&amp;gt;" onmousemove="i18n(this)">&lt;Maildir&gt;</span></dt> <dd> <p><span data-i18n="1fd3ab4574b043ecf2e1ce17b1bd139966f5e0cd726c69544b77423958b5b091/93" data-source="Root of the Maildir to split. This directory should contain the cur, tmp and new subdirectories." onmousemove="i18n(this)">&Kcy;&ocy;&rcy;&iecy;&ncy;&softcy; Maildir &dcy;&lcy;&yacy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&iecy;&ncy;&icy;&yacy;. &Ecy;&tcy;&ocy;&tcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy; &dcy;&ocy;&lcy;&zhcy;&iecy;&ncy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&tcy;&softcy; &pcy;&ocy;&dcy;&kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&icy; cur, tmp &icy; new.</span></p> </dd> <dt id="Documentation/git-mailsplit.txt--oltdirectorygt"><span data-i18n="e660b1bb5d47c695e15f6a00c17a64f89783d9f4bd3f1df303aa58c09465fcc4/b2" data-source="-o&amp;lt;directory&amp;gt;" onmousemove="i18n(this)">-o&lt;directory&gt;</span></dt> <dd> <p><span data-i18n="095576e571d25ace18ec59c4e87ece1c98a88ed66e8dba33354ff82a15f90463/d3" data-source="Directory in which to place the individual messages." onmousemove="i18n(this)">&Kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;, &vcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&mcy; &mcy;&ocy;&zhcy;&ncy;&ocy; &rcy;&acy;&zcy;&mcy;&iecy;&scy;&tcy;&icy;&tcy;&softcy; &ocy;&tcy;&dcy;&iecy;&lcy;&softcy;&ncy;&ycy;&iecy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy;.</span></p> </dd> <dt id="Documentation/git-mailsplit.txt--b"><span data-i18n="4fc0bdb51ffc8cfdcaaee067eb264b8a5c646176cf870be17c2e647fbb2cb7f4/f8" data-source="-b" onmousemove="i18n(this)">-b</span></dt> <dd> <p><span data-i18n="33674d435dc44f8a5a92aa5bf2e0d94c33e251b3ba6c41cdbad7863e5c0497da/ee" data-source="If any file doesn&amp;rsquo;t begin with a From line, assume it is a single mail message instead of signaling an error." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &kcy;&acy;&kcy;&ocy;&jcy;-&lcy;&icy;&bcy;&ocy; &fcy;&acy;&jcy;&lcy; &ncy;&iecy; &ncy;&acy;&chcy;&icy;&ncy;&acy;&iecy;&tcy;&scy;&yacy; &scy;&ocy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &laquo;&Ocy;&tcy;&raquo;, &pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&lcy;&ocy;&zhcy;&icy;&mcy;, &chcy;&tcy;&ocy; &ecy;&tcy;&ocy; &ocy;&dcy;&ncy;&ocy; &pcy;&ocy;&chcy;&tcy;&ocy;&vcy;&ocy;&iecy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy;, &acy; &ncy;&iecy; &scy;&icy;&gcy;&ncy;&acy;&lcy;&icy;&zcy;&icy;&rcy;&ucy;&iecy;&tcy; &ocy;&bcy; &ocy;&shcy;&icy;&bcy;&kcy;&iecy;.</span></p> </dd> <dt id="Documentation/git-mailsplit.txt--dltprecgt"><span data-i18n="992ca5e8059abc9cb4f99b974c362b92d69d1bbd79189fcd6c7f1692893c86e7/5e" data-source="-d&amp;lt;prec&amp;gt;" onmousemove="i18n(this)">-d&lt;prec&gt;</span></dt> <dd> <p><span data-i18n="b5b7949aa4300c1f941734b4f2f659b9fe77feec226a2a8e18dd297e4e3ae1aa/23" data-source="Instead of the default 4 digits with leading zeros, different precision can be specified for the generated filenames." onmousemove="i18n(this)">&Vcy;&mcy;&iecy;&scy;&tcy;&ocy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&khcy; 4 &tscy;&icy;&fcy;&rcy; &scy; &vcy;&iecy;&dcy;&ucy;&shchcy;&icy;&mcy;&icy; &ncy;&ucy;&lcy;&yacy;&mcy;&icy; &dcy;&lcy;&yacy; &scy;&gcy;&iecy;&ncy;&iecy;&rcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&khcy; &icy;&mcy;&iecy;&ncy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &mcy;&ocy;&zhcy;&ncy;&ocy; &ucy;&kcy;&acy;&zcy;&acy;&tcy;&softcy; &rcy;&acy;&zcy;&lcy;&icy;&chcy;&ncy;&ucy;&yucy; &tcy;&ocy;&chcy;&ncy;&ocy;&scy;&tcy;&softcy;.</span></p> </dd> <dt id="Documentation/git-mailsplit.txt--fltnngt"><span data-i18n="ea1c7b68cabf91b891e60a91f6208eb8b7e0df3433f6e6568823f11b127105dd/2b" data-source="-f&amp;lt;nn&amp;gt;" onmousemove="i18n(this)">-f&lt;nn&gt;</span></dt> <dd> <p><span data-i18n="8c7678256954939b38ec9b14023a012106db7718abdedb4af043450f2809be13/d0" data-source="Skip the first &amp;lt;nn&amp;gt; numbers, for example if -f3 is specified, start the numbering with 0004." onmousemove="i18n(this)">&Pcy;&rcy;&ocy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;&iecy; &pcy;&iecy;&rcy;&vcy;&ycy;&iecy; &tscy;&icy;&fcy;&rcy;&ycy; &lt;nn&gt;, &ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &iecy;&scy;&lcy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy; -f3, &ncy;&ucy;&mcy;&iecy;&rcy;&acy;&tscy;&icy;&yucy; &ncy;&acy;&chcy;&ncy;&icy;&tcy;&iecy; &scy; 0004.</span></p> </dd> <dt id="Documentation/git-mailsplit.txt---keep-cr"><span data-i18n="216af94a5649797f2865182fc2fdd4d9649321f2849f6eb0ff5475eb140b7ffe/22" data-source="--keep-cr" onmousemove="i18n(this)">--keep-cr</span></dt> <dd> <p><span data-i18n="cd53b1610d49b977583af277dbf7ba21c126bcf3151e9b74996d915c316c34ff/fb" data-source="Do not remove &lt;code&gt;\r&lt;/code&gt; from lines ending with &lt;code&gt;\r\n&lt;/code&gt;." onmousemove="i18n(this)">&Ncy;&iecy; &ucy;&dcy;&acy;&lcy;&yacy;&jcy;&tcy;&iecy;  <code>\r</code>  &icy;&zcy; &scy;&tcy;&rcy;&ocy;&kcy;, &zcy;&acy;&kcy;&acy;&ncy;&chcy;&icy;&vcy;&acy;&yucy;&shchcy;&icy;&khcy;&scy;&yacy; &ncy;&acy;  <code>\r\n</code> .</span></p> </dd> <dt id="Documentation/git-mailsplit.txt---mboxrd"><span data-i18n="5fddd290e03a2a1676aac1d0b50af961169a73578c37996fab63a71bd2be301d/70" data-source="--mboxrd" onmousemove="i18n(this)">--mboxrd</span></dt> <dd> <p><span data-i18n="b48bcb7bf36d38d3b36685a2dd050b0416b6a1797480327c894cce2be3e6fbc6/fd" data-source="Input is of the &amp;quot;mboxrd&amp;quot; format and &amp;quot;^&amp;gt;+From &amp;quot; line escaping is reversed." onmousemove="i18n(this)">&Vcy;&vcy;&ocy;&dcy; &icy;&mcy;&iecy;&iecy;&tcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;  &quot;mboxrd&quot; , &acy; &ecy;&kcy;&rcy;&acy;&ncy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy; &scy;&tcy;&rcy;&ocy;&kcy;  &quot;^&gt;+From &quot;  &icy;&ncy;&vcy;&iecy;&rcy;&tcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ocy;.</span></p> </dd> </dl> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-mailsplit">https://git-scm.com/docs/git-mailsplit</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-maintenance.html">
+                            git maintenance                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge.html">
+                            git merge                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge-base.html">
+                            git merge-base                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge-file.html">
+                            git merge-file                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge-index.html">
+                            git merge-index                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge-one-file.html">
+                            git merge-one-file                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge-tree.html">
+                            git merge-tree                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-mailsplit.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:16:27 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git instaweb</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Administration">
+                                Administration                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="ab8d8b82ea7b3f4d419f5944889f0ef891bcab9dfeaaf19d697069710e3d9864/12" data-source="git-instaweb" onmousemove="i18n(this)">git-instaweb</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="1adff361cc958ab0d492060483f1c687447c613bddea309d4d18a25dbd935171/9e" data-source="git-instaweb - Instantly browse your working repository in gitweb" onmousemove="i18n(this)">git-instaweb &mdash; &mcy;&gcy;&ncy;&ocy;&vcy;&iecy;&ncy;&ncy;&ocy; &pcy;&rcy;&ocy;&scy;&mcy;&acy;&tcy;&rcy;&icy;&vcy;&acy;&tcy;&softcy; &rcy;&acy;&bcy;&ocy;&chcy;&icy;&jcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy; &vcy; gitweb.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git instaweb <span class="hljs-selector-attr">[--local]</span> <span class="hljs-selector-attr">[--httpd=&lt;httpd&gt;]</span> <span class="hljs-selector-attr">[--port=&lt;port&gt;]</span>
+               <span class="hljs-selector-attr">[--browser=&lt;browser&gt;]</span>
+git instaweb <span class="hljs-selector-attr">[--start]</span> <span class="hljs-selector-attr">[--stop]</span> <span class="hljs-selector-attr">[--restart]</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="acfa2f8f19f09b67bc3d3152ed9c4fcd94286a01c0fd04612127bea3bede3590/dc" data-source="A simple script to set up &lt;code&gt;gitweb&lt;/code&gt; and a web server for browsing the local repository." onmousemove="i18n(this)">&Pcy;&rcy;&ocy;&scy;&tcy;&ocy;&jcy; &scy;&kcy;&rcy;&icy;&pcy;&tcy; &dcy;&lcy;&yacy; &ncy;&acy;&scy;&tcy;&rcy;&ocy;&jcy;&kcy;&icy;  <code>gitweb</code>  &icy; &vcy;&iecy;&bcy;-&scy;&iecy;&rcy;&vcy;&iecy;&rcy;&acy; &dcy;&lcy;&yacy; &pcy;&rcy;&ocy;&scy;&mcy;&ocy;&tcy;&rcy;&acy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ocy;&gcy;&ocy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-instaweb.txt--l"><span data-i18n="8d29a0f35918ca625667b2858e1c366e227ecbb424c5b30d008a1b2ec709e6d2/a6" data-source="-l" onmousemove="i18n(this)">-l</span></dt> <dt id="Documentation/git-instaweb.txt---local"><span data-i18n="9f0e72f4bd26ca5a954cf99834365ff6f9923456a0e799a13c541fcd0fe28e04/e6" data-source="--local" onmousemove="i18n(this)">--local</span></dt> <dd> <p><span data-i18n="aa4dc05c9cc83b93c92832e59e29bd1cf2061db6bad9115b5ab91ba937c60e80/c8" data-source="Only bind the web server to the local IP (127.0.0.1)." onmousemove="i18n(this)">&Pcy;&rcy;&icy;&vcy;&yacy;&zcy;&ycy;&vcy;&acy;&jcy;&tcy;&iecy; &vcy;&iecy;&bcy;-&scy;&iecy;&rcy;&vcy;&iecy;&rcy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &kcy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ocy;&mcy;&ucy; IP (127.0.0.1).</span></p> </dd> <dt id="Documentation/git-instaweb.txt--d"><span data-i18n="50e09407a18bedd64baf0b99825a8178d7446731615b85452ea6b99573469dcc/b1" data-source="-d" onmousemove="i18n(this)">-d</span></dt> <dt id="Documentation/git-instaweb.txt---httpd"><span data-i18n="acf443adfc60b677f386864f4db08342a537c74ce8b635884205ca632f8c20d5/20" data-source="--httpd" onmousemove="i18n(this)">--httpd</span></dt> <dd> <p><span data-i18n="859bbabb590c4dc61851ce79f8e3f0080433ccfe92417029582566e47d51133c/b1" data-source="The HTTP daemon command-line that will be executed. Command-line options may be specified here, and the configuration file will be added at the end of the command-line. Currently apache2, lighttpd, mongoose, plackup, python and webrick are supported. (Default: lighttpd)" onmousemove="i18n(this)">&Kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&acy;&yacy; &scy;&tcy;&rcy;&ocy;&kcy;&acy; &dcy;&iecy;&mcy;&ocy;&ncy;&acy; HTTP, &kcy;&ocy;&tcy;&ocy;&rcy;&acy;&yacy; &bcy;&ucy;&dcy;&iecy;&tcy; &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&iecy;&ncy;&acy;. &Zcy;&dcy;&iecy;&scy;&softcy; &mcy;&ocy;&zhcy;&ncy;&ocy; &ucy;&kcy;&acy;&zcy;&acy;&tcy;&softcy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;&ycy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;, &acy; &fcy;&acy;&jcy;&lcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy; &bcy;&ucy;&dcy;&iecy;&tcy; &dcy;&ocy;&bcy;&acy;&vcy;&lcy;&iecy;&ncy; &vcy; &kcy;&ocy;&ncy;&iecy;&tscy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;. &Vcy; &ncy;&acy;&scy;&tcy;&ocy;&yacy;&shchcy;&iecy;&iecy; &vcy;&rcy;&iecy;&mcy;&yacy; &pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&icy;&vcy;&acy;&yucy;&tcy;&scy;&yacy; apache2, Lighttpd, mongoose, plackup,  python  &icy; webrick. (&Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;: &scy;&vcy;&iecy;&tcy;&tcy;&pcy;&dcy;)</span></p> </dd> <dt id="Documentation/git-instaweb.txt--m"><span data-i18n="c4e153afb4aeaa5818fb08325ebff59f883a0482006aa3cc1c17c9b393e54efa/11" data-source="-m" onmousemove="i18n(this)">-m</span></dt> <dt id="Documentation/git-instaweb.txt---module-path"><span data-i18n="868832b724bb4aecc3ad63fbb18f5db7fd6bc91de5c26c2fe2b6bd55ed81f210/48" data-source="--module-path" onmousemove="i18n(this)">--module-path</span></dt> <dd> <p><span data-i18n="cd32ddfab779d89015b4df7d7700731c291ca5d773a32994e3d1f2e49162b4a7/2c" data-source="The module path (only needed if httpd is Apache). (Default: /usr/lib/apache2/modules)" onmousemove="i18n(this)">&Pcy;&ucy;&tcy;&softcy; &kcy; &mcy;&ocy;&dcy;&ucy;&lcy;&yucy; (&ncy;&ucy;&zhcy;&iecy;&ncy;, &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &iecy;&scy;&lcy;&icy; httpd &mdash; Apache). (&Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;: /usr/lib/apache2/modules)</span></p> </dd> <dt id="Documentation/git-instaweb.txt--p"><span data-i18n="567479c447e472328522a1d759aabb9b579e4522a6da547c983d29e94c1604c2/a3" data-source="-p" onmousemove="i18n(this)">-p</span></dt> <dt id="Documentation/git-instaweb.txt---port"><span data-i18n="08aaff16bd0b123272c77c18a6a94e983e62f0a65dc6626de0ba518555cdc0cd/53" data-source="--port" onmousemove="i18n(this)">--port</span></dt> <dd> <p><span data-i18n="223f44581148e33cb4638936ad961bec3a015bbce112d0d4f3a4213ecf566ff4/b7" data-source="The port number to bind the httpd to. (Default: 1234)" onmousemove="i18n(this)">&Ncy;&ocy;&mcy;&iecy;&rcy; &pcy;&ocy;&rcy;&tcy;&acy;, &kcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&mcy;&ucy; &bcy;&ucy;&dcy;&iecy;&tcy; &pcy;&rcy;&icy;&vcy;&yacy;&zcy;&acy;&ncy; httpd. (&Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;: 1234)</span></p> </dd> <dt id="Documentation/git-instaweb.txt--b"><span data-i18n="4fc0bdb51ffc8cfdcaaee067eb264b8a5c646176cf870be17c2e647fbb2cb7f4/f8" data-source="-b" onmousemove="i18n(this)">-b</span></dt> <dt id="Documentation/git-instaweb.txt---browser"><span data-i18n="87be4f8dec49ae4a8900932d0d6793bb947ea581676efb26bb19546e93ce5ac9/d0" data-source="--browser" onmousemove="i18n(this)">--browser</span></dt> <dd> <p><span data-i18n="ba0c7002ae540198b99e5cedaeb76ca6ba9c2107bf679454c1429a791e387ae0/38" data-source="The web browser that should be used to view the gitweb page. This will be passed to the &lt;code&gt;git web--browse&lt;/code&gt; helper script along with the URL of the gitweb instance. See &lt;a href=&quot;git-web--browse&quot;&gt;git-web--browse[1]&lt;/a&gt; for more information about this. If the script fails, the URL will be printed to stdout." onmousemove="i18n(this)">&Vcy;&iecy;&bcy;-&bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &scy;&lcy;&iecy;&dcy;&ucy;&iecy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &dcy;&lcy;&yacy; &pcy;&rcy;&ocy;&scy;&mcy;&ocy;&tcy;&rcy;&acy; &scy;&tcy;&rcy;&acy;&ncy;&icy;&tscy;&ycy; gitweb. &Ecy;&tcy;&ocy; &bcy;&ucy;&dcy;&iecy;&tcy; &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&ncy;&ocy; &vcy;&scy;&pcy;&ocy;&mcy;&ocy;&gcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&mcy;&ucy; &scy;&tscy;&iecy;&ncy;&acy;&rcy;&icy;&yucy;  <code>git web--browse</code>  &vcy;&mcy;&iecy;&scy;&tcy;&iecy; &scy; URL-&acy;&dcy;&rcy;&iecy;&scy;&ocy;&mcy; &ecy;&kcy;&zcy;&iecy;&mcy;&pcy;&lcy;&yacy;&rcy;&acy; gitweb. &Dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ucy;&yucy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&yucy; &ocy;&bcy; &ecy;&tcy;&ocy;&mcy; &scy;&mcy;. &vcy;  <a href="git-web--browse.html">git-web--browse[1]</a> . &IEcy;&scy;&lcy;&icy; &scy;&tscy;&iecy;&ncy;&acy;&rcy;&icy;&jcy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&icy;&tcy;&scy;&yacy; &ncy;&iecy;&ucy;&dcy;&acy;&chcy;&ncy;&ocy;, URL-&acy;&dcy;&rcy;&iecy;&scy; &bcy;&ucy;&dcy;&iecy;&tcy; &vcy;&ycy;&vcy;&iecy;&dcy;&iecy;&ncy; &ncy;&acy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&jcy; &vcy;&ycy;&vcy;&ocy;&dcy;.</span></p> </dd> <dt id="Documentation/git-instaweb.txt-start"><span data-i18n="cced28c6dc3f99c2396a5eaad732bf6b28142335892b1cd0e6af6cdb53f5ccfa/9b" data-source="start" onmousemove="i18n(this)">start</span></dt> <dt id="Documentation/git-instaweb.txt---start"><span data-i18n="3ad5d77397ec917a19cecb0bd28f8981aad82152f4ab8e246c4529a76ca1e003/7a" data-source="--start" onmousemove="i18n(this)">--start</span></dt> <dd> <p><span data-i18n="0da7cbd0b7f933c1393cff4db636faed7143695ad48ca45e6fdcbb21b6bd5c91/7d" data-source="Start the httpd instance and exit. Regenerate configuration files as necessary for spawning a new instance." onmousemove="i18n(this)">&Zcy;&acy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;&iecy; &ecy;&kcy;&zcy;&iecy;&mcy;&pcy;&lcy;&yacy;&rcy; httpd &icy; &vcy;&ycy;&jcy;&dcy;&icy;&tcy;&iecy;. &Pcy;&rcy;&icy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ocy;&scy;&tcy;&icy; &zcy;&acy;&ncy;&ocy;&vcy;&ocy; &scy;&ocy;&zcy;&dcy;&acy;&jcy;&tcy;&iecy; &fcy;&acy;&jcy;&lcy;&ycy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy; &dcy;&lcy;&yacy; &scy;&ocy;&zcy;&dcy;&acy;&ncy;&icy;&yacy; &ncy;&ocy;&vcy;&ocy;&gcy;&ocy; &ecy;&kcy;&zcy;&iecy;&mcy;&pcy;&lcy;&yacy;&rcy;&acy;.</span></p> </dd> <dt id="Documentation/git-instaweb.txt-stop"><span data-i18n="6c45cb72a36e63d522aa54ed8adbd7a29a989474f2f77e0458af8800564ef3cb/23" data-source="stop" onmousemove="i18n(this)">stop</span></dt> <dt id="Documentation/git-instaweb.txt---stop"><span data-i18n="dca384181d648fd89c2bb109d32eca97bf845a72034ef556994b9ce87c1f1cac/25" data-source="--stop" onmousemove="i18n(this)">--stop</span></dt> <dd> <p><span data-i18n="cfe321ec3e52171d164fb96801ce7c77292dc6735ce8af6c79c67304efecb7b8/2a" data-source="Stop the httpd instance and exit. This does not generate any of the configuration files for spawning a new instance, nor does it close the browser." onmousemove="i18n(this)">&Ocy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&icy;&tcy;&iecy; &ecy;&kcy;&zcy;&iecy;&mcy;&pcy;&lcy;&yacy;&rcy; httpd &icy; &vcy;&ycy;&jcy;&dcy;&icy;&tcy;&iecy;. &Pcy;&rcy;&icy; &ecy;&tcy;&ocy;&mcy; &ncy;&iecy; &scy;&ocy;&zcy;&dcy;&acy;&yucy;&tcy;&scy;&yacy; &fcy;&acy;&jcy;&lcy;&ycy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy; &dcy;&lcy;&yacy; &scy;&ocy;&zcy;&dcy;&acy;&ncy;&icy;&yacy; &ncy;&ocy;&vcy;&ocy;&gcy;&ocy; &ecy;&kcy;&zcy;&iecy;&mcy;&pcy;&lcy;&yacy;&rcy;&acy; &icy; &ncy;&iecy; &zcy;&acy;&kcy;&rcy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy;.</span></p> </dd> <dt id="Documentation/git-instaweb.txt-restart"><span data-i18n="3ace60b0a0c1b6c9345e31494142947aa97d4ef4912e895d8795663393819759/2b" data-source="restart" onmousemove="i18n(this)">restart</span></dt> <dt id="Documentation/git-instaweb.txt---restart"><span data-i18n="32b70c496001cda538947ddcc1debfab095d45d154692dfd84ef1ca3fce3fa1e/03" data-source="--restart" onmousemove="i18n(this)">--restart</span></dt> <dd> <p><span data-i18n="e99d238b3a75d28f80339c8598d7a352e1cefdcd231160ee119097400693c42e/e9" data-source="Restart the httpd instance and exit. Regenerate configuration files as necessary for spawning a new instance." onmousemove="i18n(this)">&Pcy;&iecy;&rcy;&iecy;&zcy;&acy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;&iecy; &ecy;&kcy;&zcy;&iecy;&mcy;&pcy;&lcy;&yacy;&rcy; httpd &icy; &vcy;&ycy;&jcy;&dcy;&icy;&tcy;&iecy;. &Pcy;&rcy;&icy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ocy;&scy;&tcy;&icy; &zcy;&acy;&ncy;&ocy;&vcy;&ocy; &scy;&ocy;&zcy;&dcy;&acy;&jcy;&tcy;&iecy; &fcy;&acy;&jcy;&lcy;&ycy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy; &dcy;&lcy;&yacy; &scy;&ocy;&zcy;&dcy;&acy;&ncy;&icy;&yacy; &ncy;&ocy;&vcy;&ocy;&gcy;&ocy; &ecy;&kcy;&zcy;&iecy;&mcy;&pcy;&lcy;&yacy;&rcy;&acy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_configuration"><span data-i18n="b332c3492d5eb10a118eb6d8b0dcd689bc2477ce2ae16b303753b942b54377bc/aa" data-source="Configuration" onmousemove="i18n(this)">Configuration</span></h2> <div> <p><span data-i18n="d0fb118bf49648b2de969583aef7411b38f82be6ad23243b722df183f97424c7/71" data-source="You may specify configuration in your .git/config" onmousemove="i18n(this)">&Vcy;&ycy; &mcy;&ocy;&zhcy;&iecy;&tcy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&tcy;&softcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&yucy; &vcy; &vcy;&acy;&shcy;&iecy;&mcy; .git/config.</span></p> <div> <div> <pre class="hljs language-ini"><span class="hljs-section">[instaweb]</span>
+        <span class="hljs-attr">local</span> = <span class="hljs-literal">true</span>
+        <span class="hljs-attr">httpd</span> = apache2 -f
+        <span class="hljs-attr">port</span> = <span class="hljs-number">4321</span>
+        <span class="hljs-attr">browser</span> = konqueror
+        <span class="hljs-attr">modulePath</span> = /usr/lib/apache2/modules</pre> </div> </div> <p><span data-i18n="6cd2eaff17a7fac40428870f6f9eddc1320d79d5a6c9412c72e77f636e8631d6/86" data-source="If the configuration variable &lt;code&gt;instaweb.browser&lt;/code&gt; is not set, &lt;code&gt;web.browser&lt;/code&gt; will be used instead if it is defined. See &lt;a href=&quot;git-web--browse&quot;&gt;git-web--browse[1]&lt;/a&gt; for more information about this." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&acy;&yacy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  <code>instaweb.browser</code>  &ncy;&iecy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&acy;, &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &ncy;&iecy;&iecy; &bcy;&ucy;&dcy;&iecy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;&scy;&yacy;  <code>web.browser</code> , &iecy;&scy;&lcy;&icy; &ocy;&ncy;&acy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&iecy;&ncy;&acy;. &Scy;&mcy;.  <a href="git-web--browse.html">git-web--browse[1]</a>  &dcy;&lcy;&yacy; &pcy;&ocy;&lcy;&ucy;&chcy;&iecy;&ncy;&icy;&yacy; &dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&jcy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&icy; &ocy;&bcy; &ecy;&tcy;&ocy;&mcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_see_also"><span data-i18n="2fa97693b70fa87b95b2d1bdf9558e4ac65d5e82d145f13a03849c4d9c4957a9/40" data-source="See also" onmousemove="i18n(this)">See also</span></h2> <div> <p><a href="gitweb.html"><span data-i18n="23b25e084bf32b39d1432cfc11d202ab0d9c24a3ed682fa95194a750ac4c84f2/02" data-source="gitweb[1]" onmousemove="i18n(this)">gitweb[1]</span></a></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-instaweb">https://git-scm.com/docs/git-instaweb</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-interpret-trailers.html">
+                            git interpret-trailers                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-log.html">
+                            git log                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-ls-files.html">
+                            git ls-files                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-ls-remote.html">
+                            git ls-remote                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-ls-tree.html">
+                            git ls-tree                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-mailinfo.html">
+                            git mailinfo                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-mailsplit.html">
+                            git mailsplit                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-instaweb.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

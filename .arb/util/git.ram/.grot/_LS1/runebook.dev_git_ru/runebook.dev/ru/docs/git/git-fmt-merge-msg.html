@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:14:49 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git fmt-merge-msg</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="ad87b2ff6b9cfa8b3b221c1db1c3fccdb253fe7d55813b6f90b9d6f56e111381/de" data-source="git-fmt-merge-msg" onmousemove="i18n(this)">git-fmt-merge-msg</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="975faba9569ec764d9c24a5ab02ab9ac90787554b7bac79b89c6b7fa681062d0/18" data-source="git-fmt-merge-msg - Produce a merge commit message" onmousemove="i18n(this)">git-fmt-merge-msg &mdash; &scy;&ocy;&zcy;&dcy;&acy;&tcy;&softcy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &ocy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy;</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-xml">git fmt-merge-msg [-m <span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>] [--into-name <span class="hljs-tag">&lt;<span class="hljs-name">branch</span>&gt;</span>] [--log[=<span class="hljs-tag">&lt;<span class="hljs-name">n</span>&gt;</span>] | --no-log]
+git fmt-merge-msg [-m <span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>] [--log[=<span class="hljs-tag">&lt;<span class="hljs-name">n</span>&gt;</span>] | --no-log] -F <span class="hljs-tag">&lt;<span class="hljs-name">file</span>&gt;</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="1a928bdf2934f6f5e8a7c300b1195caadd1bacf77ef0e8bd31082033996dcfe5/86" data-source="Takes the list of merged objects on stdin and produces a suitable commit message to be used for the merge commit, usually to be passed as the &lt;code&gt;&amp;lt;merge-message&amp;gt;&lt;/code&gt; argument of &lt;code&gt;git merge&lt;/code&gt;." onmousemove="i18n(this)">&Bcy;&iecy;&rcy;&iecy;&tcy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&iecy;&ncy;&ncy;&ycy;&khcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy; &ncy;&acy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ocy;&mcy; &vcy;&vcy;&ocy;&dcy;&iecy; &icy; &scy;&ocy;&zcy;&dcy;&acy;&iecy;&tcy; &pcy;&ocy;&dcy;&khcy;&ocy;&dcy;&yacy;&shchcy;&iecy;&iecy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &ocy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&iecy; &bcy;&ucy;&dcy;&iecy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &dcy;&lcy;&yacy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&iecy; &ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&iecy;&tcy;&scy;&yacy; &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy;  <code>&lt;merge-message&gt;</code>  &dcy;&lcy;&yacy;  <code>git merge</code>  .</span></p> <p><span data-i18n="1274b7c4657cf1a4f9a6480ca6af65143eb625d48eb6673122f9ef239939a8eb/b7" data-source="This command is intended mostly for internal use by scripts automatically invoking &lt;code&gt;git merge&lt;/code&gt;." onmousemove="i18n(this)">&Ecy;&tcy;&acy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &pcy;&rcy;&iecy;&dcy;&ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&acy; &vcy; &ocy;&scy;&ncy;&ocy;&vcy;&ncy;&ocy;&mcy; &dcy;&lcy;&yacy; &vcy;&ncy;&ucy;&tcy;&rcy;&iecy;&ncy;&ncy;&iecy;&gcy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &scy;&tscy;&iecy;&ncy;&acy;&rcy;&icy;&yacy;&mcy;&icy;, &acy;&vcy;&tcy;&ocy;&mcy;&acy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&icy; &vcy;&ycy;&zcy;&ycy;&vcy;&acy;&yucy;&shchcy;&icy;&mcy;&icy;  <code>git merge</code> .</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-fmt-merge-msg.txt---logltngt"><span data-i18n="2e3ee40df75c852e4f7d7adde446bf29714c5b4a550cef38076dd188e39f7bd4/77" data-source="--log[=&amp;lt;n&amp;gt;]" onmousemove="i18n(this)">--log[=&lt;n&gt;]</span></dt> <dd> <p><span data-i18n="d0ee1bd4f9d8d7c8341c277e86e595a9ddb0ac14d99bc8f9afe9580a0e887781/05" data-source="In addition to branch names, populate the log message with one-line descriptions from the actual commits that are being merged. At most &amp;lt;n&amp;gt; commits from each merge parent will be used (20 if &amp;lt;n&amp;gt; is omitted). This overrides the &lt;code&gt;merge.log&lt;/code&gt; configuration variable." onmousemove="i18n(this)">&Pcy;&ocy;&mcy;&icy;&mcy;&ocy; &ncy;&acy;&zcy;&vcy;&acy;&ncy;&icy;&jcy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy;, &zcy;&acy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy; &ocy;&dcy;&ncy;&ocy;&scy;&tcy;&rcy;&ocy;&chcy;&ncy;&ycy;&mcy;&icy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&icy;&yacy;&mcy;&icy; &fcy;&acy;&kcy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&khcy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&yacy;&yucy;&tcy;&scy;&yacy;. &Bcy;&ucy;&dcy;&iecy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &ncy;&iecy; &bcy;&ocy;&lcy;&iecy;&iecy; &lt;n&gt; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy; &ocy;&tcy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &rcy;&ocy;&dcy;&icy;&tcy;&iecy;&lcy;&yacy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy; (20, &iecy;&scy;&lcy;&icy; &lt;n&gt; &ocy;&pcy;&ucy;&shchcy;&iecy;&ncy;). &Ecy;&tcy;&ocy; &pcy;&iecy;&rcy;&iecy;&ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ucy;&yucy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  <code>merge.log</code> .</span></p> </dd> <dt id="Documentation/git-fmt-merge-msg.txt---no-log"><span data-i18n="4e7d3507e392f030f39abca787a74ded49d531fca78aaeff179b1731db7ef6b4/c5" data-source="--no-log" onmousemove="i18n(this)">--no-log</span></dt> <dd> <p><span data-i18n="a160928f51bc52e6de6f70c1019f75e5fa87afd310d4d1a896bd3917c14218db/ed" data-source="Do not list one-line descriptions from the actual commits being merged." onmousemove="i18n(this)">&Ncy;&iecy; &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&jcy;&tcy;&iecy; &ocy;&dcy;&ncy;&ocy;&scy;&tcy;&rcy;&ocy;&chcy;&ncy;&ycy;&iecy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&icy;&yacy; &fcy;&acy;&kcy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&icy; &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&yacy;&iecy;&mcy;&ycy;&khcy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy;.</span></p> </dd> <dt id="Documentation/git-fmt-merge-msg.txt---no-summary"><span data-i18n="a9f5c587966334dc0af7d7abd3a124b958bae367d3955991b954b0f2c7b2a565/b7" data-source="--[no-]summary" onmousemove="i18n(this)">--[no-]summary</span></dt> <dd> <p><span data-i18n="687a3b26229580f2ce09025ba9330b68fb1d0ab1a0eccfffc0c2a9c56d8554b6/10" data-source="Synonyms to --log and --no-log; these are deprecated and will be removed in the future." onmousemove="i18n(this)">&Scy;&icy;&ncy;&ocy;&ncy;&icy;&mcy;&ycy; --log &icy; --no-log; &ocy;&ncy;&icy; &ucy;&scy;&tcy;&acy;&rcy;&iecy;&lcy;&icy; &icy; &bcy;&ucy;&dcy;&ucy;&tcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ycy; &vcy; &bcy;&ucy;&dcy;&ucy;&shchcy;&iecy;&mcy;.</span></p> </dd> <dt id="Documentation/git-fmt-merge-msg.txt--mltmessagegt"><span data-i18n="4c310c5fe1ce5caeccb95223a932d0552a5b81a91972a3a9c149e7cbcaca2203/8a" data-source="-m &amp;lt;message&amp;gt;" onmousemove="i18n(this)">-m &lt;message&gt;</span></dt> <dt id="Documentation/git-fmt-merge-msg.txt---messageltmessagegt"><span data-i18n="98e4aa281c5fc22579cd90c0367a9f7d987620f1b0a64862c2982d6f71947f66/3e" data-source="--message &amp;lt;message&amp;gt;" onmousemove="i18n(this)">--message &lt;message&gt;</span></dt> <dd> <p><span data-i18n="e356819a2d9bceca56507e3185d1efc2b8c060b9dec927611a94653682605d34/6b" data-source="Use &amp;lt;message&amp;gt; instead of the branch names for the first line of the log message. For use with &lt;code&gt;--log&lt;/code&gt;." onmousemove="i18n(this)">&Icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy; &lt;message&gt; &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &icy;&mcy;&iecy;&ncy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy; &dcy;&lcy;&yacy; &pcy;&iecy;&rcy;&vcy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy;. &Dcy;&lcy;&yacy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &scy;  <code>--log</code> .</span></p> </dd> <dt id="Documentation/git-fmt-merge-msg.txt---into-nameltbranchgt"><span data-i18n="7e8dc8a494ffdd11d85a3ba3101a67dbecb13c4094d0fba3e3b242a0f348bfa9/ce" data-source="--into-name &amp;lt;branch&amp;gt;" onmousemove="i18n(this)">--into-name &lt;branch&gt;</span></dt> <dd> <p><span data-i18n="0a00d6f0401f3b9f6b26841bf33cfc3fda28444d91fa2adf5040ca95f29f86e0/94" data-source="Prepare the merge message as if merging to the branch &lt;code&gt;&amp;lt;branch&amp;gt;&lt;/code&gt;, instead of the name of the real branch to which the merge is made." onmousemove="i18n(this)">&Pcy;&ocy;&dcy;&gcy;&ocy;&tcy;&ocy;&vcy;&softcy;&tcy;&iecy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &ocy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&icy; &tcy;&acy;&kcy;, &kcy;&acy;&kcy; &bcy;&ucy;&dcy;&tcy;&ocy; &pcy;&rcy;&ocy;&icy;&scy;&khcy;&ocy;&dcy;&icy;&tcy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&iecy; &scy; &vcy;&iecy;&tcy;&kcy;&ocy;&jcy;  <code>&lt;branch&gt;</code> , &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &icy;&mcy;&iecy;&ncy;&icy; &rcy;&iecy;&acy;&lcy;&softcy;&ncy;&ocy;&jcy; &vcy;&iecy;&tcy;&kcy;&icy;, &scy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&jcy; &pcy;&rcy;&ocy;&icy;&zcy;&vcy;&ocy;&dcy;&icy;&tcy;&scy;&yacy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&iecy;.</span></p> </dd> <dt id="Documentation/git-fmt-merge-msg.txt--Fltfilegt"><span data-i18n="c2a83eac70d3ec4f2c0e6d7f39c55226b9f7bd1da1491cbb138542b00cc2184f/ff" data-source="-F &amp;lt;file&amp;gt;" onmousemove="i18n(this)">-F &lt;file&gt;</span></dt> <dt id="Documentation/git-fmt-merge-msg.txt---fileltfilegt"><span data-i18n="01aa6aac2eeb8e99fd8ca3c9602e50354364366a2c9f49cf29c31ac6165b427b/9a" data-source="--file &amp;lt;file&amp;gt;" onmousemove="i18n(this)">--file &lt;file&gt;</span></dt> <dd> <p><span data-i18n="3813ef24bb3f16c7e9a650377a860854a5da23fa705f60128635fe38fdce61f0/29" data-source="Take the list of merged objects from &amp;lt;file&amp;gt; instead of stdin." onmousemove="i18n(this)">&Vcy;&ocy;&zcy;&softcy;&mcy;&icy;&tcy;&iecy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&iecy;&ncy;&ncy;&ycy;&khcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy; &icy;&zcy; &lt;file&gt; &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ocy;&gcy;&ocy; &vcy;&vcy;&ocy;&dcy;&acy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_configuration"><span data-i18n="b332c3492d5eb10a118eb6d8b0dcd689bc2477ce2ae16b303753b942b54377bc/aa" data-source="Configuration" onmousemove="i18n(this)">Configuration</span></h2> <div> <div> <dl> <dt id="Documentation/git-fmt-merge-msg.txt-mergebranchdesc"><span data-i18n="4d4872beaaad1faa6da60f09bf09c5ebbbdee9af008b5634c7d90d60b268fc7f/4b" data-source="merge.branchdesc" onmousemove="i18n(this)">merge.branchdesc</span></dt> <dd> <p><span data-i18n="ebd2fb43de252e7229be57ed8b35bc8e45c2edc51dcc240fbb3e69751783a281/7c" data-source="In addition to branch names, populate the log message with the branch description text associated with them. Defaults to false." onmousemove="i18n(this)">&Pcy;&ocy;&mcy;&icy;&mcy;&ocy; &icy;&mcy;&iecy;&ncy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy;, &zcy;&acy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy; &tcy;&iecy;&kcy;&scy;&tcy;&ocy;&mcy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&icy;&yacy; &vcy;&iecy;&tcy;&kcy;&icy;, &scy;&vcy;&yacy;&zcy;&acy;&ncy;&ncy;&ycy;&mcy; &scy; &ncy;&icy;&mcy;&icy;. &Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &lcy;&ocy;&zhcy;&softcy;.</span></p> </dd> <dt id="Documentation/git-fmt-merge-msg.txt-mergelog"><span data-i18n="5c6fd68be7c821fffe242b5a2960fa2750000c891653807c60c701127ede07e4/0b" data-source="merge.log" onmousemove="i18n(this)">merge.log</span></dt> <dd> <p><span data-i18n="5cca3581d2ce451454a95bd0666711ca029b2f7c1bfce0ced6d55cfae0fded4f/26" data-source="In addition to branch names, populate the log message with at most the specified number of one-line descriptions from the actual commits that are being merged. Defaults to false, and true is a synonym for 20." onmousemove="i18n(this)">&Pcy;&ocy;&mcy;&icy;&mcy;&ocy; &icy;&mcy;&iecy;&ncy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy;, &zcy;&acy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy; &ncy;&iecy; &bcy;&ocy;&lcy;&iecy;&iecy; &chcy;&iecy;&mcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ycy;&mcy; &kcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&tcy;&vcy;&ocy;&mcy; &ocy;&dcy;&ncy;&ocy;&scy;&tcy;&rcy;&ocy;&chcy;&ncy;&ycy;&khcy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&icy;&jcy; &icy;&zcy; &fcy;&acy;&kcy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&khcy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&yacy;&yucy;&tcy;&scy;&yacy;. &Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; false, &acy;  true  &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &scy;&icy;&ncy;&ocy;&ncy;&icy;&mcy;&ocy;&mcy; 20.</span></p> </dd> <dt id="Documentation/git-fmt-merge-msg.txt-mergesuppressDest"><span data-i18n="ea94e0cded4e0501511ed61fae206d837a1cadfc03bea11e3c07fec72cb0204d/08" data-source="merge.suppressDest" onmousemove="i18n(this)">merge.suppressDest</span></dt> <dd> <p><span data-i18n="4fad8db59d32a712321ed39e6aa2f5d28879fa0191cf0c43452af89fbbaf0d25/09" data-source="By adding a glob that matches the names of integration branches to this multi-valued configuration variable, the default merge message computed for merges into these integration branches will omit &amp;quot;into &amp;lt;branch name&amp;gt;&amp;quot; from its title." onmousemove="i18n(this)">&Pcy;&rcy;&icy; &dcy;&ocy;&bcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&icy; glob, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &icy;&mcy;&iecy;&ncy;&acy;&mcy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy; &icy;&ncy;&tcy;&iecy;&gcy;&rcy;&acy;&tscy;&icy;&icy;, &kcy; &ecy;&tcy;&ocy;&jcy; &mcy;&ncy;&ocy;&gcy;&ocy;&zcy;&ncy;&acy;&chcy;&ncy;&ocy;&jcy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ocy;&jcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;, &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;, &vcy;&ycy;&chcy;&icy;&scy;&lcy;&yacy;&iecy;&mcy;&ocy;&iecy; &dcy;&lcy;&yacy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&jcy; &scy; &ecy;&tcy;&icy;&mcy;&icy; &vcy;&iecy;&tcy;&vcy;&yacy;&mcy;&icy; &icy;&ncy;&tcy;&iecy;&gcy;&rcy;&acy;&tscy;&icy;&icy;, &bcy;&ucy;&dcy;&iecy;&tcy; &ocy;&pcy;&ucy;&scy;&kcy;&acy;&tcy;&softcy;  &quot;into &lt;branch name&gt;&quot;  &vcy; &scy;&vcy;&ocy;&iecy;&mcy; &zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&kcy;&iecy;.</span></p> <p><span data-i18n="83013cb1c5c0de4bcdea10c7526440b3834f22b0796abb7dbe08300538358abf/8d" data-source="An element with an empty value can be used to clear the list of globs accumulated from previous configuration entries. When there is no &lt;code&gt;merge.suppressDest&lt;/code&gt; variable defined, the default value of &lt;code&gt;master&lt;/code&gt; is used for backward compatibility." onmousemove="i18n(this)">&Ecy;&lcy;&iecy;&mcy;&iecy;&ncy;&tcy; &scy; &pcy;&ucy;&scy;&tcy;&ycy;&mcy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy;&mcy; &mcy;&ocy;&zhcy;&ncy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &dcy;&lcy;&yacy; &ocy;&chcy;&icy;&scy;&tcy;&kcy;&icy; &scy;&pcy;&icy;&scy;&kcy;&acy; glob, &ncy;&acy;&kcy;&ocy;&pcy;&lcy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &icy;&zcy; &pcy;&rcy;&iecy;&dcy;&ycy;&dcy;&ucy;&shchcy;&icy;&khcy; &zcy;&acy;&pcy;&icy;&scy;&iecy;&jcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;. &IEcy;&scy;&lcy;&icy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&acy;&yacy;  <code>merge.suppressDest</code>  &ncy;&iecy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&iecy;&ncy;&acy;, &dcy;&lcy;&yacy; &ocy;&bcy;&rcy;&acy;&tcy;&ncy;&ocy;&jcy; &scy;&ocy;&vcy;&mcy;&iecy;&scy;&tcy;&icy;&mcy;&ocy;&scy;&tcy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;  <code>master</code> .</span></p> </dd> <dt id="Documentation/git-fmt-merge-msg.txt-mergesummary"><span data-i18n="f4a285c7206b14878b6b30783db30056e175d7e2a9a12324da5094d4c5565191/fe" data-source="merge.summary" onmousemove="i18n(this)">merge.summary</span></dt> <dd> <p><span data-i18n="f2de6930be6a78b0779b326e8dcb38a2c22c89a53d2fb8ab0c8497cf13196cf7/b3" data-source="Synonym to &lt;code&gt;merge.log&lt;/code&gt;; this is deprecated and will be removed in the future." onmousemove="i18n(this)">&Scy;&icy;&ncy;&ocy;&ncy;&icy;&mcy;  <code>merge.log</code> ; &ecy;&tcy;&ocy; &ucy;&scy;&tcy;&acy;&rcy;&iecy;&lcy;&ocy; &icy; &bcy;&ucy;&dcy;&iecy;&tcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ocy; &vcy; &bcy;&ucy;&dcy;&ucy;&shchcy;&iecy;&mcy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_examples"><span data-i18n="e68ee04dff59551b7d1ae07a2f8a00dc61d841628948da3d2781630706a05e92/38" data-source="Examples" onmousemove="i18n(this)">Examples</span></h2> <div> <div> <div> <pre class="hljs language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">git fetch origin master</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git fmt-merge-msg --<span class="hljs-built_in">log</span> &lt;<span class="hljs-variable">$GIT_DIR</span>/FETCH_HEAD</span></pre> </div> </div> <p><span data-i18n="bed0022ce0d65e8279febdb433b128d4d69e4c574ddd0ffc171edd4834eb9a58/29" data-source="Print a log message describing a merge of the &amp;quot;master&amp;quot; branch from the &amp;quot;origin&amp;quot; remote." onmousemove="i18n(this)">&Rcy;&acy;&scy;&pcy;&iecy;&chcy;&acy;&tcy;&acy;&jcy;&tcy;&iecy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy;, &ocy;&pcy;&icy;&scy;&ycy;&vcy;&acy;&yucy;&shchcy;&iecy;&iecy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&iecy; &vcy;&iecy;&tcy;&kcy;&icy;  &quot;master&quot;  &scy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&mcy;  &quot;origin&quot; .</span></p> </div> <h2 class="text-body-emphasis"  id="_see_also"><span data-i18n="2fa97693b70fa87b95b2d1bdf9558e4ac65d5e82d145f13a03849c4d9c4957a9/40" data-source="See also" onmousemove="i18n(this)">See also</span></h2> <div> <p><a href="git-merge.html"><span data-i18n="2655cb044913a5ee34658d5481524d9984df31a6457101b691e33deb9e0120d7/6f" data-source="git-merge[1]" onmousemove="i18n(this)">git-merge[1]</span></a></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-fmt-merge-msg">https://git-scm.com/docs/git-fmt-merge-msg</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-for-each-ref.html">
+                            git for-each-ref                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-for-each-repo.html">
+                            git for-each-repo                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-format-patch.html">
+                            git format-patch                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-fsck.html">
+                            git fsck                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-fsmonitor--daemon.html">
+                            git fsmonitor--daemon                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-gc.html">
+                            git gc                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-get-tar-commit-id.html">
+                            git get-tar-commit-id                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-fmt-merge-msg.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

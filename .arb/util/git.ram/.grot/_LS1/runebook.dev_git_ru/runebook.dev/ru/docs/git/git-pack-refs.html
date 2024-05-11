@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:15:26 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git pack-refs</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="96e2281f2e63e9930b1a491f5d9c95796a1baddce41764feb590079a7bafc69d/3e" data-source="git-pack-refs" onmousemove="i18n(this)">git-pack-refs</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="4a27a900f59a7a1ff82149901d0b4a8cee7f37253c1b0898837dafc886ce119d/06" data-source="git-pack-refs - Pack heads and tags for efficient repository access" onmousemove="i18n(this)">git-pack-refs &mdash; &zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&kcy;&icy; &pcy;&acy;&kcy;&iecy;&tcy;&ocy;&vcy; &icy; &tcy;&iecy;&gcy;&icy; &dcy;&lcy;&yacy; &ecy;&fcy;&fcy;&iecy;&kcy;&tcy;&icy;&vcy;&ncy;&ocy;&gcy;&ocy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&acy; &kcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yucy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git pack-refs <span class="hljs-selector-attr">[--all]</span> <span class="hljs-selector-attr">[--no-prune]</span> <span class="hljs-selector-attr">[--include &lt;pattern&gt;]</span> <span class="hljs-selector-attr">[--exclude &lt;pattern&gt;]</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="909e30dff509ba944477199392240f4e91f8f6ab2ba806dec6cf637ed46d3519/da" data-source="Traditionally, tips of branches and tags (collectively known as &lt;code&gt;refs&lt;/code&gt;) were stored one file per ref in a (sub)directory under &lt;code&gt;$GIT_DIR/refs&lt;/code&gt; directory. While many branch tips tend to be updated often, most tags and some branch tips are never updated. When a repository has hundreds or thousands of tags, this one-file-per-ref format both wastes storage and hurts performance." onmousemove="i18n(this)">&Tcy;&rcy;&acy;&dcy;&icy;&tscy;&icy;&ocy;&ncy;&ncy;&ocy; &kcy;&ocy;&ncy;&chcy;&icy;&kcy;&icy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy; &icy; &tcy;&iecy;&gcy;&icy; (&icy;&zcy;&vcy;&iecy;&scy;&tcy;&ncy;&ycy;&iecy; &pcy;&ocy;&dcy; &ocy;&bcy;&shchcy;&icy;&mcy; &ncy;&acy;&zcy;&vcy;&acy;&ncy;&icy;&iecy;&mcy;  <code>refs</code> ) &khcy;&rcy;&acy;&ncy;&icy;&lcy;&icy;&scy;&softcy; &pcy;&ocy; &ocy;&dcy;&ncy;&ocy;&mcy;&ucy; &fcy;&acy;&jcy;&lcy;&ucy; &dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&jcy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &vcy; (&pcy;&ocy;&dcy;)&kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy; &vcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy;  <code>$GIT_DIR/refs</code> . &KHcy;&ocy;&tcy;&yacy; &mcy;&ncy;&ocy;&gcy;&icy;&iecy; &pcy;&ocy;&dcy;&scy;&kcy;&acy;&zcy;&kcy;&icy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy; &icy;&mcy;&iecy;&yucy;&tcy; &tcy;&iecy;&ncy;&dcy;&iecy;&ncy;&tscy;&icy;&yucy; &chcy;&acy;&scy;&tcy;&ocy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&yacy;&tcy;&softcy;&scy;&yacy;, &bcy;&ocy;&lcy;&softcy;&shcy;&icy;&ncy;&scy;&tcy;&vcy;&ocy; &tcy;&iecy;&gcy;&ocy;&vcy; &icy; &ncy;&iecy;&kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &pcy;&ocy;&dcy;&scy;&kcy;&acy;&zcy;&kcy;&icy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy; &ncy;&icy;&kcy;&ocy;&gcy;&dcy;&acy; &ncy;&iecy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy;. &Kcy;&ocy;&gcy;&dcy;&acy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy; &icy;&mcy;&iecy;&iecy;&tcy; &scy;&ocy;&tcy;&ncy;&icy; &icy;&lcy;&icy; &tcy;&ycy;&scy;&yacy;&chcy;&icy; &tcy;&iecy;&gcy;&ocy;&vcy;, &tcy;&acy;&kcy;&ocy;&jcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy; &laquo;&ocy;&dcy;&icy;&ncy; &fcy;&acy;&jcy;&lcy; &ncy;&acy; &scy;&scy;&ycy;&lcy;&kcy;&ucy;&raquo; &pcy;&rcy;&icy;&vcy;&ocy;&dcy;&icy;&tcy; &kcy; &ncy;&iecy;&rcy;&acy;&tscy;&icy;&ocy;&ncy;&acy;&lcy;&softcy;&ncy;&ocy;&mcy;&ucy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&yucy; &pcy;&acy;&mcy;&yacy;&tcy;&icy; &icy; &scy;&ncy;&icy;&zhcy;&iecy;&ncy;&icy;&yucy; &pcy;&rcy;&ocy;&icy;&zcy;&vcy;&ocy;&dcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&scy;&tcy;&icy;.</span></p> <p><span data-i18n="f6fd9397475dcd0d5fc36c1590c15e63bc061357a6575023bf4cf99fbb51ff50/50" data-source="This command is used to solve the storage and performance problem by storing the refs in a single file, &lt;code&gt;$GIT_DIR/packed-refs&lt;/code&gt;. When a ref is missing from the traditional &lt;code&gt;$GIT_DIR/refs&lt;/code&gt; directory hierarchy, it is looked up in this file and used if found." onmousemove="i18n(this)">&Ecy;&tcy;&acy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &dcy;&lcy;&yacy; &rcy;&iecy;&shcy;&iecy;&ncy;&icy;&yacy; &pcy;&rcy;&ocy;&bcy;&lcy;&iecy;&mcy; &scy; &khcy;&rcy;&acy;&ncy;&icy;&lcy;&icy;&shchcy;&iecy;&mcy; &icy; &pcy;&rcy;&ocy;&icy;&zcy;&vcy;&ocy;&dcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&scy;&tcy;&softcy;&yucy; &pcy;&ucy;&tcy;&iecy;&mcy; &khcy;&rcy;&acy;&ncy;&iecy;&ncy;&icy;&yacy; &scy;&scy;&ycy;&lcy;&ocy;&kcy; &vcy; &ocy;&dcy;&ncy;&ocy;&mcy; &fcy;&acy;&jcy;&lcy;&iecy;  <code>$GIT_DIR/packed-refs</code> . &IEcy;&scy;&lcy;&icy; &scy;&scy;&ycy;&lcy;&kcy;&acy; &ocy;&tcy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &vcy; &tcy;&rcy;&acy;&dcy;&icy;&tscy;&icy;&ocy;&ncy;&ncy;&ocy;&jcy; &icy;&iecy;&rcy;&acy;&rcy;&khcy;&icy;&icy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&ocy;&vcy;  <code>$GIT_DIR/refs</code> , &ocy;&ncy;&acy; &icy;&shchcy;&iecy;&tcy;&scy;&yacy; &vcy; &ecy;&tcy;&ocy;&mcy; &fcy;&acy;&jcy;&lcy;&iecy; &icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy;, &iecy;&scy;&lcy;&icy; &ncy;&acy;&jcy;&dcy;&iecy;&ncy;&acy;.</span></p> <p><span data-i18n="ca071e4e0e15e5c9bbaaa970e86a513149ce9b871ef73f2df2354f025b4ea3c5/27" data-source="Subsequent updates to branches always create new files under &lt;code&gt;$GIT_DIR/refs&lt;/code&gt; directory hierarchy." onmousemove="i18n(this)">&Pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&iecy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy; &vcy;&scy;&iecy;&gcy;&dcy;&acy; &scy;&ocy;&zcy;&dcy;&acy;&yucy;&tcy; &ncy;&ocy;&vcy;&ycy;&iecy; &fcy;&acy;&jcy;&lcy;&ycy; &vcy; &icy;&iecy;&rcy;&acy;&rcy;&khcy;&icy;&icy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&ocy;&vcy;  <code>$GIT_DIR/refs</code> .</span></p> <p><span data-i18n="f181f3200c3f5ea6cd4d4449388d027ea4338755871a0c289df4dacb4a34fa5a/2a" data-source="A recommended practice to deal with a repository with too many refs is to pack its refs with &lt;code&gt;--all&lt;/code&gt; once, and occasionally run &lt;code&gt;git pack-refs&lt;/code&gt;. Tags are by definition stationary and are not expected to change. Branch heads will be packed with the initial &lt;code&gt;pack-refs --all&lt;/code&gt;, but only the currently active branch heads will become unpacked, and the next &lt;code&gt;pack-refs&lt;/code&gt; (without &lt;code&gt;--all&lt;/code&gt;) will leave them unpacked." onmousemove="i18n(this)">&Rcy;&iecy;&kcy;&ocy;&mcy;&iecy;&ncy;&dcy;&ucy;&iecy;&mcy;&acy;&yacy; &pcy;&rcy;&acy;&kcy;&tcy;&icy;&kcy;&acy; &rcy;&acy;&bcy;&ocy;&tcy;&ycy; &scy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&iecy;&mcy; &scy;&ocy; &scy;&lcy;&icy;&shcy;&kcy;&ocy;&mcy; &bcy;&ocy;&lcy;&softcy;&shcy;&icy;&mcy; &kcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&tcy;&vcy;&ocy;&mcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy; &mdash; &ocy;&dcy;&icy;&ncy; &rcy;&acy;&zcy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&acy;&tcy;&softcy; &iecy;&gcy;&ocy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy;  <code>--all</code>  &icy; &vcy;&rcy;&iecy;&mcy;&yacy; &ocy;&tcy; &vcy;&rcy;&iecy;&mcy;&iecy;&ncy;&icy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy;&tcy;&softcy;  <code>git pack-refs</code>  . &Tcy;&iecy;&gcy;&icy; &pcy;&ocy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&iecy;&ncy;&icy;&yucy; &scy;&tcy;&acy;&tscy;&icy;&ocy;&ncy;&acy;&rcy;&ncy;&ycy; &icy; &ncy;&iecy; &dcy;&ocy;&lcy;&zhcy;&ncy;&ycy; &mcy;&iecy;&ncy;&yacy;&tcy;&softcy;&scy;&yacy;. &Zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&kcy;&icy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy; &bcy;&ucy;&dcy;&ucy;&tcy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&acy;&ncy;&ycy; &icy;&scy;&khcy;&ocy;&dcy;&ncy;&ycy;&mcy;  <code>pack-refs --all</code> , &ncy;&ocy; &rcy;&acy;&scy;&pcy;&acy;&kcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&mcy;&icy; &scy;&tcy;&acy;&ncy;&ucy;&tcy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &acy;&kcy;&tcy;&icy;&vcy;&ncy;&ycy;&iecy; &vcy; &dcy;&acy;&ncy;&ncy;&ycy;&jcy; &mcy;&ocy;&mcy;&iecy;&ncy;&tcy; &zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&kcy;&icy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy;, &acy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&jcy;  <code>pack-refs</code>  (&bcy;&iecy;&zcy;  <code>--all</code> ) &ocy;&scy;&tcy;&acy;&vcy;&icy;&tcy; &icy;&khcy; &rcy;&acy;&scy;&pcy;&acy;&kcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&mcy;&icy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-pack-refs.txt---all"><span data-i18n="7dbf56c38208e33a9193b210245465f7729af0d59b9df556e7f1f7138a6d6e93/a1" data-source="--all" onmousemove="i18n(this)">--all</span></dt> <dd> <p><span data-i18n="81b47102f91875ee225cbbf5e7c37c8d91a8b3ee7f97117b8ac831f593f0ac55/cf" data-source="The command by default packs all tags and refs that are already packed, and leaves other refs alone. This is because branches are expected to be actively developed and packing their tips does not help performance. This option causes all refs to be packed as well, with the exception of hidden refs, broken refs, and symbolic refs. Useful for a repository with many branches of historical interests." onmousemove="i18n(this)">&Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&ycy;&vcy;&acy;&iecy;&tcy; &vcy;&scy;&iecy; &tcy;&iecy;&gcy;&icy; &icy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ucy;&zhcy;&iecy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&acy;&ncy;&ycy;, &icy; &ocy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &dcy;&rcy;&ucy;&gcy;&icy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &bcy;&iecy;&zcy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&jcy;. &Ecy;&tcy;&ocy; &scy;&vcy;&yacy;&zcy;&acy;&ncy;&ocy; &scy; &tcy;&iecy;&mcy;, &chcy;&tcy;&ocy; &ocy;&zhcy;&icy;&dcy;&acy;&iecy;&tcy;&scy;&yacy; &acy;&kcy;&tcy;&icy;&vcy;&ncy;&ocy;&iecy; &rcy;&acy;&zcy;&vcy;&icy;&tcy;&icy;&iecy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy;, &acy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&kcy;&acy; &icy;&khcy; &scy;&ocy;&vcy;&iecy;&tcy;&ocy;&vcy; &ncy;&iecy; &scy;&pcy;&ocy;&scy;&ocy;&bcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &pcy;&ocy;&vcy;&ycy;&shcy;&iecy;&ncy;&icy;&yucy; &pcy;&rcy;&ocy;&icy;&zcy;&vcy;&ocy;&dcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&scy;&tcy;&icy;. &Ecy;&tcy;&acy; &ocy;&pcy;&tscy;&icy;&yacy; &tcy;&acy;&kcy;&zhcy;&iecy; &pcy;&rcy;&icy;&vcy;&ocy;&dcy;&icy;&tcy; &kcy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&kcy;&iecy; &vcy;&scy;&iecy;&khcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;, &zcy;&acy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&iecy;&mcy; &scy;&kcy;&rcy;&ycy;&tcy;&ycy;&khcy;, &ncy;&iecy;&rcy;&acy;&bcy;&ocy;&tcy;&acy;&yucy;&shchcy;&icy;&khcy; &icy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&khcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;. &Pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ocy; &dcy;&lcy;&yacy; &khcy;&rcy;&acy;&ncy;&icy;&lcy;&icy;&shchcy;&acy; &scy;&ocy; &mcy;&ncy;&ocy;&gcy;&icy;&mcy;&icy; &vcy;&iecy;&tcy;&vcy;&yacy;&mcy;&icy; &icy;&scy;&tcy;&ocy;&rcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&khcy; &icy;&ncy;&tcy;&iecy;&rcy;&iecy;&scy;&ocy;&vcy;.</span></p> </dd> <dt id="Documentation/git-pack-refs.txt---no-prune"><span data-i18n="17e725a935ea0e503fb22b4b44428c3fc89039b625435ed94c84aedbbef03883/d8" data-source="--no-prune" onmousemove="i18n(this)">--no-prune</span></dt> <dd> <p><span data-i18n="660ccfc69f333682457a99566c5665d32f909e078098ad895666b49fd7efc96a/3a" data-source="The command usually removes loose refs under &lt;code&gt;$GIT_DIR/refs&lt;/code&gt; hierarchy after packing them. This option tells it not to." onmousemove="i18n(this)">&Kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &ucy;&dcy;&acy;&lcy;&yacy;&iecy;&tcy; &scy;&vcy;&ocy;&bcy;&ocy;&dcy;&ncy;&ycy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &vcy; &icy;&iecy;&rcy;&acy;&rcy;&khcy;&icy;&icy;  <code>$GIT_DIR/refs</code>  &pcy;&ocy;&scy;&lcy;&iecy; &icy;&khcy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&kcy;&icy;. &Ecy;&tcy;&acy; &ocy;&pcy;&tscy;&icy;&yacy; &zcy;&acy;&pcy;&rcy;&iecy;&shchcy;&acy;&iecy;&tcy; &ecy;&tcy;&ocy; &dcy;&iecy;&lcy;&acy;&tcy;&softcy;.</span></p> </dd> <dt id="Documentation/git-pack-refs.txt---includeltpatterngt"><span data-i18n="3eb62d2da5c588efc4dbc576c0f498625e3dab7ed0e374a6466f03708b262edd/08" data-source="--include &amp;lt;pattern&amp;gt;" onmousemove="i18n(this)">--include &lt;pattern&gt;</span></dt> <dd> <p><span data-i18n="01bd01786e671b19d44d87e9106ac77644d8cca19670e7a229c43b9872eda3c0/d4" data-source="Pack refs based on a &lt;code&gt;glob(7)&lt;/code&gt; pattern. Repetitions of this option accumulate inclusion patterns. If a ref is both included in &lt;code&gt;--include&lt;/code&gt; and &lt;code&gt;--exclude&lt;/code&gt;, &lt;code&gt;--exclude&lt;/code&gt; takes precedence. Using &lt;code&gt;--include&lt;/code&gt; will preclude all tags from being included by default. Symbolic refs and broken refs will never be packed. When used with &lt;code&gt;--all&lt;/code&gt;, it will be a noop. Use &lt;code&gt;--no-include&lt;/code&gt; to clear and reset the list of patterns." onmousemove="i18n(this)">&Rcy;&iecy;&fcy;&ycy; &pcy;&acy;&kcy;&iecy;&tcy;&acy; &ocy;&scy;&ncy;&ocy;&vcy;&acy;&ncy;&ycy; &ncy;&acy; &pcy;&acy;&tcy;&tcy;&iecy;&rcy;&ncy;&iecy;  <code>glob(7)</code> . &Pcy;&ocy;&vcy;&tcy;&ocy;&rcy;&iecy;&ncy;&icy;&yacy; &ecy;&tcy;&ocy;&gcy;&ocy; &vcy;&acy;&rcy;&icy;&acy;&ncy;&tcy;&acy; &ncy;&acy;&kcy;&acy;&pcy;&lcy;&icy;&vcy;&acy;&yucy;&tcy; &zcy;&acy;&kcy;&ocy;&ncy;&ocy;&mcy;&iecy;&rcy;&ncy;&ocy;&scy;&tcy;&icy; &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&yacy;. &IEcy;&scy;&lcy;&icy; &scy;&scy;&ycy;&lcy;&kcy;&acy; &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&acy; &vcy;  <code>--include</code>  &icy;  <code>--exclude</code> ,  <code>--exclude</code>  &icy;&mcy;&iecy;&iecy;&tcy; &pcy;&rcy;&icy;&ocy;&rcy;&icy;&tcy;&iecy;&tcy;. &Icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy;  <code>--include</code>  &icy;&scy;&kcy;&lcy;&yucy;&chcy;&icy;&tcy; &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&iecy; &vcy;&scy;&iecy;&khcy; &tcy;&iecy;&gcy;&ocy;&vcy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;. &Scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&iecy; &icy; &ncy;&iecy;&rcy;&acy;&bcy;&ocy;&tcy;&acy;&yucy;&shchcy;&icy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &ncy;&icy;&kcy;&ocy;&gcy;&dcy;&acy; &ncy;&iecy; &bcy;&ucy;&dcy;&ucy;&tcy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&acy;&ncy;&ycy;. &Pcy;&rcy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&icy; &scy;  <code>--all</code>  &ecy;&tcy;&ocy; &bcy;&ucy;&dcy;&iecy;&tcy; &pcy;&ucy;&scy;&tcy;&yacy;&kcy;. &Icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy;  <code>--no-include</code> , &chcy;&tcy;&ocy;&bcy;&ycy; &ocy;&chcy;&icy;&scy;&tcy;&icy;&tcy;&softcy; &icy; &scy;&bcy;&rcy;&ocy;&scy;&icy;&tcy;&softcy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ocy;&vcy;.</span></p> </dd> <dt id="Documentation/git-pack-refs.txt---excludeltpatterngt"><span data-i18n="6837054d9e05c010886a131e5a0b5848528a827db9a8ea70ea82ad263f3b18ba/52" data-source="--exclude &amp;lt;pattern&amp;gt;" onmousemove="i18n(this)">--exclude &lt;pattern&gt;</span></dt> <dd> <p><span data-i18n="fa553bdc4de8ac3cb65c4973dffccf6969e2cdaa3eb4acfa835033186d2f6a40/77" data-source="Do not pack refs matching the given &lt;code&gt;glob(7)&lt;/code&gt; pattern. Repetitions of this option accumulate exclusion patterns. Use &lt;code&gt;--no-exclude&lt;/code&gt; to clear and reset the list of patterns. If a ref is already packed, including it with &lt;code&gt;--exclude&lt;/code&gt; will not unpack it." onmousemove="i18n(this)">&Ncy;&iecy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&ycy;&vcy;&acy;&jcy;&tcy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&iecy; &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ocy;&mcy;&ucy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ucy;  <code>glob(7)</code> . &Pcy;&rcy;&icy; &pcy;&ocy;&vcy;&tcy;&ocy;&rcy;&iecy;&ncy;&icy;&icy; &ecy;&tcy;&ocy;&jcy; &ocy;&pcy;&tscy;&icy;&icy; &ncy;&acy;&kcy;&acy;&pcy;&lcy;&icy;&vcy;&acy;&yucy;&tcy;&scy;&yacy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ycy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&jcy;. &Icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy;  <code>--no-exclude</code>  &dcy;&lcy;&yacy; &ocy;&chcy;&icy;&scy;&tcy;&kcy;&icy; &icy; &scy;&bcy;&rcy;&ocy;&scy;&acy; &scy;&pcy;&icy;&scy;&kcy;&acy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ocy;&vcy;. &IEcy;&scy;&lcy;&icy; &rcy;&iecy;&fcy; &ucy;&zhcy;&iecy; &zcy;&acy;&pcy;&acy;&kcy;&ocy;&vcy;&acy;&ncy;, &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&iecy; &iecy;&gcy;&ocy; &vcy;  <code>--exclude</code>  &ncy;&iecy; &rcy;&acy;&scy;&pcy;&acy;&kcy;&ucy;&iecy;&tcy; &iecy;&gcy;&ocy;.</span></p> </dd> </dl> </div> <p><span data-i18n="f3fc64d66279b4ff821613a34d270171079404aaca21b8fe8a12449d972b1f88/a8" data-source="When used with &lt;code&gt;--all&lt;/code&gt;, pack only loose refs which do not match any of the provided &lt;code&gt;--exclude&lt;/code&gt; patterns." onmousemove="i18n(this)">&Pcy;&rcy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&icy; &scy;  <code>--all</code>  &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&ycy;&vcy;&acy;&jcy;&tcy;&iecy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &ocy;&tcy;&dcy;&iecy;&lcy;&softcy;&ncy;&ycy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ncy;&iecy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&tcy; &ncy;&icy; &ocy;&dcy;&ncy;&ocy;&mcy;&ucy; &icy;&zcy; &pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&iecy;&ncy;&ncy;&ycy;&khcy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ocy;&vcy;  <code>--exclude</code> .</span></p> <p><span data-i18n="0d74b831bf28bf6902f4870c53c67a6864b077fcae5ec4691a75ca04ebdb115b/0f" data-source="When used with &lt;code&gt;--include&lt;/code&gt;, refs provided to &lt;code&gt;--include&lt;/code&gt;, minus refs that are provided to &lt;code&gt;--exclude&lt;/code&gt; will be packed." onmousemove="i18n(this)">&Pcy;&rcy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&icy; &scy;  <code>--include</code>  &bcy;&ucy;&dcy;&ucy;&tcy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&acy;&ncy;&ycy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&iecy;&ncy;&ncy;&ycy;&iecy;  <code>--include</code> , &zcy;&acy; &vcy;&ycy;&chcy;&iecy;&tcy;&ocy;&mcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;, &pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&iecy;&ncy;&ncy;&ycy;&khcy;  <code>--exclude</code> .</span></p> </div> <h2 class="text-body-emphasis"  id="_bugs"><span data-i18n="ff7c5467ce496637e5ba10662b7a90cde4ed9f8ef33f06fab0893b1c6c800845/88" data-source="Bugs" onmousemove="i18n(this)">Bugs</span></h2> <div> <p><span data-i18n="8551eeb9cc44de0050bb9ecaa1c2a83ebb2fb032b56edb68116ee84c8fbf38cc/ad" data-source="Older documentation written before the packed-refs mechanism was introduced may still say things like &amp;quot;.git/refs/heads/&amp;lt;branch&amp;gt; file exists&amp;quot; when it means &amp;quot;branch &amp;lt;branch&amp;gt; exists&amp;quot;." onmousemove="i18n(this)">&Vcy; &bcy;&ocy;&lcy;&iecy;&iecy; &scy;&tcy;&acy;&rcy;&ocy;&jcy; &dcy;&ocy;&kcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy;&tscy;&icy;&icy;, &ncy;&acy;&pcy;&icy;&scy;&acy;&ncy;&ncy;&ocy;&jcy; &dcy;&ocy; &tcy;&ocy;&gcy;&ocy;, &kcy;&acy;&kcy; &bcy;&ycy;&lcy; &vcy;&vcy;&iecy;&dcy;&iecy;&ncy; &mcy;&iecy;&khcy;&acy;&ncy;&icy;&zcy;&mcy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&khcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;, &vcy;&scy;&iecy; &iecy;&shchcy;&iecy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ocy; &chcy;&tcy;&ocy;-&tcy;&ocy; &vcy;&rcy;&ocy;&dcy;&iecy;  &quot;.git/refs/heads/&lt;branch&gt; file exists&quot; , &khcy;&ocy;&tcy;&yacy; &ecy;&tcy;&ocy; &ocy;&zcy;&ncy;&acy;&chcy;&acy;&iecy;&tcy;  &quot;branch &lt;branch&gt; exists&quot; .</span></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-pack-refs">https://git-scm.com/docs/git-pack-refs</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-patch-id.html">
+                            git patch-id                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-prune.html">
+                            git prune                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-prune-packed.html">
+                            git prune-packed                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-pull.html">
+                            git pull                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-push.html">
+                            git push                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-quiltimport.html">
+                            git quiltimport                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-range-diff.html">
+                            git range-diff                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="3777011170"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-pack-refs.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

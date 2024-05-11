@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:14:22 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git check-attr</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="aaafc0c76f57c6e7d6b1f9770ac7057b9f6fb23c4a4a17f024170a6f5eecd606/3a" data-source="git-check-attr" onmousemove="i18n(this)">git-check-attr</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="7d07ef19674f58e427b82820fa51130609df39b7040b3210044c81fd75381a15/9b" data-source="git-check-attr - Display gitattributes information" onmousemove="i18n(this)">git-check-attr &mdash; &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&acy;&tcy;&softcy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&yucy; &ocy; gitattributes</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git check-attr <span class="hljs-selector-attr">[--source &lt;tree-ish&gt;]</span> <span class="hljs-selector-attr">[-a | --all | &lt;attr&gt;&hellip;&ZeroWidthSpace;]</span> <span class="hljs-selector-attr">[--]</span> &lt;pathname&gt;&hellip;&ZeroWidthSpace;
+git check-attr <span class="hljs-attr">--stdin</span> <span class="hljs-selector-attr">[-z]</span> <span class="hljs-selector-attr">[--source &lt;tree-ish&gt;]</span> <span class="hljs-selector-attr">[-a | --all | &lt;attr&gt;&hellip;&ZeroWidthSpace;]</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="819045164cd07f195797d438941cc03a3859982b32fd969f342af43e56429299/c6" data-source="For every pathname, this command will list if each attribute is &lt;code&gt;unspecified&lt;/code&gt;, &lt;code&gt;set&lt;/code&gt;, or &lt;code&gt;unset&lt;/code&gt; as a gitattribute on that pathname." onmousemove="i18n(this)">&Dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &pcy;&ucy;&tcy;&icy; &ecy;&tcy;&acy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &ucy;&kcy;&acy;&zhcy;&iecy;&tcy;, &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &lcy;&icy; &kcy;&acy;&zhcy;&dcy;&ycy;&jcy; &acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy;  <code>unspecified</code> ,  <code>set</code>  &icy;&lcy;&icy;  <code>unset</code>  &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; gitattribute &dcy;&lcy;&yacy; &ecy;&tcy;&ocy;&gcy;&ocy; &pcy;&ucy;&tcy;&icy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-check-attr.txt--a--all"><span data-i18n="289ddd1cc2f2548a2da76a83c9393be915b60b13bfdd1e5227c2d3a95e1beea5/21" data-source="-a, --all" onmousemove="i18n(this)">-a, --all</span></dt> <dd> <p><span data-i18n="7c2e4e2d0c95d686f0382209d18eeb4521caf5473b2a01c247fdc130529bf3b4/37" data-source="List all attributes that are associated with the specified paths. If this option is used, then &lt;code&gt;unspecified&lt;/code&gt; attributes will not be included in the output." onmousemove="i18n(this)">&Pcy;&iecy;&rcy;&iecy;&chcy;&icy;&scy;&lcy;&icy;&tcy;&iecy; &vcy;&scy;&iecy; &acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy;&ycy;, &scy;&vcy;&yacy;&zcy;&acy;&ncy;&ncy;&ycy;&iecy; &scy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ycy;&mcy;&icy; &pcy;&ucy;&tcy;&yacy;&mcy;&icy;. &IEcy;&scy;&lcy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &ecy;&tcy;&ocy;&tcy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;, &acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy;&ycy;  <code>unspecified</code>  &ncy;&iecy; &bcy;&ucy;&dcy;&ucy;&tcy; &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&ycy; &vcy; &vcy;&ycy;&khcy;&ocy;&dcy;&ncy;&ycy;&iecy; &dcy;&acy;&ncy;&ncy;&ycy;&iecy;.</span></p> </dd> <dt id="Documentation/git-check-attr.txt---cached"><span data-i18n="f604ffb1a6e88411905b4560d28e36c07a126b2b39e06cb7da585ccc5c4a356e/42" data-source="--cached" onmousemove="i18n(this)">--cached</span></dt> <dd> <p><span data-i18n="abf49675885d8b92e3eb5aec7f6019dfcb1cf7eeb41b188aebf1c8c35dac6d10/29" data-source="Consider &lt;code&gt;.gitattributes&lt;/code&gt; in the index only, ignoring the working tree." onmousemove="i18n(this)">&Rcy;&acy;&scy;&scy;&mcy;&acy;&tcy;&rcy;&icy;&vcy;&acy;&jcy;&tcy;&iecy;  <code>.gitattributes</code>  &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &vcy; &icy;&ncy;&dcy;&iecy;&kcy;&scy;&iecy;, &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ucy;&yacy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&iecy; &dcy;&iecy;&rcy;&iecy;&vcy;&ocy;.</span></p> </dd> <dt id="Documentation/git-check-attr.txt---stdin"><span data-i18n="06cc2377ccb785d93fd1515e188ca4dfe8c83def25a0c91bd36731a3b50c77f2/d9" data-source="--stdin" onmousemove="i18n(this)">--stdin</span></dt> <dd> <p><span data-i18n="0db160afc899637dc01a14a033a2cd563996abe47009002444549fb4307b07f0/56" data-source="Read pathnames from the standard input, one per line, instead of from the command line." onmousemove="i18n(this)">&Scy;&chcy;&icy;&tcy;&acy;&jcy;&tcy;&iecy; &icy;&mcy;&iecy;&ncy;&acy; &pcy;&ucy;&tcy;&iecy;&jcy; &icy;&zcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ocy;&gcy;&ocy; &vcy;&vcy;&ocy;&dcy;&acy;, &pcy;&ocy; &ocy;&dcy;&ncy;&ocy;&mcy;&ucy; &vcy; &kcy;&acy;&zhcy;&dcy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy;, &acy; &ncy;&iecy; &icy;&zcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;.</span></p> </dd> <dt id="Documentation/git-check-attr.txt--z"><span data-i18n="cac3c371c8f2e17e79214e0fae22255e0f1fad169bac56d2f8a10d7fd54846cb/4d" data-source="-z" onmousemove="i18n(this)">-z</span></dt> <dd> <p><span data-i18n="5b1e1a522802189c1646fe5d737050c11e437cdbad73fc1e60cea0d59f5edcef/54" data-source="The output format is modified to be machine-parsable. If &lt;code&gt;--stdin&lt;/code&gt; is also given, input paths are separated with a NUL character instead of a linefeed character." onmousemove="i18n(this)">&Vcy;&ycy;&khcy;&ocy;&dcy;&ncy;&ocy;&jcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy; &icy;&zcy;&mcy;&iecy;&ncy;&yacy;&iecy;&tcy;&scy;&yacy; &dcy;&lcy;&yacy; &mcy;&acy;&shcy;&icy;&ncy;&ncy;&ocy;&gcy;&ocy; &acy;&ncy;&acy;&lcy;&icy;&zcy;&acy;. &IEcy;&scy;&lcy;&icy; &tcy;&acy;&kcy;&zhcy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;  <code>--stdin</code> , &vcy;&khcy;&ocy;&dcy;&ncy;&ycy;&iecy; &pcy;&ucy;&tcy;&icy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&ocy;&mcy; NUL &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&acy; &pcy;&iecy;&rcy;&iecy;&vcy;&ocy;&dcy;&acy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;.</span></p> </dd> <dt id="Documentation/git-check-attr.txt---sourcelttree-ishgt"><span data-i18n="86b7776d0966cec241b5bf545903331f9d7a24dd3e5e8cf9b2fa9a1ec3bd141c/8f" data-source="--source=&amp;lt;tree-ish&amp;gt;" onmousemove="i18n(this)">--source=&lt;tree-ish&gt;</span></dt> <dd> <p><span data-i18n="8800e1414cf15e9a3153f784ad342d681d9313abbb8501ab2267e1b56ad396e8/e3" data-source="Check attributes against the specified tree-ish. It is common to specify the source tree by naming a commit, branch, or tag associated with it." onmousemove="i18n(this)">&Pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&softcy;&tcy;&iecy; &acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy;&ycy; &ncy;&acy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&icy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ocy;&mcy;&ucy; &dcy;&iecy;&rcy;&iecy;&vcy;&ucy;. &Ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &icy;&scy;&khcy;&ocy;&dcy;&ncy;&ocy;&iecy; &dcy;&iecy;&rcy;&iecy;&vcy;&ocy; &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &pcy;&ucy;&tcy;&iecy;&mcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&icy;&yacy; &scy;&vcy;&yacy;&zcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &scy; &ncy;&icy;&mcy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&acy;, &vcy;&iecy;&tcy;&kcy;&icy; &icy;&lcy;&icy; &tcy;&iecy;&gcy;&acy;.</span></p> </dd> <dt id="Documentation/git-check-attr.txt---"><span data-i18n="d8156bae0c4243d3742fc4e9774d8aceabe0410249d720c855f98afc88ff846c/71" data-source="--" onmousemove="i18n(this)">--</span></dt> <dd> <p><span data-i18n="c0838d7dc3098e87d521a97706fd575721cad01a50078a69d6526adbb0a93e6a/a9" data-source="Interpret all preceding arguments as attributes and all following arguments as path names." onmousemove="i18n(this)">&Icy;&ncy;&tcy;&iecy;&rcy;&pcy;&rcy;&iecy;&tcy;&icy;&rcy;&ucy;&jcy;&tcy;&iecy; &vcy;&scy;&iecy; &pcy;&rcy;&iecy;&dcy;&ycy;&dcy;&ucy;&shchcy;&icy;&iecy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ycy; &kcy;&acy;&kcy; &acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy;&ycy;, &acy; &vcy;&scy;&iecy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&iecy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ycy; &kcy;&acy;&kcy; &icy;&mcy;&iecy;&ncy;&acy; &pcy;&ucy;&tcy;&iecy;&jcy;.</span></p> </dd> </dl> </div> <p><span data-i18n="944495f3cda6ca6e7ee9cf0d6cda590bc722ccc13b24642fa0d6c021885d87d4/4d" data-source="If none of &lt;code&gt;--stdin&lt;/code&gt;, &lt;code&gt;--all&lt;/code&gt;, or &lt;code&gt;--&lt;/code&gt; is used, the first argument will be treated as an attribute and the rest of the arguments as pathnames." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy;  none  &icy;&zcy;  <code>--stdin</code> ,  <code>--all</code>  &icy;&lcy;&icy;  <code>--</code> , &pcy;&iecy;&rcy;&vcy;&ycy;&jcy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy; &bcy;&ucy;&dcy;&iecy;&tcy; &rcy;&acy;&scy;&scy;&mcy;&acy;&tcy;&rcy;&icy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &kcy;&acy;&kcy; &acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy;, &acy; &ocy;&scy;&tcy;&acy;&lcy;&softcy;&ncy;&ycy;&iecy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ycy; &mdash; &kcy;&acy;&kcy; &icy;&mcy;&iecy;&ncy;&acy; &pcy;&ucy;&tcy;&iecy;&jcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_output"><span data-i18n="b2439bcb8dee14b685f137f294b0e0cb62f5aadf45143ce01d79777d435a93b4/6b" data-source="Output" onmousemove="i18n(this)">Output</span></h2> <div> <p><span data-i18n="db2d144068519a6f71603223b1b38147fb28645d5ff5618d736cadc6bdba4405/ee" data-source="The output is of the form: &amp;lt;path&amp;gt; COLON SP &amp;lt;attribute&amp;gt; COLON SP &amp;lt;info&amp;gt; LF" onmousemove="i18n(this)">&Vcy;&ycy;&vcy;&ocy;&dcy; &icy;&mcy;&iecy;&iecy;&tcy; &vcy;&icy;&dcy;: &lt;&pcy;&ucy;&tcy;&softcy;&gt; &Dcy;&vcy;&ocy;&iecy;&tcy;&ocy;&chcy;&icy;&iecy; SP &lt;&acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy;&gt; &Dcy;&vcy;&ocy;&iecy;&tcy;&ocy;&chcy;&icy;&iecy; SP &lt;&icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&yacy;&gt; LF</span></p> <p><span data-i18n="b710fee00673064a0a277cc6e3647fafa22f2ff7c13b623055c23a5cb86799bb/5d" data-source="unless &lt;code&gt;-z&lt;/code&gt; is in effect, in which case NUL is used as delimiter: &amp;lt;path&amp;gt; NUL &amp;lt;attribute&amp;gt; NUL &amp;lt;info&amp;gt; NUL" onmousemove="i18n(this)">&iecy;&scy;&lcy;&icy; &ncy;&iecy; &dcy;&iecy;&jcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy;  <code>-z</code> , &icy; &vcy; &ecy;&tcy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&icy;&tcy;&iecy;&lcy;&yacy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; NUL: &lt;&pcy;&ucy;&tcy;&softcy;&gt; NUL &lt;&acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy;&gt; NUL &lt;&icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&yacy;&gt; NUL</span></p> <p><span data-i18n="3cef8c49f7720f82345c5b5f6dd1c9103c6d5c55199d64cda86089f2ca2c67da/d1" data-source="&amp;lt;path&amp;gt; is the path of a file being queried, &amp;lt;attribute&amp;gt; is an attribute being queried, and &amp;lt;info&amp;gt; can be either:" onmousemove="i18n(this)">&lt;path&gt; &mdash; &ecy;&tcy;&ocy; &pcy;&ucy;&tcy;&softcy; &kcy; &zcy;&acy;&pcy;&rcy;&acy;&shcy;&icy;&vcy;&acy;&iecy;&mcy;&ocy;&mcy;&ucy; &fcy;&acy;&jcy;&lcy;&ucy;, &lt;attribute&gt; &mdash; &ecy;&tcy;&ocy; &zcy;&acy;&pcy;&rcy;&acy;&shcy;&icy;&vcy;&acy;&iecy;&mcy;&ycy;&jcy; &acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy;, &acy; &lt;info&gt; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &lcy;&yucy;&bcy;&ycy;&mcy;:</span></p> <div> <dl> <dt id="Documentation/git-check-attr.txt-emunspecifiedem"> <span data-i18n="fa88ad4332b63f6f228ec6a739216a266721e0f24d275085e58ddd76f7323f38/23" data-source="&lt;em&gt;unspecified&lt;/em&gt;" onmousemove="i18n(this)"><em>unspecified</em></span> </dt> <dd> <p><span data-i18n="3367bebfc9df561063e8eb06c67294ed24a17a846034ab7d33020e3139f1b943/fc" data-source="when the attribute is not defined for the path." onmousemove="i18n(this)">&kcy;&ocy;&gcy;&dcy;&acy; &acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy; &ncy;&iecy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&iecy;&ncy; &dcy;&lcy;&yacy; &pcy;&ucy;&tcy;&icy;.</span></p> </dd> <dt id="Documentation/git-check-attr.txt-emunsetem"> <span data-i18n="f08360eb480cd6793caf9e29d7110e56ef8b7966898a80d69ea3cb077dc72741/9b" data-source="&lt;em&gt;unset&lt;/em&gt;" onmousemove="i18n(this)"><em>unset</em></span> </dt> <dd> <p><span data-i18n="dfcca87a6b48a02f6a06dd57f64b55299cbad26b30894183510915bfcb4f02b6/c1" data-source="when the attribute is defined as false." onmousemove="i18n(this)">&kcy;&ocy;&gcy;&dcy;&acy; &acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&iecy;&ncy; &kcy;&acy;&kcy; false.</span></p> </dd> <dt id="Documentation/git-check-attr.txt-emsetem"> <span data-i18n="c75af923d45858990c187e713e46569a6a9f8c76bb117a04adb01dec408f5c8c/47" data-source="&lt;em&gt;set&lt;/em&gt;" onmousemove="i18n(this)"><em>set</em></span> </dt> <dd> <p><span data-i18n="c02a5f36f652665f4f335cc905b8bddc7efc61b74fe4a88f459249cc02be8a4d/50" data-source="when the attribute is defined as true." onmousemove="i18n(this)">&kcy;&ocy;&gcy;&dcy;&acy; &acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&iecy;&ncy; &kcy;&acy;&kcy; true.</span></p> </dd> <dt id="Documentation/git-check-attr.txt-ltvaluegt"><span data-i18n="bb226f2d1133144d081595185a8146ada5f7876cca1e792848b86eeda0b3ef82/41" data-source="&amp;lt;value&amp;gt;" onmousemove="i18n(this)">&lt;value&gt;</span></dt> <dd> <p><span data-i18n="0337a0f1a5a8f0acc36743ad7714d955a3f928eb8757268678b6014a6db59dc1/6d" data-source="when a value has been assigned to the attribute." onmousemove="i18n(this)">&kcy;&ocy;&gcy;&dcy;&acy; &acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy;&ucy; &pcy;&rcy;&icy;&scy;&vcy;&ocy;&iecy;&ncy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy;.</span></p> </dd> </dl> </div> <p><span data-i18n="2271908b4b0171c771e6742d1ac25aeb1fa67e17745898f1a01076742249bc46/41" data-source="Buffering happens as documented under the &lt;code&gt;GIT_FLUSH&lt;/code&gt; option in &lt;a href=&quot;git&quot;&gt;git[1]&lt;/a&gt;. The caller is responsible for avoiding deadlocks caused by overfilling an input buffer or reading from an empty output buffer." onmousemove="i18n(this)">&Bcy;&ucy;&fcy;&iecy;&rcy;&icy;&zcy;&acy;&tscy;&icy;&yacy; &pcy;&rcy;&ocy;&icy;&scy;&khcy;&ocy;&dcy;&icy;&tcy;, &kcy;&acy;&kcy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&ocy; &vcy; &ocy;&pcy;&tscy;&icy;&icy;  <code>GIT_FLUSH</code>  &vcy;  <a href="git.html">git[1]</a> . &Vcy;&ycy;&zcy;&ycy;&vcy;&acy;&yucy;&shchcy;&acy;&yacy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&acy; &ocy;&tcy;&vcy;&iecy;&chcy;&acy;&iecy;&tcy; &zcy;&acy; &pcy;&rcy;&iecy;&dcy;&ocy;&tcy;&vcy;&rcy;&acy;&shchcy;&iecy;&ncy;&icy;&iecy; &vcy;&zcy;&acy;&icy;&mcy;&ocy;&bcy;&lcy;&ocy;&kcy;&icy;&rcy;&ocy;&vcy;&ocy;&kcy;, &vcy;&ycy;&zcy;&vcy;&acy;&ncy;&ncy;&ycy;&khcy; &pcy;&iecy;&rcy;&iecy;&pcy;&ocy;&lcy;&ncy;&iecy;&ncy;&icy;&iecy;&mcy; &vcy;&khcy;&ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &bcy;&ucy;&fcy;&iecy;&rcy;&acy; &icy;&lcy;&icy; &chcy;&tcy;&iecy;&ncy;&icy;&iecy;&mcy; &icy;&zcy; &pcy;&ucy;&scy;&tcy;&ocy;&gcy;&ocy; &vcy;&ycy;&khcy;&ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &bcy;&ucy;&fcy;&iecy;&rcy;&acy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_examples"><span data-i18n="e68ee04dff59551b7d1ae07a2f8a00dc61d841628948da3d2781630706a05e92/38" data-source="Examples" onmousemove="i18n(this)">Examples</span></h2> <div> <p><span data-i18n="61f2834abc77be707fd15400084fe08f9a68e2f9dc037d646cf96bec0f928456/cb" data-source="In the examples, the following &lt;code&gt;.gitattributes&lt;/code&gt; file is used:" onmousemove="i18n(this)">&Vcy; &pcy;&rcy;&icy;&mcy;&iecy;&rcy;&acy;&khcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&jcy; &fcy;&acy;&jcy;&lcy;  <code>.gitattributes</code> :</span></p> <div> <div> <pre class="hljs language-yaml"><span class="hljs-string">*.java</span> <span class="hljs-string">diff=java</span> <span class="hljs-string">-crlf</span> <span class="hljs-string">myAttr</span>
+<span class="hljs-string">NoMyAttr.java</span> <span class="hljs-type">!myAttr</span>
+<span class="hljs-string">README</span> <span class="hljs-string">caveat=unspecified</span></pre> </div> </div> <div> <ul> <li> <p><span data-i18n="f460972e349af9c58b712ffefc1c10d3adbf948694f6429b995607d6c24e4e7b/4e" data-source="Listing a single attribute:" onmousemove="i18n(this)">&Lcy;&icy;&scy;&tcy;&icy;&ncy;&gcy; &ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy;&acy;:</span></p> </li> </ul> </div> <div> <div> <pre class="hljs language-bash">$ git check-attr diff org/example/MyClass.java
+org/example/MyClass.java: diff: java</pre> </div> </div> <div> <ul> <li> <p><span data-i18n="2bccea4d91bb7ebbb8fedb3423193919daa8da8a03fd49b0525c9de681241599/b1" data-source="Listing multiple attributes for a file:" onmousemove="i18n(this)">&Pcy;&iecy;&rcy;&iecy;&chcy;&icy;&scy;&lcy;&iecy;&ncy;&icy;&iecy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&icy;&khcy; &acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy;&ocy;&vcy; &fcy;&acy;&jcy;&lcy;&acy;:</span></p> </li> </ul> </div> <div> <div> <pre class="hljs language-bash">$ git check-attr crlf diff myAttr -- org/example/MyClass.java
+org/example/MyClass.java: crlf: <span class="hljs-built_in">unset</span>
+org/example/MyClass.java: diff: java
+org/example/MyClass.java: myAttr: <span class="hljs-built_in">set</span></pre> </div> </div> <div> <ul> <li> <p><span data-i18n="e23effb1ef86ace14035897f13f81a034f713d8dc7250532e1cbb7e89974b42c/da" data-source="Listing all attributes for a file:" onmousemove="i18n(this)">&Pcy;&iecy;&rcy;&iecy;&chcy;&icy;&scy;&lcy;&iecy;&ncy;&icy;&iecy; &vcy;&scy;&iecy;&khcy; &acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy;&ocy;&vcy; &fcy;&acy;&jcy;&lcy;&acy;:</span></p> </li> </ul> </div> <div> <div> <pre class="hljs language-bash">$ git check-attr --all -- org/example/MyClass.java
+org/example/MyClass.java: diff: java
+org/example/MyClass.java: myAttr: <span class="hljs-built_in">set</span></pre> </div> </div> <div> <ul> <li> <p><span data-i18n="7aa6b2494a18ef62222f006ec30c26a813c1e90651184b5792116a84263d9a75/ed" data-source="Listing an attribute for multiple files:" onmousemove="i18n(this)">&Pcy;&iecy;&rcy;&iecy;&chcy;&icy;&scy;&lcy;&iecy;&ncy;&icy;&iecy; &acy;&tcy;&rcy;&icy;&bcy;&ucy;&tcy;&acy; &dcy;&lcy;&yacy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&icy;&khcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;:</span></p> </li> </ul> </div> <div> <div> <pre class="hljs language-bash">$ git check-attr myAttr -- org/example/MyClass.java org/example/NoMyAttr.java
+org/example/MyClass.java: myAttr: <span class="hljs-built_in">set</span>
+org/example/NoMyAttr.java: myAttr: unspecified</pre> </div> </div> <div> <ul> <li> <p><span data-i18n="f9a68c9e3c0b9597b3597ef6cbbee6e2da895e3109ded7ab74ae900b4f54ea4e/2f" data-source="Not all values are equally unambiguous:" onmousemove="i18n(this)">&Ncy;&iecy; &vcy;&scy;&iecy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy; &ocy;&dcy;&icy;&ncy;&acy;&kcy;&ocy;&vcy;&ocy; &ocy;&dcy;&ncy;&ocy;&zcy;&ncy;&acy;&chcy;&ncy;&ycy;:</span></p> </li> </ul> </div> <div> <div> <pre class="hljs language-makefile">$ git check-attr caveat README
+<span class="hljs-section">README: caveat: unspecified</span></pre> </div> </div> </div> <h2 class="text-body-emphasis"  id="_see_also"><span data-i18n="2fa97693b70fa87b95b2d1bdf9558e4ac65d5e82d145f13a03849c4d9c4957a9/40" data-source="See also" onmousemove="i18n(this)">See also</span></h2> <div> <p><span data-i18n="afdb495cae0813a72c517d0a315e5de179f9d87c859430942866b4fedff18e68/61" data-source="&lt;a href=&quot;gitattributes&quot;&gt;gitattributes[5]&lt;/a&gt;." onmousemove="i18n(this)"><a href="gitattributes.html">gitattributes[5]</a>.</span></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-check-attr">https://git-scm.com/docs/git-check-attr</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-check-ignore.html">
+                            git check-ignore                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-check-mailmap.html">
+                            git check-mailmap                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-check-ref-format.html">
+                            git check-ref-format                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-checkout.html">
+                            git checkout                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-checkout-index.html">
+                            git checkout-index                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-cherry.html">
+                            git cherry                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-cherry-pick.html">
+                            git cherry-pick                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-check-attr.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

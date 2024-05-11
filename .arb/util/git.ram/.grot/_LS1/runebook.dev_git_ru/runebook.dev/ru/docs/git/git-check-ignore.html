@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:16:52 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git check-ignore</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Plumbing_Commands">
+                                Plumbing Commands                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="4aa9e43d5614d21d8661336798ddaeda93893e02205f8599b56da7044128dd32/85" data-source="git-check-ignore" onmousemove="i18n(this)">git-check-ignore</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="93c107e0827dcc843fed28dc2610a87a2a125f3d0562fff0f222e106af662dfc/38" data-source="git-check-ignore - Debug gitignore / exclude files" onmousemove="i18n(this)">git-check-ignore &mdash; &ocy;&tcy;&lcy;&acy;&dcy;&kcy;&acy; gitignore/&icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&iecy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git check-ignore <span class="hljs-selector-attr">[&lt;options&gt;]</span> &lt;pathname&gt;&hellip;&ZeroWidthSpace;
+git check-ignore <span class="hljs-selector-attr">[&lt;options&gt;]</span> <span class="hljs-attr">--stdin</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="2e4c3eaf76a12a72d0aab9c4d13462ed2cd3b318625554b9a152e350b244b80b/f7" data-source="For each pathname given via the command-line or from a file via &lt;code&gt;--stdin&lt;/code&gt;, check whether the file is excluded by .gitignore (or other input files to the exclude mechanism) and output the path if it is excluded." onmousemove="i18n(this)">&Dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &pcy;&ucy;&tcy;&icy;, &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &chcy;&iecy;&rcy;&iecy;&zcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ucy;&yucy; &scy;&tcy;&rcy;&ocy;&kcy;&ucy; &icy;&lcy;&icy; &icy;&zcy; &fcy;&acy;&jcy;&lcy;&acy; &chcy;&iecy;&rcy;&iecy;&zcy;  <code>--stdin</code> , &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&softcy;&tcy;&iecy;, &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy; &lcy;&icy; &fcy;&acy;&jcy;&lcy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; .gitignore (&icy;&lcy;&icy; &dcy;&rcy;&ucy;&gcy;&icy;&khcy; &vcy;&khcy;&ocy;&dcy;&ncy;&ycy;&khcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &dcy;&lcy;&yacy; &mcy;&iecy;&khcy;&acy;&ncy;&icy;&zcy;&mcy;&acy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&yacy;), &icy; &vcy;&ycy;&vcy;&iecy;&dcy;&icy;&tcy;&iecy; &pcy;&ucy;&tcy;&softcy;, &iecy;&scy;&lcy;&icy; &ocy;&ncy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;.</span></p> <p><span data-i18n="71edee5b7b685b6d8683ed3d827cf972da4f80fd6f5a5adbc745eafb0ed83268/c0" data-source="By default, tracked files are not shown at all since they are not subject to exclude rules; but see &amp;lsquo;--no-index&amp;rsquo;." onmousemove="i18n(this)">&Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &ocy;&tcy;&scy;&lcy;&iecy;&zhcy;&icy;&vcy;&acy;&iecy;&mcy;&ycy;&iecy; &fcy;&acy;&jcy;&lcy;&ycy; &vcy;&ocy;&ocy;&bcy;&shchcy;&iecy; &ncy;&iecy; &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&acy;&yucy;&tcy;&scy;&yacy;, &pcy;&ocy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ucy; &ncy;&acy; &ncy;&icy;&khcy; &ncy;&iecy; &rcy;&acy;&scy;&pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&yacy;&yucy;&tcy;&scy;&yacy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&acy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&yacy;; &ncy;&ocy; &scy;&mcy;. &laquo;--no-index&raquo;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-check-ignore.txt--q--quiet"><span data-i18n="ad8a79b44959a42f97391a8ed1ef5c86c9d66547e4c82588c15791b72fb10bcf/61" data-source="-q, --quiet" onmousemove="i18n(this)">-q, --quiet</span></dt> <dd> <p><span data-i18n="787057b0c7a04d6484958e020430cdf78dcf5a2669cd128172a8bae7d56a15e1/f8" data-source="Don&amp;rsquo;t output anything, just set exit status. This is only valid with a single pathname." onmousemove="i18n(this)">&Ncy;&icy;&chcy;&iecy;&gcy;&ocy; &ncy;&iecy; &vcy;&ycy;&vcy;&ocy;&dcy;&icy;&tcy;&iecy;, &pcy;&rcy;&ocy;&scy;&tcy;&ocy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&icy;&tcy;&iecy; &scy;&tcy;&acy;&tcy;&ucy;&scy; &vcy;&ycy;&khcy;&ocy;&dcy;&acy;. &Ecy;&tcy;&ocy; &scy;&pcy;&rcy;&acy;&vcy;&iecy;&dcy;&lcy;&icy;&vcy;&ocy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &dcy;&lcy;&yacy; &ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &pcy;&ucy;&tcy;&icy;.</span></p> </dd> <dt id="Documentation/git-check-ignore.txt--v--verbose"><span data-i18n="9d51fcd4b6ceed7f20a2bba6f8d4c9108d1056b42ceea0a8bf847a5de5c589e2/42" data-source="-v, --verbose" onmousemove="i18n(this)">-v, --verbose</span></dt> <dd> <p><span data-i18n="a7275ce5380fc6948724a4b8b02d74899f9f7ab60134d2299b555c1190eaa38c/e9" data-source="Instead of printing the paths that are excluded, for each path that matches an exclude pattern, print the exclude pattern together with the path. (Matching an exclude pattern usually means the path is excluded, but if the pattern begins with &amp;quot;&lt;code&gt;!&lt;/code&gt;&amp;quot; then it is a negated pattern and matching it means the path is NOT excluded.)" onmousemove="i18n(this)">&Vcy;&mcy;&iecy;&scy;&tcy;&ocy; &pcy;&iecy;&chcy;&acy;&tcy;&icy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&ncy;&ycy;&khcy; &pcy;&ucy;&tcy;&iecy;&jcy; &dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &pcy;&ucy;&tcy;&icy;, &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&iecy;&gcy;&ocy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ucy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&yacy;, &rcy;&acy;&scy;&pcy;&iecy;&chcy;&acy;&tcy;&acy;&jcy;&tcy;&iecy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&yacy; &vcy;&mcy;&iecy;&scy;&tcy;&iecy; &scy; &pcy;&ucy;&tcy;&iecy;&mcy;. (&Scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&icy;&iecy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ucy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&yacy; &ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &ocy;&zcy;&ncy;&acy;&chcy;&acy;&iecy;&tcy;, &chcy;&tcy;&ocy; &pcy;&ucy;&tcy;&softcy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;, &ncy;&ocy; &iecy;&scy;&lcy;&icy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy; &ncy;&acy;&chcy;&icy;&ncy;&acy;&iecy;&tcy;&scy;&yacy; &scy;  &quot;  <code>!</code>  &quot; , &tcy;&ocy; &ecy;&tcy;&ocy; &ocy;&tcy;&rcy;&icy;&tscy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&jcy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;, &icy; &iecy;&gcy;&ocy; &scy;&ocy;&vcy;&pcy;&acy;&dcy;&iecy;&ncy;&icy;&iecy; &ocy;&zcy;&ncy;&acy;&chcy;&acy;&iecy;&tcy;, &chcy;&tcy;&ocy; &pcy;&ucy;&tcy;&softcy; &Ncy;&IEcy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;.)</span></p> <p><span data-i18n="ff132a873c492beac8a3e730924c8d753c4e77076dbd11271480e4d29c15470c/b1" data-source="For precedence rules within and between exclude sources, see &lt;a href=&quot;gitignore&quot;&gt;gitignore[5]&lt;/a&gt;." onmousemove="i18n(this)">&Pcy;&rcy;&acy;&vcy;&icy;&lcy;&acy; &pcy;&rcy;&icy;&ocy;&rcy;&icy;&tcy;&iecy;&tcy;&acy; &vcy;&ncy;&ucy;&tcy;&rcy;&icy; &icy; &mcy;&iecy;&zhcy;&dcy;&ucy; &icy;&scy;&tcy;&ocy;&chcy;&ncy;&icy;&kcy;&acy;&mcy;&icy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&yacy; &scy;&mcy;. &vcy;  <a href="gitignore.html">gitignore[5]</a> .</span></p> </dd> <dt id="Documentation/git-check-ignore.txt---stdin"><span data-i18n="06cc2377ccb785d93fd1515e188ca4dfe8c83def25a0c91bd36731a3b50c77f2/d9" data-source="--stdin" onmousemove="i18n(this)">--stdin</span></dt> <dd> <p><span data-i18n="858443b676b0b26cd6c74495ff91c6cf0ddbeefd670d7adf88073223d03adc86/4b" data-source="Read pathnames from the standard input, one per line, instead of from the command-line." onmousemove="i18n(this)">&Scy;&chcy;&icy;&tcy;&acy;&jcy;&tcy;&iecy; &icy;&mcy;&iecy;&ncy;&acy; &pcy;&ucy;&tcy;&iecy;&jcy; &icy;&zcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ocy;&gcy;&ocy; &vcy;&vcy;&ocy;&dcy;&acy;, &pcy;&ocy; &ocy;&dcy;&ncy;&ocy;&mcy;&ucy; &vcy; &kcy;&acy;&zhcy;&dcy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy;, &acy; &ncy;&iecy; &icy;&zcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;.</span></p> </dd> <dt id="Documentation/git-check-ignore.txt--z"><span data-i18n="cac3c371c8f2e17e79214e0fae22255e0f1fad169bac56d2f8a10d7fd54846cb/4d" data-source="-z" onmousemove="i18n(this)">-z</span></dt> <dd> <p><span data-i18n="d58bae99e553e33d952efd31efd233974183f1f19d2ea1b288c89866115aaf6f/47" data-source="The output format is modified to be machine-parsable (see below). If &lt;code&gt;--stdin&lt;/code&gt; is also given, input paths are separated with a NUL character instead of a linefeed character." onmousemove="i18n(this)">&Fcy;&ocy;&rcy;&mcy;&acy;&tcy; &vcy;&ycy;&vcy;&ocy;&dcy;&acy; &icy;&zcy;&mcy;&iecy;&ncy;&yacy;&iecy;&tcy;&scy;&yacy; &dcy;&lcy;&yacy; &mcy;&acy;&shcy;&icy;&ncy;&ncy;&ocy;&gcy;&ocy; &acy;&ncy;&acy;&lcy;&icy;&zcy;&acy; (&scy;&mcy;. &ncy;&icy;&zhcy;&iecy;). &IEcy;&scy;&lcy;&icy; &tcy;&acy;&kcy;&zhcy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;  <code>--stdin</code> , &vcy;&khcy;&ocy;&dcy;&ncy;&ycy;&iecy; &pcy;&ucy;&tcy;&icy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&ocy;&mcy; NUL &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&acy; &pcy;&iecy;&rcy;&iecy;&vcy;&ocy;&dcy;&acy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;.</span></p> </dd> <dt id="Documentation/git-check-ignore.txt--n--non-matching"><span data-i18n="0142fff7a14eecf71c813a7dd533f608ed2cbe62ab5abe5a240442410cb1e9c1/94" data-source="-n, --non-matching" onmousemove="i18n(this)">-n, --non-matching</span></dt> <dd> <p><span data-i18n="edab7783b451bd0d4609aee50965f1d9bfb0befb00c7e24c90629957b7d96561/87" data-source="Show given paths which don&amp;rsquo;t match any pattern. This only makes sense when &lt;code&gt;--verbose&lt;/code&gt; is enabled, otherwise it would not be possible to distinguish between paths which match a pattern and those which don&amp;rsquo;t." onmousemove="i18n(this)">&Pcy;&ocy;&kcy;&acy;&zcy;&acy;&tcy;&softcy; &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ycy;&iecy; &pcy;&ucy;&tcy;&icy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ncy;&iecy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&tcy; &ncy;&icy; &ocy;&dcy;&ncy;&ocy;&mcy;&ucy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ucy;. &Ecy;&tcy;&ocy; &icy;&mcy;&iecy;&iecy;&tcy; &scy;&mcy;&ycy;&scy;&lcy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &tcy;&ocy;&gcy;&dcy;&acy;, &kcy;&ocy;&gcy;&dcy;&acy; &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;  <code>--verbose</code> , &icy;&ncy;&acy;&chcy;&iecy; &bcy;&ycy;&lcy;&ocy; &bcy;&ycy; &ncy;&iecy;&vcy;&ocy;&zcy;&mcy;&ocy;&zhcy;&ncy;&ocy; &ocy;&tcy;&lcy;&icy;&chcy;&icy;&tcy;&softcy; &pcy;&ucy;&tcy;&icy;, &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&iecy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ucy;, &ocy;&tcy; &pcy;&ucy;&tcy;&iecy;&jcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ncy;&iecy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&tcy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ucy;.</span></p> </dd> <dt id="Documentation/git-check-ignore.txt---no-index"><span data-i18n="aab35d3a4fdaaaa0615774b2c0ec82513944a8fdcf5efe6648015b73a4d65ba2/d1" data-source="--no-index" onmousemove="i18n(this)">--no-index</span></dt> <dd> <p><span data-i18n="1e45b0891fda14f5fa3bf8aaa5f87044039e1dc1255a88b7adc4a866899e263d/f1" data-source="Don&amp;rsquo;t look in the index when undertaking the checks. This can be used to debug why a path became tracked by e.g. &lt;code&gt;git add .&lt;/code&gt; and was not ignored by the rules as expected by the user or when developing patterns including negation to match a path previously added with &lt;code&gt;git add -f&lt;/code&gt;." onmousemove="i18n(this)">&Ncy;&iecy; &scy;&mcy;&ocy;&tcy;&rcy;&icy;&tcy;&iecy; &vcy; &icy;&ncy;&dcy;&iecy;&kcy;&scy; &pcy;&rcy;&icy; &pcy;&rcy;&ocy;&vcy;&iecy;&dcy;&iecy;&ncy;&icy;&icy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&ocy;&kcy;. &Ecy;&tcy;&ocy; &mcy;&ocy;&zhcy;&ncy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &dcy;&lcy;&yacy; &ocy;&tcy;&lcy;&acy;&dcy;&kcy;&icy; &tcy;&ocy;&gcy;&ocy;, &pcy;&ocy;&chcy;&iecy;&mcy;&ucy; &pcy;&ucy;&tcy;&softcy; &ocy;&tcy;&scy;&lcy;&iecy;&zhcy;&icy;&vcy;&acy;&iecy;&tcy;&scy;&yacy;, &ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;,  <code>git add .</code> , &icy; &ncy;&iecy; &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ucy;&iecy;&tcy;&scy;&yacy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&acy;&mcy;&icy;, &kcy;&acy;&kcy; &ocy;&zhcy;&icy;&dcy;&acy;&lcy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;, &icy;&lcy;&icy; &pcy;&rcy;&icy; &rcy;&acy;&zcy;&rcy;&acy;&bcy;&ocy;&tcy;&kcy;&iecy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ocy;&vcy;, &vcy;&kcy;&lcy;&yucy;&chcy;&acy;&yacy; &ocy;&tcy;&rcy;&icy;&tscy;&acy;&ncy;&icy;&iecy;, &dcy;&lcy;&yacy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&icy;&yacy; &pcy;&ucy;&tcy;&icy;, &rcy;&acy;&ncy;&iecy;&iecy; &dcy;&ocy;&bcy;&acy;&vcy;&lcy;&iecy;&ncy;&ncy;&ocy;&mcy;&ucy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy;  <code>git add -f</code> .</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_output"><span data-i18n="b2439bcb8dee14b685f137f294b0e0cb62f5aadf45143ce01d79777d435a93b4/6b" data-source="Output" onmousemove="i18n(this)">Output</span></h2> <div> <p><span data-i18n="2cc7440461f00c679a5e2ea22f5c322ccf73ea6a0a141b71896e41dce61522b7/55" data-source="By default, any of the given pathnames which match an ignore pattern will be output, one per line. If no pattern matches a given path, nothing will be output for that path; this means that path will not be ignored." onmousemove="i18n(this)">&Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &bcy;&ucy;&dcy;&iecy;&tcy; &vcy;&ycy;&vcy;&iecy;&dcy;&iecy;&ncy;&ocy; &lcy;&yucy;&bcy;&ocy;&iecy; &icy;&zcy; &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ycy;&khcy; &pcy;&ucy;&tcy;&iecy;&jcy;, &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&khcy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ucy; &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy;, &pcy;&ocy; &ocy;&dcy;&ncy;&ocy;&mcy;&ucy; &vcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy;. &IEcy;&scy;&lcy;&icy; &ncy;&icy; &ocy;&dcy;&icy;&ncy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy; &ncy;&iecy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &dcy;&acy;&ncy;&ncy;&ocy;&mcy;&ucy; &pcy;&ucy;&tcy;&icy;, &dcy;&lcy;&yacy; &ecy;&tcy;&ocy;&gcy;&ocy; &pcy;&ucy;&tcy;&icy; &ncy;&icy;&chcy;&iecy;&gcy;&ocy; &ncy;&iecy; &bcy;&ucy;&dcy;&iecy;&tcy; &vcy;&ycy;&vcy;&iecy;&dcy;&iecy;&ncy;&ocy;; &ecy;&tcy;&ocy; &ocy;&zcy;&ncy;&acy;&chcy;&acy;&iecy;&tcy;, &chcy;&tcy;&ocy; &pcy;&ucy;&tcy;&softcy; &ncy;&iecy; &bcy;&ucy;&dcy;&iecy;&tcy; &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ocy;&vcy;&acy;&tcy;&softcy;&scy;&yacy;.</span></p> <p><span data-i18n="42ca9725ac245db1d16797e65fa56602ddfca59ad2b212c1752b2c83d86cb7fd/5f" data-source="If &lt;code&gt;--verbose&lt;/code&gt; is specified, the output is a series of lines of the form:" onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;  <code>--verbose</code> , &vcy;&ycy;&khcy;&ocy;&dcy;&ncy;&ycy;&iecy; &dcy;&acy;&ncy;&ncy;&ycy;&iecy; &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&yucy;&tcy; &scy;&ocy;&bcy;&ocy;&jcy; &scy;&iecy;&rcy;&icy;&yucy; &scy;&tcy;&rcy;&ocy;&kcy; &vcy;&icy;&dcy;&acy;:</span></p> <p><span data-i18n="5533e15ef2cd2b03fd2b785d8dd0a906e870c876ba79ed258436611ca5a09d7f/b4" data-source="&amp;lt;source&amp;gt; &amp;lt;COLON&amp;gt; &amp;lt;linenum&amp;gt; &amp;lt;COLON&amp;gt; &amp;lt;pattern&amp;gt; &amp;lt;HT&amp;gt; &amp;lt;pathname&amp;gt;" onmousemove="i18n(this)">&lt;&icy;&scy;&tcy;&ocy;&chcy;&ncy;&icy;&kcy;&gt; &lt;&Dcy;&vcy;&ocy;&iecy;&tcy;&ocy;&chcy;&icy;&iecy;&gt; &lt;&ncy;&ocy;&mcy;&iecy;&rcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;&gt; &lt;&Dcy;&vcy;&ocy;&iecy;&tcy;&ocy;&chcy;&icy;&iecy;&gt; &lt;&shcy;&acy;&bcy;&lcy;&ocy;&ncy;&gt; &lt;HT&gt; &lt;&pcy;&ucy;&tcy;&softcy;&gt;</span></p> <p><span data-i18n="2357c0c783414d35713957b40afe919833958618653d5fd4608f02798a332504/1e" data-source="&amp;lt;pathname&amp;gt; is the path of a file being queried, &amp;lt;pattern&amp;gt; is the matching pattern, &amp;lt;source&amp;gt; is the pattern&amp;rsquo;s source file, and &amp;lt;linenum&amp;gt; is the line number of the pattern within that source. If the pattern contained a &amp;quot;&lt;code&gt;!&lt;/code&gt;&amp;quot; prefix or &amp;quot;&lt;code&gt;/&lt;/code&gt;&amp;quot; suffix, it will be preserved in the output. &amp;lt;source&amp;gt; will be an absolute path when referring to the file configured by &lt;code&gt;core.excludesFile&lt;/code&gt;, or relative to the repository root when referring to &lt;code&gt;.git/info/exclude&lt;/code&gt; or a per-directory exclude file." onmousemove="i18n(this)">&lt;pathname&gt; &mdash; &ecy;&tcy;&ocy; &pcy;&ucy;&tcy;&softcy; &kcy; &zcy;&acy;&pcy;&rcy;&acy;&shcy;&icy;&vcy;&acy;&iecy;&mcy;&ocy;&mcy;&ucy; &fcy;&acy;&jcy;&lcy;&ucy;, &lt;pattern&gt; &mdash; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&jcy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;, &lt;source&gt; &mdash; &icy;&scy;&khcy;&ocy;&dcy;&ncy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&acy;, &acy; &lt;linenum&gt; &mdash; &ncy;&ocy;&mcy;&iecy;&rcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&acy; &vcy; &ecy;&tcy;&ocy;&mcy; &icy;&scy;&tcy;&ocy;&chcy;&ncy;&icy;&kcy;&iecy;. &IEcy;&scy;&lcy;&icy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&lcy; &pcy;&rcy;&iecy;&fcy;&icy;&kcy;&scy;  &quot;  <code>!</code>  &quot;  &icy;&lcy;&icy; &scy;&ucy;&fcy;&fcy;&icy;&kcy;&scy;  &quot;  <code>/</code>  &quot; , &ocy;&ncy; &bcy;&ucy;&dcy;&iecy;&tcy; &scy;&ocy;&khcy;&rcy;&acy;&ncy;&iecy;&ncy; &vcy; &vcy;&ycy;&khcy;&ocy;&dcy;&ncy;&ycy;&khcy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy;. &lt;source&gt; &bcy;&ucy;&dcy;&iecy;&tcy; &acy;&bcy;&scy;&ocy;&lcy;&yucy;&tcy;&ncy;&ycy;&mcy; &pcy;&ucy;&tcy;&iecy;&mcy; &pcy;&rcy;&icy; &scy;&scy;&ycy;&lcy;&kcy;&iecy; &ncy;&acy; &fcy;&acy;&jcy;&lcy;, &ncy;&acy;&scy;&tcy;&rcy;&ocy;&iecy;&ncy;&ncy;&ycy;&jcy;  <code>core.excludesFile</code> , &icy;&lcy;&icy; &ocy;&tcy;&ncy;&ocy;&scy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy; &kcy;&ocy;&rcy;&ncy;&yacy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy; &pcy;&rcy;&icy; &scy;&scy;&ycy;&lcy;&kcy;&iecy; &ncy;&acy;  <code>.git/info/exclude</code>  &icy;&lcy;&icy; &fcy;&acy;&jcy;&lcy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&yacy; &dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&acy;.</span></p> <p><span data-i18n="ccbc1e09e53c15e04228a5717535e34fd7444856b5ac0ffed0403df3b40e3694/01" data-source="If &lt;code&gt;-z&lt;/code&gt; is specified, the pathnames in the output are delimited by the null character; if &lt;code&gt;--verbose&lt;/code&gt; is also specified then null characters are also used instead of colons and hard tabs:" onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;  <code>-z</code> , &icy;&mcy;&iecy;&ncy;&acy; &pcy;&ucy;&tcy;&iecy;&jcy; &vcy; &vcy;&ycy;&khcy;&ocy;&dcy;&ncy;&ycy;&khcy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&ocy;&mcy;  null ; &iecy;&scy;&lcy;&icy; &tcy;&acy;&kcy;&zhcy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;  <code>--verbose</code> , &tcy;&ocy; &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &dcy;&vcy;&ocy;&iecy;&tcy;&ocy;&chcy;&icy;&jcy; &icy; &zhcy;&iecy;&scy;&tcy;&kcy;&icy;&khcy; &tcy;&acy;&bcy;&ucy;&lcy;&yacy;&tscy;&icy;&jcy; &tcy;&acy;&kcy;&zhcy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yucy;&tcy;&scy;&yacy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&ycy;  null :</span></p> <p><span data-i18n="0cc0ebccc0373bf888fc9c6de655fb34dd52ce34b4105bbfefef63c47b54b735/e1" data-source="&amp;lt;source&amp;gt; &amp;lt;NULL&amp;gt; &amp;lt;linenum&amp;gt; &amp;lt;NULL&amp;gt; &amp;lt;pattern&amp;gt; &amp;lt;NULL&amp;gt; &amp;lt;pathname&amp;gt; &amp;lt;NULL&amp;gt;" onmousemove="i18n(this)">&lt;&icy;&scy;&tcy;&ocy;&chcy;&ncy;&icy;&kcy;&gt; &lt;NULL&gt; &lt;&ncy;&ocy;&mcy;&iecy;&rcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;&gt; &lt;NULL&gt; &lt;&shcy;&acy;&bcy;&lcy;&ocy;&ncy;&gt; &lt;NULL&gt; &lt;&pcy;&ucy;&tcy;&softcy;&gt; &lt;NULL&gt;</span></p> <p><span data-i18n="613202d3ab6f704ea43a60e41f2dd1277d8c4e85be06ba4462b210ffb54ce6d1/d6" data-source="If &lt;code&gt;-n&lt;/code&gt; or &lt;code&gt;--non-matching&lt;/code&gt; are specified, non-matching pathnames will also be output, in which case all fields in each output record except for &amp;lt;pathname&amp;gt; will be empty. This can be useful when running non-interactively, so that files can be incrementally streamed to STDIN of a long-running check-ignore process, and for each of these files, STDOUT will indicate whether that file matched a pattern or not. (Without this option, it would be impossible to tell whether the absence of output for a given file meant that it didn&amp;rsquo;t match any pattern, or that the output hadn&amp;rsquo;t been generated yet.)" onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ycy;  <code>-n</code>  &icy;&lcy;&icy;  <code>--non-matching</code> , &ncy;&iecy;&scy;&ocy;&vcy;&pcy;&acy;&dcy;&acy;&yucy;&shchcy;&icy;&iecy; &pcy;&ucy;&tcy;&icy; &tcy;&acy;&kcy;&zhcy;&iecy; &bcy;&ucy;&dcy;&ucy;&tcy; &vcy;&ycy;&vcy;&iecy;&dcy;&iecy;&ncy;&ycy;, &icy; &vcy; &ecy;&tcy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &vcy;&scy;&iecy; &pcy;&ocy;&lcy;&yacy; &vcy; &kcy;&acy;&zhcy;&dcy;&ocy;&jcy; &vcy;&ycy;&khcy;&ocy;&dcy;&ncy;&ocy;&jcy; &zcy;&acy;&pcy;&icy;&scy;&icy;, &kcy;&rcy;&ocy;&mcy;&iecy; &lt;pathname&gt;, &bcy;&ucy;&dcy;&ucy;&tcy; &pcy;&ucy;&scy;&tcy;&ycy;&mcy;&icy;. &Ecy;&tcy;&ocy; &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ocy; &pcy;&rcy;&icy; &rcy;&acy;&bcy;&ocy;&tcy;&iecy; &vcy; &ncy;&iecy;&icy;&ncy;&tcy;&iecy;&rcy;&acy;&kcy;&tcy;&icy;&vcy;&ncy;&ocy;&mcy; &rcy;&iecy;&zhcy;&icy;&mcy;&iecy;, &tcy;&acy;&kcy; &chcy;&tcy;&ocy; &fcy;&acy;&jcy;&lcy;&ycy; &mcy;&ocy;&zhcy;&ncy;&ocy; &pcy;&ocy;&scy;&tcy;&iecy;&pcy;&iecy;&ncy;&ncy;&ocy; &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&vcy;&acy;&tcy;&softcy; &vcy; &pcy;&ocy;&tcy;&ocy;&kcy; STDIN &dcy;&lcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&gcy;&ocy; &pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;&acy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&icy;-&icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy;, &icy; &dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &icy;&zcy; &ecy;&tcy;&icy;&khcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; STDOUT &bcy;&ucy;&dcy;&iecy;&tcy; &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&tcy;&softcy;, &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &lcy;&icy; &ecy;&tcy;&ocy;&tcy; &fcy;&acy;&jcy;&lcy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ucy; &icy;&lcy;&icy; &ncy;&iecy;&tcy;. (&Bcy;&iecy;&zcy; &ecy;&tcy;&ocy;&jcy; &ocy;&pcy;&tscy;&icy;&icy; &bcy;&ycy;&lcy;&ocy; &bcy;&ycy; &ncy;&iecy;&vcy;&ocy;&zcy;&mcy;&ocy;&zhcy;&ncy;&ocy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&icy;&tcy;&softcy;, &ocy;&zcy;&ncy;&acy;&chcy;&acy;&iecy;&tcy; &lcy;&icy; &ocy;&tcy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&icy;&iecy; &vcy;&ycy;&vcy;&ocy;&dcy;&acy; &dcy;&lcy;&yacy; &dcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &fcy;&acy;&jcy;&lcy;&acy;, &chcy;&tcy;&ocy; &ocy;&ncy; &ncy;&iecy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &kcy;&acy;&kcy;&ocy;&mcy;&ucy;-&lcy;&icy;&bcy;&ocy; &shcy;&acy;&bcy;&lcy;&ocy;&ncy;&ucy;, &icy;&lcy;&icy; &chcy;&tcy;&ocy; &vcy;&ycy;&vcy;&ocy;&dcy; &iecy;&shchcy;&iecy; &ncy;&iecy; &bcy;&ycy;&lcy; &scy;&gcy;&iecy;&ncy;&iecy;&rcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;.)</span></p> <p><span data-i18n="2271908b4b0171c771e6742d1ac25aeb1fa67e17745898f1a01076742249bc46/41" data-source="Buffering happens as documented under the &lt;code&gt;GIT_FLUSH&lt;/code&gt; option in &lt;a href=&quot;git&quot;&gt;git[1]&lt;/a&gt;. The caller is responsible for avoiding deadlocks caused by overfilling an input buffer or reading from an empty output buffer." onmousemove="i18n(this)">&Bcy;&ucy;&fcy;&iecy;&rcy;&icy;&zcy;&acy;&tscy;&icy;&yacy; &pcy;&rcy;&ocy;&icy;&scy;&khcy;&ocy;&dcy;&icy;&tcy;, &kcy;&acy;&kcy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&ocy; &vcy; &ocy;&pcy;&tscy;&icy;&icy;  <code>GIT_FLUSH</code>  &vcy;  <a href="git.html">git[1]</a> . &Vcy;&ycy;&zcy;&ycy;&vcy;&acy;&yucy;&shchcy;&acy;&yacy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&acy; &ocy;&tcy;&vcy;&iecy;&chcy;&acy;&iecy;&tcy; &zcy;&acy; &pcy;&rcy;&iecy;&dcy;&ocy;&tcy;&vcy;&rcy;&acy;&shchcy;&iecy;&ncy;&icy;&iecy; &vcy;&zcy;&acy;&icy;&mcy;&ocy;&bcy;&lcy;&ocy;&kcy;&icy;&rcy;&ocy;&vcy;&ocy;&kcy;, &vcy;&ycy;&zcy;&vcy;&acy;&ncy;&ncy;&ycy;&khcy; &pcy;&iecy;&rcy;&iecy;&pcy;&ocy;&lcy;&ncy;&iecy;&ncy;&icy;&iecy;&mcy; &vcy;&khcy;&ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &bcy;&ucy;&fcy;&iecy;&rcy;&acy; &icy;&lcy;&icy; &chcy;&tcy;&iecy;&ncy;&icy;&iecy;&mcy; &icy;&zcy; &pcy;&ucy;&scy;&tcy;&ocy;&gcy;&ocy; &vcy;&ycy;&khcy;&ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &bcy;&ucy;&fcy;&iecy;&rcy;&acy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_exit_status"><span data-i18n="f69b3d7f77a6dbe69851fce8d2fc115d844d8bbfb35250ad889373b3d4663ea2/e8" data-source="Exit status" onmousemove="i18n(this)">Exit status</span></h2> <div> <div> <dl> <dt id="Documentation/git-check-ignore.txt-0"><span data-i18n="5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9/73" data-source="0" onmousemove="i18n(this)">0</span></dt> <dd> <p><span data-i18n="3b60204116aadea5411a33718fa7241674e5a8322ec57b3ffa83be6bfce79cce/5b" data-source="One or more of the provided paths is ignored." onmousemove="i18n(this)">&Ocy;&dcy;&icy;&ncy; &icy;&lcy;&icy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ocy; &pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&iecy;&ncy;&ncy;&ycy;&khcy; &pcy;&ucy;&tcy;&iecy;&jcy; &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ucy;&yucy;&tcy;&scy;&yacy;.</span></p> </dd> <dt id="Documentation/git-check-ignore.txt-1"><span data-i18n="6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b/dd" data-source="1" onmousemove="i18n(this)">1</span></dt> <dd> <p><span data-i18n="f52e604028356bedd782b065713d82d047a668984e983cdeddd9be252209c3d4/fe" data-source="None of the provided paths are ignored." onmousemove="i18n(this)">None  &pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&iecy;&ncy;&ncy;&ycy;&khcy; &pcy;&ucy;&tcy;&iecy;&jcy; &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ucy;&yucy;&tcy;&scy;&yacy;.</span></p> </dd> <dt id="Documentation/git-check-ignore.txt-128"><span data-i18n="2747b7c718564ba5f066f0523b03e17f6a496b06851333d2d59ab6d863225848/ee" data-source="128" onmousemove="i18n(this)">128</span></dt> <dd> <p><span data-i18n="db97d140a775bcfdb781f5a74a823ec8aaa44666db27cba48aa797eba90a9d40/a3" data-source="A fatal error was encountered." onmousemove="i18n(this)">&Pcy;&rcy;&ocy;&icy;&zcy;&ocy;&shcy;&lcy;&acy; &fcy;&acy;&tcy;&acy;&lcy;&softcy;&ncy;&acy;&yacy; &ocy;&shcy;&icy;&bcy;&kcy;&acy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_see_also"><span data-i18n="2fa97693b70fa87b95b2d1bdf9558e4ac65d5e82d145f13a03849c4d9c4957a9/40" data-source="See also" onmousemove="i18n(this)">See also</span></h2> <div> <p> <span data-i18n="c57c3cea03ab6e5d8b472a17376167b1a0cf74adbd62ae6714db6e360fa36cc3/1f" data-source="&lt;a href=&quot;gitignore&quot;&gt;gitignore[5]&lt;/a&gt;&lt;a href=&quot;git-config&quot;&gt;git-config[1]&lt;/a&gt;&lt;a href=&quot;git-ls-files&quot;&gt;git-ls-files[1]&lt;/a&gt;" onmousemove="i18n(this)"><a href="gitignore.html">gitignore[5]</a><a href="git-config.html">git-config[1]</a><a href="git-ls-files.html">git-ls-files[1]</a></span></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-check-ignore">https://git-scm.com/docs/git-check-ignore</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-check-mailmap.html">
+                            git check-mailmap                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-check-ref-format.html">
+                            git check-ref-format                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-checkout.html">
+                            git checkout                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-checkout-index.html">
+                            git checkout-index                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-cherry.html">
+                            git cherry                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-cherry-pick.html">
+                            git cherry-pick                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-citool.html">
+                            git citool                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-check-ignore.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

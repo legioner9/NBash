@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-10 16:53:12 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git upload-archive</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="517403b457d3b2842ee3e670d62def5420c98fec01559d7ae040f5a4b54afd17/83" data-source="git-upload-archive" onmousemove="i18n(this)">git-upload-archive</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="d8dfbaa513f8e461976c6515b76c06af7004945936a651b8690ad769784bf8d7/bc" data-source="git-upload-archive - Send archive back to git-archive" onmousemove="i18n(this)">git-upload-archive &mdash; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&icy;&tcy;&softcy; &acy;&rcy;&khcy;&icy;&vcy; &ocy;&bcy;&rcy;&acy;&tcy;&ncy;&ocy; &vcy; git-archive</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-xml">git upload-archive <span class="hljs-tag">&lt;<span class="hljs-name">repository</span>&gt;</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="75df6cfa6f1d6ffaf1d7ce7e4bacf0c147fd80a5437f493ce4beda9f95330da0/94" data-source="Invoked by &lt;code&gt;git archive --remote&lt;/code&gt; and sends a generated archive to the other end over the Git protocol." onmousemove="i18n(this)">&Vcy;&ycy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy;  <code>git archive --remote</code>  &icy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &scy;&gcy;&iecy;&ncy;&iecy;&rcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&jcy; &acy;&rcy;&khcy;&icy;&vcy; &ncy;&acy; &dcy;&rcy;&ucy;&gcy;&ocy;&jcy; &kcy;&ocy;&ncy;&iecy;&tscy; &pcy;&ocy; &pcy;&rcy;&ocy;&tcy;&ocy;&kcy;&ocy;&lcy;&ucy;  Git .</span></p> <p><span data-i18n="435f9b8604c889f7158a39624e115f785666bcd260cbfed893faceb33d3fe3fa/a5" data-source="This command is usually not invoked directly by the end user. The UI for the protocol is on the &lt;code&gt;git archive&lt;/code&gt; side, and the program pair is meant to be used to get an archive from a remote repository." onmousemove="i18n(this)">&Ecy;&tcy;&acy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &ncy;&iecy; &vcy;&ycy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &kcy;&ocy;&ncy;&iecy;&chcy;&ncy;&ycy;&mcy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&iecy;&mcy; &ncy;&acy;&pcy;&rcy;&yacy;&mcy;&ucy;&yucy;. &Pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&scy;&kcy;&icy;&jcy; &icy;&ncy;&tcy;&iecy;&rcy;&fcy;&iecy;&jcy;&scy; &pcy;&rcy;&ocy;&tcy;&ocy;&kcy;&ocy;&lcy;&acy; &ncy;&acy;&khcy;&ocy;&dcy;&icy;&tcy;&scy;&yacy; &ncy;&acy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&iecy;  <code>git archive</code> , &acy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ncy;&acy;&yacy; &pcy;&acy;&rcy;&acy; &pcy;&rcy;&iecy;&dcy;&ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy;&acy; &dcy;&lcy;&yacy; &pcy;&ocy;&lcy;&ucy;&chcy;&iecy;&ncy;&icy;&yacy; &acy;&rcy;&khcy;&icy;&vcy;&acy; &icy;&zcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_security"><span data-i18n="8f6fb4eb7f42c0e245e29e63f5b82cc3ba19852681d1ed9aed291f59cf75ec0e/6e" data-source="Security" onmousemove="i18n(this)">Security</span></h2> <div> <p><span data-i18n="4033b6a8e76a76d84738cc3d2915e72ac48ce75fe563b88439f061769d7fb517/26" data-source="In order to protect the privacy of objects that have been removed from history but may not yet have been pruned, &lt;code&gt;git-upload-archive&lt;/code&gt; avoids serving archives for commits and trees that are not reachable from the repository&amp;rsquo;s refs. However, because calculating object reachability is computationally expensive, &lt;code&gt;git-upload-archive&lt;/code&gt; implements a stricter but easier-to-check set of rules:" onmousemove="i18n(this)">&CHcy;&tcy;&ocy;&bcy;&ycy; &zcy;&acy;&shchcy;&icy;&tcy;&icy;&tcy;&softcy; &kcy;&ocy;&ncy;&fcy;&icy;&dcy;&iecy;&ncy;&tscy;&icy;&acy;&lcy;&softcy;&ncy;&ocy;&scy;&tcy;&softcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &bcy;&ycy;&lcy;&icy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ycy; &icy;&zcy; &icy;&scy;&tcy;&ocy;&rcy;&icy;&icy;, &ncy;&ocy;, &vcy;&ocy;&zcy;&mcy;&ocy;&zhcy;&ncy;&ocy;, &iecy;&shchcy;&iecy; &ncy;&iecy; &bcy;&ycy;&lcy;&icy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ycy;,  <code>git-upload-archive</code>  &icy;&zcy;&bcy;&iecy;&gcy;&acy;&iecy;&tcy; &ocy;&bcy;&scy;&lcy;&ucy;&zhcy;&icy;&vcy;&acy;&ncy;&icy;&yacy; &acy;&rcy;&khcy;&icy;&vcy;&ocy;&vcy; &dcy;&lcy;&yacy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy; &icy; &dcy;&iecy;&rcy;&iecy;&vcy;&softcy;&iecy;&vcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ncy;&iecy;&dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy; &icy;&zcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;. &Ocy;&dcy;&ncy;&acy;&kcy;&ocy;, &pcy;&ocy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ucy; &vcy;&ycy;&chcy;&icy;&scy;&lcy;&iecy;&ncy;&icy;&iecy; &dcy;&ocy;&scy;&tcy;&icy;&zhcy;&icy;&mcy;&ocy;&scy;&tcy;&icy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy; &tcy;&rcy;&iecy;&bcy;&ucy;&iecy;&tcy; &bcy;&ocy;&lcy;&softcy;&shcy;&icy;&khcy; &vcy;&ycy;&chcy;&icy;&scy;&lcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&khcy; &zcy;&acy;&tcy;&rcy;&acy;&tcy;,  <code>git-upload-archive</code>  &rcy;&iecy;&acy;&lcy;&icy;&zcy;&ucy;&iecy;&tcy; &bcy;&ocy;&lcy;&iecy;&iecy; &scy;&tcy;&rcy;&ocy;&gcy;&icy;&jcy;, &ncy;&ocy; &bcy;&ocy;&lcy;&iecy;&iecy; &pcy;&rcy;&ocy;&scy;&tcy;&ocy;&jcy; &dcy;&lcy;&yacy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&icy; &ncy;&acy;&bcy;&ocy;&rcy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;:</span></p> <div> <ol> <li> <p><span data-i18n="73f6d1c5f50dbab3a550f10b574bfd1c07a62fbfece04af3c1632183d8476633/c5" data-source="Clients may request a commit or tree that is pointed to directly by a ref. E.g., &lt;code&gt;git archive --remote=origin v1.0&lt;/code&gt;." onmousemove="i18n(this)">&Kcy;&lcy;&icy;&iecy;&ncy;&tcy;&ycy; &mcy;&ocy;&gcy;&ucy;&tcy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&icy;&tcy;&softcy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&yucy; &icy;&lcy;&icy; &dcy;&iecy;&rcy;&iecy;&vcy;&ocy;, &ncy;&acy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&iecy; &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy; &ncy;&iecy;&pcy;&ocy;&scy;&rcy;&iecy;&dcy;&scy;&tcy;&vcy;&iecy;&ncy;&ncy;&ocy; &scy;&scy;&ycy;&lcy;&kcy;&acy;. &Ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;,  <code>git archive --remote=origin v1.0</code> .</span></p> </li> <li> <p><span data-i18n="4e737561653da8cef91b4018f30e396f3b8cc49d7854e62746d1ea9fdd48ec0d/6c" data-source="Clients may request a sub-tree within a commit or tree using the &lt;code&gt;ref:path&lt;/code&gt; syntax. E.g., &lt;code&gt;git archive --remote=origin v1.0:Documentation&lt;/code&gt;." onmousemove="i18n(this)">&Kcy;&lcy;&icy;&iecy;&ncy;&tcy;&ycy; &mcy;&ocy;&gcy;&ucy;&tcy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&icy;&tcy;&softcy; &pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&iecy;&vcy;&ocy; &vcy;&ncy;&ucy;&tcy;&rcy;&icy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&acy; &icy;&lcy;&icy; &dcy;&iecy;&rcy;&iecy;&vcy;&acy;, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yacy; &scy;&icy;&ncy;&tcy;&acy;&kcy;&scy;&icy;&scy;  <code>ref:path</code> . &Ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;,  <code>git archive --remote=origin v1.0:Documentation</code> .</span></p> </li> <li> <p><span data-i18n="ece0b5dd4dbc9b3444c7b8ec724f59634a77e4391c099bb97e4b7de9df3d8176/c1" data-source="Clients may &lt;code&gt;not&lt;/code&gt; use other sha1 expressions, even if the end result is reachable. E.g., neither a relative commit like &lt;code&gt;master^&lt;/code&gt; nor a literal sha1 like &lt;code&gt;abcd1234&lt;/code&gt; is allowed, even if the result is reachable from the refs." onmousemove="i18n(this)">&Kcy;&lcy;&icy;&iecy;&ncy;&tcy;&ycy; &mcy;&ocy;&gcy;&ucy;&tcy;  <code>not</code>  &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &dcy;&rcy;&ucy;&gcy;&icy;&iecy; &vcy;&ycy;&rcy;&acy;&zhcy;&iecy;&ncy;&icy;&yacy; sha1, &dcy;&acy;&zhcy;&iecy; &iecy;&scy;&lcy;&icy; &kcy;&ocy;&ncy;&iecy;&chcy;&ncy;&ycy;&jcy; &rcy;&iecy;&zcy;&ucy;&lcy;&softcy;&tcy;&acy;&tcy; &dcy;&ocy;&scy;&tcy;&icy;&zhcy;&icy;&mcy;. &Ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &ncy;&icy; &ocy;&tcy;&ncy;&ocy;&scy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&acy;&yacy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&yacy;, &tcy;&acy;&kcy;&acy;&yacy; &kcy;&acy;&kcy;  <code>master^</code> , &ncy;&icy; &bcy;&ucy;&kcy;&vcy;&acy;&lcy;&softcy;&ncy;&ycy;&jcy; sha1, &tcy;&acy;&kcy;&acy;&yacy; &kcy;&acy;&kcy;  <code>abcd1234</code> , &ncy;&iecy; &rcy;&acy;&zcy;&rcy;&iecy;&shcy;&iecy;&ncy;&ycy;, &dcy;&acy;&zhcy;&iecy; &iecy;&scy;&lcy;&icy; &rcy;&iecy;&zcy;&ucy;&lcy;&softcy;&tcy;&acy;&tcy; &dcy;&ocy;&scy;&tcy;&icy;&zhcy;&icy;&mcy; &icy;&zcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;.</span></p> </li> </ol> </div> <p><span data-i18n="354d4cb679c4e2cd042701a5f792a4fe540bc0a3e680430951b51232132e8fa2/11" data-source="Note that rule 3 disallows many cases that do not have any privacy implications. These rules are subject to change in future versions of git, and the server accessed by &lt;code&gt;git archive --remote&lt;/code&gt; may or may not follow these exact rules." onmousemove="i18n(this)">&Ocy;&bcy;&rcy;&acy;&tcy;&icy;&tcy;&iecy; &vcy;&ncy;&icy;&mcy;&acy;&ncy;&icy;&iecy;, &chcy;&tcy;&ocy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&ocy; 3 &zcy;&acy;&pcy;&rcy;&iecy;&shchcy;&acy;&iecy;&tcy; &mcy;&ncy;&ocy;&gcy;&icy;&iecy; &scy;&lcy;&ucy;&chcy;&acy;&icy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ncy;&iecy; &icy;&mcy;&iecy;&yucy;&tcy; &kcy;&acy;&kcy;&icy;&khcy;-&lcy;&icy;&bcy;&ocy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&scy;&tcy;&vcy;&icy;&jcy; &dcy;&lcy;&yacy; &kcy;&ocy;&ncy;&fcy;&icy;&dcy;&iecy;&ncy;&tscy;&icy;&acy;&lcy;&softcy;&ncy;&ocy;&scy;&tcy;&icy;. &Ecy;&tcy;&icy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&acy; &mcy;&ocy;&gcy;&ucy;&tcy; &bcy;&ycy;&tcy;&softcy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&ycy; &vcy; &bcy;&ucy;&dcy;&ucy;&shchcy;&icy;&khcy; &vcy;&iecy;&rcy;&scy;&icy;&yacy;&khcy; git, &icy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;, &kcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&mcy;&ucy; &ocy;&bcy;&rcy;&acy;&shchcy;&acy;&iecy;&tcy;&scy;&yacy;  <code>git archive --remote</code> , &mcy;&ocy;&zhcy;&iecy;&tcy; &scy;&lcy;&iecy;&dcy;&ocy;&vcy;&acy;&tcy;&softcy; &icy;&lcy;&icy; &ncy;&iecy; &scy;&lcy;&iecy;&dcy;&ocy;&vcy;&acy;&tcy;&softcy; &ecy;&tcy;&icy;&mcy; &tcy;&ocy;&chcy;&ncy;&ycy;&mcy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&acy;&mcy;.</span></p> <p><span data-i18n="1441b7a1677918fd0b0dda9a094fb5183124f2d32e1528fadc671b32941a6fdb/69" data-source="If the config option &lt;code&gt;uploadArchive.allowUnreachable&lt;/code&gt; is true, these rules are ignored, and clients may use arbitrary sha1 expressions. This is useful if you do not care about the privacy of unreachable objects, or if your object database is already publicly available for access via non-smart-http." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  <code>uploadArchive.allowUnreachable</code>  &icy;&mcy;&iecy;&iecy;&tcy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; true, &ecy;&tcy;&icy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&acy; &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ucy;&yucy;&tcy;&scy;&yacy;, &icy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy;&ycy; &mcy;&ocy;&gcy;&ucy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &pcy;&rcy;&ocy;&icy;&zcy;&vcy;&ocy;&lcy;&softcy;&ncy;&ycy;&iecy; &vcy;&ycy;&rcy;&acy;&zhcy;&iecy;&ncy;&icy;&yacy; sha1. &Ecy;&tcy;&ocy; &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ocy;, &iecy;&scy;&lcy;&icy; &vcy;&acy;&scy; &ncy;&iecy; &vcy;&ocy;&lcy;&ncy;&ucy;&iecy;&tcy; &kcy;&ocy;&ncy;&fcy;&icy;&dcy;&iecy;&ncy;&tscy;&icy;&acy;&lcy;&softcy;&ncy;&ocy;&scy;&tcy;&softcy; &ncy;&iecy;&dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy;&khcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy; &icy;&lcy;&icy; &iecy;&scy;&lcy;&icy; &vcy;&acy;&shcy;&acy; &bcy;&acy;&zcy;&acy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy; &ucy;&zhcy;&iecy; &ocy;&bcy;&shchcy;&iecy;&dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&acy; &dcy;&lcy;&yacy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&acy; &chcy;&iecy;&rcy;&iecy;&zcy; &ncy;&iecy;-smart-http.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-upload-archive.txt-ltrepositorygt"><span data-i18n="33156ec69ef42f138c866bfb62145584bca1d9dd862e78b81cbaf77f8240c70e/6f" data-source="&amp;lt;repository&amp;gt;" onmousemove="i18n(this)">&lt;repository&gt;</span></dt> <dd> <p><span data-i18n="a495501fb99792871644079f48218768f8e06087d173d9e5a36477ace5d6f106/0d" data-source="The repository to get a tar archive from." onmousemove="i18n(this)">&Rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy;, &icy;&zcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&gcy;&ocy; &mcy;&ocy;&zhcy;&ncy;&ocy; &pcy;&ocy;&lcy;&ucy;&chcy;&icy;&tcy;&softcy; tar-&acy;&rcy;&khcy;&icy;&vcy;.</span></p> </dd> </dl> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-upload-archive">https://git-scm.com/docs/git-upload-archive</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-upload-pack.html">
+                            git upload-pack                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-var.html">
+                            git var                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-verify-commit.html">
+                            git verify-commit                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-verify-pack.html">
+                            git verify-pack                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-verify-tag.html">
+                            git verify-tag                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-version.html">
+                            git version                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-web--browse.html">
+                            git web--browse                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-upload-archive.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:15:10 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git merge-file</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="04db02f648f9abf512906020c19d51be0ea25d2d4c31e3de306e6aacbacfca98/f3" data-source="git-merge-file" onmousemove="i18n(this)">git-merge-file</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="d332137864a0c456bf9211b07548ce0a65c59594e80676ce708dbc80f3aa61a6/36" data-source="git-merge-file - Run a three-way file merge" onmousemove="i18n(this)">git-merge-file &mdash; &zcy;&acy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;&softcy; &tcy;&rcy;&iecy;&khcy;&scy;&tcy;&ocy;&rcy;&ocy;&ncy;&ncy;&iecy;&iecy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&iecy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css" data-highlighted="yes">git merge-file <span class="hljs-selector-attr">[-L &lt;current-name&gt; [-L &lt;base-name&gt; [-L &lt;other-name&gt;]</span>]]
+        <span class="hljs-selector-attr">[--ours|--theirs|--union]</span> <span class="hljs-selector-attr">[-p|--stdout]</span> <span class="hljs-selector-attr">[-q|--quiet]</span> <span class="hljs-selector-attr">[--marker-size=&lt;n&gt;]</span>
+        <span class="hljs-selector-attr">[--[no-]</span>diff3] <span class="hljs-selector-attr">[--object-id]</span> &lt;current&gt; &lt;base&gt; &lt;other&gt;</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="59467a21b002710269b5927924867e0eb3d60abd34f5c89b7fcd0b9dd062d7de/c0" data-source="Given three files &lt;code&gt;&amp;lt;current&amp;gt;&lt;/code&gt;, &lt;code&gt;&amp;lt;base&amp;gt;&lt;/code&gt; and &lt;code&gt;&amp;lt;other&amp;gt;&lt;/code&gt;, &lt;code&gt;git merge-file&lt;/code&gt; incorporates all changes that lead from &lt;code&gt;&amp;lt;base&amp;gt;&lt;/code&gt; to &lt;code&gt;&amp;lt;other&amp;gt;&lt;/code&gt; into &lt;code&gt;&amp;lt;current&amp;gt;&lt;/code&gt;. The result ordinarily goes into &lt;code&gt;&amp;lt;current&amp;gt;&lt;/code&gt;. &lt;code&gt;git merge-file&lt;/code&gt; is useful for combining separate changes to an original. Suppose &lt;code&gt;&amp;lt;base&amp;gt;&lt;/code&gt; is the original, and both &lt;code&gt;&amp;lt;current&amp;gt;&lt;/code&gt; and &lt;code&gt;&amp;lt;other&amp;gt;&lt;/code&gt; are modifications of &lt;code&gt;&amp;lt;base&amp;gt;&lt;/code&gt;, then &lt;code&gt;git merge-file&lt;/code&gt; combines both changes." onmousemove="i18n(this)">&Ucy;&chcy;&icy;&tcy;&ycy;&vcy;&acy;&yacy; &tcy;&rcy;&icy; &fcy;&acy;&jcy;&lcy;&acy;  <code>&lt;current&gt;</code> ,  <code>&lt;base&gt;</code>  &icy;  <code>&lt;other&gt;</code> ,  <code>git merge-file</code>  &vcy;&kcy;&lcy;&yucy;&chcy;&acy;&iecy;&tcy; &vcy; &scy;&iecy;&bcy;&yacy; &vcy;&scy;&iecy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &vcy;&iecy;&dcy;&ucy;&tcy; &ocy;&tcy;  <code>&lt;base&gt;</code>  &kcy;  <code>&lt;other&gt;</code> , &vcy;  <code>&lt;current&gt;</code> . &Rcy;&iecy;&zcy;&ucy;&lcy;&softcy;&tcy;&acy;&tcy; &ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &pcy;&ocy;&pcy;&acy;&dcy;&acy;&iecy;&tcy; &vcy;  <code>&lt;current&gt;</code> .  <code>git merge-file</code>  &pcy;&ocy;&lcy;&iecy;&zcy;&iecy;&ncy; &dcy;&lcy;&yacy; &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&iecy;&ncy;&icy;&yacy; &ocy;&tcy;&dcy;&iecy;&lcy;&softcy;&ncy;&ycy;&khcy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&jcy; &ocy;&rcy;&icy;&gcy;&icy;&ncy;&acy;&lcy;&acy;. &Pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&lcy;&ocy;&zhcy;&icy;&mcy;,  <code>&lt;base&gt;</code>  &mdash; &ocy;&rcy;&icy;&gcy;&icy;&ncy;&acy;&lcy;, &acy;  <code>&lt;current&gt;</code>  &icy;  <code>&lt;other&gt;</code>  &mdash; &mcy;&ocy;&dcy;&icy;&fcy;&icy;&kcy;&acy;&tscy;&icy;&icy;  <code>&lt;base&gt;</code> , &tcy;&ocy;&gcy;&dcy;&acy;  <code>git merge-file</code>  &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&yacy;&iecy;&tcy; &ocy;&bcy;&acy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy;.</span></p> <p><span data-i18n="7f0ea3ea8f53e157b6a7d36d3d2cb6983c2ef4ab69c7e82b6e28eafe2f8741f8/10" data-source="A conflict occurs if both &lt;code&gt;&amp;lt;current&amp;gt;&lt;/code&gt; and &lt;code&gt;&amp;lt;other&amp;gt;&lt;/code&gt; have changes in a common segment of lines. If a conflict is found, &lt;code&gt;git merge-file&lt;/code&gt; normally outputs a warning and brackets the conflict with lines containing &amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt; and &amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt; markers. A typical conflict will look like this:" onmousemove="i18n(this)">&Kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy; &vcy;&ocy;&zcy;&ncy;&icy;&kcy;&acy;&iecy;&tcy;, &iecy;&scy;&lcy;&icy; &icy;  <code>&lt;current&gt;</code> , &icy;  <code>&lt;other&gt;</code>  &icy;&mcy;&iecy;&yucy;&tcy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy; &vcy; &ocy;&bcy;&shchcy;&iecy;&mcy; &scy;&iecy;&gcy;&mcy;&iecy;&ncy;&tcy;&iecy; &scy;&tcy;&rcy;&ocy;&kcy;. &IEcy;&scy;&lcy;&icy; &ocy;&bcy;&ncy;&acy;&rcy;&ucy;&zhcy;&iecy;&ncy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy;,  <code>git merge-file</code>  &ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &vcy;&ycy;&vcy;&ocy;&dcy;&icy;&tcy; &pcy;&rcy;&iecy;&dcy;&ucy;&pcy;&rcy;&iecy;&zhcy;&dcy;&iecy;&ncy;&icy;&iecy; &icy; &zcy;&acy;&kcy;&lcy;&yucy;&chcy;&acy;&iecy;&tcy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy; &vcy; &scy;&kcy;&ocy;&bcy;&kcy;&icy; &scy;&ocy; &scy;&tcy;&rcy;&ocy;&kcy;&acy;&mcy;&icy;, &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&shchcy;&icy;&mcy;&icy; &mcy;&acy;&rcy;&kcy;&iecy;&rcy;&ycy; &lt;&lt;&lt;&lt;&lt;&lt;&lt; &icy; &gt;&gt;&gt;&gt;&gt;&gt;&gt;. &Tcy;&icy;&pcy;&icy;&chcy;&ncy;&ycy;&jcy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy; &bcy;&ucy;&dcy;&iecy;&tcy; &vcy;&ycy;&gcy;&lcy;&yacy;&dcy;&iecy;&tcy;&softcy; &tcy;&acy;&kcy;:</span></p> <div> <div> <pre class="hljs language-bash">&lt;&lt;&lt;&lt;&lt;&lt;&lt; <span class="hljs-string">A
+lines in file A</span>
+=======
+lines <span class="hljs-keyword">in</span> file B
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; B</pre> </div> </div> <p><span data-i18n="efd8caae222736c7a7459f1e28a60e37c2ca723eee6693e4a5270608ff5c25fd/25" data-source="If there are conflicts, the user should edit the result and delete one of the alternatives. When &lt;code&gt;--ours&lt;/code&gt;, &lt;code&gt;--theirs&lt;/code&gt;, or &lt;code&gt;--union&lt;/code&gt; option is in effect, however, these conflicts are resolved favouring lines from &lt;code&gt;&amp;lt;current&amp;gt;&lt;/code&gt;, lines from &lt;code&gt;&amp;lt;other&amp;gt;&lt;/code&gt;, or lines from both respectively. The length of the conflict markers can be given with the &lt;code&gt;--marker-size&lt;/code&gt; option." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &iecy;&scy;&tcy;&softcy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy;&ycy;, &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&yucy; &scy;&lcy;&iecy;&dcy;&ucy;&iecy;&tcy; &ocy;&tcy;&rcy;&iecy;&dcy;&acy;&kcy;&tcy;&icy;&rcy;&ocy;&vcy;&acy;&tcy;&softcy; &rcy;&iecy;&zcy;&ucy;&lcy;&softcy;&tcy;&acy;&tcy; &icy; &ucy;&dcy;&acy;&lcy;&icy;&tcy;&softcy; &ocy;&dcy;&ncy;&ucy; &icy;&zcy; &acy;&lcy;&softcy;&tcy;&iecy;&rcy;&ncy;&acy;&tcy;&icy;&vcy;. &Ocy;&dcy;&ncy;&acy;&kcy;&ocy;, &kcy;&ocy;&gcy;&dcy;&acy; &dcy;&iecy;&jcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &ocy;&pcy;&tscy;&icy;&yacy;  <code>--ours</code>  ,  <code>--theirs</code>  &icy;&lcy;&icy;  <code>--union</code> , &ecy;&tcy;&icy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy;&ycy; &rcy;&acy;&zcy;&rcy;&iecy;&shcy;&acy;&yucy;&tcy;&scy;&yacy; &vcy; &pcy;&ocy;&lcy;&softcy;&zcy;&ucy; &scy;&tcy;&rcy;&ocy;&kcy; &icy;&zcy;  <code>&lt;current&gt;</code>  , &scy;&tcy;&rcy;&ocy;&kcy; &icy;&zcy;  <code>&lt;other&gt;</code>  &icy;&lcy;&icy; &scy;&tcy;&rcy;&ocy;&kcy; &icy;&zcy; &ocy;&bcy;&ocy;&icy;&khcy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&iecy;&ncy;&ncy;&ocy;. &Dcy;&lcy;&icy;&ncy;&ucy; &mcy;&acy;&rcy;&kcy;&iecy;&rcy;&ocy;&vcy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy;&acy; &mcy;&ocy;&zhcy;&ncy;&ocy; &zcy;&acy;&dcy;&acy;&tcy;&softcy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &ocy;&pcy;&tscy;&icy;&icy;  <code>--marker-size</code> .</span></p> <p><span data-i18n="e5a8002e72bf807f8d768238b19bb600779d3cd373537e43c4e835a39a68b225/85" data-source="If &lt;code&gt;--object-id&lt;/code&gt; is specified, exactly the same behavior occurs, except that instead of specifying what to merge as files, it is specified as a list of object IDs referring to blobs." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;  <code>--object-id</code> , &pcy;&rcy;&ocy;&icy;&scy;&khcy;&ocy;&dcy;&icy;&tcy; &tcy;&ocy;&chcy;&ncy;&ocy; &tcy;&acy;&kcy;&ocy;&iecy; &zhcy;&iecy; &pcy;&ocy;&vcy;&iecy;&dcy;&iecy;&ncy;&icy;&iecy;, &zcy;&acy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&iecy;&mcy; &tcy;&ocy;&gcy;&ocy;, &chcy;&tcy;&ocy; &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&icy;&yacy; &tcy;&ocy;&gcy;&ocy;, &chcy;&tcy;&ocy; &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&yacy;&tcy;&softcy; &vcy; &vcy;&icy;&dcy;&iecy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;, &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &icy;&dcy;&iecy;&ncy;&tcy;&icy;&fcy;&icy;&kcy;&acy;&tcy;&ocy;&rcy;&ocy;&vcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;, &scy;&scy;&ycy;&lcy;&acy;&yucy;&shchcy;&icy;&khcy;&scy;&yacy; &ncy;&acy; &bcy;&ocy;&lcy;&softcy;&shcy;&icy;&iecy; &dcy;&vcy;&ocy;&icy;&chcy;&ncy;&ycy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy;.</span></p> <p><span data-i18n="d9d19897742126f0b391a88cd476610350f8b87b133623cd19697fd5edd5c475/8c" data-source="The exit value of this program is negative on error, and the number of conflicts otherwise (truncated to 127 if there are more than that many conflicts). If the merge was clean, the exit value is 0." onmousemove="i18n(this)">&Zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &vcy;&ycy;&khcy;&ocy;&dcy;&acy; &ecy;&tcy;&ocy;&jcy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ycy; &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &ocy;&tcy;&rcy;&icy;&tscy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&mcy; &vcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &ocy;&shcy;&icy;&bcy;&kcy;&icy;, &acy; &vcy; &pcy;&rcy;&ocy;&tcy;&icy;&vcy;&ncy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &mdash; &chcy;&icy;&scy;&lcy;&ocy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy;&ocy;&vcy; (&ucy;&scy;&iecy;&kcy;&acy;&iecy;&tcy;&scy;&yacy; &dcy;&ocy; 127, &iecy;&scy;&lcy;&icy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy;&ocy;&vcy; &bcy;&ocy;&lcy;&softcy;&shcy;&iecy;). &IEcy;&scy;&lcy;&icy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&iecy; &bcy;&ycy;&lcy;&ocy; &chcy;&icy;&scy;&tcy;&ycy;&mcy;, &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &vcy;&ycy;&khcy;&ocy;&dcy;&acy; &rcy;&acy;&vcy;&ncy;&ocy; 0.</span></p> <p><span data-i18n="b00db80df915bfec517b8178c178377c2892971979cecccb71ba1b2c7cae0959/ab" data-source="&lt;code&gt;git merge-file&lt;/code&gt; is designed to be a minimal clone of RCS &lt;code&gt;merge&lt;/code&gt;; that is, it implements all of RCS &lt;code&gt;merge&lt;/code&gt;&amp;apos;s functionality which is needed by &lt;a href=&quot;git&quot;&gt;git[1]&lt;/a&gt;." onmousemove="i18n(this)"><code>git merge-file</code>  &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &scy;&ocy;&bcy;&ocy;&jcy; &mcy;&icy;&ncy;&icy;&mcy;&acy;&lcy;&softcy;&ncy;&ycy;&jcy; &kcy;&lcy;&ocy;&ncy; RCS  <code>merge</code> ; &tcy;&ocy; &iecy;&scy;&tcy;&softcy; &ocy;&ncy; &rcy;&iecy;&acy;&lcy;&icy;&zcy;&ucy;&iecy;&tcy; &vcy;&scy;&iecy; &fcy;&ucy;&ncy;&kcy;&tscy;&icy;&icy; RCS  <code>merge</code> , &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ycy;&iecy; &dcy;&lcy;&yacy;  <a href="git.html">git[1]</a> .</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-merge-file.txt---object-id"><span data-i18n="8bfdf00b5da13fab8e7bb2c0e76c65a6170b264998a09e766517dae5e0746064/be" data-source="--object-id" onmousemove="i18n(this)">--object-id</span></dt> <dd> <p><span data-i18n="9cceabb4ff86fc013e17761e910999c602ab5fa552266c5d6631b3de5eb22cb4/a0" data-source="Specify the contents to merge as blobs in the current repository instead of files. In this case, the operation must take place within a valid repository." onmousemove="i18n(this)">&Ucy;&kcy;&acy;&zhcy;&icy;&tcy;&iecy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&mcy;&ocy;&iecy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&iecy; &ncy;&ucy;&zhcy;&ncy;&ocy; &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&icy;&tcy;&softcy; &vcy; &vcy;&icy;&dcy;&iecy; &bcy;&ocy;&lcy;&softcy;&shcy;&icy;&khcy; &dcy;&vcy;&ocy;&icy;&chcy;&ncy;&ycy;&khcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy; &vcy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&mcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy;, &acy; &ncy;&iecy; &vcy; &vcy;&icy;&dcy;&iecy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;. &Vcy; &ecy;&tcy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &ocy;&pcy;&iecy;&rcy;&acy;&tscy;&icy;&yacy; &dcy;&ocy;&lcy;&zhcy;&ncy;&acy; &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&yacy;&tcy;&softcy;&scy;&yacy; &vcy; &dcy;&ocy;&pcy;&ucy;&scy;&tcy;&icy;&mcy;&ocy;&mcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy;.</span></p> <p><span data-i18n="c63947bca546692bedf4c18250546b26e3e5af53070a77289b8886030d3efce9/e1" data-source="If the &lt;code&gt;-p&lt;/code&gt; option is specified, the merged file (including conflicts, if any) goes to standard output as normal; otherwise, the merged file is written to the object store and the object ID of its blob is written to standard output." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&acy; &ocy;&pcy;&tscy;&icy;&yacy;  <code>-p</code> , &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&iecy;&ncy;&ncy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy; (&vcy;&kcy;&lcy;&yucy;&chcy;&acy;&yacy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy;&ycy;, &iecy;&scy;&lcy;&icy; &tcy;&acy;&kcy;&ocy;&vcy;&ycy;&iecy; &icy;&mcy;&iecy;&yucy;&tcy;&scy;&yacy;) &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &ncy;&acy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&jcy; &vcy;&ycy;&vcy;&ocy;&dcy; &kcy;&acy;&kcy; &ocy;&bcy;&ycy;&chcy;&ncy;&ocy;; &vcy; &pcy;&rcy;&ocy;&tcy;&icy;&vcy;&ncy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&iecy;&ncy;&ncy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy; &zcy;&acy;&pcy;&icy;&scy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &vcy; &khcy;&rcy;&acy;&ncy;&icy;&lcy;&icy;&shchcy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;, &acy; &icy;&dcy;&iecy;&ncy;&tcy;&icy;&fcy;&icy;&kcy;&acy;&tcy;&ocy;&rcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy; &iecy;&gcy;&ocy; &bcy;&ocy;&lcy;&softcy;&shcy;&ocy;&gcy;&ocy; &dcy;&vcy;&ocy;&icy;&chcy;&ncy;&ocy;&gcy;&ocy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy; &zcy;&acy;&pcy;&icy;&scy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &vcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&jcy; &vcy;&ycy;&vcy;&ocy;&dcy;.</span></p> </dd> <dt id="Documentation/git-merge-file.txt--Lltlabelgt"><span data-i18n="1f885deac8555a25f15afe9b178f310d96de02431b89863da03ded9486243be2/53" data-source="-L &amp;lt;label&amp;gt;" onmousemove="i18n(this)">-L &lt;label&gt;</span></dt> <dd> <p><span data-i18n="eec11398f42ddbb6749e9cf9060afe6b029a468ad1041c4e92a6d6052dfb2069/80" data-source="This option may be given up to three times, and specifies labels to be used in place of the corresponding file names in conflict reports. That is, &lt;code&gt;git merge-file -L x -L y -L z a b c&lt;/code&gt; generates output that looks like it came from files x, y and z instead of from files a, b and c." onmousemove="i18n(this)">&Ecy;&tcy;&ucy; &ocy;&pcy;&tscy;&icy;&yucy; &mcy;&ocy;&zhcy;&ncy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &dcy;&ocy; &tcy;&rcy;&iecy;&khcy; &rcy;&acy;&zcy;, &icy; &ocy;&ncy;&acy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy; &mcy;&iecy;&tcy;&kcy;&icy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &bcy;&ucy;&dcy;&ucy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&khcy; &icy;&mcy;&iecy;&ncy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &vcy; &ocy;&tcy;&chcy;&iecy;&tcy;&acy;&khcy; &ocy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy;&acy;&khcy;. &Tcy;&ocy; &iecy;&scy;&tcy;&softcy;  <code>git merge-file -L x -L y -L z a b c</code>  &gcy;&iecy;&ncy;&iecy;&rcy;&icy;&rcy;&ucy;&iecy;&tcy; &vcy;&ycy;&khcy;&ocy;&dcy;&ncy;&ycy;&iecy; &dcy;&acy;&ncy;&ncy;&ycy;&iecy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &vcy;&ycy;&gcy;&lcy;&yacy;&dcy;&yacy;&tcy; &tcy;&acy;&kcy;, &kcy;&acy;&kcy; &bcy;&ucy;&dcy;&tcy;&ocy; &ocy;&ncy;&icy; &pcy;&ocy;&lcy;&ucy;&chcy;&iecy;&ncy;&ycy; &icy;&zcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; x, y &icy; z, &acy; &ncy;&iecy; &icy;&zcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; a, b &icy; c.</span></p> </dd> <dt id="Documentation/git-merge-file.txt--p"><span data-i18n="567479c447e472328522a1d759aabb9b579e4522a6da547c983d29e94c1604c2/a3" data-source="-p" onmousemove="i18n(this)">-p</span></dt> <dd> <p><span data-i18n="7f3652945cdbf9a7cc2baa99ddbb63e8984e55b62a611e9e2697c6d8dd09fa5d/72" data-source="Send results to standard output instead of overwriting &lt;code&gt;&amp;lt;current&amp;gt;&lt;/code&gt;." onmousemove="i18n(this)">&Ocy;&tcy;&pcy;&rcy;&acy;&vcy;&softcy;&tcy;&iecy; &rcy;&iecy;&zcy;&ucy;&lcy;&softcy;&tcy;&acy;&tcy;&ycy; &ncy;&acy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&jcy; &vcy;&ycy;&vcy;&ocy;&dcy; &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &pcy;&iecy;&rcy;&iecy;&zcy;&acy;&pcy;&icy;&scy;&icy;  <code>&lt;current&gt;</code>  .</span></p> </dd> <dt id="Documentation/git-merge-file.txt--q"><span data-i18n="5ce681666a15a41274346f65b8bcbf56f8e8170ac00706a44a09ee4d786a8609/cd" data-source="-q" onmousemove="i18n(this)">-q</span></dt> <dd> <p><span data-i18n="ff08d779dd316e5923cb03ebe4ac5bd11f1f130cd6d5ff732ed86bffe16d6a3c/03" data-source="Quiet; do not warn about conflicts." onmousemove="i18n(this)">&Tcy;&icy;&khcy;&icy;&jcy;; &ncy;&iecy; &pcy;&rcy;&iecy;&dcy;&ucy;&pcy;&rcy;&iecy;&zhcy;&dcy;&acy;&tcy;&softcy; &ocy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy;&acy;&khcy;.</span></p> </dd> <dt id="Documentation/git-merge-file.txt---diff3"><span data-i18n="d74d5190fea49aa7f901276ad6c5d54c8257f4fdbb87b6e4908b91033f850f4b/86" data-source="--diff3" onmousemove="i18n(this)">--diff3</span></dt> <dd> <p><span data-i18n="3abe3c339c6ea9cc8b056a6219536166a21e7d7e3dc736166e89b796e8c3c765/46" data-source="Show conflicts in &amp;quot;diff3&amp;quot; style." onmousemove="i18n(this)">&Pcy;&ocy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&tcy;&softcy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy;&ycy; &vcy; &scy;&tcy;&icy;&lcy;&iecy;  &quot;diff3&quot; .</span></p> </dd> <dt id="Documentation/git-merge-file.txt---zdiff3"><span data-i18n="a62bae256f97f21900e3751d06c6f635fee77d0b06b55a0abaa899bdd2ea16bf/d1" data-source="--zdiff3" onmousemove="i18n(this)">--zdiff3</span></dt> <dd> <p><span data-i18n="20850a245a308953fb594acee523148bd17df6252b9500bc9f882d5b871d456f/03" data-source="Show conflicts in &amp;quot;zdiff3&amp;quot; style." onmousemove="i18n(this)">&Pcy;&ocy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&tcy;&softcy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy;&ycy; &vcy; &scy;&tcy;&icy;&lcy;&iecy;  &quot;zdiff3&quot; .</span></p> </dd> <dt id="Documentation/git-merge-file.txt---ours"><span data-i18n="f095625b4b5843255d2d62746f988ab17ba239db35dcc805e381f9c06c485e02/ec" data-source="--ours" onmousemove="i18n(this)">--ours</span></dt> <dt id="Documentation/git-merge-file.txt---theirs"><span data-i18n="40c0d0b85d63db14b31ceecbc1352ef98653b2455a324cec67a63f45b0dd8396/e4" data-source="--theirs" onmousemove="i18n(this)">--theirs</span></dt> <dt id="Documentation/git-merge-file.txt---union"><span data-i18n="07f0019481868701ed40926eb28da7e9a255b571b44aae6d4128e0338c26febb/4d" data-source="--union" onmousemove="i18n(this)">--union</span></dt> <dd> <p><span data-i18n="0fff74282a7d5f4675117887d8e3e936309ef05ae66bb137c73029fcce945ced/cb" data-source="Instead of leaving conflicts in the file, resolve conflicts favouring our (or their or both) side of the lines." onmousemove="i18n(this)">&Vcy;&mcy;&iecy;&scy;&tcy;&ocy; &tcy;&ocy;&gcy;&ocy;, &chcy;&tcy;&ocy;&bcy;&ycy; &ocy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&tcy;&softcy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy;&ycy; &vcy; &fcy;&acy;&jcy;&lcy;&iecy;, &rcy;&acy;&zcy;&rcy;&iecy;&shcy;&acy;&jcy;&tcy;&iecy; &kcy;&ocy;&ncy;&fcy;&lcy;&icy;&kcy;&tcy;&ycy; &vcy; &pcy;&ocy;&lcy;&softcy;&zcy;&ucy; &ncy;&acy;&shcy;&iecy;&jcy; (&icy;&lcy;&icy; &icy;&khcy;, &icy;&lcy;&icy; &ocy;&bcy;&iecy;&icy;&khcy;) &scy;&tcy;&ocy;&rcy;&ocy;&ncy; &scy;&tcy;&rcy;&ocy;&kcy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_examples"><span data-i18n="e68ee04dff59551b7d1ae07a2f8a00dc61d841628948da3d2781630706a05e92/38" data-source="Examples" onmousemove="i18n(this)">Examples</span></h2> <div> <div> <dl> <dt id="Documentation/git-merge-file.txt-codegitmerge-fileREADMEmyREADMEREADMEupstreamcode"> <code>git merge-file README.my README README.upstream</code> </dt> <dd> <p><span data-i18n="2e87d54dd25dfd6326c018a4bea19ed18ff490f30abdd69440d2a23fd06f4661/74" data-source="combines the changes of README.my and README.upstream since README, tries to merge them and writes the result into README.my." onmousemove="i18n(this)">&ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&yacy;&iecy;&tcy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy; README.my &icy; README.upstream &scy; &mcy;&ocy;&mcy;&iecy;&ncy;&tcy;&acy; README, &pcy;&ycy;&tcy;&acy;&iecy;&tcy;&scy;&yacy; &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&icy;&tcy;&softcy; &icy;&khcy; &icy; &zcy;&acy;&pcy;&icy;&scy;&ycy;&vcy;&acy;&iecy;&tcy; &rcy;&iecy;&zcy;&ucy;&lcy;&softcy;&tcy;&acy;&tcy; &vcy; README.my.</span></p> </dd> <dt id="Documentation/git-merge-file.txt-codegitmerge-file-La-Lb-Lctmpa123tmpb234tmpc345code"> <code>git merge-file -L a -L b -L c tmp/a123 tmp/b234 tmp/c345</code> </dt> <dd> <p><span data-i18n="6c4948a71d4f479d22c9873581ae71f4985e9bc252bc813de8ae628b44156212/16" data-source="merges tmp/a123 and tmp/c345 with the base tmp/b234, but uses labels &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;c&lt;/code&gt; instead of &lt;code&gt;tmp/a123&lt;/code&gt; and &lt;code&gt;tmp/c345&lt;/code&gt;." onmousemove="i18n(this)">&ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&yacy;&iecy;&tcy; tmp/a123 &icy; tmp/c345 &scy; &bcy;&acy;&zcy;&ocy;&vcy;&ycy;&mcy; tmp/b234, &ncy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy; &mcy;&iecy;&tcy;&kcy;&icy;  <code>a</code>  &icy;  <code>c</code>  &vcy;&mcy;&iecy;&scy;&tcy;&ocy;  <code>tmp/a123</code>  &icy;  <code>tmp/c345</code>  .</span></p> </dd> <dt id="Documentation/git-merge-file.txt-codegitmerge-file-p--object-idabc1234def567890abcdcode"> <code>git merge-file -p --object-id abc1234 def567 890abcd</code> </dt> <dd> <p><span data-i18n="f83f1cd9e968bd56f25cc0ca6b6737eb9ce2c47fbf2e327ee41c147b7ab2abc7/72" data-source="combines the changes of the blob abc1234 and 890abcd since def567, tries to merge them and writes the result to standard output" onmousemove="i18n(this)">&ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&yacy;&iecy;&tcy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy; blob abc1234 &icy; 890abcd &ncy;&acy;&chcy;&icy;&ncy;&acy;&yacy; &scy; def567, &pcy;&ycy;&tcy;&acy;&iecy;&tcy;&scy;&yacy; &ocy;&bcy;&hardcy;&iecy;&dcy;&icy;&ncy;&icy;&tcy;&softcy; &icy;&khcy; &icy; &zcy;&acy;&pcy;&icy;&scy;&ycy;&vcy;&acy;&iecy;&tcy; &rcy;&iecy;&zcy;&ucy;&lcy;&softcy;&tcy;&acy;&tcy; &vcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&jcy; &vcy;&ycy;&vcy;&ocy;&dcy;</span></p> </dd> </dl> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-merge-file">https://git-scm.com/docs/git-merge-file</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge-index.html">
+                            git merge-index                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge-one-file.html">
+                            git merge-one-file                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge-tree.html">
+                            git merge-tree                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-mergetool.html">
+                            git mergetool                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-mktag.html">
+                            git mktag                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-mktree.html">
+                            git mktree                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-multi-pack-index.html">
+                            git multi-pack-index                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="3777011170"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-merge-file.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

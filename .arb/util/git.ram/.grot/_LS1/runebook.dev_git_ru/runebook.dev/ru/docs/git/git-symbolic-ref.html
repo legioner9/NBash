@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:17:09 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git symbolic-ref</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Plumbing_Commands">
+                                Plumbing Commands                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="7a2f918fe166761fb33826692ed162b706150b0d08806065bff9ff5538138bfe/31" data-source="git-symbolic-ref" onmousemove="i18n(this)">git-symbolic-ref</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="d1ceb49b888cc654e4636dd58cc82a2cdedb89f08361fbfdf2bfe8929b5dbe9d/88" data-source="git-symbolic-ref - Read, modify and delete symbolic refs" onmousemove="i18n(this)">git-symbolic-ref &mdash; &CHcy;&tcy;&iecy;&ncy;&icy;&iecy;, &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&iecy; &icy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&icy;&iecy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&khcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git symbolic-ref <span class="hljs-selector-attr">[-m &lt;reason&gt;]</span> &lt;name&gt; &lt;ref&gt;
+git symbolic-ref <span class="hljs-selector-attr">[-q]</span> <span class="hljs-selector-attr">[--short]</span> <span class="hljs-selector-attr">[--no-recurse]</span> &lt;name&gt;
+git symbolic-ref <span class="hljs-attr">--delete</span> <span class="hljs-selector-attr">[-q]</span> &lt;name&gt;</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="874b4890672162a1f1ae5c9dfeb66e2f97ab9a1169c49803bcbd9b5b3aad3882/55" data-source="Given one argument, reads which branch head the given symbolic ref refers to and outputs its path, relative to the &lt;code&gt;.git/&lt;/code&gt; directory. Typically you would give &lt;code&gt;HEAD&lt;/code&gt; as the &amp;lt;name&amp;gt; argument to see which branch your working tree is on." onmousemove="i18n(this)">&Ucy;&chcy;&icy;&tcy;&ycy;&vcy;&acy;&yacy; &ocy;&dcy;&icy;&ncy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;, &scy;&chcy;&icy;&tcy;&ycy;&vcy;&acy;&iecy;&tcy;, &ncy;&acy; &kcy;&acy;&kcy;&ucy;&yucy; &gcy;&ocy;&lcy;&ocy;&vcy;&ucy; &vcy;&iecy;&tcy;&kcy;&icy; &scy;&scy;&ycy;&lcy;&acy;&iecy;&tcy;&scy;&yacy; &dcy;&acy;&ncy;&ncy;&acy;&yacy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&acy;&yacy; &scy;&scy;&ycy;&lcy;&kcy;&acy;, &icy; &vcy;&ycy;&vcy;&ocy;&dcy;&icy;&tcy; &iecy;&iecy; &pcy;&ucy;&tcy;&softcy; &ocy;&tcy;&ncy;&ocy;&scy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&acy;  <code>.git/</code> . &Ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &vcy;&ycy; &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy;&iecy;  <code>HEAD</code>  &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy; &lt;name&gt;, &chcy;&tcy;&ocy;&bcy;&ycy; &ucy;&zcy;&ncy;&acy;&tcy;&softcy;, &vcy; &kcy;&acy;&kcy;&ocy;&jcy; &vcy;&iecy;&tcy;&vcy;&icy; &ncy;&acy;&khcy;&ocy;&dcy;&icy;&tcy;&scy;&yacy; &vcy;&acy;&shcy;&iecy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&iecy; &dcy;&iecy;&rcy;&iecy;&vcy;&ocy;.</span></p> <p><span data-i18n="e8f057370a79c57af8cd8d594d4191d1596b201a3248e780462a7345f2740291/54" data-source="Given two arguments, creates or updates a symbolic ref &amp;lt;name&amp;gt; to point at the given branch &amp;lt;ref&amp;gt;." onmousemove="i18n(this)">&Ucy;&chcy;&icy;&tcy;&ycy;&vcy;&acy;&yacy; &dcy;&vcy;&acy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy;, &scy;&ocy;&zcy;&dcy;&acy;&iecy;&tcy; &icy;&lcy;&icy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&yacy;&iecy;&tcy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&ucy;&yucy; &scy;&scy;&ycy;&lcy;&kcy;&ucy; &lt;name&gt;, &chcy;&tcy;&ocy;&bcy;&ycy; &ucy;&kcy;&acy;&zcy;&acy;&tcy;&softcy; &ncy;&acy; &dcy;&acy;&ncy;&ncy;&ucy;&yucy; &vcy;&iecy;&tcy;&vcy;&softcy; &lt;ref&gt;.</span></p> <p><span data-i18n="d1152fb32969edf8bf91dba43894c5941c827c6ccde3aedb1fbbe013477eb9a5/3b" data-source="Given &lt;code&gt;--delete&lt;/code&gt; and an additional argument, deletes the given symbolic ref." onmousemove="i18n(this)">&Ucy;&chcy;&icy;&tcy;&ycy;&vcy;&acy;&yacy;  <code>--delete</code>  &icy; &dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&jcy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;, &ucy;&dcy;&acy;&lcy;&yacy;&iecy;&tcy; &dcy;&acy;&ncy;&ncy;&ucy;&yucy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&ucy;&yucy; &scy;&scy;&ycy;&lcy;&kcy;&ucy;.</span></p> <p><span data-i18n="0b733d4f0d97b9f6ada074c6097860f4af880cc42cf53fd6144b8564d3f8e4d4/c4" data-source="A symbolic ref is a regular file that stores a string that begins with &lt;code&gt;ref: refs/&lt;/code&gt;. For example, your &lt;code&gt;.git/HEAD&lt;/code&gt; is a regular file whose content is &lt;code&gt;ref: refs/heads/master&lt;/code&gt;." onmousemove="i18n(this)">&Scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&acy;&yacy; &scy;&scy;&ycy;&lcy;&kcy;&acy; &mdash; &ecy;&tcy;&ocy; &ocy;&bcy;&ycy;&chcy;&ncy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy;, &vcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&mcy; &khcy;&rcy;&acy;&ncy;&icy;&tcy;&scy;&yacy; &scy;&tcy;&rcy;&ocy;&kcy;&acy;, &ncy;&acy;&chcy;&icy;&ncy;&acy;&yucy;&shchcy;&acy;&yacy;&scy;&yacy; &scy;  <code>ref: refs/</code> . &Ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &vcy;&acy;&shcy;  <code>.git/HEAD</code>  &mdash; &ecy;&tcy;&ocy; &ocy;&bcy;&ycy;&chcy;&ncy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy; &scy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&mcy;&ycy;&mcy;  <code>ref: refs/heads/master</code> .</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-symbolic-ref.txt--d"><span data-i18n="50e09407a18bedd64baf0b99825a8178d7446731615b85452ea6b99573469dcc/b1" data-source="-d" onmousemove="i18n(this)">-d</span></dt> <dt id="Documentation/git-symbolic-ref.txt---delete"><span data-i18n="c9c4fc4dd65bbbb4c4f46d1de6e0791dbff867bd9880040eb5fc4bf825f9c0e6/a0" data-source="--delete" onmousemove="i18n(this)">--delete</span></dt> <dd> <p><span data-i18n="590e02718899b4f0aedbae8c7b8ebe0ef461729f77900ccc97df6b47181793e1/e6" data-source="Delete the symbolic ref &amp;lt;name&amp;gt;." onmousemove="i18n(this)">&Ucy;&dcy;&acy;&lcy;&icy;&tcy;&iecy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&ucy;&yucy; &scy;&scy;&ycy;&lcy;&kcy;&ucy; &lt;&icy;&mcy;&yacy;&gt;.</span></p> </dd> <dt id="Documentation/git-symbolic-ref.txt--q"><span data-i18n="5ce681666a15a41274346f65b8bcbf56f8e8170ac00706a44a09ee4d786a8609/cd" data-source="-q" onmousemove="i18n(this)">-q</span></dt> <dt id="Documentation/git-symbolic-ref.txt---quiet"><span data-i18n="b00818cdc507640687732769ee1cb501db377927ee76d03df23978bd0d706888/e2" data-source="--quiet" onmousemove="i18n(this)">--quiet</span></dt> <dd> <p><span data-i18n="5730b3f2c0543a9bbeed50f31e1fbacbb308bba4f01a7b5178c188e2349ee163/dc" data-source="Do not issue an error message if the &amp;lt;name&amp;gt; is not a symbolic ref but a detached HEAD; instead exit with non-zero status silently." onmousemove="i18n(this)">&Ncy;&iecy; &vcy;&ycy;&dcy;&acy;&vcy;&acy;&jcy;&tcy;&iecy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &ocy;&bcy; &ocy;&shcy;&icy;&bcy;&kcy;&iecy;, &iecy;&scy;&lcy;&icy; &lt;&icy;&mcy;&yacy;&gt; &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &ncy;&iecy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&jcy; &scy;&scy;&ycy;&lcy;&kcy;&ocy;&jcy;, &acy; &ocy;&tcy;&dcy;&iecy;&lcy;&softcy;&ncy;&ycy;&mcy; HEAD; &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &ecy;&tcy;&ocy;&gcy;&ocy; &vcy;&ycy;&jcy;&dcy;&icy;&tcy;&iecy; &scy; &ncy;&iecy;&ncy;&ucy;&lcy;&iecy;&vcy;&ycy;&mcy; &scy;&tcy;&acy;&tcy;&ucy;&scy;&ocy;&mcy; &mcy;&ocy;&lcy;&chcy;&acy;.</span></p> </dd> <dt id="Documentation/git-symbolic-ref.txt---short"><span data-i18n="a11f889025503a04118ae5dc2b0f8932c941b3512e196aad83587e365c697ffe/2e" data-source="--short" onmousemove="i18n(this)">--short</span></dt> <dd> <p><span data-i18n="20e6f2fabdefaaf4f8b7270042cb550599bf964d1baeb41d0f509c832702c90e/a1" data-source="When showing the value of &amp;lt;name&amp;gt; as a symbolic ref, try to shorten the value, e.g. from &lt;code&gt;refs/heads/master&lt;/code&gt; to &lt;code&gt;master&lt;/code&gt;." onmousemove="i18n(this)">&Pcy;&rcy;&icy; &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&iecy;&ncy;&icy;&icy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy; &lt;name&gt; &vcy; &vcy;&icy;&dcy;&iecy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&jcy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &pcy;&ocy;&pcy;&rcy;&ocy;&bcy;&ucy;&jcy;&tcy;&iecy; &scy;&ocy;&kcy;&rcy;&acy;&tcy;&icy;&tcy;&softcy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy;, &ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &scy;  <code>refs/heads/master</code>  &ncy;&acy;  <code>master</code> .</span></p> </dd> <dt id="Documentation/git-symbolic-ref.txt---recurse"><span data-i18n="fc6ea6f53d879dee318c1f5a251976ec765f51310fbbaa30b1e32e0f96437144/0b" data-source="--recurse" onmousemove="i18n(this)">--recurse</span></dt> <dt id="Documentation/git-symbolic-ref.txt---no-recurse"><span data-i18n="455c831af305543513fb0ace92027decdd18116ad6e66f917a11862e731e3478/6c" data-source="--no-recurse" onmousemove="i18n(this)">--no-recurse</span></dt> <dd> <p><span data-i18n="f1cbd6398b863bf262ac1e90185a9cb638d634063ad6c6046948a88a916894b4/2f" data-source="When showing the value of &amp;lt;name&amp;gt; as a symbolic ref, if &amp;lt;name&amp;gt; refers to another symbolic ref, follow such a chain of symbolic refs until the result no longer points at a symbolic ref (&lt;code&gt;--recurse&lt;/code&gt;, which is the default). &lt;code&gt;--no-recurse&lt;/code&gt; stops after dereferencing only a single level of symbolic ref." onmousemove="i18n(this)">&Pcy;&rcy;&icy; &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&iecy;&ncy;&icy;&icy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy; &lt;name&gt; &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&jcy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &iecy;&scy;&lcy;&icy; &lt;name&gt; &scy;&scy;&ycy;&lcy;&acy;&iecy;&tcy;&scy;&yacy; &ncy;&acy; &dcy;&rcy;&ucy;&gcy;&ucy;&yucy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&ucy;&yucy; &scy;&scy;&ycy;&lcy;&kcy;&ucy;, &scy;&lcy;&iecy;&dcy;&ucy;&jcy;&tcy;&iecy; &tcy;&acy;&kcy;&ocy;&jcy; &tscy;&iecy;&pcy;&ocy;&chcy;&kcy;&iecy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&khcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy; &dcy;&ocy; &tcy;&iecy;&khcy; &pcy;&ocy;&rcy;, &pcy;&ocy;&kcy;&acy; &rcy;&iecy;&zcy;&ucy;&lcy;&softcy;&tcy;&acy;&tcy; &bcy;&ocy;&lcy;&softcy;&shcy;&iecy; &ncy;&iecy; &bcy;&ucy;&dcy;&iecy;&tcy; &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&tcy;&softcy; &ncy;&acy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&ucy;&yucy; &scy;&scy;&ycy;&lcy;&kcy;&ucy; (  <code>--recurse</code>  , &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;).  <code>--no-recurse</code>  &ocy;&scy;&tcy;&acy;&ncy;&acy;&vcy;&lcy;&icy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &pcy;&ocy;&scy;&lcy;&iecy; &rcy;&acy;&zcy;&ycy;&mcy;&iecy;&ncy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &ucy;&rcy;&ocy;&vcy;&ncy;&yacy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&softcy;&ncy;&ocy;&jcy; &scy;&scy;&ycy;&lcy;&kcy;&icy;.</span></p> </dd> <dt id="Documentation/git-symbolic-ref.txt--m"><span data-i18n="c4e153afb4aeaa5818fb08325ebff59f883a0482006aa3cc1c17c9b393e54efa/11" data-source="-m" onmousemove="i18n(this)">-m</span></dt> <dd> <p><span data-i18n="d5feacc6f2dc11ca6f30a5aa455c2634c2e754d90abf73c3207df7a7fea7176f/5c" data-source="Update the reflog for &amp;lt;name&amp;gt; with &amp;lt;reason&amp;gt;. This is valid only when creating or updating a symbolic ref." onmousemove="i18n(this)">&Ocy;&bcy;&ncy;&ocy;&vcy;&icy;&tcy;&iecy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy; &dcy;&lcy;&yacy; &lt;&icy;&mcy;&yacy;&gt;, &ucy;&kcy;&acy;&zcy;&acy;&vcy; &lt;&pcy;&rcy;&icy;&chcy;&icy;&ncy;&acy;&gt;. &Ecy;&tcy;&ocy; &dcy;&iecy;&jcy;&scy;&tcy;&vcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &pcy;&rcy;&icy; &scy;&ocy;&zcy;&dcy;&acy;&ncy;&icy;&icy; &icy;&lcy;&icy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&icy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&jcy; &scy;&scy;&ycy;&lcy;&kcy;&icy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_notes"><span data-i18n="8a7525b1492fb84833f5c4a69b30f4bfbb134f9b666b61a2c1872d63d234c085/bb" data-source="Notes" onmousemove="i18n(this)">Notes</span></h2> <div> <p><span data-i18n="caf6cb30777443cdfffb9c19fae15320d3ff2c16d7a1a03848d47a53412b9590/b2" data-source="In the past, &lt;code&gt;.git/HEAD&lt;/code&gt; was a symbolic link pointing at &lt;code&gt;refs/heads/master&lt;/code&gt;. When we wanted to switch to another branch, we did &lt;code&gt;ln -sf refs/heads/newbranch .git/HEAD&lt;/code&gt;, and when we wanted to find out which branch we are on, we did &lt;code&gt;readlink .git/HEAD&lt;/code&gt;. But symbolic links are not entirely portable, so they are now deprecated and symbolic refs (as described above) are used by default." onmousemove="i18n(this)">&Rcy;&acy;&ncy;&softcy;&shcy;&iecy;  <code>.git/HEAD</code>  &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&lcy; &scy;&ocy;&bcy;&ocy;&jcy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&ucy;&yucy; &scy;&scy;&ycy;&lcy;&kcy;&ucy;, &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&yucy;&shchcy;&ucy;&yucy; &ncy;&acy;  <code>refs/heads/master</code> . &Kcy;&ocy;&gcy;&dcy;&acy; &mcy;&ycy; &khcy;&ocy;&tcy;&iecy;&lcy;&icy; &pcy;&iecy;&rcy;&iecy;&kcy;&lcy;&yucy;&chcy;&icy;&tcy;&softcy;&scy;&yacy; &ncy;&acy; &dcy;&rcy;&ucy;&gcy;&ucy;&yucy; &vcy;&iecy;&tcy;&kcy;&ucy;, &mcy;&ycy; &dcy;&iecy;&lcy;&acy;&lcy;&icy;  <code>ln -sf refs/heads/newbranch .git/HEAD</code> , &acy; &kcy;&ocy;&gcy;&dcy;&acy; &mcy;&ycy; &khcy;&ocy;&tcy;&iecy;&lcy;&icy; &ucy;&zcy;&ncy;&acy;&tcy;&softcy;, &ncy;&acy; &kcy;&acy;&kcy;&ocy;&jcy; &vcy;&iecy;&tcy;&kcy;&iecy; &mcy;&ycy; &ncy;&acy;&khcy;&ocy;&dcy;&icy;&mcy;&scy;&yacy;, &mcy;&ycy; &dcy;&iecy;&lcy;&acy;&lcy;&icy;  <code>readlink .git/HEAD</code> . &Ncy;&ocy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &ncy;&iecy; &pcy;&ocy;&lcy;&ncy;&ocy;&scy;&tcy;&softcy;&yucy; &pcy;&iecy;&rcy;&iecy;&ncy;&ocy;&scy;&icy;&mcy;&ycy;, &pcy;&ocy;&ecy;&tcy;&ocy;&mcy;&ucy; &tcy;&iecy;&pcy;&iecy;&rcy;&softcy; &ocy;&ncy;&icy; &ucy;&scy;&tcy;&acy;&rcy;&iecy;&lcy;&icy;, &acy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy; (&kcy;&acy;&kcy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&ocy; &vcy;&ycy;&shcy;&iecy;) &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yucy;&tcy;&scy;&yacy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;.</span></p> <p><span data-i18n="302100408bf06accf3333559d8a25e0b4be1dc30414b7f176441622467c0086b/eb" data-source="&lt;code&gt;git symbolic-ref&lt;/code&gt; will exit with status 0 if the contents of the symbolic ref were printed correctly, with status 1 if the requested name is not a symbolic ref, or 128 if another error occurs." onmousemove="i18n(this)"><code>git symbolic-ref</code>  &vcy;&ycy;&jcy;&dcy;&iecy;&tcy; &scy;&ocy; &scy;&tcy;&acy;&tcy;&ucy;&scy;&ocy;&mcy; 0, &iecy;&scy;&lcy;&icy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&mcy;&ocy;&iecy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&jcy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &bcy;&ycy;&lcy;&ocy; &ncy;&acy;&pcy;&iecy;&chcy;&acy;&tcy;&acy;&ncy;&ocy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&softcy;&ncy;&ocy;, &scy;&ocy; &scy;&tcy;&acy;&tcy;&ucy;&scy;&ocy;&mcy; 1, &iecy;&scy;&lcy;&icy; &zcy;&acy;&pcy;&rcy;&ocy;&shcy;&iecy;&ncy;&ncy;&ocy;&iecy; &icy;&mcy;&yacy; &ncy;&iecy; &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&jcy; &scy;&scy;&ycy;&lcy;&kcy;&ocy;&jcy;, &icy;&lcy;&icy; &scy;&ocy; &scy;&tcy;&acy;&tcy;&ucy;&scy;&ocy;&mcy; 128, &iecy;&scy;&lcy;&icy; &pcy;&rcy;&ocy;&icy;&zcy;&ocy;&jcy;&dcy;&iecy;&tcy; &dcy;&rcy;&ucy;&gcy;&acy;&yacy; &ocy;&shcy;&icy;&bcy;&kcy;&acy;.</span></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-symbolic-ref">https://git-scm.com/docs/git-symbolic-ref</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-tag.html">
+                            git tag                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-unpack-file.html">
+                            git unpack-file                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-unpack-objects.html">
+                            git unpack-objects                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-update-index.html">
+                            git update-index                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-update-ref.html">
+                            git update-ref                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-update-server-info.html">
+                            git update-server-info                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-upload-archive.html">
+                            git upload-archive                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-symbolic-ref.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

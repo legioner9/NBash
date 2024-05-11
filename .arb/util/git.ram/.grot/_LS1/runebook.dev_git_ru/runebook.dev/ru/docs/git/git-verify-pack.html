@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-10 06:08:47 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git verify-pack</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Plumbing_Commands">
+                                Plumbing Commands                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="7b68c81ab0a97dc2abd05a54e4f3067c2b31ed97831ee94f0bb4c4662a427a93/1c" data-source="git-verify-pack" onmousemove="i18n(this)">git-verify-pack</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="bd28ffeac63934872114954619588d8da820100fa7449d6bec21c2ee75596fb6/0b" data-source="git-verify-pack - Validate packed Git archive files" onmousemove="i18n(this)">git-verify-pack &mdash; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&icy;&tcy;&softcy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&iecy; &acy;&rcy;&khcy;&icy;&vcy;&ncy;&ycy;&iecy; &fcy;&acy;&jcy;&lcy;&ycy;  Git .</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git verify-pack <span class="hljs-selector-attr">[-v | --verbose]</span> <span class="hljs-selector-attr">[-s | --stat-only]</span> <span class="hljs-selector-attr">[--]</span> &lt;pack&gt;<span class="hljs-selector-class">.idx</span>&hellip;&ZeroWidthSpace;</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="32f7547b64254051c173536922bb32af6ba479132c69d6db395233489d028af0/cb" data-source="Reads given idx file for packed Git archive created with the &lt;code&gt;git pack-objects&lt;/code&gt; command and verifies the idx file and the corresponding pack file." onmousemove="i18n(this)">&Scy;&chcy;&icy;&tcy;&ycy;&vcy;&acy;&iecy;&tcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy; idx &dcy;&lcy;&yacy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &acy;&rcy;&khcy;&icy;&vcy;&acy;  Git , &scy;&ocy;&zcy;&dcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ycy;  <code>git pack-objects</code> , &icy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&yacy;&iecy;&tcy; &fcy;&acy;&jcy;&lcy; idx &icy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&jcy; &fcy;&acy;&jcy;&lcy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-verify-pack.txt-ltpackgtidx82308203"><span data-i18n="8d4845df61a70637eedf5de1c6dc54854e7881b511d61a4545dff412c6751cb3/e6" data-source="&amp;lt;pack&amp;gt;.idx &amp;hellip;" onmousemove="i18n(this)">&lt;pack&gt;.idx &hellip;</span></dt> <dd> <p><span data-i18n="fa5ca70d36f9d31040bf82abc4244e530763d84a94a5dffec5e5eec9d084417c/10" data-source="The idx files to verify." onmousemove="i18n(this)">&Fcy;&acy;&jcy;&lcy;&ycy; idx &dcy;&lcy;&yacy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&icy;.</span></p> </dd> <dt id="Documentation/git-verify-pack.txt--v"><span data-i18n="81c36ccd44ef18baabad6e2d87038b72d606263bd6a3432b964a872023654fff/7c" data-source="-v" onmousemove="i18n(this)">-v</span></dt> <dt id="Documentation/git-verify-pack.txt---verbose"><span data-i18n="bff1e8d3adf9e53481e9b21876983b359dc8a231bf7ebadde36a42dd7bd4db5c/93" data-source="--verbose" onmousemove="i18n(this)">--verbose</span></dt> <dd> <p><span data-i18n="0372c82a6eea3f795a127bc296899f5f19441b56a59604fadaa021742028cefa/3e" data-source="After verifying the pack, show the list of objects contained in the pack and a histogram of delta chain length." onmousemove="i18n(this)">&Pcy;&ocy;&scy;&lcy;&iecy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&kcy;&icy; &pcy;&acy;&kcy;&iecy;&tcy;&acy; &pcy;&ocy;&kcy;&acy;&zhcy;&icy;&tcy;&iecy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;, &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&shchcy;&icy;&khcy;&scy;&yacy; &vcy; &pcy;&acy;&kcy;&iecy;&tcy;&iecy;, &icy; &gcy;&icy;&scy;&tcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ucy; &dcy;&lcy;&icy;&ncy;&ycy; &dcy;&iecy;&lcy;&softcy;&tcy;&acy;-&tscy;&iecy;&pcy;&icy;.</span></p> </dd> <dt id="Documentation/git-verify-pack.txt--s"><span data-i18n="922e17b4edd60ff0277a57db2cdf26a407350a6ffbd4129318f293841d289609/7a" data-source="-s" onmousemove="i18n(this)">-s</span></dt> <dt id="Documentation/git-verify-pack.txt---stat-only"><span data-i18n="5a0ec3999158dd77113e3419db24548c78831c9716806d993cab6dd2cd38ef8d/a4" data-source="--stat-only" onmousemove="i18n(this)">--stat-only</span></dt> <dd> <p><span data-i18n="ab6b5d9fd485be53e0c3a64ffbb18a38098f8e80ef55f605775d439c4f8f625b/30" data-source="Do not verify the pack contents; only show the histogram of delta chain length. With &lt;code&gt;--verbose&lt;/code&gt;, the list of objects is also shown." onmousemove="i18n(this)">&Ncy;&iecy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&yacy;&jcy;&tcy;&iecy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&mcy;&ocy;&iecy; &ucy;&pcy;&acy;&kcy;&ocy;&vcy;&kcy;&icy;; &pcy;&ocy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&tcy;&softcy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &gcy;&icy;&scy;&tcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ucy; &dcy;&lcy;&icy;&ncy;&ycy; &dcy;&iecy;&lcy;&softcy;&tcy;&acy;-&tscy;&iecy;&pcy;&icy;. &Vcy;  <code>--verbose</code>  &tcy;&acy;&kcy;&zhcy;&iecy; &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&acy;&iecy;&tcy;&scy;&yacy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;.</span></p> </dd> <dt id="Documentation/git-verify-pack.txt---"><span data-i18n="d8156bae0c4243d3742fc4e9774d8aceabe0410249d720c855f98afc88ff846c/71" data-source="--" onmousemove="i18n(this)">--</span></dt> <dd> <p><span data-i18n="0ea53dd4a1fb9384edae11ed9c03b5411457806a0ae358d444eb80e48fbc0c0c/07" data-source="Do not interpret any more arguments as options." onmousemove="i18n(this)">&Ncy;&iecy; &icy;&ncy;&tcy;&iecy;&rcy;&pcy;&rcy;&iecy;&tcy;&icy;&rcy;&ucy;&jcy;&tcy;&iecy; &dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&iecy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ycy; &kcy;&acy;&kcy; &vcy;&acy;&rcy;&icy;&acy;&ncy;&tcy;&ycy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_output_format"><span data-i18n="93c53d3745136c4e4e142811cdff560c8dfb4b9c4c875b7a8687dda559f688e1/54" data-source="Output format" onmousemove="i18n(this)">Output format</span></h2> <div> <p><span data-i18n="ad70600d18644eecc8016ee3619a0571cc1dd74eb5e463bc150aec462b88fd48/af" data-source="When specifying the -v option the format used is:" onmousemove="i18n(this)">&Pcy;&rcy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&icy;&icy; &ocy;&pcy;&tscy;&icy;&icy; -v &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&jcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;:</span></p> <div> <div> <pre class="hljs language-wasm">SHA<span class="hljs-number">-1</span> <span class="hljs-keyword">type</span> size size-in-packfile <span class="hljs-keyword">offset</span>-in-packfile</pre> </div> </div> <p><span data-i18n="879f7dee5981e4d2a2839acf4d98ac453f0717be257c17aacea52f16b92de2e1/f7" data-source="for objects that are not deltified in the pack, and" onmousemove="i18n(this)">&dcy;&lcy;&yacy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ncy;&iecy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&iecy;&ncy;&ycy; &vcy; &pcy;&acy;&kcy;&iecy;&tcy;&iecy;, &icy;</span></p> <div> <div> <pre class="hljs language-wasm">SHA<span class="hljs-number">-1</span> <span class="hljs-keyword">type</span> size size-in-packfile <span class="hljs-keyword">offset</span>-in-packfile depth base-SHA<span class="hljs-number">-1</span></pre> </div> </div> <p><span data-i18n="5e37296fe87725dd3ea791e71b2a72e1965e5c513082cf6e5fea276a8a2fe46f/cc" data-source="for objects that are deltified." onmousemove="i18n(this)">&dcy;&lcy;&yacy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &yacy;&vcy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy; &dcy;&iecy;&lcy;&softcy;&tcy;&icy;&fcy;&icy;&tscy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&mcy;&icy;.</span></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-verify-pack">https://git-scm.com/docs/git-verify-pack</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-verify-tag.html">
+                            git verify-tag                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-version.html">
+                            git version                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-web--browse.html">
+                            git web--browse                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-whatchanged.html">
+                            git whatchanged                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-worktree.html">
+                            git worktree                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-write-tree.html">
+                            git write-tree                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitattributes.html">
+                            gitattributes                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-verify-pack.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

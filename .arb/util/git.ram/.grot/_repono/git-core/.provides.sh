@@ -1,0 +1,23 @@
+# shell functions provides list
+cd_to_toplevel
+clear_local_git_env
+create_virtual_base
+die
+die_with_status
+get_author_ident_from_commit
+git_broken_path_fix
+git_dir_init
+git_editor
+git_pager
+is_absolute_path
+is_bare_repository
+parse_ident_from_commit
+peel_committish
+pick_ident_script
+require_clean_work_tree
+require_work_tree
+require_work_tree_exists
+sane_egrep
+sane_grep
+say
+set_reflog_action

@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:15:07 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git mailinfo</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="f2a94a8c7e779b0272eaac1b70164031df431bb582f18f472766829a679ad677/6b" data-source="git-mailinfo" onmousemove="i18n(this)">git-mailinfo</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="ffc9b021957323df277ba3309816a750688a0594694a617752643794510f8f7e/15" data-source="git-mailinfo - Extracts patch and authorship from a single e-mail message" onmousemove="i18n(this)">git-mailinfo &mdash; &icy;&zcy;&vcy;&lcy;&iecy;&kcy;&acy;&iecy;&tcy; &pcy;&acy;&tcy;&chcy; &icy; &acy;&vcy;&tcy;&ocy;&rcy;&scy;&tcy;&vcy;&ocy; &icy;&zcy; &ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy; &ecy;&lcy;&iecy;&kcy;&tcy;&rcy;&ocy;&ncy;&ncy;&ocy;&jcy; &pcy;&ocy;&chcy;&tcy;&ycy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git mailinfo <span class="hljs-selector-attr">[-k|-b]</span> <span class="hljs-selector-attr">[-u | --encoding=&lt;encoding&gt; | -n]</span>
+               <span class="hljs-selector-attr">[--[no-]</span>scissors] <span class="hljs-selector-attr">[--quoted-cr=&lt;action&gt;]</span>
+               &lt;msg&gt; &lt;patch&gt;</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="198a0583ef4d947f61263cbfc711b2ad534f12baf96a369759b3fe572be5611d/c4" data-source="Reads a single e-mail message from the standard input, and writes the commit log message in &amp;lt;msg&amp;gt; file, and the patches in &amp;lt;patch&amp;gt; file. The author name, e-mail and e-mail subject are written out to the standard output to be used by &lt;code&gt;git am&lt;/code&gt; to create a commit. It is usually not necessary to use this command directly. See &lt;a href=&quot;git-am&quot;&gt;git-am[1]&lt;/a&gt; instead." onmousemove="i18n(this)">&Scy;&chcy;&icy;&tcy;&ycy;&vcy;&acy;&iecy;&tcy; &ocy;&dcy;&ncy;&ocy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &ecy;&lcy;&iecy;&kcy;&tcy;&rcy;&ocy;&ncy;&ncy;&ocy;&jcy; &pcy;&ocy;&chcy;&tcy;&ycy; &icy;&zcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ocy;&gcy;&ocy; &vcy;&vcy;&ocy;&dcy;&acy; &icy; &zcy;&acy;&pcy;&icy;&scy;&ycy;&vcy;&acy;&iecy;&tcy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy; &vcy; &fcy;&acy;&jcy;&lcy; &lt;msg&gt;, &acy; &icy;&scy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy; - &vcy; &fcy;&acy;&jcy;&lcy; &lt;patch&gt;. &Icy;&mcy;&yacy; &acy;&vcy;&tcy;&ocy;&rcy;&acy;, &acy;&dcy;&rcy;&iecy;&scy; &ecy;&lcy;&iecy;&kcy;&tcy;&rcy;&ocy;&ncy;&ncy;&ocy;&jcy; &pcy;&ocy;&chcy;&tcy;&ycy; &icy; &tcy;&iecy;&mcy;&acy; &ecy;&lcy;&iecy;&kcy;&tcy;&rcy;&ocy;&ncy;&ncy;&ocy;&gcy;&ocy; &pcy;&icy;&scy;&softcy;&mcy;&acy; &vcy;&ycy;&vcy;&ocy;&dcy;&yacy;&tcy;&scy;&yacy; &vcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&jcy; &vcy;&ycy;&vcy;&ocy;&dcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &bcy;&ucy;&dcy;&iecy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;&scy;&yacy;  <code>git am</code>  &dcy;&lcy;&yacy; &scy;&ocy;&zcy;&dcy;&acy;&ncy;&icy;&yacy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy;. &Ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &ncy;&iecy;&tcy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ocy;&scy;&tcy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &ecy;&tcy;&ucy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ucy; &ncy;&acy;&pcy;&rcy;&yacy;&mcy;&ucy;&yucy;. &Vcy;&mcy;&iecy;&scy;&tcy;&ocy; &ecy;&tcy;&ocy;&gcy;&ocy; &scy;&mcy;.  <a href="git-am.html">git-am[1]</a> .</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-mailinfo.txt--k"><span data-i18n="2491456786e2f980156bb6d6932d5f25deea5b8b234c1a89766ff9280ab1f280/02" data-source="-k" onmousemove="i18n(this)">-k</span></dt> <dd> <p><span data-i18n="5f0616e9042a6bdef5afbbc7dd25ecea58364ddd94fdd8ff48546c44a12a469b/6f" data-source="Usually the program removes email cruft from the Subject: header line to extract the title line for the commit log message. This option prevents this munging, and is most useful when used to read back &lt;code&gt;git format-patch -k&lt;/code&gt; output." onmousemove="i18n(this)">&Ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&acy; &ucy;&dcy;&acy;&lcy;&yacy;&iecy;&tcy; &mcy;&ucy;&scy;&ocy;&rcy; &ecy;&lcy;&iecy;&kcy;&tcy;&rcy;&ocy;&ncy;&ncy;&ocy;&jcy; &pcy;&ocy;&chcy;&tcy;&ycy; &icy;&zcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&kcy;&acy; &laquo;&Tcy;&iecy;&mcy;&acy;:&raquo;, &chcy;&tcy;&ocy;&bcy;&ycy; &icy;&zcy;&vcy;&lcy;&iecy;&chcy;&softcy; &scy;&tcy;&rcy;&ocy;&kcy;&ucy; &zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&kcy;&acy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy;. &Ecy;&tcy;&acy; &ocy;&pcy;&tscy;&icy;&yacy; &pcy;&rcy;&iecy;&dcy;&ocy;&tcy;&vcy;&rcy;&acy;&shchcy;&acy;&iecy;&tcy; &pcy;&ocy;&dcy;&ocy;&bcy;&ncy;&ycy;&iecy; &icy;&scy;&kcy;&acy;&zhcy;&iecy;&ncy;&icy;&yacy; &icy; &ncy;&acy;&icy;&bcy;&ocy;&lcy;&iecy;&iecy; &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&acy; &pcy;&rcy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&icy; &dcy;&lcy;&yacy; &ocy;&bcy;&rcy;&acy;&tcy;&ncy;&ocy;&gcy;&ocy; &scy;&chcy;&icy;&tcy;&ycy;&vcy;&acy;&ncy;&icy;&yacy; &vcy;&ycy;&vcy;&ocy;&dcy;&acy;  <code>git format-patch -k</code> .</span></p> <p><span data-i18n="2917dc0bafbca148468d855a258ae7a248a5106b49f2fa046c27444661732a93/6d" data-source="Specifically, the following are removed until none of them remain:" onmousemove="i18n(this)">&Vcy; &chcy;&acy;&scy;&tcy;&ncy;&ocy;&scy;&tcy;&icy;, &ucy;&dcy;&acy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&iecy;, &pcy;&ocy;&kcy;&acy; &icy;&zcy; &ncy;&icy;&khcy; &ncy;&iecy; &ocy;&scy;&tcy;&acy;&ncy;&iecy;&tcy;&scy;&yacy;  none :</span></p> <div> <div> <div> <ul> <li> <p><span data-i18n="374f5f1a7ea0e874a5845a1130186b6960a193d70b64d325656e0af7f5664a1d/ce" data-source="Leading and trailing whitespace." onmousemove="i18n(this)">&Vcy;&iecy;&dcy;&ucy;&shchcy;&icy;&iecy; &icy; &kcy;&ocy;&ncy;&iecy;&chcy;&ncy;&ycy;&iecy; &pcy;&rcy;&ocy;&bcy;&iecy;&lcy;&ycy;.</span></p> </li> <li> <p><span data-i18n="83ada0be0359a3131d09c200f94e779b46939b35a0950f0131b700efbb923e31/ab" data-source="Leading &lt;code&gt;Re:&lt;/code&gt;, &lt;code&gt;re:&lt;/code&gt;, and &lt;code&gt;:&lt;/code&gt;." onmousemove="i18n(this)">&Vcy;&iecy;&dcy;&ucy;&shchcy;&icy;&iecy;  <code>Re:</code> ,  <code>re:</code>  &icy;  <code>:</code> .</span></p> </li> <li> <p><span data-i18n="3d52c721a713e51806f0cd75d2dfc13e24216610a8b3584e2c25f277e04339dc/c0" data-source="Leading bracketed strings (between &lt;code&gt;[&lt;/code&gt; and &lt;code&gt;]&lt;/code&gt;, usually &lt;code&gt;[PATCH]&lt;/code&gt;)." onmousemove="i18n(this)">&Vcy;&iecy;&dcy;&ucy;&shchcy;&icy;&iecy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &vcy; &kcy;&vcy;&acy;&dcy;&rcy;&acy;&tcy;&ncy;&ycy;&khcy; &scy;&kcy;&ocy;&bcy;&kcy;&acy;&khcy; (&mcy;&iecy;&zhcy;&dcy;&ucy;  <code>[</code>  &icy;  <code>]</code> , &ocy;&bcy;&ycy;&chcy;&ncy;&ocy;  <code>[PATCH]</code> ).</span></p> </li> </ul> </div> </div> </div> <p><span data-i18n="cf1f67c315bf16dd11d5616a8408d9c62ec4c75dd20baf596b290e5a7eec42a5/f1" data-source="Finally, runs of whitespace are normalized to a single ASCII space character." onmousemove="i18n(this)">&Ncy;&acy;&kcy;&ocy;&ncy;&iecy;&tscy;, &pcy;&rcy;&ocy;&bcy;&iecy;&lcy;&ycy; &ncy;&ocy;&rcy;&mcy;&acy;&lcy;&icy;&zcy;&ucy;&yucy;&tcy;&scy;&yacy; &dcy;&ocy; &ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&acy; &pcy;&rcy;&ocy;&bcy;&iecy;&lcy;&acy; ASCII.</span></p> </dd> <dt id="Documentation/git-mailinfo.txt--b"><span data-i18n="4fc0bdb51ffc8cfdcaaee067eb264b8a5c646176cf870be17c2e647fbb2cb7f4/f8" data-source="-b" onmousemove="i18n(this)">-b</span></dt> <dd> <p><span data-i18n="e39dac6c163eb8d3685d496c855d2f9556e2d70570a5f27ccf03ebae5eee46eb/ca" data-source="When -k is not in effect, all leading strings bracketed with &lt;code&gt;[&lt;/code&gt; and &lt;code&gt;]&lt;/code&gt; pairs are stripped. This option limits the stripping to only the pairs whose bracketed string contains the word &amp;quot;PATCH&amp;quot;." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy; -k &ncy;&iecy; &dcy;&iecy;&jcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy;, &vcy;&scy;&iecy; &vcy;&iecy;&dcy;&ucy;&shchcy;&icy;&iecy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;, &zcy;&acy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&ncy;&ycy;&iecy; &vcy; &kcy;&vcy;&acy;&dcy;&rcy;&acy;&tcy;&ncy;&ycy;&iecy; &scy;&kcy;&ocy;&bcy;&kcy;&icy; &pcy;&acy;&rcy;&acy;&mcy;&icy;  <code>[</code>  &icy;  <code>]</code> , &ucy;&dcy;&acy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy;. &Ecy;&tcy;&acy; &ocy;&pcy;&tscy;&icy;&yacy; &ocy;&gcy;&rcy;&acy;&ncy;&icy;&chcy;&icy;&vcy;&acy;&iecy;&tcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&icy;&iecy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &pcy;&acy;&rcy;&acy;&mcy;&icy;, &scy;&tcy;&rcy;&ocy;&kcy;&acy; &vcy; &kcy;&vcy;&acy;&dcy;&rcy;&acy;&tcy;&ncy;&ycy;&khcy; &scy;&kcy;&ocy;&bcy;&kcy;&acy;&khcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&khcy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&tcy; &scy;&lcy;&ocy;&vcy;&ocy;  &quot;PATCH&quot; .</span></p> </dd> <dt id="Documentation/git-mailinfo.txt--u"><span data-i18n="99f14531f2599afdb9ace38c18c10740fd29ca1bdcdb7d0460fd799001d567bd/0f" data-source="-u" onmousemove="i18n(this)">-u</span></dt> <dd> <p><span data-i18n="d9abbca9fcb6b949474aac7c32f6f4c78a5b9fc0dcf2efec981cbe79bec8a066/10" data-source="The commit log message, author name and author email are taken from the e-mail, and after minimally decoding MIME transfer encoding, re-coded in the charset specified by &lt;code&gt;i18n.commitEncoding&lt;/code&gt; (defaulting to UTF-8) by transliterating them. This used to be optional but now it is the default." onmousemove="i18n(this)">&Scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy;, &icy;&mcy;&yacy; &acy;&vcy;&tcy;&ocy;&rcy;&acy; &icy; &acy;&dcy;&rcy;&iecy;&scy; &ecy;&lcy;&iecy;&kcy;&tcy;&rcy;&ocy;&ncy;&ncy;&ocy;&jcy; &pcy;&ocy;&chcy;&tcy;&ycy; &acy;&vcy;&tcy;&ocy;&rcy;&acy; &bcy;&iecy;&rcy;&ucy;&tcy;&scy;&yacy; &icy;&zcy; &ecy;&lcy;&iecy;&kcy;&tcy;&rcy;&ocy;&ncy;&ncy;&ocy;&gcy;&ocy; &pcy;&icy;&scy;&softcy;&mcy;&acy; &icy; &pcy;&ocy;&scy;&lcy;&iecy; &mcy;&icy;&ncy;&icy;&mcy;&acy;&lcy;&softcy;&ncy;&ocy;&gcy;&ocy; &dcy;&iecy;&kcy;&ocy;&dcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&tcy;&ocy;&chcy;&ncy;&ocy;&jcy; &kcy;&ocy;&dcy;&icy;&rcy;&ocy;&vcy;&kcy;&icy; MIME &pcy;&iecy;&rcy;&iecy;&kcy;&ocy;&dcy;&icy;&rcy;&ucy;&yucy;&tcy;&scy;&yacy; &vcy; &kcy;&ocy;&dcy;&icy;&rcy;&ocy;&vcy;&kcy;&ucy;, &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ucy;&yucy;  <code>i18n.commitEncoding</code>  (&pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; UTF-8), &pcy;&ucy;&tcy;&iecy;&mcy; &tcy;&rcy;&acy;&ncy;&scy;&lcy;&icy;&tcy;&iecy;&rcy;&acy;&tscy;&icy;&icy;. &Rcy;&acy;&ncy;&softcy;&shcy;&iecy; &ecy;&tcy;&ocy; &bcy;&ycy;&lcy;&ocy; &ncy;&iecy;&ocy;&bcy;&yacy;&zcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;, &ncy;&ocy; &tcy;&iecy;&pcy;&iecy;&rcy;&softcy; &ecy;&tcy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;.</span></p> <p><span data-i18n="60f10946ecbdcaa18bfd8e677bfc79656b3f9d3c52ea2eb3cd4f1dc3e975aa7e/54" data-source="Note that the patch is always used as-is without charset conversion, even with this flag." onmousemove="i18n(this)">&Ocy;&bcy;&rcy;&acy;&tcy;&icy;&tcy;&iecy; &vcy;&ncy;&icy;&mcy;&acy;&ncy;&icy;&iecy;, &chcy;&tcy;&ocy; &pcy;&acy;&tcy;&chcy; &vcy;&scy;&iecy;&gcy;&dcy;&acy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &kcy;&acy;&kcy; &iecy;&scy;&tcy;&softcy;, &bcy;&iecy;&zcy; &pcy;&rcy;&iecy;&ocy;&bcy;&rcy;&acy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &kcy;&ocy;&dcy;&icy;&rcy;&ocy;&vcy;&kcy;&icy;, &dcy;&acy;&zhcy;&iecy; &scy; &ecy;&tcy;&icy;&mcy; &fcy;&lcy;&acy;&gcy;&ocy;&mcy;.</span></p> </dd> <dt id="Documentation/git-mailinfo.txt---encodingltencodinggt"><span data-i18n="25dd2232b8363d6bd314d825b8dae1b1293261aa7dfc7e73a7df731561580c2a/6c" data-source="--encoding=&amp;lt;encoding&amp;gt;" onmousemove="i18n(this)">--encoding=&lt;encoding&gt;</span></dt> <dd> <p><span data-i18n="69eea0dc048ffef35368075cdddf8d147604cfe81750c6a0ae09801b77d6406c/28" data-source="Similar to -u. But when re-coding, the charset specified here is used instead of the one specified by &lt;code&gt;i18n.commitEncoding&lt;/code&gt; or UTF-8." onmousemove="i18n(this)">&Pcy;&ocy;&khcy;&ocy;&zhcy;&iecy; &ncy;&acy; -&ucy;. &Ncy;&ocy; &pcy;&rcy;&icy; &pcy;&iecy;&rcy;&iecy;&kcy;&ocy;&dcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&icy; &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ocy;&jcy;  <code>i18n.commitEncoding</code>  &icy;&lcy;&icy; UTF-8 &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&acy;&yacy; &zcy;&dcy;&iecy;&scy;&softcy; &kcy;&ocy;&dcy;&icy;&rcy;&ocy;&vcy;&kcy;&acy;.</span></p> </dd> <dt id="Documentation/git-mailinfo.txt--n"><span data-i18n="5249f4fcc629efa0e6d6b2bf746b6c5de61611ce719ad61ac820fbe5c8cece66/28" data-source="-n" onmousemove="i18n(this)">-n</span></dt> <dd> <p><span data-i18n="e3b6c18e19d2e85e3be5a3d974482c1c3ae7ba202c15e4c190af0ba43a020695/dd" data-source="Disable all charset re-coding of the metadata." onmousemove="i18n(this)">&Ocy;&tcy;&kcy;&lcy;&yucy;&chcy;&icy;&tcy;&iecy; &pcy;&iecy;&rcy;&iecy;&kcy;&ocy;&dcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy; &vcy;&scy;&iecy;&khcy; &kcy;&ocy;&dcy;&icy;&rcy;&ocy;&vcy;&ocy;&kcy; &mcy;&iecy;&tcy;&acy;&dcy;&acy;&ncy;&ncy;&ycy;&khcy;.</span></p> </dd> <dt id="Documentation/git-mailinfo.txt--m"><span data-i18n="c4e153afb4aeaa5818fb08325ebff59f883a0482006aa3cc1c17c9b393e54efa/11" data-source="-m" onmousemove="i18n(this)">-m</span></dt> <dt id="Documentation/git-mailinfo.txt---message-id"><span data-i18n="e3e0c8f01873f02e10c4ff19a712b02254da05811ac5874d9a3f18162a9a6498/61" data-source="--message-id" onmousemove="i18n(this)">--message-id</span></dt> <dd> <p><span data-i18n="8050d020ebf67ba8f5deeaaf9b999ee5311a04a00b6eef42316ae324ad1c959f/1f" data-source="Copy the Message-ID header at the end of the commit message. This is useful in order to associate commits with mailing list discussions." onmousemove="i18n(this)">&Scy;&kcy;&ocy;&pcy;&icy;&rcy;&ucy;&jcy;&tcy;&iecy; &zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&ocy;&kcy; Message-ID &vcy; &kcy;&ocy;&ncy;&tscy;&iecy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy;. &Ecy;&tcy;&ocy; &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ocy; &dcy;&lcy;&yacy; &scy;&vcy;&yacy;&zcy;&icy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy; &scy; &ocy;&bcy;&scy;&ucy;&zhcy;&dcy;&iecy;&ncy;&icy;&yacy;&mcy;&icy; &vcy; &scy;&pcy;&icy;&scy;&kcy;&iecy; &rcy;&acy;&scy;&scy;&ycy;&lcy;&kcy;&icy;.</span></p> </dd> <dt id="Documentation/git-mailinfo.txt---scissors"><span data-i18n="617591e17acf5614bfea0e5581fb1cb3822f04e22e71ca234e0a24175917beb8/df" data-source="--scissors" onmousemove="i18n(this)">--scissors</span></dt> <dd> <p><span data-i18n="e805c205a27c1b9c4c4705224b652b05ed0da67382de646c71216a3dbb9baaf5/3b" data-source="Remove everything in body before a scissors line (e.g. &amp;quot;-- &amp;gt;8 --&amp;quot;). The line represents scissors and perforation marks, and is used to request the reader to cut the message at that line. If that line appears in the body of the message before the patch, everything before it (including the scissors line itself) is ignored when this option is used." onmousemove="i18n(this)">&Ucy;&dcy;&acy;&lcy;&icy;&tcy;&iecy; &vcy;&scy;&iecy; &ecy;&lcy;&iecy;&mcy;&iecy;&ncy;&tcy;&ycy; &kcy;&ocy;&rcy;&pcy;&ucy;&scy;&acy; &pcy;&iecy;&rcy;&iecy;&dcy; &ncy;&ocy;&zhcy;&ncy;&icy;&tscy;&iecy;&ocy;&bcy;&rcy;&acy;&zcy;&ncy;&ocy;&jcy; &lcy;&icy;&ncy;&icy;&iecy;&jcy; (&ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;,  &quot;-- &gt;8 --&quot; ). &Lcy;&icy;&ncy;&icy;&yacy; &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &scy;&ocy;&bcy;&ocy;&jcy; &ncy;&ocy;&zhcy;&ncy;&icy;&tscy;&ycy; &icy; &zcy;&ncy;&acy;&kcy;&icy; &pcy;&iecy;&rcy;&fcy;&ocy;&rcy;&acy;&tscy;&icy;&icy; &icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &dcy;&lcy;&yacy; &tcy;&ocy;&gcy;&ocy;, &chcy;&tcy;&ocy;&bcy;&ycy; &pcy;&ocy;&pcy;&rcy;&ocy;&scy;&icy;&tcy;&softcy; &chcy;&icy;&tcy;&acy;&tcy;&iecy;&lcy;&yacy; &rcy;&acy;&zcy;&rcy;&iecy;&zcy;&acy;&tcy;&softcy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &ncy;&acy; &ecy;&tcy;&ocy;&jcy; &lcy;&icy;&ncy;&icy;&icy;. &IEcy;&scy;&lcy;&icy; &ecy;&tcy;&acy; &scy;&tcy;&rcy;&ocy;&kcy;&acy; &pcy;&ocy;&yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &vcy; &tcy;&iecy;&lcy;&iecy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy; &pcy;&iecy;&rcy;&iecy;&dcy; &pcy;&acy;&tcy;&chcy;&iecy;&mcy;, &vcy;&scy;&iecy; &pcy;&iecy;&rcy;&iecy;&dcy; &ncy;&iecy;&jcy; (&vcy;&kcy;&lcy;&yucy;&chcy;&acy;&yacy; &scy;&acy;&mcy;&ucy; &lcy;&icy;&ncy;&icy;&yucy; &ncy;&ocy;&zhcy;&ncy;&icy;&tscy;) &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ucy;&iecy;&tcy;&scy;&yacy; &pcy;&rcy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&icy; &ecy;&tcy;&ocy;&jcy; &ocy;&pcy;&tscy;&icy;&icy;.</span></p> <p><span data-i18n="be502e05aac2e9672c2d3b82403caf003dfb93d5a6b8aac41f09aacb0e661192/04" data-source="This is useful if you want to begin your message in a discussion thread with comments and suggestions on the message you are responding to, and to conclude it with a patch submission, separating the discussion and the beginning of the proposed commit log message with a scissors line." onmousemove="i18n(this)">&Ecy;&tcy;&ocy; &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ocy;, &iecy;&scy;&lcy;&icy; &vcy;&ycy; &khcy;&ocy;&tcy;&icy;&tcy;&iecy; &ncy;&acy;&chcy;&acy;&tcy;&softcy; &scy;&vcy;&ocy;&iecy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &vcy; &vcy;&iecy;&tcy;&kcy;&iecy; &ocy;&bcy;&scy;&ucy;&zhcy;&dcy;&iecy;&ncy;&icy;&yacy; &scy; &kcy;&ocy;&mcy;&mcy;&iecy;&ncy;&tcy;&acy;&rcy;&icy;&iecy;&vcy; &icy; &pcy;&rcy;&iecy;&dcy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&jcy; &pcy;&ocy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yucy;, &ncy;&acy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&iecy; &vcy;&ycy; &ocy;&tcy;&vcy;&iecy;&chcy;&acy;&iecy;&tcy;&iecy;, &icy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&icy;&tcy;&softcy; &iecy;&gcy;&ocy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&kcy;&ocy;&jcy; &icy;&scy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy;, &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&icy;&vcy; &ocy;&bcy;&scy;&ucy;&zhcy;&dcy;&iecy;&ncy;&icy;&iecy; &icy; &ncy;&acy;&chcy;&acy;&lcy;&ocy; &pcy;&rcy;&iecy;&dcy;&lcy;&acy;&gcy;&acy;&iecy;&mcy;&ocy;&gcy;&ocy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy; &ncy;&ocy;&zhcy;&ncy;&icy;&tscy;&acy;&mcy;&icy;. &lcy;&icy;&ncy;&icy;&yacy;.</span></p> <p><span data-i18n="9b9dce9a7a923e1eceb758d3f3e8bfb6822f9e75a6baa1ce336c979ef91d1d27/e3" data-source="This can be enabled by default with the configuration option mailinfo.scissors." onmousemove="i18n(this)">&Ecy;&tcy;&ocy; &mcy;&ocy;&zhcy;&ncy;&ocy; &vcy;&kcy;&lcy;&yucy;&chcy;&icy;&tcy;&softcy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;&acy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy; mailinfo.scissors.</span></p> </dd> <dt id="Documentation/git-mailinfo.txt---no-scissors"><span data-i18n="306b92d705f6e8745525ae18035bfa20c64762a8cb19630ceda32181ca9b3e48/42" data-source="--no-scissors" onmousemove="i18n(this)">--no-scissors</span></dt> <dd> <p><span data-i18n="48242583d8bb4923d2d78ba1a99ede471161da0b98a834d372dbf9036dacf116/73" data-source="Ignore scissors lines. Useful for overriding mailinfo.scissors settings." onmousemove="i18n(this)">&Ncy;&iecy; &ocy;&bcy;&rcy;&acy;&shchcy;&acy;&jcy;&tcy;&iecy; &vcy;&ncy;&icy;&mcy;&acy;&ncy;&icy;&yacy; &ncy;&acy; &lcy;&icy;&ncy;&icy;&icy; &ncy;&ocy;&zhcy;&ncy;&icy;&tscy;. &Pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ocy; &dcy;&lcy;&yacy; &pcy;&iecy;&rcy;&iecy;&ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&iecy;&ncy;&icy;&yacy; &ncy;&acy;&scy;&tcy;&rcy;&ocy;&iecy;&kcy; mailinfo.scissors.</span></p> </dd> <dt id="Documentation/git-mailinfo.txt---quoted-crltactiongt"><span data-i18n="36cdbc927c0f2f768455f071479da87d0b994db33423d5a682610b4d3cd5daa6/62" data-source="--quoted-cr=&amp;lt;action&amp;gt;" onmousemove="i18n(this)">--quoted-cr=&lt;action&gt;</span></dt> <dd> <p><span data-i18n="91ad26869dc24aeefb8d6b192d9ac8499f35b3db5b351b4296a6fb280ba8edda/61" data-source="Action when processes email messages sent with base64 or quoted-printable encoding, and the decoded lines end with a CRLF instead of a simple LF." onmousemove="i18n(this)">&Dcy;&iecy;&jcy;&scy;&tcy;&vcy;&icy;&iecy;, &kcy;&ocy;&gcy;&dcy;&acy; &ocy;&bcy;&rcy;&acy;&bcy;&acy;&tcy;&ycy;&vcy;&acy;&yucy;&tcy;&scy;&yacy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy; &ecy;&lcy;&iecy;&kcy;&tcy;&rcy;&ocy;&ncy;&ncy;&ocy;&jcy; &pcy;&ocy;&chcy;&tcy;&ycy;, &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&ncy;&ycy;&iecy; &scy; &kcy;&ocy;&dcy;&icy;&rcy;&ocy;&vcy;&kcy;&ocy;&jcy; base64 &icy;&lcy;&icy; quote-printable, &acy; &dcy;&iecy;&kcy;&ocy;&dcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&iecy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &zcy;&acy;&kcy;&acy;&ncy;&chcy;&icy;&vcy;&acy;&yucy;&tcy;&scy;&yacy; CRLF &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &pcy;&rcy;&ocy;&scy;&tcy;&ocy;&gcy;&ocy; LF.</span></p> <p><span data-i18n="733beb4b31cc92bb4cf8c1297c9b58ba1578c15d3841257b15b69383ba8785ab/e3" data-source="The valid actions are:" onmousemove="i18n(this)">&Dcy;&ocy;&pcy;&ucy;&scy;&tcy;&icy;&mcy;&ycy;&iecy; &dcy;&iecy;&jcy;&scy;&tcy;&vcy;&icy;&yacy;:</span></p> <div> <div> <div> <ul> <li> <p><span data-i18n="86e1b8aa30485aa0e84ac95df32beb810238bb4dc4aab4d493b70a05332dcb41/7a" data-source="&lt;code&gt;nowarn&lt;/code&gt;: Git will do nothing when such a CRLF is found." onmousemove="i18n(this)"><code>nowarn</code> :  Git  &ncy;&icy;&chcy;&iecy;&gcy;&ocy; &ncy;&iecy; &bcy;&ucy;&dcy;&iecy;&tcy; &dcy;&iecy;&lcy;&acy;&tcy;&softcy;, &iecy;&scy;&lcy;&icy; &bcy;&ucy;&dcy;&iecy;&tcy; &ncy;&acy;&jcy;&dcy;&iecy;&ncy; &tcy;&acy;&kcy;&ocy;&jcy; CRLF.</span></p> </li> <li> <p><span data-i18n="a774e961375346abda374ea70b750ad1de6c68f1662d9fa2a0609e9cf807f0f1/dc" data-source="&lt;code&gt;warn&lt;/code&gt;: Git will issue a warning for each message if such a CRLF is found." onmousemove="i18n(this)"><code>warn</code> :  Git  &vcy;&ycy;&dcy;&acy;&scy;&tcy; &pcy;&rcy;&iecy;&dcy;&ucy;&pcy;&rcy;&iecy;&zhcy;&dcy;&iecy;&ncy;&icy;&iecy; &dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy;, &iecy;&scy;&lcy;&icy; &bcy;&ucy;&dcy;&iecy;&tcy; &ncy;&acy;&jcy;&dcy;&iecy;&ncy; &tcy;&acy;&kcy;&ocy;&jcy; CRLF.</span></p> </li> <li> <p><span data-i18n="0e131b198ad8ee0eb0083707dc4ecf51d27564473718e106bf04b8a4de47ff02/ac" data-source="&lt;code&gt;strip&lt;/code&gt;: Git will convert those CRLF to LF." onmousemove="i18n(this)"><code>strip</code> :  Git  &pcy;&rcy;&iecy;&ocy;&bcy;&rcy;&acy;&zcy;&ucy;&iecy;&tcy; CRLF &vcy; LF.</span></p> </li> </ul> </div> </div> </div> <p><span data-i18n="481374d660b8c34304c5b46a579568add44861bcb7061b7753f406e8258ff967/f0" data-source="The default action could be set by configuration option &lt;code&gt;mailinfo.quotedCR&lt;/code&gt;. If no such configuration option has been set, &lt;code&gt;warn&lt;/code&gt; will be used." onmousemove="i18n(this)">&Dcy;&iecy;&jcy;&scy;&tcy;&vcy;&icy;&iecy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &mcy;&ocy;&zhcy;&ncy;&ocy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&icy;&tcy;&softcy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;&acy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  <code>mailinfo.quotedCR</code> . &IEcy;&scy;&lcy;&icy; &tcy;&acy;&kcy;&acy;&yacy; &ocy;&pcy;&tscy;&icy;&yacy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy; &ncy;&iecy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&acy;, &bcy;&ucy;&dcy;&iecy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;&scy;&yacy;  <code>warn</code> .</span></p> </dd> <dt id="Documentation/git-mailinfo.txt-ltmsggt"><span data-i18n="a8a74db91c257f622301e820a678872aaf8a477939697d916bf88f5b15d9e6c6/11" data-source="&amp;lt;msg&amp;gt;" onmousemove="i18n(this)">&lt;msg&gt;</span></dt> <dd> <p><span data-i18n="9608299bade7821c919c48fea1d376248f096d85f58e7de2065ffc6df83db221/68" data-source="The commit log message extracted from e-mail, usually except the title line which comes from e-mail Subject." onmousemove="i18n(this)">&Scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&iecy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy;, &icy;&zcy;&vcy;&lcy;&iecy;&chcy;&iecy;&ncy;&ncy;&ocy;&iecy; &icy;&zcy; &ecy;&lcy;&iecy;&kcy;&tcy;&rcy;&ocy;&ncy;&ncy;&ocy;&gcy;&ocy; &pcy;&icy;&scy;&softcy;&mcy;&acy;, &ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &zcy;&acy; &icy;&scy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&iecy;&mcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&kcy;&acy;, &kcy;&ocy;&tcy;&ocy;&rcy;&acy;&yacy; &pcy;&ocy;&scy;&tcy;&ucy;&pcy;&acy;&iecy;&tcy; &icy;&zcy; &tcy;&iecy;&mcy;&ycy; &ecy;&lcy;&iecy;&kcy;&tcy;&rcy;&ocy;&ncy;&ncy;&ocy;&gcy;&ocy; &pcy;&icy;&scy;&softcy;&mcy;&acy;.</span></p> </dd> <dt id="Documentation/git-mailinfo.txt-ltpatchgt"><span data-i18n="e836b3b8be9e211db8ca975da11e004d6385c796e82917dcd3d3f5b64fe95689/88" data-source="&amp;lt;patch&amp;gt;" onmousemove="i18n(this)">&lt;patch&gt;</span></dt> <dd> <p><span data-i18n="878de31c9281a98cb1bcc9a728eb35f07f90e1bfd0be104f1d3b8e14a5775360/f5" data-source="The patch extracted from e-mail." onmousemove="i18n(this)">&Pcy;&acy;&tcy;&chcy; &icy;&zcy;&vcy;&lcy;&iecy;&chcy;&iecy;&ncy; &icy;&zcy; &ecy;&lcy;&iecy;&kcy;&tcy;&rcy;&ocy;&ncy;&ncy;&ocy;&jcy; &pcy;&ocy;&chcy;&tcy;&ycy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_configuration"><span data-i18n="b332c3492d5eb10a118eb6d8b0dcd689bc2477ce2ae16b303753b942b54377bc/aa" data-source="Configuration" onmousemove="i18n(this)">Configuration</span></h2> <div> <p><span data-i18n="5b8d919fa35b75aa925ebd5414ed6373e762fb0a087a062961c27b2ce9586555/57" data-source="Everything below this line in this section is selectively included from the &lt;a href=&quot;git-config&quot;&gt;git-config[1]&lt;/a&gt; documentation. The content is the same as what&amp;rsquo;s found there:" onmousemove="i18n(this)">&Vcy;&scy;&iecy;, &chcy;&tcy;&ocy; &ncy;&acy;&khcy;&ocy;&dcy;&icy;&tcy;&scy;&yacy; &ncy;&icy;&zhcy;&iecy; &ecy;&tcy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &vcy; &ecy;&tcy;&ocy;&mcy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&iecy;, &vcy;&ycy;&bcy;&ocy;&rcy;&ocy;&chcy;&ncy;&ocy; &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&ocy; &icy;&zcy; &dcy;&ocy;&kcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy;&tscy;&icy;&icy;  <a href="git-config.html">git-config[1]</a> . &Scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&ncy;&icy;&iecy; &tcy;&acy;&kcy;&ocy;&iecy; &zhcy;&iecy;, &kcy;&acy;&kcy; &icy; &ncy;&acy;&jcy;&dcy;&iecy;&ncy;&ncy;&ocy;&iecy; &tcy;&acy;&mcy;:</span></p> <div> <dl> <dt id="Documentation/git-mailinfo.txt-mailinfoscissors"><span data-i18n="554d792df925bf6c1b5aab63890d4a6c9cae267ead24650a208fb9e3851a74f8/22" data-source="mailinfo.scissors" onmousemove="i18n(this)">mailinfo.scissors</span></dt> <dd> <p><span data-i18n="b5b0bfc6ad2008cd40d6984f7367aab66cc7d0ba74bad2404a9fd712f6a0ad37/b5" data-source="If true, makes &lt;a href=&quot;git-mailinfo&quot;&gt;git-mailinfo[1]&lt;/a&gt; (and therefore &lt;a href=&quot;git-am&quot;&gt;git-am[1]&lt;/a&gt;) act by default as if the --scissors option was provided on the command-line. When active, this feature removes everything from the message body before a scissors line (i.e. consisting mainly of &amp;quot;&amp;gt;8&amp;quot;, &amp;quot;8&amp;lt;&amp;quot; and &amp;quot;-&amp;quot;)." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &ecy;&tcy;&ocy; &pcy;&rcy;&acy;&vcy;&dcy;&acy;,  <a href="git-mailinfo.html">git-mailinfo[1]</a>  (&icy;, &scy;&lcy;&iecy;&dcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;,  <a href="git-am.html">git-am[1]</a>  ) &dcy;&iecy;&jcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &tcy;&acy;&kcy;, &kcy;&acy;&kcy; &iecy;&scy;&lcy;&icy; &bcy;&ycy; &vcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy; &bcy;&ycy;&lcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy; --scissors. &Kcy;&ocy;&gcy;&dcy;&acy; &ecy;&tcy;&acy; &fcy;&ucy;&ncy;&kcy;&tscy;&icy;&yacy; &acy;&kcy;&tcy;&icy;&vcy;&ncy;&acy;, &ecy;&tcy;&acy; &fcy;&ucy;&ncy;&kcy;&tscy;&icy;&yacy; &ucy;&dcy;&acy;&lcy;&yacy;&iecy;&tcy; &vcy;&scy;&iecy; &icy;&zcy; &tcy;&iecy;&lcy;&acy; &scy;&ocy;&ocy;&bcy;&shchcy;&iecy;&ncy;&icy;&yacy; &dcy;&ocy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; (&tcy;. &iecy;. &scy;&ocy;&scy;&tcy;&ocy;&yacy;&shchcy;&iecy;&jcy; &vcy; &ocy;&scy;&ncy;&ocy;&vcy;&ncy;&ocy;&mcy; &icy;&zcy;  &quot;&gt;8&quot; ,  &quot;8&lt;&quot;  &icy;  &quot;-&quot; ).</span></p> </dd> </dl> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-mailinfo">https://git-scm.com/docs/git-mailinfo</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                               <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-mailsplit.html">
+                            git mailsplit                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-maintenance.html">
+                            git maintenance                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge.html">
+                            git merge                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge-base.html">
+                            git merge-base                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge-file.html">
+                            git merge-file                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge-index.html">
+                            git merge-index                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-merge-one-file.html">
+                            git merge-one-file                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-mailinfo.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

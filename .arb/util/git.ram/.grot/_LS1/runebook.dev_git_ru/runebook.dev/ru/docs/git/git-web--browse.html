@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:16:05 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git web--browse</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="3c3ec114a751aee24646d929359bdb0e9c4145584d7df6fa4da18646bd6acf41/5a" data-source="git-web--browse" onmousemove="i18n(this)">git-web--browse</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="3672ba518cf251b72798c3fd1bdcca6197637d5a4eedc6223dde5d6ae726b358/e4" data-source="git-web&amp;mdash;&amp;ZeroWidthSpace;browse - Git helper script to launch a web browser" onmousemove="i18n(this)">git-web&mdash;browse &mdash; &vcy;&scy;&pcy;&ocy;&mcy;&ocy;&gcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&jcy; &scy;&kcy;&rcy;&icy;&pcy;&tcy;  Git  &dcy;&lcy;&yacy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy; &vcy;&iecy;&bcy;-&bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy;&acy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-xml">git web--browse [<span class="hljs-tag">&lt;<span class="hljs-name">options</span>&gt;</span>] (<span class="hljs-tag">&lt;<span class="hljs-name">URL</span>&gt;</span>|<span class="hljs-tag">&lt;<span class="hljs-name">file</span>&gt;</span>)&hellip;&ZeroWidthSpace;</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="514ee14364a98089541481daaf328f3781826246a720784d80656c097fe2f4ad/a7" data-source="This script tries, as much as possible, to display the URLs and FILEs that are passed as arguments, as HTML pages in new tabs on an already opened web browser." onmousemove="i18n(this)">&Ecy;&tcy;&ocy;&tcy; &scy;&tscy;&iecy;&ncy;&acy;&rcy;&icy;&jcy; &pcy;&ycy;&tcy;&acy;&iecy;&tcy;&scy;&yacy;, &ncy;&acy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ocy; &ecy;&tcy;&ocy; &vcy;&ocy;&zcy;&mcy;&ocy;&zhcy;&ncy;&ocy;, &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zcy;&icy;&tcy;&softcy; URL-&acy;&dcy;&rcy;&iecy;&scy;&acy; &icy; &Fcy;&Acy;&Jcy;&Lcy;&Ycy;, &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&vcy;&acy;&iecy;&mcy;&ycy;&iecy; &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ocy;&vcy;, &vcy; &vcy;&icy;&dcy;&iecy; HTML-&scy;&tcy;&rcy;&acy;&ncy;&icy;&tscy; &ncy;&acy; &ncy;&ocy;&vcy;&ycy;&khcy; &vcy;&kcy;&lcy;&acy;&dcy;&kcy;&acy;&khcy; &ucy;&zhcy;&iecy; &ocy;&tcy;&kcy;&rcy;&ycy;&tcy;&ocy;&gcy;&ocy; &vcy;&iecy;&bcy;-&bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy;&acy;.</span></p> <p><span data-i18n="7957ba8793c000b331ec8833d3c88fca3a931b66e728800ee26b33a20f7588d3/47" data-source="The following browsers (or commands) are currently supported:" onmousemove="i18n(this)">&Vcy; &ncy;&acy;&scy;&tcy;&ocy;&yacy;&shchcy;&iecy;&iecy; &vcy;&rcy;&iecy;&mcy;&yacy; &pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&icy;&vcy;&acy;&yucy;&tcy;&scy;&yacy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&iecy; &bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy;&ycy; (&icy;&lcy;&icy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ycy;):</span></p> <div> <ul> <li> <p><span data-i18n="d753c00412194d7eb0e38190dc0afccf643528637ec8bee79a5cfe59147e90e2/b9" data-source="firefox (this is the default under X Window when not using KDE)" onmousemove="i18n(this)">Firefox (&ecy;&tcy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &vcy; X Window, &iecy;&scy;&lcy;&icy; &ncy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; KDE)</span></p> </li> <li> <p><span data-i18n="9cfef9ad08806582ad9d6840d9788d0db13ee55c37a1505f3f2af2b15014ed17/6d" data-source="iceweasel" onmousemove="i18n(this)">iceweasel</span></p> </li> <li> <p><span data-i18n="33cf714e8d7251ecc375a663149e2f2724132e7e92052c537bc635dd798c5edb/69" data-source="seamonkey" onmousemove="i18n(this)">seamonkey</span></p> </li> <li> <p><span data-i18n="f551a69a89a9d827bcbc1a072a57897b2eb5818138851c2b3d2e053741f47a20/f6" data-source="iceape" onmousemove="i18n(this)">iceape</span></p> </li> <li> <p><span data-i18n="f0c3e23c1592849051a38710bca5d1e66a1be8d9288105296198a4eda1092562/85" data-source="chromium (also supported as chromium-browser)" onmousemove="i18n(this)">&khcy;&rcy;&ocy;&mcy; (&tcy;&acy;&kcy;&zhcy;&iecy; &pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&icy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &kcy;&acy;&kcy; &bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy; &khcy;&rcy;&ocy;&mcy;&acy;)</span></p> </li> <li> <p><span data-i18n="44f1e361829e2526a38043db85437b6bdf01b3f234fc2f22624d9ef5046b4e99/e5" data-source="google-chrome (also supported as chrome)" onmousemove="i18n(this)">google-chrome (&tcy;&acy;&kcy;&zhcy;&iecy; &pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&icy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &kcy;&acy;&kcy; chrome)</span></p> </li> <li> <p><span data-i18n="eec828c263c05ff583ad879b7a5659d0282e284e8b1c7fc916e06d3607cc3b8b/60" data-source="konqueror (this is the default under KDE, see &lt;code&gt;Note about konqueror&lt;/code&gt; below)" onmousemove="i18n(this)">konqueror (&ecy;&tcy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &vcy; KDE, &scy;&mcy;.  <code>Note about konqueror</code>  &ncy;&icy;&zhcy;&iecy;)</span></p> </li> <li> <p><span data-i18n="f79926c01dc6dfc2c3b562072c8b86353e1ef6b41f9f314ea82639fb5a05e659/86" data-source="opera" onmousemove="i18n(this)">opera</span></p> </li> <li> <p><span data-i18n="6e2636714e0f438a8e88cee3fc79bafba3d79b3915cb752f3cd2580fc61bcdc4/75" data-source="w3m (this is the default outside graphical environments)" onmousemove="i18n(this)">w3m (&ecy;&tcy;&ocy; &vcy;&ncy;&iecy;&shcy;&ncy;&yacy;&yacy; &gcy;&rcy;&acy;&fcy;&icy;&chcy;&iecy;&scy;&kcy;&acy;&yacy; &scy;&rcy;&iecy;&dcy;&acy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;)</span></p> </li> <li> <p><span data-i18n="9f0d1780f144f33813dbfaf2acc24b4e85e999ec154115371f416629de025c00/af" data-source="elinks" onmousemove="i18n(this)">elinks</span></p> </li> <li> <p><span data-i18n="eef8b9fd5d437dd991ce2695fcce6c416ea3068e5b448963f0a7c3cbd9ad98eb/96" data-source="links" onmousemove="i18n(this)">links</span></p> </li> <li> <p><span data-i18n="7c180e3e3bee93dde4c28a4999b4cc3604ee53524c3b245485d41ac36d478c82/29" data-source="lynx" onmousemove="i18n(this)">lynx</span></p> </li> <li> <p><span data-i18n="da89ae14954e2f6d818ba176d029cb76156261cedf829efbfef5e1b98400bbb1/2c" data-source="dillo" onmousemove="i18n(this)">dillo</span></p> </li> <li> <p><span data-i18n="2b6a4d04ab35832405cdcd4cb4e43e75827d3ace78bcf4a7fba2c360afedb970/e8" data-source="open (this is the default under Mac OS X GUI)" onmousemove="i18n(this)">&ocy;&tcy;&kcy;&rcy;&ycy;&tcy;&softcy; (&ecy;&tcy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &vcy; &gcy;&rcy;&acy;&fcy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&mcy; &icy;&ncy;&tcy;&iecy;&rcy;&fcy;&iecy;&jcy;&scy;&iecy; Mac OS X)</span></p> </li> <li> <p><span data-i18n="6e6549cc2630dcfcaeda6a2fba507772eda57865739defe44dbe778750696bfb/f6" data-source="start (this is the default under MinGW)" onmousemove="i18n(this)">start (&ecy;&tcy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &vcy; MinGW)</span></p> </li> <li> <p><span data-i18n="dacdd3f30eb4329636f65491e2ceb21b02ba093ca6265be2b95ac044865118a3/19" data-source="cygstart (this is the default under Cygwin)" onmousemove="i18n(this)">cygstart (&ecy;&tcy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &vcy; Cygwin)</span></p> </li> <li> <p><span data-i18n="cdb8bb17173e1db8bf5dad2247fbe8be8d8c82e076cb465a471482387f521a29/c7" data-source="xdg-open" onmousemove="i18n(this)">xdg-open</span></p> </li> </ul> </div> <p><span data-i18n="4c35f9caf68984a5375fdff53156d169f0c3ec4c6fe67c7c674fd40f0d4902d5/fe" data-source="Custom commands may also be specified." onmousemove="i18n(this)">&Tcy;&acy;&kcy;&zhcy;&iecy; &mcy;&ocy;&gcy;&ucy;&tcy; &bcy;&ycy;&tcy;&softcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ycy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&scy;&kcy;&icy;&iecy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ycy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-web--browse.txt--bltbrowsergt"><span data-i18n="a943b833b60193987c54679e09d59a6e12cc7a88adf907eb6f7ba22e4a37d64d/6a" data-source="-b &amp;lt;browser&amp;gt;" onmousemove="i18n(this)">-b &lt;browser&gt;</span></dt> <dt id="Documentation/git-web--browse.txt---browserltbrowsergt"><span data-i18n="4c9e46756f91f145ec41f0ec0f58152a96d45f55b3705bf94441a3ac0410ba7b/7c" data-source="--browser=&amp;lt;browser&amp;gt;" onmousemove="i18n(this)">--browser=&lt;browser&gt;</span></dt> <dd> <p><span data-i18n="3348bbcc721c679671983fe9f600a6a35f9f17a8e9a7e243d8d90311ad2b6db2/e4" data-source="Use the specified browser. It must be in the list of supported browsers." onmousemove="i18n(this)">&Icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ycy;&jcy; &bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy;. &Ocy;&ncy; &dcy;&ocy;&lcy;&zhcy;&iecy;&ncy; &bcy;&ycy;&tcy;&softcy; &vcy; &scy;&pcy;&icy;&scy;&kcy;&iecy; &pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&icy;&vcy;&acy;&iecy;&mcy;&ycy;&khcy; &bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy;&ocy;&vcy;.</span></p> </dd> <dt id="Documentation/git-web--browse.txt--tltbrowsergt"><span data-i18n="73f94bed3fa00b3e9d627ca5544a0d63842360cf681d4f7b00df46da1f65db59/9a" data-source="-t &amp;lt;browser&amp;gt;" onmousemove="i18n(this)">-t &lt;browser&gt;</span></dt> <dt id="Documentation/git-web--browse.txt---toolltbrowsergt"><span data-i18n="af8e5fda0c8f189dc1c4f85a1ff820ec61295e24fe7742d81d25eea753798aaa/08" data-source="--tool=&amp;lt;browser&amp;gt;" onmousemove="i18n(this)">--tool=&lt;browser&gt;</span></dt> <dd> <p><span data-i18n="db7a40274cbeb2d8cda98beff2670df5b5675ca1b5c29805ecc0df4e75826f36/aa" data-source="Same as above." onmousemove="i18n(this)">&Tcy;&ocy; &zhcy;&iecy;, &chcy;&tcy;&ocy; &icy; &vcy;&ycy;&shcy;&iecy;.</span></p> </dd> <dt id="Documentation/git-web--browse.txt--cltconfvargt"><span data-i18n="ca5309ef032b0986d41e5144697251396366356315e698cc04965d96d535c3aa/85" data-source="-c &amp;lt;conf.var&amp;gt;" onmousemove="i18n(this)">-c &lt;conf.var&gt;</span></dt> <dt id="Documentation/git-web--browse.txt---configltconfvargt"><span data-i18n="3615a3b202526e0b47c0c8744e34812d5e54faacfa2d9b8e98855a6d0ceb7026/09" data-source="--config=&amp;lt;conf.var&amp;gt;" onmousemove="i18n(this)">--config=&lt;conf.var&gt;</span></dt> <dd> <p><span data-i18n="fe399b3fc04550de21ab249b30b1cf9a6c7d94cea8538b31e24644da22dd5c14/e2" data-source="CONF.VAR is looked up in the Git config files. If it&amp;rsquo;s set, then its value specifies the browser that should be used." onmousemove="i18n(this)">CONF.VAR &icy;&shchcy;&iecy;&tcy;&scy;&yacy; &vcy; &fcy;&acy;&jcy;&lcy;&acy;&khcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  Git . &IEcy;&scy;&lcy;&icy; &ocy;&ncy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;, &tcy;&ocy; &iecy;&gcy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy; &bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &scy;&lcy;&iecy;&dcy;&ucy;&iecy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_configuration_variables"><span data-i18n="a667ba33e320cf6acda247253e1d105ad09171b2aeffbcbeaa490ab4cd6c56f6/72" data-source="Configuration variables" onmousemove="i18n(this)">Configuration variables</span></h2> <div> <div> <h3 class="text-body-emphasis"  id="_conf_var_from_c_option_and_web_browser"><span data-i18n="d28b7b749922d45bc9697836a95cb3a811d30c66c22d285389ff9fb891fcaf52/4a" data-source="CONF.VAR (from -c option) and web.browser" onmousemove="i18n(this)">CONF.VAR (&icy;&zcy; &ocy;&pcy;&tscy;&icy;&icy; -c) &icy; web.browser</span></h3> <p><span data-i18n="0f898261a8ba65847acef905a850908101e64e63c6f7ee88fe19e2a5d5b16cd3/b8" data-source="The web browser can be specified using a configuration variable passed with the -c (or --config) command-line option, or the &lt;code&gt;web.browser&lt;/code&gt; configuration variable if the former is not used." onmousemove="i18n(this)">&Vcy;&iecy;&bcy;-&bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy; &mcy;&ocy;&zhcy;&ncy;&ocy; &ucy;&kcy;&acy;&zcy;&acy;&tcy;&softcy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ocy;&jcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;, &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&vcy;&acy;&iecy;&mcy;&ocy;&jcy; &scy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;&ocy;&mcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; -c (&icy;&lcy;&icy; --config), &icy;&lcy;&icy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ocy;&jcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  <code>web.browser</code> , &iecy;&scy;&lcy;&icy; &pcy;&iecy;&rcy;&vcy;&acy;&yacy; &ncy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy;.</span></p> </div> <div> <h3 class="text-body-emphasis"  id="_browser_tool_path"><span data-i18n="1e5e094cf23c84bee6ffdf6e331c2be9766d756b97e36ce9c0611d6c0c3fe2cf/7b" data-source="browser.&amp;lt;tool&amp;gt;.path" onmousemove="i18n(this)">browser.&lt;tool&gt;.path</span></h3> <p><span data-i18n="5beae8732b65196335f6ac190113c2cc4bd276f445917ea41d8eb19fad9f4552/b9" data-source="You can explicitly provide a full path to your preferred browser by setting the configuration variable &lt;code&gt;browser.&amp;lt;tool&amp;gt;.path&lt;/code&gt;. For example, you can configure the absolute path to firefox by setting &lt;code&gt;browser.firefox.path&lt;/code&gt;. Otherwise, &lt;code&gt;git web--browse&lt;/code&gt; assumes the tool is available in PATH." onmousemove="i18n(this)">&Vcy;&ycy; &mcy;&ocy;&zhcy;&iecy;&tcy;&iecy; &yacy;&vcy;&ncy;&ocy; &ucy;&kcy;&acy;&zcy;&acy;&tcy;&softcy; &pcy;&ocy;&lcy;&ncy;&ycy;&jcy; &pcy;&ucy;&tcy;&softcy; &kcy; &pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&chcy;&icy;&tcy;&acy;&iecy;&mcy;&ocy;&mcy;&ucy; &vcy;&acy;&mcy;&icy; &bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy;&ucy;, &zcy;&acy;&dcy;&acy;&vcy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ucy;&yucy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  <code>browser.&lt;tool&gt;.path</code> . &Ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &vcy;&ycy; &mcy;&ocy;&zhcy;&iecy;&tcy;&iecy; &ncy;&acy;&scy;&tcy;&rcy;&ocy;&icy;&tcy;&softcy; &acy;&bcy;&scy;&ocy;&lcy;&yucy;&tcy;&ncy;&ycy;&jcy; &pcy;&ucy;&tcy;&softcy; &kcy; Firefox, &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&icy;&vcy;  <code>browser.firefox.path</code> . &Vcy; &pcy;&rcy;&ocy;&tcy;&icy;&vcy;&ncy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy;  <code>git web--browse</code>  &pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&lcy;&acy;&gcy;&acy;&iecy;&tcy;, &chcy;&tcy;&ocy; &icy;&ncy;&scy;&tcy;&rcy;&ucy;&mcy;&iecy;&ncy;&tcy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&iecy;&ncy; &vcy; PATH.</span></p> </div> <div> <h3 class="text-body-emphasis"  id="_browser_tool_cmd"><span data-i18n="01508e15c15b974e25cb5cfdb631c0a9fba19fb16ca923cee44d00c75923fbe8/a3" data-source="browser.&amp;lt;tool&amp;gt;.cmd" onmousemove="i18n(this)">browser.&lt;tool&gt;.cmd</span></h3> <p><span data-i18n="3c2882a543f4a91c88b048ab0e3781a2b2f98794265b4bc4893bfb738c8d1df5/0b" data-source="When the browser, specified by options or configuration variables, is not among the supported ones, then the corresponding &lt;code&gt;browser.&amp;lt;tool&amp;gt;.cmd&lt;/code&gt; configuration variable will be looked up. If this variable exists then &lt;code&gt;git web--browse&lt;/code&gt; will treat the specified tool as a custom command and will use a shell eval to run the command with the URLs passed as arguments." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy;, &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ycy;&jcy; &vcy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;&acy;&khcy; &icy;&lcy;&icy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ycy;&khcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;, &ncy;&iecy; &vcy;&khcy;&ocy;&dcy;&icy;&tcy; &vcy; &chcy;&icy;&scy;&lcy;&ocy; &pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&icy;&vcy;&acy;&iecy;&mcy;&ycy;&khcy;, &bcy;&ucy;&dcy;&iecy;&tcy; &ncy;&acy;&jcy;&dcy;&iecy;&ncy;&acy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&acy;&yacy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&acy;&yacy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  <code>browser.&lt;tool&gt;.cmd</code> . &IEcy;&scy;&lcy;&icy; &ecy;&tcy;&acy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&acy;&yacy; &scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy;,  <code>git web--browse</code>  &bcy;&ucy;&dcy;&iecy;&tcy; &rcy;&acy;&scy;&scy;&mcy;&acy;&tcy;&rcy;&icy;&vcy;&acy;&tcy;&softcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ycy;&jcy; &icy;&ncy;&scy;&tcy;&rcy;&ucy;&mcy;&iecy;&ncy;&tcy; &kcy;&acy;&kcy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&scy;&kcy;&ucy;&yucy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ucy; &icy; &bcy;&ucy;&dcy;&iecy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ucy; eval &dcy;&lcy;&yacy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ycy; &scy; URL-&acy;&dcy;&rcy;&iecy;&scy;&acy;&mcy;&icy;, &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&ncy;&ncy;&ycy;&mcy;&icy; &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ocy;&vcy;.</span></p> </div> </div> <h2 class="text-body-emphasis"  id="_note_about_konqueror"><span data-i18n="06ee0d44dcd8c3339461763d5ecaf22fb78edcdba4254cef03865b36b9b7d24c/2e" data-source="Note about konqueror" onmousemove="i18n(this)">&Pcy;&rcy;&icy;&mcy;&iecy;&chcy;&acy;&ncy;&icy;&iecy; &ocy; &pcy;&ocy;&bcy;&iecy;&dcy;&icy;&tcy;&iecy;&lcy;&iecy;</span></h2> <div> <p><span data-i18n="24edf879dbbddc62a7b33f1d34e3f8438ce2c374b30ebe2aeb328de19039258a/d5" data-source="When &lt;code&gt;konqueror&lt;/code&gt; is specified by a command-line option or a configuration variable, we launch &lt;code&gt;kfmclient&lt;/code&gt; to try to open the HTML man page on an already opened konqueror in a new tab if possible." onmousemove="i18n(this)">&Kcy;&ocy;&gcy;&dcy;&acy;  <code>konqueror</code>  &ucy;&kcy;&acy;&zcy;&acy;&ncy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;&ocy;&mcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &icy;&lcy;&icy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ocy;&jcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;, &mcy;&ycy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy;&iecy;&mcy;  <code>kfmclient</code> , &chcy;&tcy;&ocy;&bcy;&ycy; &pcy;&ocy;&pcy;&ycy;&tcy;&acy;&tcy;&softcy;&scy;&yacy; &ocy;&tcy;&kcy;&rcy;&ycy;&tcy;&softcy; HTML-&scy;&tcy;&rcy;&acy;&ncy;&icy;&tscy;&ucy; &rcy;&ucy;&kcy;&ocy;&vcy;&ocy;&dcy;&scy;&tcy;&vcy;&acy; &ucy;&zhcy;&iecy; &ocy;&tcy;&kcy;&rcy;&ycy;&tcy;&ocy;&gcy;&ocy; konqueror &ncy;&acy; &ncy;&ocy;&vcy;&ocy;&jcy; &vcy;&kcy;&lcy;&acy;&dcy;&kcy;&iecy;, &iecy;&scy;&lcy;&icy; &ecy;&tcy;&ocy; &vcy;&ocy;&zcy;&mcy;&ocy;&zhcy;&ncy;&ocy;.</span></p> <p><span data-i18n="a239a4bde6e51454b09641ad00f8f8fdc93c33acf6cbb679bc996d36afd1fad2/92" data-source="For consistency, we also try such a trick if &lt;code&gt;browser.konqueror.path&lt;/code&gt; is set to something like &lt;code&gt;A_PATH_TO/konqueror&lt;/code&gt;. That means we will try to launch &lt;code&gt;A_PATH_TO/kfmclient&lt;/code&gt; instead." onmousemove="i18n(this)">&Dcy;&lcy;&yacy; &iecy;&dcy;&icy;&ncy;&ocy;&ocy;&bcy;&rcy;&acy;&zcy;&icy;&yacy; &mcy;&ycy; &tcy;&acy;&kcy;&zhcy;&iecy; &pcy;&ocy;&pcy;&rcy;&ocy;&bcy;&ucy;&iecy;&mcy; &tcy;&acy;&kcy;&ocy;&jcy; &tcy;&rcy;&yucy;&kcy;, &iecy;&scy;&lcy;&icy; &dcy;&lcy;&yacy;  <code>browser.konqueror.path</code>  &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&ocy; &chcy;&tcy;&ocy;-&tcy;&ocy; &vcy;&rcy;&ocy;&dcy;&iecy;  <code>A_PATH_TO/konqueror</code> . &Ecy;&tcy;&ocy; &zcy;&ncy;&acy;&chcy;&icy;&tcy;, &chcy;&tcy;&ocy; &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &ncy;&iecy;&gcy;&ocy; &mcy;&ycy; &pcy;&ocy;&pcy;&rcy;&ocy;&bcy;&ucy;&iecy;&mcy; &zcy;&acy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;&softcy;  <code>A_PATH_TO/kfmclient</code> .</span></p> <p><span data-i18n="b347ab30d480f7c837c9778732a7eedeb1065dc3d3ac859faf2cdef5ec5fdb31/07" data-source="If you really want to use &lt;code&gt;konqueror&lt;/code&gt;, then you can use something like the following:" onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &vcy;&ycy; &dcy;&iecy;&jcy;&scy;&tcy;&vcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy; &khcy;&ocy;&tcy;&icy;&tcy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy;  <code>konqueror</code> , &vcy;&ycy; &mcy;&ocy;&zhcy;&iecy;&tcy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &chcy;&tcy;&ocy;-&tcy;&ocy; &vcy;&rcy;&ocy;&dcy;&iecy; &scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&iecy;&gcy;&ocy;:</span></p> <div> <div> <pre class="hljs language-ini">        <span class="hljs-section">[web]</span>
+                <span class="hljs-attr">browser</span> = konq
+
+        <span class="hljs-section">[browser &quot;konq&quot;]</span>
+                <span class="hljs-attr">cmd</span> = A_PATH_TO/konqueror</pre> </div> </div> <div> <h3 class="text-body-emphasis"  id="_note_about_git_config_global"><span data-i18n="7f48d408bc322263c1dd94eea864934bd8cc44e806db5b85f4610b0c4b353375/e7" data-source="Note about git-config --global" onmousemove="i18n(this)">&Pcy;&rcy;&icy;&mcy;&iecy;&chcy;&acy;&ncy;&icy;&iecy; &ocy; git-config --global</span></h3> <p><span data-i18n="f7a533800e6a1df80a1e3d8a00acbedaf19b9798c328b98dd8ef268ea66e1307/b7" data-source="Note that these configuration variables should probably be set using the &lt;code&gt;--global&lt;/code&gt; flag, for example like this:" onmousemove="i18n(this)">&Ocy;&bcy;&rcy;&acy;&tcy;&icy;&tcy;&iecy; &vcy;&ncy;&icy;&mcy;&acy;&ncy;&icy;&iecy;, &chcy;&tcy;&ocy; &ecy;&tcy;&icy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ycy;&iecy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;, &vcy;&iecy;&rcy;&ocy;&yacy;&tcy;&ncy;&ocy;, &scy;&lcy;&iecy;&dcy;&ucy;&iecy;&tcy; &ucy;&scy;&tcy;&acy;&ncy;&acy;&vcy;&lcy;&icy;&vcy;&acy;&tcy;&softcy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &fcy;&lcy;&acy;&gcy;&acy;  <code>--global</code> , &ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy; &tcy;&acy;&kcy;:</span></p> <div> <div> <pre class="hljs language-lua">$ git <span class="hljs-built_in">config</span> <span class="hljs-comment" title="--global web.browser firefox">--global web.browser Firefox</span></pre> </div> </div> <p><span data-i18n="2948a3d4e29930143271ed3740264df42a316774bc1766ba3c5537cd63e45ce6/16" data-source="as they are probably more user specific than repository specific. See &lt;a href=&quot;git-config&quot;&gt;git-config[1]&lt;/a&gt; for more information about this." onmousemove="i18n(this)">&pcy;&ocy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ucy; &ocy;&ncy;&icy;, &vcy;&iecy;&rcy;&ocy;&yacy;&tcy;&ncy;&ocy;, &bcy;&ocy;&lcy;&iecy;&iecy; &scy;&pcy;&iecy;&tscy;&icy;&fcy;&icy;&chcy;&ncy;&ycy; &dcy;&lcy;&yacy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&yacy;, &chcy;&iecy;&mcy; &dcy;&lcy;&yacy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;. &Scy;&mcy;.  <a href="git-config.html">git-config[1]</a>  &dcy;&lcy;&yacy; &pcy;&ocy;&lcy;&ucy;&chcy;&iecy;&ncy;&icy;&yacy; &dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&jcy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&icy; &ocy;&bcy; &ecy;&tcy;&ocy;&mcy;.</span></p> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-web--browse">https://git-scm.com/docs/git-web--browse</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-whatchanged.html">
+                            git whatchanged                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-worktree.html">
+                            git worktree                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-write-tree.html">
+                            git write-tree                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitattributes.html">
+                            gitattributes                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitcli.html">
+                            gitcli                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitcore-tutorial.html">
+                            gitcore tutorial                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitcredentials.html">
+                            gitcredentials                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="3777011170"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-web--browse.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

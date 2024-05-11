@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:16:29 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git reflog</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Administration">
+                                Administration                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="2a0badf6fcf1f8f2f90fe39944b4df1dbffd5928aafa14f3c0cf254a42f94a84/9c" data-source="git-reflog" onmousemove="i18n(this)">git-reflog</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="4f0ff0ba1793cfb63c2e23018abd518f901057e55fa7bb82fd664120fb7e9633/2e" data-source="git-reflog - Manage reflog information" onmousemove="i18n(this)">git-reflog &mdash; &Ucy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&iecy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&iecy;&jcy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&jcy;</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-sql">git reflog [<span class="hljs-keyword">show</span>] [<span class="hljs-operator">&lt;</span>log<span class="hljs-operator">-</span>options<span class="hljs-operator">&gt;</span>] [<span class="hljs-operator">&lt;</span><span class="hljs-keyword">ref</span><span class="hljs-operator">&gt;</span>]
+git reflog expire [<span class="hljs-comment">--expire=&lt;time&gt;] [--expire-unreachable=&lt;time&gt;]</span>
+        [<span class="hljs-comment">--rewrite] [--updateref] [--stale-fix]</span>
+        [<span class="hljs-comment" title="--dry-run | -n] [--verbose] [--all [--single-worktree] | &lt;refs&gt;&hellip;&ZeroWidthSpace;]">--&scy;&ucy;&khcy;&ocy;&jcy; &pcy;&rcy;&ocy;&bcy;&iecy;&gcy; | -n] [--verbose] [--all [--single-worktree] | &lt;&scy;&scy;&ycy;&lcy;&kcy;&icy;&gt;&hellip;&ZeroWidthSpace;]</span>
+git reflog <span class="hljs-keyword">delete</span> [<span class="hljs-comment">--rewrite] [--updateref]</span>
+        [<span class="hljs-comment" title="--dry-run | -n] [--verbose] &lt;ref&gt;@{&lt;specifier&gt;}&hellip;&ZeroWidthSpace;">--&scy;&ucy;&khcy;&ocy;&jcy; &pcy;&rcy;&ocy;&bcy;&iecy;&gcy; | -n] [--verbose] &lt;ref&gt;@{&lt;&scy;&pcy;&iecy;&tscy;&icy;&fcy;&icy;&kcy;&acy;&tcy;&ocy;&rcy;&gt;}&hellip;&ZeroWidthSpace;</span>
+git reflog <span class="hljs-keyword">exists</span> <span class="hljs-operator">&lt;</span><span class="hljs-keyword">ref</span><span class="hljs-operator">&gt;</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="b5ef758817ff48850b0fd63702e674b4b4bfbed98c2715cdba91c178996e8de9/1b" data-source="This command manages the information recorded in the reflogs." onmousemove="i18n(this)">&Ecy;&tcy;&acy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &ucy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&iecy;&jcy;, &zcy;&acy;&pcy;&icy;&scy;&acy;&ncy;&ncy;&ocy;&jcy; &vcy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy;&khcy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&jcy;.</span></p> <p><span data-i18n="cb04f367a448f3526e2684a85486cc472447ec958f7a6998a9bcc4509dcd9e5c/43" data-source="Reference logs, or &amp;quot;reflogs&amp;quot;, record when the tips of branches and other references were updated in the local repository. Reflogs are useful in various Git commands, to specify the old value of a reference. For example, &lt;code&gt;HEAD@{2}&lt;/code&gt; means &amp;quot;where HEAD used to be two moves ago&amp;quot;, &lt;code&gt;master@{one.week.ago}&lt;/code&gt; means &amp;quot;where master used to point to one week ago in this local repository&amp;quot;, and so on. See &lt;a href=&quot;gitrevisions&quot;&gt;gitrevisions[7]&lt;/a&gt; for more details." onmousemove="i18n(this)">&ZHcy;&ucy;&rcy;&ncy;&acy;&lcy;&ycy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;, &icy;&lcy;&icy;  &quot;reflogs&quot; , &fcy;&icy;&kcy;&scy;&icy;&rcy;&ucy;&yucy;&tcy;, &kcy;&ocy;&gcy;&dcy;&acy; &vcy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ocy;&mcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&yacy;&lcy;&icy;&scy;&softcy; &pcy;&ocy;&dcy;&scy;&kcy;&acy;&zcy;&kcy;&icy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy; &icy; &dcy;&rcy;&ucy;&gcy;&icy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&icy;. &ZHcy;&ucy;&rcy;&ncy;&acy;&lcy;&ycy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&jcy; &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ycy; &vcy; &rcy;&acy;&zcy;&lcy;&icy;&chcy;&ncy;&ycy;&khcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy;&khcy;  Git  &dcy;&lcy;&yacy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&icy;&yacy; &scy;&tcy;&acy;&rcy;&ocy;&gcy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy; &scy;&scy;&ycy;&lcy;&kcy;&icy;. &Ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;,  <code>HEAD@{2}</code>  &ocy;&zcy;&ncy;&acy;&chcy;&acy;&iecy;&tcy;  &quot;where HEAD used to be two moves ago&quot; ,  <code>master@{one.week.ago}</code>  &ocy;&zcy;&ncy;&acy;&chcy;&acy;&iecy;&tcy;  &quot;where master used to point to one week ago in this local repository&quot;  &icy; &tcy;&acy;&kcy; &dcy;&acy;&lcy;&iecy;&iecy;. &Dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ucy;&yucy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&yucy; &scy;&mcy;. &vcy;  <a href="gitrevisions.html">gitrevisions[7]</a> .</span></p> <p><span data-i18n="503b12cab680e61d18187b02771af2f423f228c592c99cc7f3eeaa1d3ac326d1/4e" data-source="The command takes various subcommands, and different options depending on the subcommand:" onmousemove="i18n(this)">&Kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &pcy;&rcy;&icy;&ncy;&icy;&mcy;&acy;&iecy;&tcy; &rcy;&acy;&zcy;&lcy;&icy;&chcy;&ncy;&ycy;&iecy; &pcy;&ocy;&dcy;&kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ycy; &icy; &rcy;&acy;&zcy;&ncy;&ycy;&iecy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;&ycy; &vcy; &zcy;&acy;&vcy;&icy;&scy;&icy;&mcy;&ocy;&scy;&tcy;&icy; &ocy;&tcy; &pcy;&ocy;&dcy;&kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ycy;:</span></p> <p><span data-i18n="734beab4b58581addb6a9013f583bd08088cdf7ca43e81042c35a442ea737b1c/83" data-source="The &amp;quot;show&amp;quot; subcommand (which is also the default, in the absence of any subcommands) shows the log of the reference provided in the command-line (or &lt;code&gt;HEAD&lt;/code&gt;, by default). The reflog covers all recent actions, and in addition the &lt;code&gt;HEAD&lt;/code&gt; reflog records branch switching. &lt;code&gt;git reflog show&lt;/code&gt; is an alias for &lt;code&gt;git log -g --abbrev-commit
+--pretty=oneline&lt;/code&gt;; see &lt;a href=&quot;git-log&quot;&gt;git-log[1]&lt;/a&gt; for more information." onmousemove="i18n(this)">&Scy;&ucy;&bcy;&kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy;  &quot;show&quot;  (&kcy;&ocy;&tcy;&ocy;&rcy;&acy;&yacy; &tcy;&acy;&kcy;&zhcy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;, &pcy;&rcy;&icy; &ocy;&tcy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&icy;&icy; &kcy;&acy;&kcy;&icy;&khcy;-&lcy;&icy;&bcy;&ocy; &pcy;&ocy;&dcy;&kcy;&ocy;&mcy;&acy;&ncy;&dcy;) &pcy;&ocy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ocy;&jcy; &vcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy; (&icy;&lcy;&icy;  <code>HEAD</code>  &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;). &ZHcy;&ucy;&rcy;&ncy;&acy;&lcy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&jcy; &ocy;&khcy;&vcy;&acy;&tcy;&ycy;&vcy;&acy;&iecy;&tcy; &vcy;&scy;&iecy; &ncy;&iecy;&dcy;&acy;&vcy;&ncy;&icy;&iecy; &dcy;&iecy;&jcy;&scy;&tcy;&vcy;&icy;&yacy;, &acy; &tcy;&acy;&kcy;&zhcy;&iecy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&jcy;  <code>HEAD</code>  &zcy;&acy;&pcy;&icy;&scy;&ycy;&vcy;&acy;&iecy;&tcy; &pcy;&iecy;&rcy;&iecy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&iecy; &vcy;&iecy;&tcy;&vcy;&iecy;&jcy;.  <code>git reflog show</code>  &mdash; &ecy;&tcy;&ocy; &pcy;&scy;&iecy;&vcy;&dcy;&ocy;&ncy;&icy;&mcy;  <code>git log -g --abbrev-commit
+--pretty=oneline</code> ; &dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ucy;&yucy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&yucy; &scy;&mcy;. &vcy;  <a href="git-log.html">git-log[1]</a> .</span></p> <p><span data-i18n="3b74d9a8ec49eae4fbf4b58f6a57c910e7bcaa23e1332bf3187aa2ea42c5e296/39" data-source="The &amp;quot;expire&amp;quot; subcommand prunes older reflog entries. Entries older than &lt;code&gt;expire&lt;/code&gt; time, or entries older than &lt;code&gt;expire-unreachable&lt;/code&gt; time and not reachable from the current tip, are removed from the reflog. This is typically not used directly by end users &amp;mdash; instead, see &lt;a href=&quot;git-gc&quot;&gt;git-gc[1]&lt;/a&gt;." onmousemove="i18n(this)">&Pcy;&ocy;&dcy;&kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy;  &quot;expire&quot;  &ucy;&dcy;&acy;&lcy;&yacy;&iecy;&tcy; &scy;&tcy;&acy;&rcy;&ycy;&iecy; &zcy;&acy;&pcy;&icy;&scy;&icy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&jcy;. &Zcy;&acy;&pcy;&icy;&scy;&icy; &scy;&tcy;&acy;&rcy;&shcy;&iecy; &vcy;&rcy;&iecy;&mcy;&iecy;&ncy;&icy;  <code>expire</code>  &icy;&lcy;&icy; &zcy;&acy;&pcy;&icy;&scy;&icy; &scy;&tcy;&acy;&rcy;&shcy;&iecy; &vcy;&rcy;&iecy;&mcy;&iecy;&ncy;&icy;  <code>expire-unreachable</code>  &icy; &ncy;&iecy;&dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy;&iecy; &icy;&zcy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&gcy;&ocy; &pcy;&ocy;&dcy;&scy;&kcy;&acy;&zcy;&kcy;&icy; &ucy;&dcy;&acy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy; &icy;&zcy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&jcy;. &Ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &ecy;&tcy;&ocy; &ncy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &kcy;&ocy;&ncy;&iecy;&chcy;&ncy;&ycy;&mcy;&icy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&yacy;&mcy;&icy; &ncy;&acy;&pcy;&rcy;&yacy;&mcy;&ucy;&yucy; &mdash; &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &ecy;&tcy;&ocy;&gcy;&ocy; &scy;&mcy;.  <a href="git-gc.html">git-gc[1]</a> .</span></p> <p><span data-i18n="6baa541c0324b14b901e75785a8798ed58782c0b083ced6333199d6dd1e67fa6/8c" data-source="The &amp;quot;delete&amp;quot; subcommand deletes single entries from the reflog. Its argument must be an &lt;code&gt;exact&lt;/code&gt; entry (e.g. &amp;quot;&lt;code&gt;git reflog delete
+master@{2}&lt;/code&gt;&amp;quot;). This subcommand is also typically not used directly by end users." onmousemove="i18n(this)">&Pcy;&ocy;&dcy;&kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy;  &quot;delete&quot;  &ucy;&dcy;&acy;&lcy;&yacy;&iecy;&tcy; &ocy;&tcy;&dcy;&iecy;&lcy;&softcy;&ncy;&ycy;&iecy; &zcy;&acy;&pcy;&icy;&scy;&icy; &icy;&zcy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;. &IEcy;&gcy;&ocy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ocy;&mcy; &dcy;&ocy;&lcy;&zhcy;&ncy;&acy; &bcy;&ycy;&tcy;&softcy; &zcy;&acy;&pcy;&icy;&scy;&softcy;  <code>exact</code>  (&ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;,  &quot;  <code>git reflog delete
+master@{2}</code>  &quot; ). &Ecy;&tcy;&acy; &pcy;&ocy;&dcy;&kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &tcy;&acy;&kcy;&zhcy;&iecy; &ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &ncy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &kcy;&ocy;&ncy;&iecy;&chcy;&ncy;&ycy;&mcy;&icy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&yacy;&mcy;&icy; &ncy;&acy;&pcy;&rcy;&yacy;&mcy;&ucy;&yucy;.</span></p> <p><span data-i18n="3bffd1e6cb66561f3594f4f62c67c05b9a0357d0e60850b9376e38bd4a3a03c9/9a" data-source="The &amp;quot;exists&amp;quot; subcommand checks whether a ref has a reflog. It exits with zero status if the reflog exists, and non-zero status if it does not." onmousemove="i18n(this)">&Scy;&ucy;&bcy;&kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy;  &quot;exists&quot;  &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&yacy;&iecy;&tcy;, &iecy;&scy;&tcy;&softcy; &lcy;&icy; &ucy; &scy;&scy;&ycy;&lcy;&kcy;&icy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy; &pcy;&ocy;&vcy;&tcy;&ocy;&rcy;&ocy;&vcy;. &Ocy;&ncy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&acy;&iecy;&tcy; &rcy;&acy;&bcy;&ocy;&tcy;&ucy; &scy; &ncy;&ucy;&lcy;&iecy;&vcy;&ycy;&mcy; &scy;&tcy;&acy;&tcy;&ucy;&scy;&ocy;&mcy;, &iecy;&scy;&lcy;&icy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy; &scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy;, &icy; &scy; &ncy;&iecy;&ncy;&ucy;&lcy;&iecy;&vcy;&ycy;&mcy; &scy;&tcy;&acy;&tcy;&ucy;&scy;&ocy;&mcy;, &iecy;&scy;&lcy;&icy; &iecy;&gcy;&ocy; &ncy;&iecy;&tcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <h3 class="text-body-emphasis"  id="_options_for_show"><span data-i18n="95b93d774cd24ebaed8ef64b22a8f73ee08f68309a86f20b114f0339c8db080f/ee" data-source="Options for &lt;code&gt;show&lt;/code&gt;" onmousemove="i18n(this)">&Ocy;&pcy;&tscy;&icy;&icy; &dcy;&lcy;&yacy;  <code>show</code></span>
+</h3> <p><span data-i18n="e84a71e19b803ffbc07fd78384583767e01cb28d0c6e1150aacb183e87970840/b5" data-source="&lt;code&gt;git reflog show&lt;/code&gt; accepts any of the options accepted by &lt;code&gt;git log&lt;/code&gt;." onmousemove="i18n(this)"><code>git reflog show</code>  &pcy;&rcy;&icy;&ncy;&icy;&mcy;&acy;&iecy;&tcy; &lcy;&yucy;&bcy;&ocy;&jcy; &icy;&zcy; &vcy;&acy;&rcy;&icy;&acy;&ncy;&tcy;&ocy;&vcy;, &pcy;&rcy;&icy;&ncy;&yacy;&tcy;&ycy;&khcy;  <code>git log</code> .</span></p> </div> <div> <h3 class="text-body-emphasis"  id="_options_for_expire"><span data-i18n="2270444497850e153d3795deea08a65ea097acd314142c022e015e2e97d451c8/cb" data-source="Options for &lt;code&gt;expire&lt;/code&gt;" onmousemove="i18n(this)">&Ocy;&pcy;&tscy;&icy;&icy; &dcy;&lcy;&yacy;  <code>expire</code></span>
+</h3> <div> <dl> <dt id="Documentation/git-reflog.txt---all"><span data-i18n="7dbf56c38208e33a9193b210245465f7729af0d59b9df556e7f1f7138a6d6e93/a1" data-source="--all" onmousemove="i18n(this)">--all</span></dt> <dd> <p><span data-i18n="684e7a4ba7a49a1b2d65698b93092d53a16f492d1d2190a8880a051fd2893b2c/60" data-source="Process the reflogs of all references." onmousemove="i18n(this)">&Ocy;&bcy;&rcy;&acy;&bcy;&ocy;&tcy;&kcy;&acy; &rcy;&iecy;&fcy;&lcy;&ocy;&gcy;&ocy;&vcy; &vcy;&scy;&iecy;&khcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;.</span></p> </dd> <dt id="Documentation/git-reflog.txt---single-worktree"><span data-i18n="ea66ccaaf74794b7cc5f05a5ec4493fd053f6dbc7f0ffbc15edfec9b3a055379/f3" data-source="--single-worktree" onmousemove="i18n(this)">--single-worktree</span></dt> <dd> <p><span data-i18n="41cbd7d65732d6e3f6be266378dd0b823cb40a863f09690c14cfec5c7777c3c5/d2" data-source="By default when &lt;code&gt;--all&lt;/code&gt; is specified, reflogs from all working trees are processed. This option limits the processing to reflogs from the current working tree only." onmousemove="i18n(this)">&Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy;, &iecy;&scy;&lcy;&icy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;  <code>--all</code> , &ocy;&bcy;&rcy;&acy;&bcy;&acy;&tcy;&ycy;&vcy;&acy;&yucy;&tcy;&scy;&yacy; &rcy;&iecy;&lcy;&ocy;&gcy;&icy; &vcy;&scy;&iecy;&khcy; &rcy;&acy;&bcy;&ocy;&chcy;&icy;&khcy; &dcy;&iecy;&rcy;&iecy;&vcy;&softcy;&iecy;&vcy;. &Ecy;&tcy;&acy; &ocy;&pcy;&tscy;&icy;&yacy; &ocy;&gcy;&rcy;&acy;&ncy;&icy;&chcy;&icy;&vcy;&acy;&iecy;&tcy; &ocy;&bcy;&rcy;&acy;&bcy;&ocy;&tcy;&kcy;&ucy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy;&mcy;&icy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&gcy;&ocy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&gcy;&ocy; &dcy;&iecy;&rcy;&iecy;&vcy;&acy;.</span></p> </dd> <dt id="Documentation/git-reflog.txt---expirelttimegt"><span data-i18n="a2148b5b8b910ac4ec59bb95be46c229c466a82f3506e778d58cf31f78e2b53f/36" data-source="--expire=&amp;lt;time&amp;gt;" onmousemove="i18n(this)">--expire=&lt;time&gt;</span></dt> <dd> <p><span data-i18n="9e90e1279395634428b5db8ef032f6bd0202400facf9cd1dbe4558a923f1a695/23" data-source="Prune entries older than the specified time. If this option is not specified, the expiration time is taken from the configuration setting &lt;code&gt;gc.reflogExpire&lt;/code&gt;, which in turn defaults to 90 days. &lt;code&gt;--expire=all&lt;/code&gt; prunes entries regardless of their age; &lt;code&gt;--expire=never&lt;/code&gt; turns off pruning of reachable entries (but see &lt;code&gt;--expire-unreachable&lt;/code&gt;)." onmousemove="i18n(this)">&Ucy;&dcy;&acy;&lcy;&icy;&tcy;&softcy; &zcy;&acy;&pcy;&icy;&scy;&icy; &scy;&tcy;&acy;&rcy;&shcy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy; &vcy;&rcy;&iecy;&mcy;&iecy;&ncy;&icy;. &IEcy;&scy;&lcy;&icy; &ecy;&tcy;&ocy;&tcy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy; &ncy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;, &scy;&rcy;&ocy;&kcy; &dcy;&iecy;&jcy;&scy;&tcy;&vcy;&icy;&yacy; &bcy;&iecy;&rcy;&iecy;&tcy;&scy;&yacy; &icy;&zcy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;&acy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  <code>gc.reflogExpire</code> , &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy;, &vcy; &scy;&vcy;&ocy;&yucy; &ocy;&chcy;&iecy;&rcy;&iecy;&dcy;&softcy;, &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &rcy;&acy;&vcy;&iecy;&ncy; 90 &dcy;&ncy;&yacy;&mcy;.  <code>--expire=all</code>  &ucy;&dcy;&acy;&lcy;&yacy;&iecy;&tcy; &zcy;&acy;&pcy;&icy;&scy;&icy; &ncy;&iecy;&zcy;&acy;&vcy;&icy;&scy;&icy;&mcy;&ocy; &ocy;&tcy; &icy;&khcy; &vcy;&ocy;&zcy;&rcy;&acy;&scy;&tcy;&acy;;  <code>--expire=never</code>  &ocy;&tcy;&kcy;&lcy;&yucy;&chcy;&acy;&iecy;&tcy; &scy;&ocy;&kcy;&rcy;&acy;&shchcy;&iecy;&ncy;&icy;&iecy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy;&khcy; &zcy;&acy;&pcy;&icy;&scy;&iecy;&jcy; (&ncy;&ocy; &scy;&mcy;.  <code>--expire-unreachable</code> ).</span></p> </dd> <dt id="Documentation/git-reflog.txt---expire-unreachablelttimegt"><span data-i18n="20ed0eac842ab5093b7c97b276556d11be278bd7e1ad7287a99b9ef965a096b6/57" data-source="--expire-unreachable=&amp;lt;time&amp;gt;" onmousemove="i18n(this)">--expire-unreachable=&lt;time&gt;</span></dt> <dd> <p><span data-i18n="c29c4ad6d4806ceeb6db0e7ee827f2d99873ff8a095390a5fae62be2a5a7ec41/b1" data-source="Prune entries older than &lt;code&gt;&amp;lt;time&amp;gt;&lt;/code&gt; that are not reachable from the current tip of the branch. If this option is not specified, the expiration time is taken from the configuration setting &lt;code&gt;gc.reflogExpireUnreachable&lt;/code&gt;, which in turn defaults to 30 days. &lt;code&gt;--expire-unreachable=all&lt;/code&gt; prunes unreachable entries regardless of their age; &lt;code&gt;--expire-unreachable=never&lt;/code&gt; turns off early pruning of unreachable entries (but see &lt;code&gt;--expire&lt;/code&gt;)." onmousemove="i18n(this)">&Ucy;&dcy;&acy;&lcy;&icy;&tcy;&iecy; &zcy;&acy;&pcy;&icy;&scy;&icy; &scy;&tcy;&acy;&rcy;&shcy;&iecy;  <code>&lt;time&gt;</code> , &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ncy;&iecy;&dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy; &icy;&zcy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&gcy;&ocy; &kcy;&ocy;&ncy;&tscy;&acy; &vcy;&iecy;&tcy;&kcy;&icy;. &IEcy;&scy;&lcy;&icy; &ecy;&tcy;&ocy;&tcy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy; &ncy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;, &scy;&rcy;&ocy;&kcy; &dcy;&iecy;&jcy;&scy;&tcy;&vcy;&icy;&yacy; &bcy;&iecy;&rcy;&iecy;&tcy;&scy;&yacy; &icy;&zcy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;&acy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  <code>gc.reflogExpireUnreachable</code> , &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy;, &vcy; &scy;&vcy;&ocy;&yucy; &ocy;&chcy;&iecy;&rcy;&iecy;&dcy;&softcy;, &pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &rcy;&acy;&vcy;&iecy;&ncy; 30 &dcy;&ncy;&yacy;&mcy;.  <code>--expire-unreachable=all</code>  &ucy;&dcy;&acy;&lcy;&yacy;&iecy;&tcy; &ncy;&iecy;&dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy;&iecy; &zcy;&acy;&pcy;&icy;&scy;&icy; &ncy;&iecy;&zcy;&acy;&vcy;&icy;&scy;&icy;&mcy;&ocy; &ocy;&tcy; &icy;&khcy; &vcy;&ocy;&zcy;&rcy;&acy;&scy;&tcy;&acy;;  <code>--expire-unreachable=never</code>  &ocy;&tcy;&kcy;&lcy;&yucy;&chcy;&acy;&iecy;&tcy; &rcy;&acy;&ncy;&ncy;&iecy;&iecy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&icy;&iecy; &ncy;&iecy;&dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy;&khcy; &zcy;&acy;&pcy;&icy;&scy;&iecy;&jcy; (&ncy;&ocy; &scy;&mcy;.  <code>--expire</code> ).</span></p> </dd> <dt id="Documentation/git-reflog.txt---updateref"><span data-i18n="ebfbf4a74e02e4e3794d6faf226bd8af4ff4730a3b60ff45eef0ec5227390a49/30" data-source="--updateref" onmousemove="i18n(this)">--updateref</span></dt> <dd> <p><span data-i18n="9d69b0d35e43c91134597bb12bf7fac9d37871458a2ee2a6de6bb346c5901920/ab" data-source="Update the reference to the value of the top reflog entry (i.e. &amp;lt;ref&amp;gt;@{0}) if the previous top entry was pruned. (This option is ignored for symbolic references.)" onmousemove="i18n(this)">&Ocy;&bcy;&ncy;&ocy;&vcy;&icy;&tcy;&iecy; &scy;&scy;&ycy;&lcy;&kcy;&ucy; &ncy;&acy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &vcy;&iecy;&rcy;&khcy;&ncy;&iecy;&jcy; &zcy;&acy;&pcy;&icy;&scy;&icy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy; &scy;&scy;&ycy;&lcy;&ocy;&kcy; (&tcy;. &iecy;. &lt;ref&gt;@{0}), &iecy;&scy;&lcy;&icy; &pcy;&rcy;&iecy;&dcy;&ycy;&dcy;&ucy;&shchcy;&acy;&yacy; &vcy;&iecy;&rcy;&khcy;&ncy;&yacy;&yacy; &zcy;&acy;&pcy;&icy;&scy;&softcy; &bcy;&ycy;&lcy;&acy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&acy;. (&Ecy;&tcy;&ocy;&tcy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy; &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ucy;&iecy;&tcy;&scy;&yacy; &dcy;&lcy;&yacy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&khcy; &scy;&scy;&ycy;&lcy;&ocy;&kcy;.)</span></p> </dd> <dt id="Documentation/git-reflog.txt---rewrite"><span data-i18n="a8fd61c14a22496934c84ea1f3cec341af79c21aa8dbb3a5c412e78945af781f/ab" data-source="--rewrite" onmousemove="i18n(this)">--rewrite</span></dt> <dd> <p><span data-i18n="14eaf971c0ac325ecb785b7c04de58edafb158a878561ff1ae31300c4812af99/e7" data-source="If a reflog entry&amp;rsquo;s predecessor is pruned, adjust its &amp;quot;old&amp;quot; SHA-1 to be equal to the &amp;quot;new&amp;quot; SHA-1 field of the entry that now precedes it." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &pcy;&rcy;&iecy;&dcy;&shcy;&iecy;&scy;&tcy;&vcy;&iecy;&ncy;&ncy;&icy;&tscy;&acy; &zcy;&acy;&pcy;&icy;&scy;&icy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&acy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&jcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&acy;, &ncy;&acy;&scy;&tcy;&rcy;&ocy;&jcy;&tcy;&iecy; &iecy;&iecy;  &quot;old&quot;  SHA-1 &tcy;&acy;&kcy;, &chcy;&tcy;&ocy;&bcy;&ycy; &ocy;&ncy;&acy; &bcy;&ycy;&lcy;&acy; &rcy;&acy;&vcy;&ncy;&acy; &pcy;&ocy;&lcy;&yucy;  &quot;new&quot;  SHA-1 &zcy;&acy;&pcy;&icy;&scy;&icy;, &kcy;&ocy;&tcy;&ocy;&rcy;&acy;&yacy; &tcy;&iecy;&pcy;&iecy;&rcy;&softcy; &iecy;&jcy; &pcy;&rcy;&iecy;&dcy;&shcy;&iecy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy;.</span></p> </dd> <dt id="Documentation/git-reflog.txt---stale-fix"><span data-i18n="cc202accc6edb49432e81154df646238e5b1c1db6353d85d10952bda4d41223f/db" data-source="--stale-fix" onmousemove="i18n(this)">--stale-fix</span></dt> <dd> <p><span data-i18n="907121a0a99786dfde0aafc96969a3f10a4431c31dc6e8c9d6f2120da7d19db1/e1" data-source="Prune any reflog entries that point to &amp;quot;broken commits&amp;quot;. A broken commit is a commit that is not reachable from any of the reference tips and that refers, directly or indirectly, to a missing commit, tree, or blob object." onmousemove="i18n(this)">&Ucy;&dcy;&acy;&lcy;&icy;&tcy;&iecy; &vcy;&scy;&iecy; &zcy;&acy;&pcy;&icy;&scy;&icy; &vcy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&iecy;, &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&yucy;&shchcy;&icy;&iecy; &ncy;&acy;  &quot;broken commits&quot; . &Ncy;&acy;&rcy;&ucy;&shcy;&iecy;&ncy;&ncy;&acy;&yacy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&yacy; &mdash; &ecy;&tcy;&ocy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&yacy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ucy;&yucy; &ncy;&iecy;&vcy;&ocy;&zcy;&mcy;&ocy;&zhcy;&ncy;&ocy; &pcy;&ocy;&lcy;&ucy;&chcy;&icy;&tcy;&softcy; &ncy;&icy; &pcy;&ocy; &ocy;&dcy;&ncy;&ocy;&mcy;&ucy; &icy;&zcy; &scy;&pcy;&rcy;&acy;&vcy;&ocy;&chcy;&ncy;&ycy;&khcy; &scy;&ocy;&vcy;&iecy;&tcy;&ocy;&vcy; &icy; &kcy;&ocy;&tcy;&ocy;&rcy;&acy;&yacy; &pcy;&rcy;&yacy;&mcy;&ocy; &icy;&lcy;&icy; &kcy;&ocy;&scy;&vcy;&iecy;&ncy;&ncy;&ocy; &scy;&scy;&ycy;&lcy;&acy;&iecy;&tcy;&scy;&yacy; &ncy;&acy; &ocy;&tcy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&ucy;&yucy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&yucy;, &dcy;&iecy;&rcy;&iecy;&vcy;&ocy; &icy;&lcy;&icy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy; BLOB-&ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&acy;.</span></p> <p><span data-i18n="2553bf220e6e95d4886b46143d08c66583a9f66971b63c9627902642beada622/00" data-source="This computation involves traversing all the reachable objects, i.e. it has the same cost as &lt;code&gt;git prune&lt;/code&gt;. It is primarily intended to fix corruption caused by garbage collecting using older versions of Git, which didn&amp;rsquo;t protect objects referred to by reflogs." onmousemove="i18n(this)">&Ecy;&tcy;&ocy; &vcy;&ycy;&chcy;&icy;&scy;&lcy;&iecy;&ncy;&icy;&iecy; &vcy;&kcy;&lcy;&yucy;&chcy;&acy;&iecy;&tcy; &vcy; &scy;&iecy;&bcy;&yacy; &ocy;&bcy;&khcy;&ocy;&dcy; &vcy;&scy;&iecy;&khcy; &dcy;&ocy;&scy;&tcy;&icy;&zhcy;&icy;&mcy;&ycy;&khcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;, &tcy;.&iecy;. &ocy;&ncy;&ocy; &icy;&mcy;&iecy;&iecy;&tcy; &tcy;&ucy; &zhcy;&iecy; &scy;&tcy;&ocy;&icy;&mcy;&ocy;&scy;&tcy;&softcy;, &chcy;&tcy;&ocy; &icy;  <code>git prune</code> . &Vcy; &pcy;&iecy;&rcy;&vcy;&ucy;&yucy; &ocy;&chcy;&iecy;&rcy;&iecy;&dcy;&softcy; &ocy;&ncy; &pcy;&rcy;&iecy;&dcy;&ncy;&acy;&zcy;&ncy;&acy;&chcy;&iecy;&ncy; &dcy;&lcy;&yacy; &icy;&scy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&yacy; &pcy;&ocy;&vcy;&rcy;&iecy;&zhcy;&dcy;&iecy;&ncy;&icy;&jcy;, &vcy;&ycy;&zcy;&vcy;&acy;&ncy;&ncy;&ycy;&khcy; &scy;&bcy;&ocy;&rcy;&kcy;&ocy;&jcy; &mcy;&ucy;&scy;&ocy;&rcy;&acy; &scy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy;&mcy; &scy;&tcy;&acy;&rcy;&ycy;&khcy; &vcy;&iecy;&rcy;&scy;&icy;&jcy; Git, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &ncy;&iecy; &zcy;&acy;&shchcy;&icy;&shchcy;&acy;&lcy;&icy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy;, &ncy;&acy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &scy;&scy;&ycy;&lcy;&acy;&yucy;&tcy;&scy;&yacy; &zhcy;&ucy;&rcy;&ncy;&acy;&lcy;&ycy; &ocy;&bcy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&icy;&jcy;.</span></p> </dd> <dt id="Documentation/git-reflog.txt--n"><span data-i18n="5249f4fcc629efa0e6d6b2bf746b6c5de61611ce719ad61ac820fbe5c8cece66/28" data-source="-n" onmousemove="i18n(this)">-n</span></dt> <dt id="Documentation/git-reflog.txt---dry-run"><span data-i18n="675ca48430023bf861e914e0cf5bbe183efe84bd9d831affc574394bf4edc690/c1" data-source="--dry-run" onmousemove="i18n(this)">--dry-run</span></dt> <dd> <p><span data-i18n="afe578f8afc9beef90a7a155bdcd0fce8ffe7a4d0a0dff99e2b394e2f64ded23/de" data-source="Do not actually prune any entries; just show what would have been pruned." onmousemove="i18n(this)">&Ncy;&acy; &scy;&acy;&mcy;&ocy;&mcy; &dcy;&iecy;&lcy;&iecy; &ncy;&iecy; &ucy;&dcy;&acy;&lcy;&yacy;&jcy;&tcy;&iecy; &ncy;&icy;&kcy;&acy;&kcy;&icy;&iecy; &zcy;&acy;&pcy;&icy;&scy;&icy;; &pcy;&rcy;&ocy;&scy;&tcy;&ocy; &pcy;&ocy;&kcy;&acy;&zhcy;&icy;&tcy;&iecy; &tcy;&ocy;, &chcy;&tcy;&ocy; &bcy;&ycy;&lcy;&ocy; &bcy;&ycy; &pcy;&ocy;&dcy;&rcy;&iecy;&zcy;&acy;&ncy;&ocy;.</span></p> </dd> <dt id="Documentation/git-reflog.txt---verbose"><span data-i18n="bff1e8d3adf9e53481e9b21876983b359dc8a231bf7ebadde36a42dd7bd4db5c/93" data-source="--verbose" onmousemove="i18n(this)">--verbose</span></dt> <dd> <p><span data-i18n="10888f49af28c9c731bf5ed24027e889f769516f63bb9bde5765c651c4561043/be" data-source="Print extra information on screen." onmousemove="i18n(this)">&Rcy;&acy;&scy;&pcy;&iecy;&chcy;&acy;&tcy;&acy;&jcy;&tcy;&iecy; &dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ucy;&yucy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&yucy; &ncy;&acy; &ecy;&kcy;&rcy;&acy;&ncy;&iecy;.</span></p> </dd> </dl> </div> </div> <div> <h3 class="text-body-emphasis"  id="_options_for_delete"><span data-i18n="f831459d9e4257a3354dd3c96891907c10fe897a5ccd66e370bcebe6c756ce28/e5" data-source="Options for &lt;code&gt;delete&lt;/code&gt;" onmousemove="i18n(this)">&Ocy;&pcy;&tscy;&icy;&icy; &dcy;&lcy;&yacy;  <code>delete</code></span>
+</h3> <p><span data-i18n="1bb20f5c623f81e64f114cde9304105752c29bb24d3f402460027455f33e6632/84" data-source="&lt;code&gt;git reflog delete&lt;/code&gt; accepts options &lt;code&gt;--updateref&lt;/code&gt;, &lt;code&gt;--rewrite&lt;/code&gt;, &lt;code&gt;-n&lt;/code&gt;, &lt;code&gt;--dry-run&lt;/code&gt;, and &lt;code&gt;--verbose&lt;/code&gt;, with the same meanings as when they are used with &lt;code&gt;expire&lt;/code&gt;." onmousemove="i18n(this)"><code>git reflog delete</code>  &pcy;&rcy;&icy;&ncy;&icy;&mcy;&acy;&iecy;&tcy; &ocy;&pcy;&tscy;&icy;&icy;  <code>--updateref</code> ,  <code>--rewrite</code> ,  <code>-n</code> ,  <code>--dry-run</code>  &icy;  <code>--verbose</code>  &scy; &tcy;&iecy;&mcy;&icy; &zhcy;&iecy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy;&mcy;&icy;, &chcy;&tcy;&ocy; &icy; &pcy;&rcy;&icy; &icy;&khcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&icy; &scy;  <code>expire</code> .</span></p> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-reflog">https://git-scm.com/docs/git-reflog</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-remote.html">
+                            git remote                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-remote-ext.html">
+                            git remote-ext                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-remote-fd.html">
+                            git remote-fd                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-repack.html">
+                            git repack                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-replace.html">
+                            git replace                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-request-pull.html">
+                            git request-pull                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-rerere.html">
+                            git rerere                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="3777011170"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-reflog.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

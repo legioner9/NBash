@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:15:32 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git remote-ext</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="03c13d0d68d805a8af232d3669f9701d92099dd10dd2f395d9fce1c5b0c47c06/1b" data-source="git-remote-ext" onmousemove="i18n(this)">git-remote-ext</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="7110bdefcde673f7fb3f5f88301165d62230a425f11b6702de19a40cd4325342/3d" data-source="git-remote-ext - Bridge smart transport to external command." onmousemove="i18n(this)">git-remote-ext &mdash; &mcy;&ocy;&scy;&tcy; &icy;&ncy;&tcy;&iecy;&lcy;&lcy;&iecy;&kcy;&tcy;&ucy;&acy;&lcy;&softcy;&ncy;&ocy;&gcy;&ocy; &tcy;&rcy;&acy;&ncy;&scy;&pcy;&ocy;&rcy;&tcy;&acy; &kcy; &vcy;&ncy;&iecy;&shcy;&ncy;&iecy;&jcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&iecy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-xml">git remote add <span class="hljs-tag">&lt;<span class="hljs-name">nick</span>&gt;</span> &quot;ext::<span class="hljs-tag">&lt;<span class="hljs-name">command</span>&gt;</span>[ <span class="hljs-tag">&lt;<span class="hljs-name">arguments</span>&gt;</span>&hellip;&ZeroWidthSpace;]&quot;</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="d60ce67a100af9618da8153bcecd32d72fa63dc435151343138d6c18d3effbae/12" data-source="This remote helper uses the specified &lt;code&gt;&amp;lt;command&amp;gt;&lt;/code&gt; to connect to a remote Git server." onmousemove="i18n(this)">&Ecy;&tcy;&ocy;&tcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&jcy; &pcy;&ocy;&mcy;&ocy;&shchcy;&ncy;&icy;&kcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ycy;&jcy;  <code>&lt;command&gt;</code>  &dcy;&lcy;&yacy; &pcy;&ocy;&dcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&icy;&yacy; &kcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&mcy;&ucy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&ucy;  Git .</span></p> <p><span data-i18n="0ffe43720aa44a69521d1d2586aecb25265d5a669b29093829fcedef6a847fa9/a3" data-source="Data written to stdin of the specified &lt;code&gt;&amp;lt;command&amp;gt;&lt;/code&gt; is assumed to be sent to a git:// server, git-upload-pack, git-receive-pack or git-upload-archive (depending on situation), and data read from stdout of &amp;lt;command&amp;gt; is assumed to be received from the same service." onmousemove="i18n(this)">&Pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&lcy;&acy;&gcy;&acy;&iecy;&tcy;&scy;&yacy;, &chcy;&tcy;&ocy; &dcy;&acy;&ncy;&ncy;&ycy;&iecy;, &zcy;&acy;&pcy;&icy;&scy;&acy;&ncy;&ncy;&ycy;&iecy; &vcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&jcy; &vcy;&vcy;&ocy;&dcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ocy;&gcy;&ocy;  <code>&lt;command&gt;</code> , &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy; &ncy;&acy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy; git://, git-upload-pack, git-receive-pack &icy;&lcy;&icy; git-upload-archive (&vcy; &zcy;&acy;&vcy;&icy;&scy;&icy;&mcy;&ocy;&scy;&tcy;&icy; &ocy;&tcy; &scy;&icy;&tcy;&ucy;&acy;&tscy;&icy;&icy;), &acy; &dcy;&acy;&ncy;&ncy;&ycy;&iecy; &chcy;&icy;&tcy;&acy;&yucy;&tcy;&scy;&yacy; &icy;&zcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ocy;&gcy;&ocy; &vcy;&ycy;&vcy;&ocy;&dcy;&acy; &Pcy;&rcy;&iecy;&dcy;&pcy;&ocy;&lcy;&acy;&gcy;&acy;&iecy;&tcy;&scy;&yacy;, &chcy;&tcy;&ocy; &lt;&kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy;&gt; &pcy;&ocy;&lcy;&ucy;&chcy;&iecy;&ncy;&acy; &ocy;&tcy; &tcy;&ocy;&jcy; &zhcy;&iecy; &scy;&lcy;&ucy;&zhcy;&bcy;&ycy;.</span></p> <p><span data-i18n="5649894aaea46221c723bb63bb4c001b92befc88e608f595432ec7d885b3bb87/48" data-source="Command and arguments are separated by an unescaped space." onmousemove="i18n(this)">&Kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &icy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ycy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&yacy;&yucy;&tcy;&scy;&yacy; &ncy;&iecy;&ecy;&kcy;&rcy;&acy;&ncy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&mcy; &pcy;&rcy;&ocy;&bcy;&iecy;&lcy;&ocy;&mcy;.</span></p> <p><span data-i18n="04ff59926d363245e3447286c626428da8a91d35f80ca13df8f756a0a4eb9ae4/f6" data-source="The following sequences have a special meaning:" onmousemove="i18n(this)">&Scy;&lcy;&iecy;&dcy;&ucy;&yucy;&shchcy;&icy;&iecy; &pcy;&ocy;&scy;&lcy;&iecy;&dcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&scy;&tcy;&icy; &icy;&mcy;&iecy;&yucy;&tcy; &ocy;&scy;&ocy;&bcy;&ocy;&iecy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy;:</span></p> <div> <dl> <dt id="Documentation/git-remote-ext.txt-"><span data-i18n="e849a4136402c8c86ffe3cc323abc7e4ed793ccb3757b7cbcd71af0b4caab8dd/e3" data-source="&amp;apos;% &amp;apos;" onmousemove="i18n(this)">&apos;% &apos;</span></dt> <dd> <p><span data-i18n="782cc104b8231c2e89d70f235e88420174ba711d7f6131814d3472dc7b75a811/3d" data-source="Literal space in command or argument." onmousemove="i18n(this)">&Bcy;&ucy;&kcy;&vcy;&acy;&lcy;&softcy;&ncy;&ocy;&iecy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&ocy; &vcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&iecy; &icy;&lcy;&icy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&iecy;.</span></p> </dd> <dt id="Documentation/git-remote-ext.txt-emem"> <span data-i18n="f5b818ed1e7a0681c4e1c46514089ec8f308ce4f9e6d82a946c08795f755730d/89" data-source="&lt;em&gt;%%&lt;/em&gt;" onmousemove="i18n(this)"><em>%%</em></span> </dt> <dd> <p><span data-i18n="6ac98cf77f05cf00cbd7e511a40fd5e79bc6380bf62089be126c82dc1e7c7ab4/7f" data-source="Literal percent sign." onmousemove="i18n(this)">&Bcy;&ucy;&kcy;&vcy;&acy;&lcy;&softcy;&ncy;&ycy;&jcy; &zcy;&ncy;&acy;&kcy; &pcy;&rcy;&ocy;&tscy;&iecy;&ncy;&tcy;&acy;.</span></p> </dd> <dt id="Documentation/git-remote-ext.txt-emsem"> <span data-i18n="4a038e401691b1250d5f1369b09cd5e079fe4315d08462e136ff8547deb741ad/75" data-source="&lt;em&gt;%s&lt;/em&gt;" onmousemove="i18n(this)"><em>%s</em></span> </dt> <dd> <p><span data-i18n="ebab22beab9fc074001c79ffd2898f2c34d9a6f99dc30533294d11eeabd12e6a/ce" data-source="Replaced with name (receive-pack, upload-pack, or upload-archive) of the service Git wants to invoke." onmousemove="i18n(this)">&Zcy;&acy;&mcy;&iecy;&ncy;&yacy;&iecy;&tcy;&scy;&yacy; &icy;&mcy;&iecy;&ncy;&iecy;&mcy; (receive-pack, upload-pack &icy;&lcy;&icy; upload-archive) &scy;&lcy;&ucy;&zhcy;&bcy;&ycy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ucy;&yucy;  Git  &khcy;&ocy;&chcy;&iecy;&tcy; &vcy;&ycy;&zcy;&vcy;&acy;&tcy;&softcy;.</span></p> </dd> <dt id="Documentation/git-remote-ext.txt-emSem"> <span data-i18n="c1268ae47fde6d4c5d94e2fc68e135d6350d15cf5eddd5c234231e7070bbd67c/a0" data-source="&lt;em&gt;%S&lt;/em&gt;" onmousemove="i18n(this)"><em>%S</em></span> </dt> <dd> <p><span data-i18n="22e6ff92bbe7c9c11c734d94c1c442bba9ded57c7d495ee069b67669497ffb2b/9a" data-source="Replaced with long name (git-receive-pack, git-upload-pack, or git-upload-archive) of the service Git wants to invoke." onmousemove="i18n(this)">&Zcy;&acy;&mcy;&iecy;&ncy;&yacy;&iecy;&tcy;&scy;&yacy; &dcy;&lcy;&icy;&ncy;&ncy;&ycy;&mcy; &icy;&mcy;&iecy;&ncy;&iecy;&mcy; (git-receive-pack, git-upload-pack &icy;&lcy;&icy; git-upload-archive) &scy;&lcy;&ucy;&zhcy;&bcy;&ycy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ucy;&yucy;  Git  &khcy;&ocy;&chcy;&iecy;&tcy; &vcy;&ycy;&zcy;&vcy;&acy;&tcy;&softcy;.</span></p> </dd> <dt id="Documentation/git-remote-ext.txt-emGemmustbethefirstcharactersinanargument"> <span data-i18n="ee92d44be1b28f9122fe5b2f7a7fe896987e6b4ed305c3c00a2a197bcc890d03/53" data-source="&lt;em&gt;%G&lt;/em&gt; (must be the first characters in an argument)" onmousemove="i18n(this)">%G (&dcy;&ocy;&lcy;&zhcy;&ncy;&ycy; &bcy;&ycy;&tcy;&softcy; &pcy;&iecy;&rcy;&vcy;&ycy;&mcy;&icy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&acy;&mcy;&icy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy;)</span></dt> <dd> <p><span data-i18n="a1297690713e8cc76e3be601e6f46ec9ffa6eaaf7b27abd15550eeb1a5ed7fd9/5e" data-source="This argument will not be passed to &lt;code&gt;&amp;lt;command&amp;gt;&lt;/code&gt;. Instead, it will cause the helper to start by sending git:// service requests to the remote side with the service field set to an appropriate value and the repository field set to the rest of the argument. Default is not to send such a request." onmousemove="i18n(this)">&Ecy;&tcy;&ocy;&tcy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy; &ncy;&iecy; &bcy;&ucy;&dcy;&iecy;&tcy; &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&ncy;  <code>&lt;command&gt;</code> . &Vcy;&mcy;&iecy;&scy;&tcy;&ocy; &ecy;&tcy;&ocy;&gcy;&ocy; &pcy;&ocy;&mcy;&ocy;&shchcy;&ncy;&icy;&kcy; &zcy;&acy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;&scy;&yacy; &scy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&kcy;&icy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&ocy;&vcy; &ncy;&acy; &ocy;&bcy;&scy;&lcy;&ucy;&zhcy;&icy;&vcy;&acy;&ncy;&icy;&iecy; git:// &ncy;&acy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ucy;&yucy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&ucy;, &pcy;&rcy;&icy; &ecy;&tcy;&ocy;&mcy; &dcy;&lcy;&yacy; &pcy;&ocy;&lcy;&yacy; &scy;&lcy;&ucy;&zhcy;&bcy;&ycy; &bcy;&ucy;&dcy;&iecy;&tcy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&ocy; &scy;&ocy;&ocy;&tcy;&vcy;&iecy;&tcy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&iecy;&iecy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy;, &acy; &dcy;&lcy;&yacy; &pcy;&ocy;&lcy;&yacy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy; &mdash; &ocy;&scy;&tcy;&acy;&lcy;&softcy;&ncy;&acy;&yacy; &chcy;&acy;&scy;&tcy;&softcy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy;. &Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &tcy;&acy;&kcy;&ocy;&jcy; &zcy;&acy;&pcy;&rcy;&ocy;&scy; &ncy;&iecy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy;.</span></p> <p><span data-i18n="e829c423c003526b24925681395ced823b24838f43d97597e9dc232bfa45ea19/db" data-source="This is useful if the remote side is git:// server accessed over some tunnel." onmousemove="i18n(this)">&Ecy;&tcy;&ocy; &pcy;&ocy;&lcy;&iecy;&zcy;&ncy;&ocy;, &iecy;&scy;&lcy;&icy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&acy;&yacy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&acy; &mdash; &ecy;&tcy;&ocy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy; git://, &dcy;&ocy;&scy;&tcy;&ucy;&pcy; &kcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&mcy;&ucy; &ocy;&scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &chcy;&iecy;&rcy;&iecy;&zcy; &kcy;&acy;&kcy;&ocy;&jcy;-&lcy;&icy;&bcy;&ocy; &tcy;&ucy;&ncy;&ncy;&iecy;&lcy;&softcy;.</span></p> </dd> <dt id="Documentation/git-remote-ext.txt-emVemmustbefirstcharactersinargument"> <span data-i18n="84e7480df31bdfad8f9150a0a482500650c0b397dbc4ee3a2071f0c01afef57a/3d" data-source="&lt;em&gt;%V&lt;/em&gt; (must be first characters in argument)" onmousemove="i18n(this)">%V (&dcy;&ocy;&lcy;&zhcy;&ncy;&ycy; &bcy;&ycy;&tcy;&softcy; &pcy;&iecy;&rcy;&vcy;&ycy;&mcy;&icy; &scy;&icy;&mcy;&vcy;&ocy;&lcy;&acy;&mcy;&icy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy;)</span></dt> <dd> <p><span data-i18n="054595f4f9e6886989be0464a37fe4470553a4fe95f117be43503d36fd2ca957/a9" data-source="This argument will not be passed to &lt;code&gt;&amp;lt;command&amp;gt;&lt;/code&gt;. Instead it sets the vhost field in the git:// service request (to the rest of the argument). Default is not to send vhost in such request (if sent)." onmousemove="i18n(this)">&Ecy;&tcy;&ocy;&tcy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy; &ncy;&iecy; &bcy;&ucy;&dcy;&iecy;&tcy; &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&ncy;  <code>&lt;command&gt;</code> . &Vcy;&mcy;&iecy;&scy;&tcy;&ocy; &ecy;&tcy;&ocy;&gcy;&ocy; &ocy;&ncy; &ucy;&scy;&tcy;&acy;&ncy;&acy;&vcy;&lcy;&icy;&vcy;&acy;&iecy;&tcy; &pcy;&ocy;&lcy;&iecy; vhost &vcy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&iecy; &scy;&lcy;&ucy;&zhcy;&bcy;&ycy; git:// (&ocy;&scy;&tcy;&acy;&lcy;&softcy;&ncy;&ucy;&yucy; &chcy;&acy;&scy;&tcy;&softcy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy;). &Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; vhost &ncy;&iecy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &vcy; &tcy;&acy;&kcy;&ocy;&mcy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&iecy; (&iecy;&scy;&lcy;&icy; &ocy;&ncy; &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&lcy;&iecy;&ncy;).</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_environment_variables"><span data-i18n="aac7246f5e97142c3f257b7d8b84976f10c29e1b89804bb9d3eb7c43cc03cb8e/17" data-source="Environment variables" onmousemove="i18n(this)">Environment variables</span></h2> <div> <div> <dl> <dt id="Documentation/git-remote-ext.txt-GITTRANSLOOPDEBUG"><span data-i18n="9ab1b6fb871a177ebf353ef89bb20e465ded23aeae1f061002aefa6ceed45fda/09" data-source="GIT_TRANSLOOP_DEBUG" onmousemove="i18n(this)">GIT_TRANSLOOP_DEBUG</span></dt> <dd> <p><span data-i18n="195411fa8ff306c38f8d2d5a00a2d6a6ca32a5e212f9ac949c7b510d7ce34743/44" data-source="If set, prints debugging information about various reads/writes." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&ocy;, &vcy;&ycy;&vcy;&ocy;&dcy;&icy;&tcy; &ocy;&tcy;&lcy;&acy;&dcy;&ocy;&chcy;&ncy;&ucy;&yucy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&yucy; &ocy; &rcy;&acy;&zcy;&lcy;&icy;&chcy;&ncy;&ycy;&khcy; &ocy;&pcy;&iecy;&rcy;&acy;&tscy;&icy;&yacy;&khcy; &chcy;&tcy;&iecy;&ncy;&icy;&yacy;/&zcy;&acy;&pcy;&icy;&scy;&icy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_environment_variables_passed_to_command"><span data-i18n="4cba061cfe435ff3eb7f95de70ad96a766deb0017dd6e4ac4448cae34901fc6d/43" data-source="Environment variables passed to command" onmousemove="i18n(this)">&Pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ycy;&iecy; &scy;&rcy;&iecy;&dcy;&ycy;, &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&vcy;&acy;&iecy;&mcy;&ycy;&iecy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&iecy;</span></h2> <div> <div> <dl> <dt id="Documentation/git-remote-ext.txt-GITEXTSERVICE"><span data-i18n="a8ac7d71005d9064a328401254938e646bb82eca287922386da24cfcc29a498d/1e" data-source="GIT_EXT_SERVICE" onmousemove="i18n(this)">GIT_EXT_SERVICE</span></dt> <dd> <p><span data-i18n="fe9f9510a04ac5ee08c6fb158ad06a7a0be2ff5bb19f4238bfcd967187fe0d01/9c" data-source="Set to long name (git-upload-pack, etc&amp;hellip;&amp;ZeroWidthSpace;) of service helper needs to invoke." onmousemove="i18n(this)">&Ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&icy;&tcy;&iecy; &dcy;&lcy;&icy;&ncy;&ncy;&ocy;&iecy; &icy;&mcy;&yacy; (git-upload-pack &icy; &tcy;.&nbsp;&dcy;.) &scy;&iecy;&rcy;&vcy;&icy;&scy;&ncy;&ocy;&gcy;&ocy; &pcy;&ocy;&mcy;&ocy;&shchcy;&ncy;&icy;&kcy;&acy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ocy; &vcy;&ycy;&zcy;&vcy;&acy;&tcy;&softcy;.</span></p> </dd> <dt id="Documentation/git-remote-ext.txt-GITEXTSERVICENOPREFIX"><span data-i18n="574b07ce4f9c109399e8aa98682e01d071bb06150522984a50e2cdb633b1c099/81" data-source="GIT_EXT_SERVICE_NOPREFIX" onmousemove="i18n(this)">GIT_EXT_SERVICE_NOPREFIX</span></dt> <dd> <p><span data-i18n="2df9053ef3be6e29a7e663345e03da1075fa558b6dc8fd1e80825fd3926fe9e7/53" data-source="Set to long name (upload-pack, etc&amp;hellip;&amp;ZeroWidthSpace;) of service helper needs to invoke." onmousemove="i18n(this)">&Ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&icy;&tcy;&iecy; &dcy;&lcy;&icy;&ncy;&ncy;&ocy;&iecy; &icy;&mcy;&yacy; (upload-pack &icy; &tcy;.&nbsp;&dcy;.) &scy;&lcy;&ucy;&zhcy;&bcy;&ycy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ucy;&yucy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ocy; &vcy;&ycy;&zcy;&vcy;&acy;&tcy;&softcy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_examples"><span data-i18n="e68ee04dff59551b7d1ae07a2f8a00dc61d841628948da3d2781630706a05e92/38" data-source="Examples" onmousemove="i18n(this)">Examples</span></h2> <div> <p><span data-i18n="43e77e99535a8573409cfba3942a976eaad2bfb04abe478402033f2a154db32d/8e" data-source="This remote helper is transparently used by Git when you use commands such as &amp;quot;git fetch &amp;lt;URL&amp;gt;&amp;quot;, &amp;quot;git clone &amp;lt;URL&amp;gt;&amp;quot;, , &amp;quot;git push &amp;lt;URL&amp;gt;&amp;quot; or &amp;quot;git remote add &amp;lt;nick&amp;gt; &amp;lt;URL&amp;gt;&amp;quot;, where &amp;lt;URL&amp;gt; begins with &lt;code&gt;ext::&lt;/code&gt;. Examples:" onmousemove="i18n(this)">&Ecy;&tcy;&ocy;&tcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&jcy; &pcy;&ocy;&mcy;&ocy;&shchcy;&ncy;&icy;&kcy; &pcy;&rcy;&ocy;&zcy;&rcy;&acy;&chcy;&ncy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy;  Git  &pcy;&rcy;&icy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&icy; &tcy;&acy;&kcy;&icy;&khcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;, &kcy;&acy;&kcy;  &quot;git fetch &lt;URL&gt;&quot; ,  &quot;git clone &lt;URL&gt;&quot; , ,  &quot;git push &lt;URL&gt;&quot;  &icy;&lcy;&icy;  &quot;git remote add &lt;nick&gt; &lt;URL&gt;&quot; , &gcy;&dcy;&iecy; &lt;URL&gt; &ncy;&acy;&chcy;&icy;&ncy;&acy;&iecy;&tcy;&scy;&yacy; &scy;  <code>ext::</code> . &Pcy;&rcy;&icy;&mcy;&iecy;&rcy;&ycy;:</span></p> <div> <dl> <dt id="Documentation/git-remote-ext.txt-extssh-ihomefoosshsomekeyuser64hostexampleSemfoorepoem"><span data-i18n="e1fb51c7a3c2089cb0f387ec656d6a1de754f8a56eb636b0a5c22ed75bb5d158/b0" data-source="&amp;quot;ext::ssh -i /home/foo/.ssh/somekey user@host.example %S &lt;em&gt;foo/repo&lt;/em&gt;&amp;quot;" onmousemove="i18n(this)">&quot;ext::ssh -i /home/foo/.ssh/somekey <a href="https://runebook.dev/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c5b0b6a0b785adaab6b1eba0bda4a8b5a9a0">[email&#160;protected]</a> %S foo/repo&quot;</span></dt> <dd> <p><span data-i18n="66a93c7427ee8eec650a9c91cb0828c3d8ae2cdf66c67bab0028c5182d7591a1/d1" data-source="Like host.example:foo/repo, but use /home/foo/.ssh/somekey as keypair and user as the user on the remote side. This avoids the need to edit .ssh/config." onmousemove="i18n(this)">&Acy;&ncy;&acy;&lcy;&ocy;&gcy;&icy;&chcy;&ncy;&ocy; &khcy;&ocy;&scy;&tcy;&ucy;.example:foo/repo, &ncy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy; /home/foo/.ssh/somekey &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &pcy;&acy;&rcy;&ycy; &kcy;&lcy;&yucy;&chcy;&iecy;&jcy; &icy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&yacy; &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&yacy; &ncy;&acy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&jcy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&iecy;. &Ecy;&tcy;&ocy; &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&iecy;&tcy; &icy;&zcy;&bcy;&iecy;&zhcy;&acy;&tcy;&softcy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ocy;&scy;&tcy;&icy; &rcy;&iecy;&dcy;&acy;&kcy;&tcy;&icy;&rcy;&ocy;&vcy;&acy;&tcy;&softcy; .ssh/config.</span></p> </dd> <dt id="Documentation/git-remote-ext.txt-extsocat-t3600-ABSTRACT-CONNECTgit-serverGsomerepo"><span data-i18n="55afd9cd6f3469e6ae0662afb5728098854689d092c0bf7bab2ef20d0064b293/e7" data-source="&amp;quot;ext::socat -t3600 - ABSTRACT-CONNECT:/git-server %G/somerepo&amp;quot;" onmousemove="i18n(this)">&quot;ext::socat -t3600 - ABSTRACT-CONNECT:/git-server %G/somerepo&quot;</span></dt> <dd> <p><span data-i18n="f4d2b6540c7ac485c86fe079795edcd27dab7927599654cdf8f464d22235562b/83" data-source="Represents repository with path /somerepo accessible over git protocol at the abstract namespace address /git-server." onmousemove="i18n(this)">&Pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy; &scy; &pcy;&ucy;&tcy;&iecy;&mcy; /somerepo, &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy;&mcy; &pcy;&ocy; &pcy;&rcy;&ocy;&tcy;&ocy;&kcy;&ocy;&lcy;&ucy;  git  &pcy;&ocy; &acy;&dcy;&rcy;&iecy;&scy;&ucy; &acy;&bcy;&scy;&tcy;&rcy;&acy;&kcy;&tcy;&ncy;&ocy;&gcy;&ocy; &pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&scy;&tcy;&vcy;&acy; &icy;&mcy;&iecy;&ncy; / git -server.</span></p> </dd> <dt id="Documentation/git-remote-ext.txt-extgit-server-aliasfooGrepo"><span data-i18n="bf88c0c53c18093ce8bd52eb7c7ab9b6f448a1b19a9004f988699acd7b105558/ed" data-source="&amp;quot;ext::git-server-alias foo %G/repo&amp;quot;" onmousemove="i18n(this)">&quot;ext::git-server-alias foo %G/repo&quot;</span></dt> <dd> <p><span data-i18n="f9db5a776dbc290fd4602fbecdf81c1ec1e57a84f5f4ee124cc7ce2952847b02/26" data-source="Represents a repository with path /repo accessed using the helper program &amp;quot;git-server-alias foo&amp;quot;. The path to the repository and type of request are not passed on the command line but as part of the protocol stream, as usual with git:// protocol." onmousemove="i18n(this)">&Pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy; &scy; &pcy;&ucy;&tcy;&iecy;&mcy; /repo, &dcy;&ocy;&scy;&tcy;&ucy;&pcy; &kcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&mcy;&ucy; &ocy;&scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &vcy;&scy;&pcy;&ocy;&mcy;&ocy;&gcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&jcy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ycy;  &quot;git-server-alias foo&quot; . &Pcy;&ucy;&tcy;&softcy; &kcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yucy; &icy; &tcy;&icy;&pcy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&acy; &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&yucy;&tcy;&scy;&yacy; &ncy;&iecy; &vcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&iecy;, &acy; &kcy;&acy;&kcy; &chcy;&acy;&scy;&tcy;&softcy; &pcy;&ocy;&tcy;&ocy;&kcy;&acy; &pcy;&rcy;&ocy;&tcy;&ocy;&kcy;&ocy;&lcy;&acy;, &kcy;&acy;&kcy; &ocy;&bcy;&ycy;&chcy;&ncy;&ocy; &vcy; &pcy;&rcy;&ocy;&tcy;&ocy;&kcy;&ocy;&lcy;&iecy; git://.</span></p> </dd> <dt id="Documentation/git-remote-ext.txt-extgit-server-aliasfooGrepoVfoo"><span data-i18n="7e220de3975a626993152b62fc295718d1dc49e2f75ccf18732382065c586a79/47" data-source="&amp;quot;ext::git-server-alias foo %G/repo %Vfoo&amp;quot;" onmousemove="i18n(this)">&quot;ext::git-server-alias foo %G/repo %Vfoo&quot;</span></dt> <dd> <p><span data-i18n="6b5eb6a3f9a0c16c667d99f3c7c51fc28a44fefc6c5c3fe51ed96356e4f029bb/c0" data-source="Represents a repository with path /repo accessed using the helper program &amp;quot;git-server-alias foo&amp;quot;. The hostname for the remote server passed in the protocol stream will be &amp;quot;foo&amp;quot; (this allows multiple virtual Git servers to share a link-level address)." onmousemove="i18n(this)">&Pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy; &scy; &pcy;&ucy;&tcy;&iecy;&mcy; /repo, &dcy;&ocy;&scy;&tcy;&ucy;&pcy; &kcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&mcy;&ucy; &ocy;&scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &vcy;&scy;&pcy;&ocy;&mcy;&ocy;&gcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&jcy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ycy;  &quot;git-server-alias foo&quot; . &Icy;&mcy;&yacy; &khcy;&ocy;&scy;&tcy;&acy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&acy;, &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&vcy;&acy;&iecy;&mcy;&ocy;&iecy; &vcy; &pcy;&ocy;&tcy;&ocy;&kcy;&iecy; &pcy;&rcy;&ocy;&tcy;&ocy;&kcy;&ocy;&lcy;&acy;, &bcy;&ucy;&dcy;&iecy;&tcy;  &quot;foo&quot;  (&ecy;&tcy;&ocy; &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&iecy;&tcy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&icy;&mcy; &vcy;&icy;&rcy;&tcy;&ucy;&acy;&lcy;&softcy;&ncy;&ycy;&mcy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&acy;&mcy;  Git  &scy;&ocy;&vcy;&mcy;&iecy;&scy;&tcy;&ncy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &acy;&dcy;&rcy;&iecy;&scy; &kcy;&acy;&ncy;&acy;&lcy;&softcy;&ncy;&ocy;&gcy;&ocy; &ucy;&rcy;&ocy;&vcy;&ncy;&yacy;).</span></p> </dd> <dt id="Documentation/git-remote-ext.txt-extgit-server-aliasfooGrepowithspacesVfoo"><span data-i18n="50f87f13d8035d5edfe6a5fb12d36a1d05d56147f7d336c1bacd4adea113a4cd/c7" data-source="&amp;quot;ext::git-server-alias foo %G/repo% with% spaces %Vfoo&amp;quot;" onmousemove="i18n(this)">&quot;ext::git-server-alias foo %G/repo% with% spaces %Vfoo&quot;</span></dt> <dd> <p><span data-i18n="829543f5453a8249e9e95bf46f507211975ca31d18b3d95be9bd3842928b315d/68" data-source="Represents a repository with path &lt;code&gt;/repo with spaces&lt;/code&gt; accessed using the helper program &amp;quot;git-server-alias foo&amp;quot;. The hostname for the remote server passed in the protocol stream will be &amp;quot;foo&amp;quot; (this allows multiple virtual Git servers to share a link-level address)." onmousemove="i18n(this)">&Pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy; &scy; &pcy;&ucy;&tcy;&iecy;&mcy;  <code>/repo with spaces</code> , &dcy;&ocy;&scy;&tcy;&ucy;&pcy; &kcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&mcy;&ucy; &ocy;&scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &vcy;&scy;&pcy;&ocy;&mcy;&ocy;&gcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&jcy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ycy;  &quot;git-server-alias foo&quot; . &Icy;&mcy;&yacy; &khcy;&ocy;&scy;&tcy;&acy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&acy;, &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&vcy;&acy;&iecy;&mcy;&ocy;&iecy; &vcy; &pcy;&ocy;&tcy;&ocy;&kcy;&iecy; &pcy;&rcy;&ocy;&tcy;&ocy;&kcy;&ocy;&lcy;&acy;, &bcy;&ucy;&dcy;&iecy;&tcy;  &quot;foo&quot;  (&ecy;&tcy;&ocy; &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&iecy;&tcy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&icy;&mcy; &vcy;&icy;&rcy;&tcy;&ucy;&acy;&lcy;&softcy;&ncy;&ycy;&mcy; &scy;&iecy;&rcy;&vcy;&iecy;&rcy;&acy;&mcy;  Git  &scy;&ocy;&vcy;&mcy;&iecy;&scy;&tcy;&ncy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &acy;&dcy;&rcy;&iecy;&scy; &kcy;&acy;&ncy;&acy;&lcy;&softcy;&ncy;&ocy;&gcy;&ocy; &ucy;&rcy;&ocy;&vcy;&ncy;&yacy;).</span></p> </dd> <dt id="Documentation/git-remote-ext.txt-extgit-sslfooexamplebar"><span data-i18n="aca252a11a3144908bb5f7449ebb39f2485c6a39353b3b2d71dbeee3d5c78c4f/ea" data-source="&amp;quot;ext::git-ssl foo.example /bar&amp;quot;" onmousemove="i18n(this)">&quot;ext::git-ssl foo.example /bar&quot;</span></dt> <dd> <p><span data-i18n="00953ac37b89610ed5ef9e8effd5b9312b74e4f151fad6407e7253a823c1afd8/9f" data-source="Represents a repository accessed using the helper program &amp;quot;git-ssl foo.example /bar&amp;quot;. The type of request can be determined by the helper using environment variables (see above)." onmousemove="i18n(this)">&Pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy;, &dcy;&ocy;&scy;&tcy;&ucy;&pcy; &kcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&mcy;&ucy; &ocy;&scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &vcy;&scy;&pcy;&ocy;&mcy;&ocy;&gcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&jcy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ycy;  &quot;git-ssl foo.example /bar&quot; . &Tcy;&icy;&pcy; &zcy;&acy;&pcy;&rcy;&ocy;&scy;&acy; &pcy;&ocy;&mcy;&ocy;&shchcy;&ncy;&icy;&kcy; &mcy;&ocy;&zhcy;&iecy;&tcy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&icy;&tcy;&softcy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ycy;&khcy; &scy;&rcy;&iecy;&dcy;&ycy; (&scy;&mcy;. &vcy;&ycy;&shcy;&iecy;).</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_see_also"><span data-i18n="2fa97693b70fa87b95b2d1bdf9558e4ac65d5e82d145f13a03849c4d9c4957a9/40" data-source="See also" onmousemove="i18n(this)">See also</span></h2> <div> <p><a href="gitremote-helpers.html"><span data-i18n="48adc6f27f488d583491efbc2b09f9c4e29fd944f3313c154d0b7dd43c42254b/b5" data-source="gitremote-helpers[7]" onmousemove="i18n(this)">gitremote-helpers[7]</span></a></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-remote-ext">https://git-scm.com/docs/git-remote-ext</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-remote-fd.html">
+                            git remote-fd                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-repack.html">
+                            git repack                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-replace.html">
+                            git replace                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-request-pull.html">
+                            git request-pull                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-rerere.html">
+                            git rerere                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-reset.html">
+                            git reset                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-restore.html">
+                            git restore                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-remote-ext.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

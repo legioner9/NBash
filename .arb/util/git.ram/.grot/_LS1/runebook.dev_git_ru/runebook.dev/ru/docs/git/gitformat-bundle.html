@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:13:08 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Git - gitformat bundle</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Miscellaneous">
+                                Miscellaneous                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="bc9ce7bd3ee8f6c3b98a57da3dc399020cddace9b2694dd2f71fbc8e09742c4a/95" data-source="gitformat-bundle" onmousemove="i18n(this)">gitformat-bundle</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="7d7ff249a29ce11f86448131a4a5657ce2084f76fbd91c793a9b3df27133226e/f7" data-source="gitformat-bundle - The bundle file format" onmousemove="i18n(this)">gitformat-bundle &mdash; &fcy;&ocy;&rcy;&mcy;&acy;&tcy; &fcy;&acy;&jcy;&lcy;&acy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-markdown"><span class="hljs-emphasis">*.bundle
+*</span>.bdl</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="e811a0305e9eab785b0f617a2ffdb20557ed4ae287bb9627d119ea3a46c728dc/fe" data-source="The Git bundle format is a format that represents both refs and Git objects. A bundle is a header in a format similar to &lt;a href=&quot;git-show-ref&quot;&gt;git-show-ref[1]&lt;/a&gt; followed by a pack in *.pack format." onmousemove="i18n(this)">&Fcy;&ocy;&rcy;&mcy;&acy;&tcy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;  Git  &mdash; &ecy;&tcy;&ocy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &kcy;&acy;&kcy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &tcy;&acy;&kcy; &icy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy;  Git . &Pcy;&acy;&kcy;&iecy;&tcy; &mdash; &ecy;&tcy;&ocy; &zcy;&acy;&gcy;&ocy;&lcy;&ocy;&vcy;&ocy;&kcy; &vcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;&iecy;, &acy;&ncy;&acy;&lcy;&ocy;&gcy;&icy;&chcy;&ncy;&ocy;&mcy;  <a href="git-show-ref.html">git-show-ref[1]</a> , &zcy;&acy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&mcy; &scy;&lcy;&iecy;&dcy;&ucy;&iecy;&tcy; &pcy;&acy;&kcy;&iecy;&tcy; &vcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;&iecy; *.pack.</span></p> <p><span data-i18n="88e1c8892f973f7f3479086015b2400b22ca5f54108a527d44217bea8b980a92/8e" data-source="The format is created and read by the &lt;a href=&quot;git-bundle&quot;&gt;git-bundle[1]&lt;/a&gt; command, and supported by e.g. &lt;a href=&quot;git-fetch&quot;&gt;git-fetch[1]&lt;/a&gt; and &lt;a href=&quot;git-clone&quot;&gt;git-clone[1]&lt;/a&gt;." onmousemove="i18n(this)">&Fcy;&ocy;&rcy;&mcy;&acy;&tcy; &scy;&ocy;&zcy;&dcy;&acy;&iecy;&tcy;&scy;&yacy; &icy; &scy;&chcy;&icy;&tcy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ocy;&jcy;  <a href="git-bundle.html">git-bundle[1]</a>  &icy; &pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&icy;&vcy;&acy;&iecy;&tcy;&scy;&yacy;, &ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;,  <a href="git-fetch.html">git-fetch[1]</a>  &icy;  <a href="git-clone.html">git-clone[1]</a> .</span></p> </div> <h2 class="text-body-emphasis"  id="_format"><span data-i18n="2f343666aaa88c44430b12e6ab8a29591a069de76541125e83ff1b5acc367bf2/de" data-source="Format" onmousemove="i18n(this)">Format</span></h2> <div> <p><span data-i18n="3c86e1ef5d37b0b4c4248c4b08447f2286a470167dc5072b20356530a7a10e8a/24" data-source="We will use ABNF notation to define the Git bundle format. See &lt;a href=&quot;gitprotocol-common&quot;&gt;gitprotocol-common[5]&lt;/a&gt; for the details." onmousemove="i18n(this)">&Mcy;&ycy; &bcy;&ucy;&dcy;&iecy;&mcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &ncy;&ocy;&tcy;&acy;&tscy;&icy;&yucy; ABNF &dcy;&lcy;&yacy; &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&iecy;&ncy;&icy;&yacy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;&acy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;  Git . &Pcy;&ocy;&dcy;&rcy;&ocy;&bcy;&ncy;&ocy;&scy;&tcy;&icy; &scy;&mcy;. &vcy;  <a href="gitprotocol-common.html">gitprotocol-common[5]</a> .</span></p> <p><span data-i18n="3edc8bad8f5a9bb9f314e37f09524913e45e2786fb0a6d2edbc5999abe93b52c/ce" data-source="A v2 bundle looks like this:" onmousemove="i18n(this)">&Pcy;&acy;&kcy;&iecy;&tcy; v2 &vcy;&ycy;&gcy;&lcy;&yacy;&dcy;&icy;&tcy; &tcy;&acy;&kcy;:</span></p> <div> <div> <pre class="hljs language-ini"><span class="hljs-attr">bundle</span>    = signature *prerequisite *reference LF pack
+<span class="hljs-attr">signature</span> = <span class="hljs-string">&quot;# v2 git bundle&quot;</span> LF
+
+<span class="hljs-attr">prerequisite</span> = <span class="hljs-string">&quot;-&quot;</span> obj-id SP comment LF
+<span class="hljs-attr">comment</span>      = *CHAR
+<span class="hljs-attr">reference</span>    = obj-id SP refname LF
+
+<span class="hljs-attr">pack</span>         = ... <span class="hljs-comment">; packfile</span></pre> </div> </div> <p><span data-i18n="949ce44b938cb9e61ab6b79f675500dd17077624d64bf2231e9dca0ea2ddc41f/84" data-source="A v3 bundle looks like this:" onmousemove="i18n(this)">&Pcy;&acy;&kcy;&iecy;&tcy; v3 &vcy;&ycy;&gcy;&lcy;&yacy;&dcy;&icy;&tcy; &tcy;&acy;&kcy;:</span></p> <div> <div> <pre class="hljs language-ini"><span class="hljs-attr">bundle</span>    = signature *capability *prerequisite *reference LF pack
+<span class="hljs-attr">signature</span> = <span class="hljs-string">&quot;# v3 git bundle&quot;</span> LF
+
+<span class="hljs-attr">capability</span>   = <span class="hljs-string">&quot;@&quot;</span> key [<span class="hljs-string">&quot;=&quot;</span> value] LF
+<span class="hljs-attr">prerequisite</span> = <span class="hljs-string">&quot;-&quot;</span> obj-id SP comment LF
+<span class="hljs-attr">comment</span>      = *CHAR
+<span class="hljs-attr">reference</span>    = obj-id SP refname LF
+<span class="hljs-attr">key</span>          = <span class="hljs-number">1</span>*(ALPHA / DIGIT / <span class="hljs-string">&quot;-&quot;</span>)
+<span class="hljs-attr">value</span>        = *(%<span class="hljs-number">01</span>-<span class="hljs-number">09</span> / %<span class="hljs-number">0</span>b-FF)
+
+<span class="hljs-attr">pack</span>         = ... <span class="hljs-comment">; packfile</span></pre> </div> </div> </div> <h2 class="text-body-emphasis"  id="_semantics"><span data-i18n="206d713ad48a95b0f4b86772643671e25f524eb7fbf1d94178e4e132aa34187d/d7" data-source="Semantics" onmousemove="i18n(this)">Semantics</span></h2> <div> <p><span data-i18n="e91396d64321409b69cfb3d68d40a7523f588a62b14994434fcaaab502ee58e0/38" data-source="A Git bundle consists of several parts." onmousemove="i18n(this)">&Kcy;&ocy;&mcy;&pcy;&lcy;&iecy;&kcy;&tcy;&acy;&tscy;&icy;&yacy;  Git  &scy;&ocy;&scy;&tcy;&ocy;&icy;&tcy; &icy;&zcy; &ncy;&iecy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&icy;&khcy; &chcy;&acy;&scy;&tcy;&iecy;&jcy;.</span></p> <div> <ul> <li> <p><span data-i18n="70f680544dc7a8dcf3ee72c5d9e61a38c3037fd69334c3c18b4a7e7f0ffd01a3/5e" data-source="&amp;quot;Capabilities&amp;quot;, which are only in the v3 format, indicate functionality that the bundle requires to be read properly." onmousemove="i18n(this)">&quot;Capabilities&quot; , &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&iecy;&ncy;&ycy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &vcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;&iecy; v3, &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&yucy;&tcy; &ncy;&acy; &fcy;&ucy;&ncy;&kcy;&tscy;&icy;&ocy;&ncy;&acy;&lcy;&softcy;&ncy;&ycy;&iecy; &vcy;&ocy;&zcy;&mcy;&ocy;&zhcy;&ncy;&ocy;&scy;&tcy;&icy;, &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ycy;&iecy; &dcy;&lcy;&yacy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&softcy;&ncy;&ocy;&gcy;&ocy; &chcy;&tcy;&iecy;&ncy;&icy;&yacy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;.</span></p> </li> <li> <p><span data-i18n="cf788aff90208a6294d081a6fd6738863568125b56c25231b33f7cf08263219c/de" data-source="&amp;quot;Prerequisites&amp;quot; list the objects that are NOT included in the bundle and the reader of the bundle MUST already have, in order to use the data in the bundle. The objects stored in the bundle may refer to prerequisite objects and anything reachable from them (e.g. a tree object in the bundle can reference a blob that is reachable from a prerequisite) and/or expressed as a delta against prerequisite objects." onmousemove="i18n(this)">&quot;Prerequisites&quot;  &pcy;&iecy;&rcy;&iecy;&chcy;&icy;&scy;&lcy;&yacy;&iecy;&tcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &Ncy;&IEcy; &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&ycy; &vcy; &pcy;&acy;&kcy;&iecy;&tcy; &icy; &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &Dcy;&Ocy;&Lcy;&ZHcy;&Ncy;&Ycy; &ucy;&zhcy;&iecy; &icy;&mcy;&iecy;&tcy;&softcy;&scy;&yacy; &vcy; &scy;&chcy;&icy;&tcy;&ycy;&vcy;&acy;&tcy;&iecy;&lcy;&iecy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;, &chcy;&tcy;&ocy;&bcy;&ycy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &dcy;&acy;&ncy;&ncy;&ycy;&iecy; &vcy; &pcy;&acy;&kcy;&iecy;&tcy;&iecy;. &Ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy;, &khcy;&rcy;&acy;&ncy;&yacy;&shchcy;&icy;&iecy;&scy;&yacy; &vcy; &pcy;&acy;&kcy;&iecy;&tcy;&iecy;, &mcy;&ocy;&gcy;&ucy;&tcy; &scy;&scy;&ycy;&lcy;&acy;&tcy;&softcy;&scy;&yacy; &ncy;&acy; &ocy;&bcy;&yacy;&zcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&iecy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy; &icy; &vcy;&scy;&iecy;, &chcy;&tcy;&ocy; &dcy;&ocy;&scy;&tcy;&icy;&zhcy;&icy;&mcy;&ocy; &icy;&zcy; &ncy;&icy;&khcy; (&ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &dcy;&rcy;&iecy;&vcy;&ocy;&vcy;&icy;&dcy;&ncy;&ycy;&jcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy; &vcy; &pcy;&acy;&kcy;&iecy;&tcy;&iecy; &mcy;&ocy;&zhcy;&iecy;&tcy; &scy;&scy;&ycy;&lcy;&acy;&tcy;&softcy;&scy;&yacy; &ncy;&acy; &bcy;&ocy;&lcy;&softcy;&shcy;&ocy;&jcy; &dcy;&vcy;&ocy;&icy;&chcy;&ncy;&ycy;&jcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;, &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy;&jcy; &icy;&zcy; &ocy;&bcy;&yacy;&zcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&khcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;) &icy;/&icy;&lcy;&icy; &vcy;&ycy;&rcy;&acy;&zhcy;&acy;&tcy;&softcy;&scy;&yacy; &kcy;&acy;&kcy; &dcy;&iecy;&lcy;&softcy;&tcy;&acy; &ocy;&tcy; &ocy;&bcy;&yacy;&zcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&khcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;.</span></p> </li> <li> <p><span data-i18n="0021657f62ede401bfc7569804ffc60e1dd87bdadb072166d1a3754b33e69a91/91" data-source="&amp;quot;References&amp;quot; record the tips of the history graph, iow, what the reader of the bundle CAN &amp;quot;git fetch&amp;quot; from it." onmousemove="i18n(this)">&quot;References&quot;  &zcy;&acy;&pcy;&icy;&scy;&ycy;&vcy;&acy;&iecy;&tcy; &pcy;&ocy;&dcy;&scy;&kcy;&acy;&zcy;&kcy;&icy; &gcy;&rcy;&acy;&fcy;&icy;&kcy;&acy; &icy;&scy;&tcy;&ocy;&rcy;&icy;&icy;, &tcy;&ocy;, &chcy;&tcy;&ocy; &Mcy;&Ocy;&ZHcy;&IEcy;&Tcy; &icy;&zcy; &ncy;&iecy;&gcy;&ocy; &rcy;&icy;&dcy;&iecy;&rcy; &kcy;&ocy;&mcy;&pcy;&lcy;&iecy;&kcy;&tcy;&acy;&tscy;&icy;&icy;  &quot;git fetch&quot; .</span></p> </li> <li> <p><span data-i18n="3547cb7d25153b6e24a3155ed7cac7307ea4a93b08f8f1ed0f82a6be894e2630/54" data-source="&amp;quot;Pack&amp;quot; is the pack data stream &amp;quot;git fetch&amp;quot; would send, if you fetch from a repository that has the references recorded in the &amp;quot;References&amp;quot; above into a repository that has references pointing at the objects listed in &amp;quot;Prerequisites&amp;quot; above." onmousemove="i18n(this)">&quot;Pack&quot;  &mdash; &ecy;&tcy;&ocy; &pcy;&ocy;&tcy;&ocy;&kcy; &pcy;&acy;&kcy;&iecy;&tcy;&ncy;&ycy;&khcy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy;  &quot;git fetch&quot;  &ocy;&tcy;&pcy;&rcy;&acy;&vcy;&icy;&tcy;, &iecy;&scy;&lcy;&icy; &vcy;&ycy; &icy;&zcy;&vcy;&lcy;&iecy;&kcy;&acy;&iecy;&tcy;&iecy; &icy;&zcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;, &vcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&mcy; &iecy;&scy;&tcy;&softcy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &zcy;&acy;&pcy;&icy;&scy;&acy;&ncy;&ncy;&ycy;&iecy; &vcy;  &quot;References&quot;  &vcy;&ycy;&shcy;&iecy;, &vcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy;, &vcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&mcy; &iecy;&scy;&tcy;&softcy; &scy;&scy;&ycy;&lcy;&kcy;&icy;, &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&yucy;&shchcy;&icy;&iecy; &ncy;&acy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ycy;, &pcy;&iecy;&rcy;&iecy;&chcy;&icy;&scy;&lcy;&iecy;&ncy;&ncy;&ycy;&iecy; &vcy;  &quot;Prerequisites&quot;  &vcy;&ycy;&shcy;&iecy;.</span></p> </li> </ul> </div> <p><span data-i18n="5006056b2ba173672abaecc3531539dfe4fc18cda9db51088faa028bb5f4e11f/f6" data-source="In the bundle format, there can be a comment following a prerequisite obj-id. This is a comment and it has no specific meaning. The writer of the bundle MAY put any string here. The reader of the bundle MUST ignore the comment." onmousemove="i18n(this)">&Vcy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy;&iecy; &pcy;&acy;&kcy;&iecy;&tcy;&acy; &pcy;&ocy;&scy;&lcy;&iecy; &ocy;&bcy;&yacy;&zcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&gcy;&ocy; obj-id &mcy;&ocy;&zhcy;&iecy;&tcy; &bcy;&ycy;&tcy;&softcy; &kcy;&ocy;&mcy;&mcy;&iecy;&ncy;&tcy;&acy;&rcy;&icy;&jcy;. &Ecy;&tcy;&ocy; &kcy;&ocy;&mcy;&mcy;&iecy;&ncy;&tcy;&acy;&rcy;&icy;&jcy; &icy; &ocy;&ncy; &ncy;&iecy; &icy;&mcy;&iecy;&iecy;&tcy; &kcy;&ocy;&ncy;&kcy;&rcy;&iecy;&tcy;&ncy;&ocy;&gcy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy;. &Scy;&ocy;&zcy;&dcy;&acy;&tcy;&iecy;&lcy;&softcy; &pcy;&acy;&kcy;&iecy;&tcy;&acy; &Mcy;&Ocy;&ZHcy;&IEcy;&Tcy; &pcy;&ocy;&mcy;&iecy;&scy;&tcy;&icy;&tcy;&softcy; &scy;&yucy;&dcy;&acy; &lcy;&yucy;&bcy;&ucy;&yucy; &scy;&tcy;&rcy;&ocy;&kcy;&ucy;. &CHcy;&icy;&tcy;&acy;&tcy;&iecy;&lcy;&softcy; &pcy;&acy;&kcy;&iecy;&tcy;&acy; &Dcy;&Ocy;&Lcy;&ZHcy;&IEcy;&Ncy; &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ocy;&vcy;&acy;&tcy;&softcy; &kcy;&ocy;&mcy;&mcy;&iecy;&ncy;&tcy;&acy;&rcy;&icy;&jcy;.</span></p> <div> <h3 class="text-body-emphasis"  id="_note_on_shallow_clones_and_git_bundles"><span data-i18n="59737321f685b60c9fcd4b55380ae3992257774b3cbdc1a8be6c6f82ef4f6278/08" data-source="Note on shallow clones and Git bundles" onmousemove="i18n(this)">&Pcy;&rcy;&icy;&mcy;&iecy;&chcy;&acy;&ncy;&icy;&iecy; &ocy; &mcy;&iecy;&lcy;&kcy;&icy;&khcy; &kcy;&lcy;&ocy;&ncy;&acy;&khcy; &icy; &scy;&vcy;&yacy;&zcy;&kcy;&acy;&khcy;  Git .</span></h3> <p><span data-i18n="740aaeed37dd988da946c974223151447ec1254ca137bdee1c244937448d9a73/24" data-source="Note that the prerequisites do not represent a shallow-clone boundary. The semantics of the prerequisites and the shallow-clone boundaries are different, and the Git bundle v2 format cannot represent a shallow clone repository." onmousemove="i18n(this)">&Ocy;&bcy;&rcy;&acy;&tcy;&icy;&tcy;&iecy; &vcy;&ncy;&icy;&mcy;&acy;&ncy;&icy;&iecy;, &chcy;&tcy;&ocy; &pcy;&rcy;&iecy;&dcy;&vcy;&acy;&rcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&iecy; &ucy;&scy;&lcy;&ocy;&vcy;&icy;&yacy; &ncy;&iecy; &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&yucy;&tcy; &scy;&ocy;&bcy;&ocy;&jcy; &gcy;&rcy;&acy;&ncy;&icy;&tscy;&ucy; &mcy;&iecy;&lcy;&kcy;&ocy;&gcy;&ocy; &kcy;&lcy;&ocy;&ncy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy;. &Scy;&iecy;&mcy;&acy;&ncy;&tcy;&icy;&kcy;&acy; &pcy;&rcy;&iecy;&dcy;&vcy;&acy;&rcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&khcy; &tcy;&rcy;&iecy;&bcy;&ocy;&vcy;&acy;&ncy;&icy;&jcy; &icy; &gcy;&rcy;&acy;&ncy;&icy;&tscy; &mcy;&iecy;&lcy;&kcy;&ocy;&gcy;&ocy; &kcy;&lcy;&ocy;&ncy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &rcy;&acy;&zcy;&lcy;&icy;&chcy;&ncy;&ycy;, &icy; &fcy;&ocy;&rcy;&mcy;&acy;&tcy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;  Git  &vcy;&iecy;&rcy;&scy;&icy;&icy; 2 &ncy;&iecy; &mcy;&ocy;&zhcy;&iecy;&tcy; &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&tcy;&softcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy; &mcy;&iecy;&lcy;&kcy;&ocy;&gcy;&ocy; &kcy;&lcy;&ocy;&ncy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy;.</span></p> </div> </div> <h2 class="text-body-emphasis"  id="_capabilities"><span data-i18n="9460f16ac9b5171e7f3d3f2336ec66b547231be8996ea9a0ad25079f84641be4/07" data-source="Capabilities" onmousemove="i18n(this)">Capabilities</span></h2> <div> <p><span data-i18n="fd286c3876cfd2292f032cb09326f4dd0c336761821fbfeb773f280e3dc87a30/75" data-source="Because there is no opportunity for negotiation, unknown capabilities cause &lt;code&gt;git bundle&lt;/code&gt; to abort." onmousemove="i18n(this)">&Pcy;&ocy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ucy; &vcy;&ocy;&zcy;&mcy;&ocy;&zhcy;&ncy;&ocy;&scy;&tcy;&softcy; &scy;&ocy;&gcy;&lcy;&acy;&scy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &ocy;&tcy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy;, &ncy;&iecy;&icy;&zcy;&vcy;&iecy;&scy;&tcy;&ncy;&ycy;&iecy; &vcy;&ocy;&zcy;&mcy;&ocy;&zhcy;&ncy;&ocy;&scy;&tcy;&icy; &pcy;&rcy;&icy;&vcy;&ocy;&dcy;&yacy;&tcy; &kcy; &acy;&vcy;&acy;&rcy;&icy;&jcy;&ncy;&ocy;&mcy;&ucy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&iecy;&ncy;&icy;&yucy; &rcy;&acy;&bcy;&ocy;&tcy;&ycy;  <code>git bundle</code> .</span></p> <div> <ul> <li> <p><span data-i18n="0005f783e8ea331a86adc42a8fb746200f4f046322dc66dddaa51861e2651b76/7d" data-source="&lt;code&gt;object-format&lt;/code&gt; specifies the hash algorithm in use, and can take the same values as the &lt;code&gt;extensions.objectFormat&lt;/code&gt; configuration value." onmousemove="i18n(this)"><code>object-format</code>  &ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&yacy;&iecy;&tcy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&mcy;&ycy;&jcy; &acy;&lcy;&gcy;&ocy;&rcy;&icy;&tcy;&mcy; &khcy;&ecy;&shcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &icy; &mcy;&ocy;&zhcy;&iecy;&tcy; &pcy;&rcy;&icy;&ncy;&icy;&mcy;&acy;&tcy;&softcy; &tcy;&iecy; &zhcy;&iecy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy;, &chcy;&tcy;&ocy; &icy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  <code>extensions.objectFormat</code> .</span></p> </li> <li> <p><span data-i18n="f597cdc31df954fd5b86757e7bdadc0485a66d1a887e819c605b65d157b12c4a/93" data-source="&lt;code&gt;filter&lt;/code&gt; specifies an object filter as in the &lt;code&gt;--filter&lt;/code&gt; option in &lt;a href=&quot;git-rev-list&quot;&gt;git-rev-list[1]&lt;/a&gt;. The resulting pack-file must be marked as a &lt;code&gt;.promisor&lt;/code&gt; pack-file after it is unbundled." onmousemove="i18n(this)"><code>filter</code>  &zcy;&acy;&dcy;&acy;&iecy;&tcy; &fcy;&icy;&lcy;&softcy;&tcy;&rcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;, &kcy;&acy;&kcy; &vcy; &ocy;&pcy;&tscy;&icy;&icy;  <code>--filter</code>  &vcy;  <a href="git-rev-list.html">git-rev-list[1]</a> . &Pcy;&ocy;&lcy;&ucy;&chcy;&iecy;&ncy;&ncy;&ycy;&jcy; &pcy;&acy;&kcy;&iecy;&tcy;&ncy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy; &pcy;&ocy;&scy;&lcy;&iecy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&iecy;&ncy;&icy;&yacy; &dcy;&ocy;&lcy;&zhcy;&iecy;&ncy; &bcy;&ycy;&tcy;&softcy; &pcy;&ocy;&mcy;&iecy;&chcy;&iecy;&ncy; &kcy;&acy;&kcy; &pcy;&acy;&kcy;&iecy;&tcy;&ncy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy;  <code>.promisor</code> .</span></p> </li> </ul> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/gitformat-bundle">https://git-scm.com/docs/gitformat-bundle</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitformat-chunk.html">
+                            gitformat chunk                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitformat-commit-graph.html">
+                            gitformat commit-graph                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitformat-index.html">
+                            gitformat index                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitformat-pack.html">
+                            gitformat pack                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitformat-signature.html">
+                            gitformat signature                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="gitglossary.html">
+                            gitglossary                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="githooks.html">
+                            githooks                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="gitformat-bundle.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

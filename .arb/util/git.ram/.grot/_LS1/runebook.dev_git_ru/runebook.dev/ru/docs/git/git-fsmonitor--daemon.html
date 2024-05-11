@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:14:51 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git fsmonitor--daemon</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="bf4df2b76e4324ec60ef858e168b56de86b3222e879c889373c3457710221103/24" data-source="git-fsmonitor--daemon" onmousemove="i18n(this)">git-fsmonitor--daemon</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="0bfa3b7b677e2548a6e650634bc5c0e11ef828217a98cf02f52cb59586fb3a68/2b" data-source="git-fsmonitor&amp;mdash;&amp;ZeroWidthSpace;daemon - A Built-in Filesystem Monitor" onmousemove="i18n(this)">git-fsmonitor&mdash;&ZeroWidthSpace;daemon &mdash; &vcy;&scy;&tcy;&rcy;&ocy;&iecy;&ncy;&ncy;&ycy;&jcy; &mcy;&ocy;&ncy;&icy;&tcy;&ocy;&rcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ocy;&jcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ycy;</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git fsmonitor<span class="hljs-attr">--daemon</span> start
+git fsmonitor<span class="hljs-attr">--daemon</span> run
+git fsmonitor<span class="hljs-attr">--daemon</span> stop
+git fsmonitor<span class="hljs-attr">--daemon</span> status</pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="9f67f0a23d1825e3d6aa6f6c02f168034ee9f0577334e38ce20ab861821c812b/a3" data-source="A daemon to watch the working directory for file and directory changes using platform-specific filesystem notification facilities." onmousemove="i18n(this)">&Dcy;&iecy;&mcy;&ocy;&ncy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &scy;&lcy;&iecy;&dcy;&icy;&tcy; &zcy;&acy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy;&mcy;&icy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &icy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&ocy;&vcy; &vcy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&mcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &scy;&rcy;&iecy;&dcy;&scy;&tcy;&vcy; &ucy;&vcy;&iecy;&dcy;&ocy;&mcy;&lcy;&iecy;&ncy;&icy;&yacy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ocy;&jcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ycy;, &scy;&pcy;&iecy;&tscy;&icy;&fcy;&icy;&chcy;&ncy;&ycy;&khcy; &dcy;&lcy;&yacy; &pcy;&lcy;&acy;&tcy;&fcy;&ocy;&rcy;&mcy;&ycy;.</span></p> <p><span data-i18n="31a25e938a51d0e6892d98ef276aed4912b467d364206d6f2604e1d17c053e81/69" data-source="This daemon communicates directly with commands like &lt;code&gt;git status&lt;/code&gt; using the &lt;a href=&quot;api-simple-ipc&quot;&gt;simple IPC&lt;/a&gt; interface instead of the slower &lt;a href=&quot;githooks&quot;&gt;githooks[5]&lt;/a&gt; interface." onmousemove="i18n(this)">&Ecy;&tcy;&ocy;&tcy; &dcy;&iecy;&mcy;&ocy;&ncy; &ncy;&acy;&pcy;&rcy;&yacy;&mcy;&ucy;&yucy; &vcy;&zcy;&acy;&icy;&mcy;&ocy;&dcy;&iecy;&jcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &scy; &tcy;&acy;&kcy;&icy;&mcy;&icy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy;&mcy;&icy;, &kcy;&acy;&kcy;  <code>git status</code> , &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yacy; &icy;&ncy;&tcy;&iecy;&rcy;&fcy;&iecy;&jcy;&scy;  <a href="api-simple-ipc.html">simple IPC</a>  &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &bcy;&ocy;&lcy;&iecy;&iecy; &mcy;&iecy;&dcy;&lcy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &icy;&ncy;&tcy;&iecy;&rcy;&fcy;&iecy;&jcy;&scy;&acy;  <a href="githooks.html">githooks[5]</a> .</span></p> <p><span data-i18n="f593a46a87e7a84a71520b07d4355e5c762ade2fabe1b1b483ed8deb0a73e531/bc" data-source="This daemon is built into Git so that no third-party tools are required." onmousemove="i18n(this)">&Ecy;&tcy;&ocy;&tcy; &dcy;&iecy;&mcy;&ocy;&ncy; &vcy;&scy;&tcy;&rcy;&ocy;&iecy;&ncy; &vcy;  Git , &pcy;&ocy;&ecy;&tcy;&ocy;&mcy;&ucy; &scy;&tcy;&ocy;&rcy;&ocy;&ncy;&ncy;&icy;&iecy; &icy;&ncy;&scy;&tcy;&rcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ycy; &ncy;&iecy; &tcy;&rcy;&iecy;&bcy;&ucy;&yucy;&tcy;&scy;&yacy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-fsmonitor--daemon.txt-start"><span data-i18n="cced28c6dc3f99c2396a5eaad732bf6b28142335892b1cd0e6af6cdb53f5ccfa/9b" data-source="start" onmousemove="i18n(this)">start</span></dt> <dd> <p><span data-i18n="3084f3acbb674c05921ac712890c02248c70a421c7ef7342350741b28e71f7a1/ef" data-source="Starts a daemon in the background." onmousemove="i18n(this)">&Zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy;&iecy;&tcy; &dcy;&iecy;&mcy;&ocy;&ncy; &vcy; &fcy;&ocy;&ncy;&ocy;&vcy;&ocy;&mcy; &rcy;&iecy;&zhcy;&icy;&mcy;&iecy;.</span></p> </dd> <dt id="Documentation/git-fsmonitor--daemon.txt-run"><span data-i18n="acba25512100f80b56fc3ccd14c65be55d94800cda77585c5f41a887e398f9be/1c" data-source="run" onmousemove="i18n(this)">run</span></dt> <dd> <p><span data-i18n="b26c60d7d76a38821f40197f9016da6c29b77ebe32b7b727348c10782656cfc6/17" data-source="Runs a daemon in the foreground." onmousemove="i18n(this)">&Zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy;&iecy;&tcy; &dcy;&iecy;&mcy;&ocy;&ncy; &ncy;&acy; &pcy;&iecy;&rcy;&iecy;&dcy;&ncy;&iecy;&mcy; &pcy;&lcy;&acy;&ncy;&iecy;.</span></p> </dd> <dt id="Documentation/git-fsmonitor--daemon.txt-stop"><span data-i18n="6c45cb72a36e63d522aa54ed8adbd7a29a989474f2f77e0458af8800564ef3cb/23" data-source="stop" onmousemove="i18n(this)">stop</span></dt> <dd> <p><span data-i18n="50752bb03723353cabe3f9dfbad99136b29d2034053376854fcebf817d81ca1b/ea" data-source="Stops the daemon running in the current working directory, if present." onmousemove="i18n(this)">&Ocy;&scy;&tcy;&acy;&ncy;&acy;&vcy;&lcy;&icy;&vcy;&acy;&iecy;&tcy; &rcy;&acy;&bcy;&ocy;&tcy;&ucy; &dcy;&iecy;&mcy;&ocy;&ncy;&acy; &vcy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&mcy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&mcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy;, &iecy;&scy;&lcy;&icy; &ocy;&ncy; &pcy;&rcy;&icy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy;.</span></p> </dd> <dt id="Documentation/git-fsmonitor--daemon.txt-status"><span data-i18n="073c1634c496cdb649d1afe0a312bbb4b7e1741b271542e4a436c3b8824b1761/7a" data-source="status" onmousemove="i18n(this)">status</span></dt> <dd> <p><span data-i18n="9811d43e29a40006a794f0f134af868c4a0717698c1916a0c33aae25a01004ea/3c" data-source="Exits with zero status if a daemon is watching the current working directory." onmousemove="i18n(this)">&Vcy;&ycy;&khcy;&ocy;&dcy; &scy; &ncy;&ucy;&lcy;&iecy;&vcy;&ycy;&mcy; &scy;&tcy;&acy;&tcy;&ucy;&scy;&ocy;&mcy;, &iecy;&scy;&lcy;&icy; &dcy;&iecy;&mcy;&ocy;&ncy; &ncy;&acy;&bcy;&lcy;&yucy;&dcy;&acy;&iecy;&tcy; &zcy;&acy; &tcy;&iecy;&kcy;&ucy;&shchcy;&icy;&mcy; &rcy;&acy;&bcy;&ocy;&chcy;&icy;&mcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&ocy;&mcy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_remarks"><span data-i18n="b5025c735015c2942556c84379ce0c3c4ea792d1fc7d9930a6d38a1ce11220a2/da" data-source="Remarks" onmousemove="i18n(this)">Remarks</span></h2> <div> <p><span data-i18n="d2646126eb37acbaf6589d71bb4b453c31fe41447c810445de10182f4f41ed7d/b2" data-source="This daemon is a long running process used to watch a single working directory and maintain a list of the recently changed files and directories. Performance of commands such as &lt;code&gt;git status&lt;/code&gt; can be increased if they just ask for a summary of changes to the working directory and can avoid scanning the disk." onmousemove="i18n(this)">&Ecy;&tcy;&ocy;&tcy; &dcy;&iecy;&mcy;&ocy;&ncy; &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &scy;&ocy;&bcy;&ocy;&jcy; &dcy;&lcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&jcy; &pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&mcy;&ycy;&jcy; &dcy;&lcy;&yacy; &pcy;&rcy;&ocy;&scy;&mcy;&ocy;&tcy;&rcy;&acy; &ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&gcy;&ocy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&acy; &icy; &vcy;&iecy;&dcy;&iecy;&ncy;&icy;&yacy; &scy;&pcy;&icy;&scy;&kcy;&acy; &ncy;&iecy;&dcy;&acy;&vcy;&ncy;&ocy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&ncy;&ycy;&khcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &icy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&ocy;&vcy;. &Pcy;&rcy;&ocy;&icy;&zcy;&vcy;&ocy;&dcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&scy;&tcy;&softcy; &tcy;&acy;&kcy;&icy;&khcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;, &kcy;&acy;&kcy;  <code>git status</code> , &mcy;&ocy;&zhcy;&ncy;&ocy; &pcy;&ocy;&vcy;&ycy;&scy;&icy;&tcy;&softcy;, &iecy;&scy;&lcy;&icy; &ocy;&ncy;&icy; &pcy;&rcy;&ocy;&scy;&tcy;&ocy; &zcy;&acy;&pcy;&rcy;&acy;&shcy;&icy;&vcy;&acy;&yucy;&tcy; &scy;&vcy;&ocy;&dcy;&kcy;&ucy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&jcy; &vcy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&mcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy; &icy; &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&yucy;&tcy; &icy;&zcy;&bcy;&iecy;&zhcy;&acy;&tcy;&softcy; &scy;&kcy;&acy;&ncy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &dcy;&icy;&scy;&kcy;&acy;.</span></p> <p><span data-i18n="17bd6c4a44a9ea17cdfee29108c22fed6262a42593cf22778a1d270fecbdee87/05" data-source="When &lt;code&gt;core.fsmonitor&lt;/code&gt; is set to &lt;code&gt;true&lt;/code&gt; (see &lt;a href=&quot;git-config&quot;&gt;git-config[1]&lt;/a&gt;) commands, such as &lt;code&gt;git status&lt;/code&gt;, will ask the daemon for changes and automatically start it (if necessary)." onmousemove="i18n(this)">&Kcy;&ocy;&gcy;&dcy;&acy; &dcy;&lcy;&yacy;  <code>core.fsmonitor</code>  &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy;  <code>true</code>  (&scy;&mcy;.  <a href="git-config.html">git-config[1]</a> ), &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ycy;, &tcy;&acy;&kcy;&icy;&iecy; &kcy;&acy;&kcy;  <code>git status</code> , &zcy;&acy;&pcy;&rcy;&acy;&shcy;&icy;&vcy;&acy;&yucy;&tcy; &ucy; &dcy;&iecy;&mcy;&ocy;&ncy;&acy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy; &icy; &acy;&vcy;&tcy;&ocy;&mcy;&acy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&icy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy;&yucy;&tcy; &iecy;&gcy;&ocy; (&pcy;&rcy;&icy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ocy;&scy;&tcy;&icy;).</span></p> <p><span data-i18n="90b999afb4fc62dd282eecaf37b419181d6427b456fa2beeb4be41d20a6a9bf1/00" data-source="For more information see the &amp;quot;File System Monitor&amp;quot; section in &lt;a href=&quot;git-update-index&quot;&gt;git-update-index[1]&lt;/a&gt;." onmousemove="i18n(this)">&Dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ucy;&yucy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&yucy; &scy;&mcy;. &vcy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&iecy;  &quot;File System Monitor&quot;  &vcy;  <a href="git-update-index.html">git-update-index[1]</a> .</span></p> </div> <h2 class="text-body-emphasis"  id="_caveats"><span data-i18n="712cfefcf76f0a0a2ca783ab7c5487dde050f4480f149197d44e61247db07ebf/a9" data-source="Caveats" onmousemove="i18n(this)">Caveats</span></h2> <div> <p><span data-i18n="076eb269aca01988c5523c6749c31cbca48e4ab834d93a801d1e7564535571f8/d9" data-source="The fsmonitor daemon does not currently know about submodules and does not know to filter out filesystem events that happen within a submodule. If fsmonitor daemon is watching a super repo and a file is modified within the working directory of a submodule, it will report the change (as happening against the super repo). However, the client will properly ignore these extra events, so performance may be affected but it will not cause an incorrect result." onmousemove="i18n(this)">&Dcy;&iecy;&mcy;&ocy;&ncy; fsmonitor &vcy; &ncy;&acy;&scy;&tcy;&ocy;&yacy;&shchcy;&iecy;&iecy; &vcy;&rcy;&iecy;&mcy;&yacy; &ncy;&iecy; &zcy;&ncy;&acy;&iecy;&tcy; &ocy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy;&khcy; &icy; &ncy;&iecy; &ucy;&mcy;&iecy;&iecy;&tcy; &fcy;&icy;&lcy;&softcy;&tcy;&rcy;&ocy;&vcy;&acy;&tcy;&softcy; &scy;&ocy;&bcy;&ycy;&tcy;&icy;&yacy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ocy;&jcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ycy;, &pcy;&rcy;&ocy;&icy;&scy;&khcy;&ocy;&dcy;&yacy;&shchcy;&icy;&iecy; &vcy;&ncy;&ucy;&tcy;&rcy;&icy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy;. &IEcy;&scy;&lcy;&icy; &dcy;&iecy;&mcy;&ocy;&ncy; fsmonitor &ncy;&acy;&bcy;&lcy;&yucy;&dcy;&acy;&iecy;&tcy; &zcy;&acy; &scy;&ucy;&pcy;&iecy;&rcy;&rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&iecy;&mcy; &icy; &fcy;&acy;&jcy;&lcy; &icy;&zcy;&mcy;&iecy;&ncy;&yacy;&iecy;&tcy;&scy;&yacy; &vcy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&mcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy; &pcy;&ocy;&dcy;&mcy;&ocy;&dcy;&ucy;&lcy;&yacy;, &ocy;&ncy; &scy;&ocy;&ocy;&bcy;&shchcy;&icy;&tcy; &ocy;&bcy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&icy; (&kcy;&acy;&kcy; &pcy;&rcy;&ocy;&icy;&scy;&khcy;&ocy;&dcy;&yacy;&shchcy;&iecy;&mcy; &vcy; &scy;&ucy;&pcy;&iecy;&rcy;&rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy;). &Ocy;&dcy;&ncy;&acy;&kcy;&ocy; &kcy;&lcy;&icy;&iecy;&ncy;&tcy; &bcy;&ucy;&dcy;&iecy;&tcy; &pcy;&rcy;&acy;&vcy;&icy;&lcy;&softcy;&ncy;&ocy; &icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ocy;&vcy;&acy;&tcy;&softcy; &ecy;&tcy;&icy; &dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&iecy; &scy;&ocy;&bcy;&ycy;&tcy;&icy;&yacy;, &pcy;&ocy;&ecy;&tcy;&ocy;&mcy;&ucy; &pcy;&rcy;&ocy;&icy;&zcy;&vcy;&ocy;&dcy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&scy;&tcy;&softcy; &mcy;&ocy;&zhcy;&iecy;&tcy; &scy;&ncy;&icy;&zcy;&icy;&tcy;&softcy;&scy;&yacy;, &ncy;&ocy; &ecy;&tcy;&ocy; &ncy;&iecy; &pcy;&rcy;&icy;&vcy;&iecy;&dcy;&iecy;&tcy; &kcy; &ncy;&iecy;&pcy;&rcy;&acy;&vcy;&icy;&lcy;&softcy;&ncy;&ocy;&mcy;&ucy; &rcy;&iecy;&zcy;&ucy;&lcy;&softcy;&tcy;&acy;&tcy;&ucy;.</span></p> <p><span data-i18n="f857c8bf5f2c5882bc05c47d9dfa98415d539bd79f9cd7eb07a638886c50cba2/66" data-source="By default, the fsmonitor daemon refuses to work with network-mounted repositories; this may be overridden by setting &lt;code&gt;fsmonitor.allowRemote&lt;/code&gt; to &lt;code&gt;true&lt;/code&gt;. Note, however, that the fsmonitor daemon is not guaranteed to work correctly with all network-mounted repositories, so such use is considered experimental." onmousemove="i18n(this)">&Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &dcy;&iecy;&mcy;&ocy;&ncy; fsmonitor &ocy;&tcy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &rcy;&acy;&bcy;&ocy;&tcy;&acy;&tcy;&softcy; &scy; &scy;&iecy;&tcy;&iecy;&vcy;&ycy;&mcy;&icy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;&mcy;&icy;; &ecy;&tcy;&ocy; &mcy;&ocy;&zhcy;&ncy;&ocy; &pcy;&iecy;&rcy;&iecy;&ocy;&pcy;&rcy;&iecy;&dcy;&iecy;&lcy;&icy;&tcy;&softcy;, &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&icy;&vcy; &dcy;&lcy;&yacy;  <code>fsmonitor.allowRemote</code>  &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy;  <code>true</code> . &Ocy;&dcy;&ncy;&acy;&kcy;&ocy; &ocy;&bcy;&rcy;&acy;&tcy;&icy;&tcy;&iecy; &vcy;&ncy;&icy;&mcy;&acy;&ncy;&icy;&iecy;, &chcy;&tcy;&ocy; &dcy;&iecy;&mcy;&ocy;&ncy; fsmonitor &ncy;&iecy; &gcy;&acy;&rcy;&acy;&ncy;&tcy;&icy;&rcy;&ucy;&iecy;&tcy; &kcy;&ocy;&rcy;&rcy;&iecy;&kcy;&tcy;&ncy;&ucy;&yucy; &rcy;&acy;&bcy;&ocy;&tcy;&ucy; &scy;&ocy; &vcy;&scy;&iecy;&mcy;&icy; &scy;&iecy;&tcy;&iecy;&vcy;&ycy;&mcy;&icy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;&mcy;&icy;, &pcy;&ocy;&ecy;&tcy;&ocy;&mcy;&ucy; &tcy;&acy;&kcy;&ocy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy; &scy;&chcy;&icy;&tcy;&acy;&iecy;&tcy;&scy;&yacy; &ecy;&kcy;&scy;&pcy;&iecy;&rcy;&icy;&mcy;&iecy;&ncy;&tcy;&acy;&lcy;&softcy;&ncy;&ycy;&mcy;.</span></p> <p><span data-i18n="dde84141b871d4a3cd165f412f6cbb101d3e15144207fdfc720992c4c905b890/a0" data-source="On Mac OS, the inter-process communication (IPC) between various Git commands and the fsmonitor daemon is done via a Unix domain socket (UDS) &amp;mdash; a special type of file &amp;mdash; which is supported by native Mac OS filesystems, but not on network-mounted filesystems, NTFS, or FAT32. Other filesystems may or may not have the needed support; the fsmonitor daemon is not guaranteed to work with these filesystems and such use is considered experimental." onmousemove="i18n(this)">&Vcy; Mac OS &mcy;&iecy;&zhcy;&pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;&ncy;&ocy;&iecy; &vcy;&zcy;&acy;&icy;&mcy;&ocy;&dcy;&iecy;&jcy;&scy;&tcy;&vcy;&icy;&iecy; (IPC) &mcy;&iecy;&zhcy;&dcy;&ucy; &rcy;&acy;&zcy;&lcy;&icy;&chcy;&ncy;&ycy;&mcy;&icy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy;&mcy;&icy;  Git  &icy; &dcy;&iecy;&mcy;&ocy;&ncy;&ocy;&mcy; fsmonitor &ocy;&scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &chcy;&iecy;&rcy;&iecy;&zcy; &dcy;&ocy;&mcy;&iecy;&ncy;&ncy;&ycy;&jcy; &scy;&ocy;&kcy;&iecy;&tcy; Unix (UDS) &mdash; &ocy;&scy;&ocy;&bcy;&ycy;&jcy; &tcy;&icy;&pcy; &fcy;&acy;&jcy;&lcy;&acy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&icy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &scy;&ocy;&bcy;&scy;&tcy;&vcy;&iecy;&ncy;&ncy;&ycy;&mcy;&icy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ycy;&mcy;&icy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&acy;&mcy;&icy; Mac OS, &ncy;&ocy; &ncy;&iecy; &vcy; &scy;&iecy;&tcy;&icy;. -&scy;&mcy;&ocy;&ncy;&tcy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&iecy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ycy;&iecy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ycy;, NTFS &icy;&lcy;&icy; FAT32. &Dcy;&rcy;&ucy;&gcy;&icy;&iecy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ycy;&iecy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ycy; &mcy;&ocy;&gcy;&ucy;&tcy; &icy;&mcy;&iecy;&tcy;&softcy; &icy;&lcy;&icy; &ncy;&iecy; &icy;&mcy;&iecy;&tcy;&softcy; &ncy;&iecy;&ocy;&bcy;&khcy;&ocy;&dcy;&icy;&mcy;&ucy;&yucy; &pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&kcy;&ucy;; &Rcy;&acy;&bcy;&ocy;&tcy;&acy; &dcy;&iecy;&mcy;&ocy;&ncy;&acy; fsmonitor &scy; &ecy;&tcy;&icy;&mcy;&icy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ycy;&mcy;&icy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&acy;&mcy;&icy; &ncy;&iecy; &gcy;&acy;&rcy;&acy;&ncy;&tcy;&icy;&rcy;&ucy;&iecy;&tcy;&scy;&yacy;, &icy; &tcy;&acy;&kcy;&ocy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&iecy; &scy;&chcy;&icy;&tcy;&acy;&iecy;&tcy;&scy;&yacy; &ecy;&kcy;&scy;&pcy;&iecy;&rcy;&icy;&mcy;&iecy;&ncy;&tcy;&acy;&lcy;&softcy;&ncy;&ycy;&mcy;.</span></p> <p><span data-i18n="38908597d86754b00bd5b03d334c7c2c07a944eca98a7dbae6d44a9c716175ac/40" data-source="By default, the socket is created in the &lt;code&gt;.git&lt;/code&gt; directory. However, if the &lt;code&gt;.git&lt;/code&gt; directory is on a network-mounted filesystem, it will instead be created at &lt;code&gt;$HOME/.git-fsmonitor-*&lt;/code&gt; unless &lt;code&gt;$HOME&lt;/code&gt; itself is on a network-mounted filesystem, in which case you must set the configuration variable &lt;code&gt;fsmonitor.socketDir&lt;/code&gt; to the path of a directory on a Mac OS native filesystem in which to create the socket file." onmousemove="i18n(this)">&Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &scy;&ocy;&kcy;&iecy;&tcy; &scy;&ocy;&zcy;&dcy;&acy;&iecy;&tcy;&scy;&yacy; &vcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy;  <code>.git</code> . &Ocy;&dcy;&ncy;&acy;&kcy;&ocy;, &iecy;&scy;&lcy;&icy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;  <code>.git</code>  &ncy;&acy;&khcy;&ocy;&dcy;&icy;&tcy;&scy;&yacy; &vcy; &scy;&iecy;&tcy;&iecy;&vcy;&ocy;&jcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ocy;&jcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&iecy;, &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &ecy;&tcy;&ocy;&gcy;&ocy; &ocy;&ncy; &bcy;&ucy;&dcy;&iecy;&tcy; &scy;&ocy;&zcy;&dcy;&acy;&ncy; &vcy;  <code>$HOME/.git-fsmonitor-*</code> , &iecy;&scy;&lcy;&icy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy;  <code>$HOME</code>  &scy;&acy;&mcy; &ncy;&iecy; &ncy;&acy;&khcy;&ocy;&dcy;&icy;&tcy;&scy;&yacy; &vcy; &scy;&iecy;&tcy;&iecy;&vcy;&ocy;&jcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ocy;&jcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&iecy;. &Vcy; &ecy;&tcy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy; &vcy;&ycy; &dcy;&ocy;&lcy;&zhcy;&ncy;&ycy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&icy;&tcy;&softcy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ucy;&yucy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  <code>fsmonitor.socketDir</code>  &vcy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy; &pcy;&ucy;&tcy;&icy; &kcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&ucy; &ncy;&acy; &Scy;&ocy;&bcy;&scy;&tcy;&vcy;&iecy;&ncy;&ncy;&acy;&yacy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&acy;&yacy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&acy; Mac OS, &vcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&jcy; &mcy;&ocy;&zhcy;&ncy;&ocy; &scy;&ocy;&zcy;&dcy;&acy;&tcy;&softcy; &fcy;&acy;&jcy;&lcy; &scy;&ocy;&kcy;&iecy;&tcy;&acy;.</span></p> <p><span data-i18n="19e93c6ad7b167dd4b0108e5804d2954aa4464b0bd59fc848062e78e8203ae0f/01" data-source="If none of the above directories (&lt;code&gt;.git&lt;/code&gt;, &lt;code&gt;$HOME&lt;/code&gt;, or &lt;code&gt;fsmonitor.socketDir&lt;/code&gt;) is on a native Mac OS file filesystem the fsmonitor daemon will report an error that will cause the daemon and the currently running command to exit." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy;  none  &icy;&zcy; &vcy;&ycy;&shcy;&iecy;&ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ycy;&khcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&ocy;&vcy; (  <code>.git</code>  ,  <code>$HOME</code>  &icy;&lcy;&icy;  <code>fsmonitor.socketDir</code>  ) &ncy;&acy;&khcy;&ocy;&dcy;&icy;&tcy;&scy;&yacy; &vcy; &scy;&ocy;&bcy;&scy;&tcy;&vcy;&iecy;&ncy;&ncy;&ocy;&jcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ocy;&jcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&iecy; Mac OS, &dcy;&iecy;&mcy;&ocy;&ncy; fsmonitor &scy;&ocy;&ocy;&bcy;&shchcy;&icy;&tcy; &ocy;&bcy; &ocy;&shcy;&icy;&bcy;&kcy;&iecy;, &kcy;&ocy;&tcy;&ocy;&rcy;&acy;&yacy; &pcy;&rcy;&icy;&vcy;&iecy;&dcy;&iecy;&tcy; &kcy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&iecy;&ncy;&icy;&yucy; &rcy;&acy;&bcy;&ocy;&tcy;&ycy; &dcy;&iecy;&mcy;&ocy;&ncy;&acy; &icy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&jcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ycy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_configuration"><span data-i18n="b332c3492d5eb10a118eb6d8b0dcd689bc2477ce2ae16b303753b942b54377bc/aa" data-source="Configuration" onmousemove="i18n(this)">Configuration</span></h2> <div> <p><span data-i18n="5b8d919fa35b75aa925ebd5414ed6373e762fb0a087a062961c27b2ce9586555/57" data-source="Everything below this line in this section is selectively included from the &lt;a href=&quot;git-config&quot;&gt;git-config[1]&lt;/a&gt; documentation. The content is the same as what&amp;rsquo;s found there:" onmousemove="i18n(this)">&Vcy;&scy;&iecy;, &chcy;&tcy;&ocy; &ncy;&acy;&khcy;&ocy;&dcy;&icy;&tcy;&scy;&yacy; &ncy;&icy;&zhcy;&iecy; &ecy;&tcy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy; &vcy; &ecy;&tcy;&ocy;&mcy; &rcy;&acy;&zcy;&dcy;&iecy;&lcy;&iecy;, &vcy;&ycy;&bcy;&ocy;&rcy;&ocy;&chcy;&ncy;&ocy; &vcy;&kcy;&lcy;&yucy;&chcy;&iecy;&ncy;&ocy; &icy;&zcy; &dcy;&ocy;&kcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy;&tscy;&icy;&icy;  <a href="git-config.html">git-config[1]</a> . &Scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&acy;&ncy;&icy;&iecy; &tcy;&acy;&kcy;&ocy;&iecy; &zhcy;&iecy;, &kcy;&acy;&kcy; &icy; &ncy;&acy;&jcy;&dcy;&iecy;&ncy;&ncy;&ocy;&iecy; &tcy;&acy;&mcy;:</span></p> <div> <dl> <dt id="Documentation/git-fsmonitor--daemon.txt-fsmonitorallowRemote"><span data-i18n="4830cef183692f831faf685e6a1dea8ecf3996ddf94bb5061087de30b6c2fc3f/cf" data-source="fsmonitor.allowRemote" onmousemove="i18n(this)">fsmonitor.allowRemote</span></dt> <dd> <p><span data-i18n="5bfd150cd7c1885201576b62d75aa94eb9e680a25bc5cee6a16bab6337f8b2ac/52" data-source="By default, the fsmonitor daemon refuses to work with network-mounted repositories. Setting &lt;code&gt;fsmonitor.allowRemote&lt;/code&gt; to &lt;code&gt;true&lt;/code&gt; overrides this behavior. Only respected when &lt;code&gt;core.fsmonitor&lt;/code&gt; is set to &lt;code&gt;true&lt;/code&gt;." onmousemove="i18n(this)">&Pcy;&ocy; &ucy;&mcy;&ocy;&lcy;&chcy;&acy;&ncy;&icy;&yucy; &dcy;&iecy;&mcy;&ocy;&ncy; fsmonitor &ocy;&tcy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &rcy;&acy;&bcy;&ocy;&tcy;&acy;&tcy;&softcy; &scy; &scy;&iecy;&tcy;&iecy;&vcy;&ycy;&mcy;&icy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;&mcy;&icy;. &Ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&kcy;&acy;  <code>fsmonitor.allowRemote</code>  &ncy;&acy;  <code>true</code>  &ocy;&tcy;&mcy;&iecy;&ncy;&yacy;&iecy;&tcy; &ecy;&tcy;&ocy; &pcy;&ocy;&vcy;&iecy;&dcy;&iecy;&ncy;&icy;&iecy;. &Scy;&ocy;&bcy;&lcy;&yucy;&dcy;&acy;&iecy;&tcy;&scy;&yacy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &vcy; &tcy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy;, &iecy;&scy;&lcy;&icy; &dcy;&lcy;&yacy;  <code>core.fsmonitor</code>  &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy;  <code>true</code> .</span></p> </dd> <dt id="Documentation/git-fsmonitor--daemon.txt-fsmonitorsocketDir"><span data-i18n="533fc289ef40da7143f321f154b7209c2870d32dd3b2b7dcef4bf48bc58edd44/d4" data-source="fsmonitor.socketDir" onmousemove="i18n(this)">fsmonitor.socketDir</span></dt> <dd> <p><span data-i18n="49a825a60c7a3f821caf1ed34ded25f65cfc12db09c38c98e74d5b59a0aa7780/82" data-source="This Mac OS-specific option, if set, specifies the directory in which to create the Unix domain socket used for communication between the fsmonitor daemon and various Git commands. The directory must reside on a native Mac OS filesystem. Only respected when &lt;code&gt;core.fsmonitor&lt;/code&gt; is set to &lt;code&gt;true&lt;/code&gt;." onmousemove="i18n(this)">&Ecy;&tcy;&ocy;&tcy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;, &scy;&pcy;&iecy;&tscy;&icy;&fcy;&icy;&chcy;&ncy;&ycy;&jcy; &dcy;&lcy;&yacy; Mac OS, &iecy;&scy;&lcy;&icy; &ocy;&ncy; &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;, &ucy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;, &vcy; &kcy;&ocy;&tcy;&ocy;&rcy;&ocy;&mcy; &scy;&ocy;&zcy;&dcy;&acy;&iecy;&tcy;&scy;&yacy; &scy;&ocy;&kcy;&iecy;&tcy; &dcy;&ocy;&mcy;&iecy;&ncy;&acy; Unix, &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&mcy;&ycy;&jcy; &dcy;&lcy;&yacy; &scy;&vcy;&yacy;&zcy;&icy; &mcy;&iecy;&zhcy;&dcy;&ucy; &dcy;&iecy;&mcy;&ocy;&ncy;&ocy;&mcy; fsmonitor &icy; &rcy;&acy;&zcy;&lcy;&icy;&chcy;&ncy;&ycy;&mcy;&icy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy;&mcy;&icy;  Git . &Kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy; &dcy;&ocy;&lcy;&zhcy;&iecy;&ncy; &ncy;&acy;&khcy;&ocy;&dcy;&icy;&tcy;&softcy;&scy;&yacy; &vcy; &scy;&ocy;&bcy;&scy;&tcy;&vcy;&iecy;&ncy;&ncy;&ocy;&jcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ocy;&jcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&iecy; Mac OS. &Scy;&ocy;&bcy;&lcy;&yucy;&dcy;&acy;&iecy;&tcy;&scy;&yacy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &vcy; &tcy;&ocy;&mcy; &scy;&lcy;&ucy;&chcy;&acy;&iecy;, &iecy;&scy;&lcy;&icy; &dcy;&lcy;&yacy;  <code>core.fsmonitor</code>  &ucy;&scy;&tcy;&acy;&ncy;&ocy;&vcy;&lcy;&iecy;&ncy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&iecy;  <code>true</code> .</span></p> </dd> </dl> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-fsmonitor--daemon">https://git-scm.com/docs/git-fsmonitor--daemon</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-gc.html">
+                            git gc                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-get-tar-commit-id.html">
+                            git get-tar-commit-id                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-grep.html">
+                            git grep                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-gui.html">
+                            git gui                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-hash-object.html">
+                            git hash-object                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-help.html">
+                            git help                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-hook.html">
+                            git hook                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="3777011170"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-fsmonitor--daemon.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

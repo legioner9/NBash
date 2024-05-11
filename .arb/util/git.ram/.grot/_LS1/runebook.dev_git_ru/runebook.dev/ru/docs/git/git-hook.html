@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:14:56 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git hook</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="1e17a037edf2089c31fa3f2a38e71e068a46730e8f6ea13bbf3ad44d493969eb/25" data-source="git-hook" onmousemove="i18n(this)">git-hook</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="238f3fdeb03f0c938e3121e2a6958bb751183d7e50eba4e7f86dbbf678356974/69" data-source="git-hook - Run git hooks" onmousemove="i18n(this)">git  -&kcy;&rcy;&yucy;&chcy;&ocy;&kcy; - &Zcy;&acy;&pcy;&ucy;&scy;&kcy; &kcy;&rcy;&yucy;&chcy;&kcy;&ocy;&vcy;  git</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git hook run <span class="hljs-selector-attr">[--ignore-missing]</span> <span class="hljs-selector-attr">[--to-stdin=&lt;path&gt;]</span> &lt;hook-name&gt; <span class="hljs-selector-attr">[-- &lt;hook-args&gt;]</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="7b400ad2d0f3d62b072559f0a760f3ebacd9af51f56a9558abf5f2e8b9b08c2c/d3" data-source="A command interface for running git hooks (see &lt;a href=&quot;githooks&quot;&gt;githooks[5]&lt;/a&gt;), for use by other scripted git commands." onmousemove="i18n(this)">&Kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ncy;&ycy;&jcy; &icy;&ncy;&tcy;&iecy;&rcy;&fcy;&iecy;&jcy;&scy; &dcy;&lcy;&yacy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy; &pcy;&iecy;&rcy;&iecy;&khcy;&vcy;&acy;&tcy;&chcy;&icy;&kcy;&ocy;&vcy;  git  (&scy;&mcy;.  <a href="githooks.html">githooks[5]</a> ) &dcy;&lcy;&yacy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&ncy;&icy;&yacy; &dcy;&rcy;&ucy;&gcy;&icy;&mcy;&icy; &scy;&kcy;&rcy;&icy;&pcy;&tcy;&ocy;&vcy;&ycy;&mcy;&icy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy;&mcy;&icy;  git .</span></p> </div> <h2 class="text-body-emphasis"  id="_subcommands"><span data-i18n="3b5ab20422e12ebbcc7d9250c390d36b55ab9befe2a2542ac4313d49e2ea7054/48" data-source="Subcommands" onmousemove="i18n(this)">Subcommands</span></h2> <div> <div> <dl> <dt id="Documentation/git-hook.txt-run"><span data-i18n="acba25512100f80b56fc3ccd14c65be55d94800cda77585c5f41a887e398f9be/1c" data-source="run" onmousemove="i18n(this)">run</span></dt> <dd> <p><span data-i18n="223e7a6d93cc3446a136cbeafc83b5add5b485afce49334bf23b403f62732fcf/76" data-source="Run the &lt;code&gt;&amp;lt;hook-name&amp;gt;&lt;/code&gt; hook. See &lt;a href=&quot;githooks&quot;&gt;githooks[5]&lt;/a&gt; for supported hook names." onmousemove="i18n(this)">&Zcy;&acy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;&iecy; &pcy;&iecy;&rcy;&iecy;&khcy;&vcy;&acy;&tcy;&chcy;&icy;&kcy;  <code>&lt;hook-name&gt;</code> . &Scy;&mcy;.  <a href="githooks.html">githooks[5]</a>  &dcy;&lcy;&yacy; &pcy;&ocy;&lcy;&ucy;&chcy;&iecy;&ncy;&icy;&yacy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&icy; &ocy; &pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&icy;&vcy;&acy;&iecy;&mcy;&ycy;&khcy; &icy;&mcy;&iecy;&ncy;&acy;&khcy; &pcy;&iecy;&rcy;&iecy;&khcy;&vcy;&acy;&tcy;&chcy;&icy;&kcy;&ocy;&vcy;.</span></p> <p><span data-i18n="f94edada110eb20e9dfcd6afb00ffa6a22225b5e5645c7b21dd2c2d36c055c8e/19" data-source="Any positional arguments to the hook should be passed after a mandatory &lt;code&gt;--&lt;/code&gt; (or &lt;code&gt;--end-of-options&lt;/code&gt;, see &lt;a href=&quot;gitcli&quot;&gt;gitcli[7]&lt;/a&gt;). See &lt;a href=&quot;githooks&quot;&gt;githooks[5]&lt;/a&gt; for arguments hooks might expect (if any)." onmousemove="i18n(this)">&Lcy;&yucy;&bcy;&ycy;&iecy; &pcy;&ocy;&zcy;&icy;&tscy;&icy;&ocy;&ncy;&ncy;&ycy;&iecy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ycy; &pcy;&iecy;&rcy;&iecy;&khcy;&vcy;&acy;&tcy;&chcy;&icy;&kcy;&acy; &dcy;&ocy;&lcy;&zhcy;&ncy;&ycy; &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &pcy;&ocy;&scy;&lcy;&iecy; &ocy;&bcy;&yacy;&zcy;&acy;&tcy;&iecy;&lcy;&softcy;&ncy;&ocy;&gcy;&ocy;  <code>--</code>  (&icy;&lcy;&icy;  <code>--end-of-options</code> , &scy;&mcy;.  <a href="gitcli.html">gitcli[7]</a> ). &Scy;&mcy;.  <a href="githooks.html">githooks[5]</a>  &dcy;&lcy;&yacy; &pcy;&ocy;&lcy;&ucy;&chcy;&iecy;&ncy;&icy;&yacy; &icy;&ncy;&fcy;&ocy;&rcy;&mcy;&acy;&tscy;&icy;&icy; &ocy;&bcy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&acy;&khcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &mcy;&ocy;&gcy;&ucy;&tcy; &ocy;&zhcy;&icy;&dcy;&acy;&tcy;&softcy; &pcy;&iecy;&rcy;&iecy;&khcy;&vcy;&acy;&tcy;&chcy;&icy;&kcy;&icy; (&iecy;&scy;&lcy;&icy; &tcy;&acy;&kcy;&ocy;&vcy;&ycy;&iecy; &icy;&mcy;&iecy;&yucy;&tcy;&scy;&yacy;).</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-hook.txt---to-stdin"><span data-i18n="fae3e060e72ea8e0cf1ce6a537bc098804e48fae9474ffc7796d2e5c8fe5e8e8/4a" data-source="--to-stdin" onmousemove="i18n(this)">--to-stdin</span></dt> <dd> <p><span data-i18n="0121458a1a4bf0debf0b7c4b04e61d8be5154cd915a8dfd2d5694a930d1871ff/44" data-source="For &amp;quot;run&amp;quot;; specify a file which will be streamed into the hook&amp;rsquo;s stdin. The hook will receive the entire file from beginning to EOF." onmousemove="i18n(this)">&Dcy;&lcy;&yacy;  &quot;run&quot; ; &ucy;&kcy;&acy;&zhcy;&icy;&tcy;&iecy; &fcy;&acy;&jcy;&lcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &bcy;&ucy;&dcy;&iecy;&tcy; &pcy;&iecy;&rcy;&iecy;&dcy;&acy;&vcy;&acy;&tcy;&softcy;&scy;&yacy; &vcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&jcy; &vcy;&vcy;&ocy;&dcy; &pcy;&iecy;&rcy;&iecy;&khcy;&vcy;&acy;&tcy;&chcy;&icy;&kcy;&acy;. &KHcy;&ucy;&kcy; &pcy;&ocy;&lcy;&ucy;&chcy;&icy;&tcy; &vcy;&iecy;&scy;&softcy; &fcy;&acy;&jcy;&lcy; &ocy;&tcy; &ncy;&acy;&chcy;&acy;&lcy;&acy; &dcy;&ocy; EOF.</span></p> </dd> <dt id="Documentation/git-hook.txt---ignore-missing"><span data-i18n="0217b7915f4f225197fd645c3d607ab59b296d34ceaaa7f8900ade128b0d4e29/32" data-source="--ignore-missing" onmousemove="i18n(this)">--ignore-missing</span></dt> <dd> <p><span data-i18n="c8463152735869db60aee40963e2b293ccd106b534f2d0dc34fdfd269fff0838/e4" data-source="Ignore any missing hook by quietly returning zero. Used for tools that want to do a blind one-shot run of a hook that may or may not be present." onmousemove="i18n(this)">&Icy;&gcy;&ncy;&ocy;&rcy;&icy;&rcy;&ucy;&jcy;&tcy;&iecy; &lcy;&yucy;&bcy;&ocy;&jcy; &ncy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&yucy;&shchcy;&icy;&jcy; &kcy;&rcy;&yucy;&chcy;&ocy;&kcy;, &scy;&pcy;&ocy;&kcy;&ocy;&jcy;&ncy;&ocy; &vcy;&ocy;&zcy;&vcy;&rcy;&acy;&shchcy;&acy;&yacy; &ncy;&ocy;&lcy;&softcy;. &Icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &dcy;&lcy;&yacy; &icy;&ncy;&scy;&tcy;&rcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ocy;&vcy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&iecy; &khcy;&ocy;&tcy;&yacy;&tcy; &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&softcy; &ocy;&dcy;&ncy;&ocy;&rcy;&acy;&zcy;&ocy;&vcy;&ycy;&jcy; &pcy;&rcy;&ocy;&khcy;&ocy;&dcy; &kcy;&rcy;&yucy;&kcy;&acy; &vcy;&scy;&lcy;&iecy;&pcy;&ucy;&yucy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &mcy;&ocy;&zhcy;&iecy;&tcy; &pcy;&rcy;&icy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ocy;&vcy;&acy;&tcy;&softcy; &icy;&lcy;&icy; &ocy;&tcy;&scy;&ucy;&tcy;&scy;&tcy;&vcy;&ocy;&vcy;&acy;&tcy;&softcy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_see_also"><span data-i18n="2fa97693b70fa87b95b2d1bdf9558e4ac65d5e82d145f13a03849c4d9c4957a9/40" data-source="See also" onmousemove="i18n(this)">See also</span></h2> <div> <p><a href="githooks.html"><span data-i18n="2a8c4763f7cb6454c74c78edf4d708dbb1999d288e6b0cc0486d317b31855534/1a" data-source="githooks[5]" onmousemove="i18n(this)">githooks[5]</span></a></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-hook">https://git-scm.com/docs/git-hook</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-http-backend.html">
+                            git http-backend                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-http-fetch.html">
+                            git http-fetch                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-http-push.html">
+                            git http-push                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-imap-send.html">
+                            git imap-send                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-index-pack.html">
+                            git index-pack                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-init.html">
+                            git init                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-instaweb.html">
+                            git instaweb                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-hook.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:14:51 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git for-each-repo</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="66b5426c5d08dbd9c8bc8b84ac5871cd7d0026b1d58c1dc8b629efbca2cfb555/e4" data-source="git-for-each-repo" onmousemove="i18n(this)">git-for-each-repo</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="a87f353b24cee37242ae46c59ac6a48b7c7f78fc3f6a25d027f922902b449d79/02" data-source="git-for-each-repo - Run a Git command on a list of repositories" onmousemove="i18n(this)">git-for-each-repo &mdash; &zcy;&acy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;&softcy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ucy;  Git  &dcy;&lcy;&yacy; &scy;&pcy;&icy;&scy;&kcy;&acy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&iecy;&vcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-xml">git for-each-repo --config=<span class="hljs-tag">&lt;<span class="hljs-name">config</span>&gt;</span> [--] <span class="hljs-tag">&lt;<span class="hljs-name">arguments</span>&gt;</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="e0d35755f05f203f0c563fb55fa445e62a830d7e9fe564a9448bbdb10c42176e/4d" data-source="Run a Git command on a list of repositories. The arguments after the known options or &lt;code&gt;--&lt;/code&gt; indicator are used as the arguments for the Git subprocess." onmousemove="i18n(this)">&Zcy;&acy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;&iecy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&ucy;  Git  &dcy;&lcy;&yacy; &scy;&pcy;&icy;&scy;&kcy;&acy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&iecy;&vcy;. &Acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ycy; &pcy;&ocy;&scy;&lcy;&iecy; &icy;&zcy;&vcy;&iecy;&scy;&tcy;&ncy;&ycy;&khcy; &ocy;&pcy;&tscy;&icy;&jcy; &icy;&lcy;&icy; &icy;&ncy;&dcy;&icy;&kcy;&acy;&tcy;&ocy;&rcy;&acy;  <code>--</code>  &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yucy;&tcy;&scy;&yacy; &vcy; &kcy;&acy;&chcy;&iecy;&scy;&tcy;&vcy;&iecy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ocy;&vcy; &pcy;&ocy;&dcy;&pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;&acy;  Git .</span></p> <p><span data-i18n="acb8be731fb216e8d1d38339666f6db08ffb5752fbd8321252c74afc24344cdb/a9" data-source="THIS COMMAND IS EXPERIMENTAL. THE BEHAVIOR MAY CHANGE." onmousemove="i18n(this)">&Ecy;&Tcy;&Acy; &Kcy;&Ocy;&Mcy;&Acy;&Ncy;&Dcy;&Acy; &Ecy;&Kcy;&Scy;&Pcy;&IEcy;&Rcy;&Icy;&Mcy;&IEcy;&Ncy;&Tcy;&Acy;&Lcy;&SOFTcy;&Ncy;&Acy;&YAcy;. &Pcy;&Ocy;&Vcy;&IEcy;&Dcy;&IEcy;&Ncy;&Icy;&IEcy; &Mcy;&Ocy;&ZHcy;&IEcy;&Tcy; &Icy;&Zcy;&Mcy;&IEcy;&Ncy;&Icy;&Tcy;&SOFTcy;&Scy;&YAcy;.</span></p> <p><span data-i18n="4e0384053d292fd921c266155d33494983b164dac3ec692f914597841708af43/b1" data-source="For example, we could run maintenance on each of a list of repositories stored in a &lt;code&gt;maintenance.repo&lt;/code&gt; config variable using" onmousemove="i18n(this)">&Ncy;&acy;&pcy;&rcy;&icy;&mcy;&iecy;&rcy;, &mcy;&ycy; &mcy;&ocy;&gcy;&lcy;&icy; &bcy;&ycy; &zcy;&acy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;&softcy; &ocy;&bcy;&scy;&lcy;&ucy;&zhcy;&icy;&vcy;&acy;&ncy;&icy;&iecy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &icy;&zcy; &scy;&pcy;&icy;&scy;&kcy;&acy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&iecy;&vcy;, &khcy;&rcy;&acy;&ncy;&yacy;&shchcy;&iecy;&gcy;&ocy;&scy;&yacy; &vcy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ocy;&jcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  <code>maintenance.repo</code> , &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&yacy;</span></p> <div> <div> <pre class="hljs language-sql">git <span class="hljs-keyword">for</span><span class="hljs-operator">-</span><span class="hljs-keyword">each</span><span class="hljs-operator">-</span>repo <span class="hljs-comment" title="--config=maintenance.repo maintenance run">--config=maintenance.repo &zcy;&acy;&pcy;&ucy;&scy;&kcy; &ocy;&bcy;&scy;&lcy;&ucy;&zhcy;&icy;&vcy;&acy;&ncy;&icy;&yacy;</span></pre> </div> </div> <p><span data-i18n="59225767690d12eac4f161732641ece967413c0d62b7a2342482a4d993207af9/08" data-source="This will run &lt;code&gt;git -C &amp;lt;repo&amp;gt; maintenance run&lt;/code&gt; for each value &lt;code&gt;&amp;lt;repo&amp;gt;&lt;/code&gt; in the multi-valued config variable &lt;code&gt;maintenance.repo&lt;/code&gt;." onmousemove="i18n(this)">&Ecy;&tcy;&ocy; &zcy;&acy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;  <code>git -C &lt;repo&gt; maintenance run</code>  &dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&gcy;&ocy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy;  <code>&lt;repo&gt;</code>  &vcy; &mcy;&ncy;&ocy;&gcy;&ocy;&zcy;&ncy;&acy;&chcy;&ncy;&ocy;&jcy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ocy;&jcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  <code>maintenance.repo</code> .</span></p> </div> <h2 class="text-body-emphasis"  id="_options"><span data-i18n="d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39/b6" data-source="Options" onmousemove="i18n(this)">Options</span></h2> <div> <div> <dl> <dt id="Documentation/git-for-each-repo.txt---configltconfiggt"><span data-i18n="9ab95348e23cf3d858845c1fdacb4c405b3355370c04f04d7af70fea2a01dba4/ce" data-source="--config=&amp;lt;config&amp;gt;" onmousemove="i18n(this)">--config=&lt;config&gt;</span></dt> <dd> <p><span data-i18n="d0f4cd94dc6e60c58bb00bf94e9066d390ebf6857fc70ee5caeab64f009a06b2/cc" data-source="Use the given config variable as a multi-valued list storing absolute path names. Iterate on that list of paths to run the given arguments." onmousemove="i18n(this)">&Icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&jcy;&tcy;&iecy; &dcy;&acy;&ncy;&ncy;&ucy;&yucy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&ncy;&ncy;&ucy;&yucy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy; &kcy;&acy;&kcy; &mcy;&ncy;&ocy;&gcy;&ocy;&zcy;&ncy;&acy;&chcy;&ncy;&ycy;&jcy; &scy;&pcy;&icy;&scy;&ocy;&kcy;, &khcy;&rcy;&acy;&ncy;&yacy;&shchcy;&icy;&jcy; &icy;&mcy;&iecy;&ncy;&acy; &acy;&bcy;&scy;&ocy;&lcy;&yucy;&tcy;&ncy;&ycy;&khcy; &pcy;&ucy;&tcy;&iecy;&jcy;. &Pcy;&iecy;&rcy;&iecy;&bcy;&icy;&rcy;&acy;&jcy;&tcy;&iecy; &ecy;&tcy;&ocy;&tcy; &scy;&pcy;&icy;&scy;&ocy;&kcy; &pcy;&ucy;&tcy;&iecy;&jcy; &dcy;&lcy;&yacy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy; &zcy;&acy;&dcy;&acy;&ncy;&ncy;&ycy;&khcy; &acy;&rcy;&gcy;&ucy;&mcy;&iecy;&ncy;&tcy;&ocy;&vcy;.</span></p> <p><span data-i18n="28664789fb16d96012d1f8b65e5b2ffad026a954fd1178207b63ee3ff8261a87/6b" data-source="These config values are loaded from system, global, and local Git config, as available. If &lt;code&gt;git for-each-repo&lt;/code&gt; is run in a directory that is not a Git repository, then only the system and global config is used." onmousemove="i18n(this)">&Ecy;&tcy;&icy; &zcy;&ncy;&acy;&chcy;&iecy;&ncy;&icy;&yacy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy; &zcy;&acy;&gcy;&rcy;&ucy;&zhcy;&acy;&yucy;&tcy;&scy;&yacy; &icy;&zcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ncy;&ocy;&jcy;, &gcy;&lcy;&ocy;&bcy;&acy;&lcy;&softcy;&ncy;&ocy;&jcy; &icy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ocy;&jcy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&icy;  Git , &iecy;&scy;&lcy;&icy; &ocy;&ncy;&icy; &dcy;&ocy;&scy;&tcy;&ucy;&pcy;&ncy;&ycy;. &IEcy;&scy;&lcy;&icy;  <code>git for-each-repo</code>  &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy;&iecy;&tcy;&scy;&yacy; &vcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy;, &kcy;&ocy;&tcy;&ocy;&rcy;&ycy;&jcy; &ncy;&iecy; &yacy;&vcy;&lcy;&yacy;&iecy;&tcy;&scy;&yacy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&iecy;&mcy;  Git , &tcy;&ocy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ucy;&iecy;&tcy;&scy;&yacy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ncy;&acy;&yacy; &icy; &gcy;&lcy;&ocy;&bcy;&acy;&lcy;&softcy;&ncy;&acy;&yacy; &kcy;&ocy;&ncy;&fcy;&icy;&gcy;&ucy;&rcy;&acy;&tscy;&icy;&yacy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_subprocess_behavior"><span data-i18n="f603030e883f772dd2e4c8fbb66e71458c9ec71843a55721479ab39a38159c1e/fd" data-source="Subprocess behavior" onmousemove="i18n(this)">Subprocess behavior</span></h2> <div> <p><span data-i18n="d39bd273feb52cbfeeb1ad0ff6590fd85e669263bf7aae7c83da40b02357a4a5/35" data-source="If any &lt;code&gt;git -C &amp;lt;repo&amp;gt; &amp;lt;arguments&amp;gt;&lt;/code&gt; subprocess returns a non-zero exit code, then the &lt;code&gt;git for-each-repo&lt;/code&gt; process returns that exit code without running more subprocesses." onmousemove="i18n(this)">&IEcy;&scy;&lcy;&icy; &kcy;&acy;&kcy;&ocy;&jcy;-&lcy;&icy;&bcy;&ocy; &pcy;&ocy;&dcy;&pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;  <code>git -C &lt;repo&gt; &lt;arguments&gt;</code>  &vcy;&ocy;&zcy;&vcy;&rcy;&acy;&shchcy;&acy;&iecy;&tcy; &ncy;&iecy;&ncy;&ucy;&lcy;&iecy;&vcy;&ocy;&jcy; &kcy;&ocy;&dcy; &vcy;&ycy;&khcy;&ocy;&dcy;&acy;, &tcy;&ocy; &pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;  <code>git for-each-repo</code>  &vcy;&ocy;&zcy;&vcy;&rcy;&acy;&shchcy;&acy;&iecy;&tcy; &ecy;&tcy;&ocy;&tcy; &kcy;&ocy;&dcy; &vcy;&ycy;&khcy;&ocy;&dcy;&acy; &bcy;&iecy;&zcy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy; &dcy;&ocy;&pcy;&ocy;&lcy;&ncy;&icy;&tcy;&iecy;&lcy;&softcy;&ncy;&ycy;&khcy; &pcy;&ocy;&dcy;&pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;&ocy;&vcy;.</span></p> <p><span data-i18n="23133137b7a82bba62e11a65399e765b98c18d894ff467547279263f1498cdd4/b5" data-source="Each &lt;code&gt;git -C &amp;lt;repo&amp;gt; &amp;lt;arguments&amp;gt;&lt;/code&gt; subprocess inherits the standard file descriptors &lt;code&gt;stdin&lt;/code&gt;, &lt;code&gt;stdout&lt;/code&gt;, and &lt;code&gt;stderr&lt;/code&gt;." onmousemove="i18n(this)">&Kcy;&acy;&zhcy;&dcy;&ycy;&jcy; &pcy;&ocy;&dcy;&pcy;&rcy;&ocy;&tscy;&iecy;&scy;&scy;  <code>git -C &lt;repo&gt; &lt;arguments&gt;</code>  &ncy;&acy;&scy;&lcy;&iecy;&dcy;&ucy;&iecy;&tcy; &scy;&tcy;&acy;&ncy;&dcy;&acy;&rcy;&tcy;&ncy;&ycy;&iecy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy;&ycy;&iecy; &dcy;&iecy;&scy;&kcy;&rcy;&icy;&pcy;&tcy;&ocy;&rcy;&ycy;  <code>stdin</code> ,  <code>stdout</code>  &icy;  <code>stderr</code> .</span></p> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-for-each-repo">https://git-scm.com/docs/git-for-each-repo</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-format-patch.html">
+                            git format-patch                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-fsck.html">
+                            git fsck                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-fsmonitor--daemon.html">
+                            git fsmonitor--daemon                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-gc.html">
+                            git gc                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-get-tar-commit-id.html">
+                            git get-tar-commit-id                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-grep.html">
+                            git grep                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-gui.html">
+                            git gui                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="7867651344"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-for-each-repo.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>

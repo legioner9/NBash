@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <!-- 2024-05-11 14:14:55 -->
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>git gui</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.1.0/css/flag-icons.min.css" integrity="sha512-bZBu2H0+FGFz/stDN/L0k8J0G8qVsAL0ht1qg5kTwtAheiXwiRKyCq1frwfbSFSJN3jooR5kauE0YjtPzhZtJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../../../runebook.css" rel="stylesheet" type="text/css">
+    <meta name="x-github" content="https://github.com/runebookdev/runebook">
+            <meta name="x-i18n-doc" content="git">
+        <script>
+        function i18n(element) {
+            // NOP
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.js" integrity="sha512-F/dia2jKME12jwqiYDayeD+Rr/8jTWUD2wfbuJB0bzSwenSEnXsn4qQ/wVyXUCix5bmCAj8xJdtFr2OqUtjLAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js" integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6424571640879890" crossorigin="anonymous"></script>    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G5BZ1QEDP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-3G5BZ1QEDP');
+</script>    <script>
+(function(c, l, a, r, i, t, y) {
+    c[a] = c[a] || function() {
+        (c[a].q = c[a].q || []).push(arguments)
+    };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i + "?ref=bwt";
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+})(window, document, "clarity", "script", "jto2hd94r9");
+</script>    <script src="../../../theme.js"></script>
+</head>
+
+<body>
+    <header class="bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand fw-bold" href="https://runebook.dev/ru">
+                            <img alt="Runebook.dev" class="d-inline-block align-top mr-1" src="../../../assets/runebook_logo.webp" width="24" height="24">
+                            Runebook.dev
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/ru#docs">Documentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://runebook.dev/contributors">Contributors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://github.com/runebookdev/runebook/issues">GitHub</a>
+                                </li>
+                            </ul>
+                                                                                                <button class="btn btn-success ms-2" id="showPopupButton">
+                                        <i class="bi bi-translate"></i>
+                                        Show English
+                                    </button>
+                                                                                        <div class="form-check form-switch ms-3">
+                                <label class="text-light">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="theme-switch" checked>
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--sse-->
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a href="https://runebook.dev/ru#docs">
+                            <span class="fi fi-ru"></span>                            Русский                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="-index-.html">
+                            Git                            2.43                        </a>
+                    </li>
+                                            <li class="breadcrumb-item">
+                            <a href="-index-.html#Git">
+                                Git                            </a>
+                        </li>
+                                    </ol>
+            </nav>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md-9">
+            <main>
+                <article>
+
+                    
+                    <h1 class="text-body-emphasis" ><span data-i18n="897aa83b2d06735d93ce7872f8472b9c17c3813e5b75dc418559cfed92277090/99" data-source="git-gui" onmousemove="i18n(this)">git-gui</span></h1> <h2 class="text-body-emphasis"  id="_name"><span data-i18n="dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50/3a" data-source="Name" onmousemove="i18n(this)">Name</span></h2> <div> <p><span data-i18n="358f8fe4a7e08c68c3753fe6a4d05161e52912b96c467e3926c10248f44874a9/5c" data-source="git-gui - A portable graphical interface to Git" onmousemove="i18n(this)">git-gui &mdash; &pcy;&ocy;&rcy;&tcy;&acy;&tcy;&icy;&vcy;&ncy;&ycy;&jcy; &gcy;&rcy;&acy;&fcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&jcy; &icy;&ncy;&tcy;&iecy;&rcy;&fcy;&iecy;&jcy;&scy; &dcy;&lcy;&yacy;  Git .</span></p> </div> <h2 class="text-body-emphasis"  id="_synopsis"><span data-i18n="8eb3755381519d7f0479d75446e56e20084834c0460d7ec94926932372ea6c47/0d" data-source="Synopsis" onmousemove="i18n(this)">Synopsis</span></h2> <div> <div> <pre class="hljs language-css">git gui <span class="hljs-selector-attr">[&lt;command&gt;]</span> <span class="hljs-selector-attr">[&lt;arguments&gt;]</span></pre> </div> </div> <h2 class="text-body-emphasis"  id="_description"><span data-i18n="526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba/d3" data-source="Description" onmousemove="i18n(this)">Description</span></h2> <div> <p><span data-i18n="fbbaf8bfaaf6324c2b429c110f39363baed471143f4712a41d07c171d23df2b3/3e" data-source="A Tcl/Tk based graphical user interface to Git. &lt;code&gt;git gui&lt;/code&gt; focuses on allowing users to make changes to their repository by making new commits, amending existing ones, creating branches, performing local merges, and fetching/pushing to remote repositories." onmousemove="i18n(this)">&Gcy;&rcy;&acy;&fcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&jcy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&scy;&kcy;&icy;&jcy; &icy;&ncy;&tcy;&iecy;&rcy;&fcy;&iecy;&jcy;&scy; &dcy;&lcy;&yacy; Git &ncy;&acy; &ocy;&scy;&ncy;&ocy;&vcy;&iecy; Tcl/Tk.  <code>git gui</code>  &pcy;&ocy;&zcy;&vcy;&ocy;&lcy;&yacy;&iecy;&tcy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&yacy;&mcy; &vcy;&ncy;&ocy;&scy;&icy;&tcy;&softcy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy; &vcy; &scy;&vcy;&ocy;&jcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy;, &dcy;&iecy;&lcy;&acy;&yacy; &ncy;&ocy;&vcy;&ycy;&iecy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ycy;, &icy;&zcy;&mcy;&iecy;&ncy;&yacy;&yacy; &scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ucy;&yucy;&shchcy;&icy;&iecy;, &scy;&ocy;&zcy;&dcy;&acy;&vcy;&acy;&yacy; &vcy;&iecy;&tcy;&kcy;&icy;, &vcy;&ycy;&pcy;&ocy;&lcy;&ncy;&yacy;&yacy; &lcy;&ocy;&kcy;&acy;&lcy;&softcy;&ncy;&ycy;&iecy; &scy;&lcy;&icy;&yacy;&ncy;&icy;&yacy; &icy; &zcy;&acy;&gcy;&rcy;&ucy;&zhcy;&acy;&yacy;/&pcy;&iecy;&rcy;&iecy;&dcy;&acy;&vcy;&acy;&yacy; &vcy; &ucy;&dcy;&acy;&lcy;&iecy;&ncy;&ncy;&ycy;&iecy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&icy;.</span></p> <p><span data-i18n="4ffa175d2646c1ca1d3aebbde310c6c9bfa5dada32bfa0826bd682753f9e5644/f1" data-source="Unlike &lt;code&gt;gitk&lt;/code&gt;, &lt;code&gt;git gui&lt;/code&gt; focuses on commit generation and single file annotation and does not show project history. It does however supply menu actions to start a &lt;code&gt;gitk&lt;/code&gt; session from within &lt;code&gt;git gui&lt;/code&gt;." onmousemove="i18n(this)">&Vcy; &ocy;&tcy;&lcy;&icy;&chcy;&icy;&iecy; &ocy;&tcy;  <code>gitk</code> ,  <code>git gui</code>  &fcy;&ocy;&kcy;&ucy;&scy;&icy;&rcy;&ucy;&iecy;&tcy;&scy;&yacy; &ncy;&acy; &scy;&ocy;&zcy;&dcy;&acy;&ncy;&icy;&icy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy; &icy; &acy;&ncy;&ncy;&ocy;&tcy;&acy;&tscy;&icy;&yacy;&khcy; &ocy;&tcy;&dcy;&iecy;&lcy;&softcy;&ncy;&ycy;&khcy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &icy; &ncy;&iecy; &pcy;&ocy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy; &icy;&scy;&tcy;&ocy;&rcy;&icy;&yucy; &pcy;&rcy;&ocy;&iecy;&kcy;&tcy;&acy;. &Ocy;&dcy;&ncy;&acy;&kcy;&ocy; &ocy;&ncy; &pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&lcy;&yacy;&iecy;&tcy; &dcy;&iecy;&jcy;&scy;&tcy;&vcy;&icy;&yacy; &mcy;&iecy;&ncy;&yucy; &dcy;&lcy;&yacy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy; &scy;&iecy;&acy;&ncy;&scy;&acy;  <code>gitk</code>  &icy;&zcy;&ncy;&ucy;&tcy;&rcy;&icy;  <code>git gui</code> .</span></p> <p><span data-i18n="a744ecd5f287f0110d4a2028db0283025a835634e849263e6850a2615c09b9a2/2c" data-source="&lt;code&gt;git gui&lt;/code&gt; is known to work on all popular UNIX systems, Mac OS X, and Windows (under both Cygwin and MSYS). To the extent possible OS specific user interface guidelines are followed, making &lt;code&gt;git gui&lt;/code&gt; a fairly native interface for users." onmousemove="i18n(this)">&Icy;&zcy;&vcy;&iecy;&scy;&tcy;&ncy;&ocy;, &chcy;&tcy;&ocy;  <code>git gui</code>  &rcy;&acy;&bcy;&ocy;&tcy;&acy;&iecy;&tcy; &vcy;&ocy; &vcy;&scy;&iecy;&khcy; &pcy;&ocy;&pcy;&ucy;&lcy;&yacy;&rcy;&ncy;&ycy;&khcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&acy;&khcy; UNIX, Mac OS X &icy; Windows (&kcy;&acy;&kcy; &pcy;&ocy;&dcy; Cygwin, &tcy;&acy;&kcy; &icy; &pcy;&ocy;&dcy; MSYS). &Ncy;&acy;&scy;&kcy;&ocy;&lcy;&softcy;&kcy;&ocy; &ecy;&tcy;&ocy; &vcy;&ocy;&zcy;&mcy;&ocy;&zhcy;&ncy;&ocy;, &scy;&ocy;&bcy;&lcy;&yucy;&dcy;&acy;&yucy;&tcy;&scy;&yacy; &rcy;&iecy;&kcy;&ocy;&mcy;&iecy;&ncy;&dcy;&acy;&tscy;&icy;&icy; &pcy;&ocy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&softcy;&scy;&kcy;&ocy;&mcy;&ucy; &icy;&ncy;&tcy;&iecy;&rcy;&fcy;&iecy;&jcy;&scy;&ucy;, &scy;&pcy;&iecy;&tscy;&icy;&fcy;&icy;&chcy;&ncy;&ycy;&iecy; &dcy;&lcy;&yacy; &Ocy;&Scy;, &chcy;&tcy;&ocy; &dcy;&iecy;&lcy;&acy;&iecy;&tcy;  <code>git gui</code>  &dcy;&ocy;&vcy;&ocy;&lcy;&softcy;&ncy;&ocy; &iecy;&scy;&tcy;&iecy;&scy;&tcy;&vcy;&iecy;&ncy;&ncy;&ycy;&mcy; &icy;&ncy;&tcy;&iecy;&rcy;&fcy;&iecy;&jcy;&scy;&ocy;&mcy; &dcy;&lcy;&yacy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&iecy;&jcy;.</span></p> </div> <h2 class="text-body-emphasis"  id="_commands"><span data-i18n="b269dc4e81a528a4d42e9e74101923514a626f55f8dd76b1461e0690e72d041a/f5" data-source="Commands" onmousemove="i18n(this)">Commands</span></h2> <div> <div> <dl> <dt id="Documentation/git-gui.txt-blame"><span data-i18n="5e7434f45c5ecbda1678d9508a7ef790481cb87fe8dce511dee060eb29f5c2a5/f2" data-source="blame" onmousemove="i18n(this)">blame</span></dt> <dd> <p><span data-i18n="989e31ad56df3be4c0f4e99a92c7ccec56dad0735fe6f45c6dc74859888726ab/9e" data-source="Start a blame viewer on the specified file on the given version (or working directory if not specified)." onmousemove="i18n(this)">&Zcy;&acy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;&iecy; &pcy;&rcy;&ocy;&gcy;&rcy;&acy;&mcy;&mcy;&ucy; &pcy;&rcy;&ocy;&scy;&mcy;&ocy;&tcy;&rcy;&acy; &fcy;&acy;&jcy;&lcy;&ocy;&vcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ocy;&jcy; &vcy;&iecy;&rcy;&scy;&icy;&icy; (&icy;&lcy;&icy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&gcy;&ocy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&acy;, &iecy;&scy;&lcy;&icy; &ncy;&iecy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;).</span></p> </dd> <dt id="Documentation/git-gui.txt-browser"><span data-i18n="d4c3e8a11256ab82a4fc72560eb4a2b0e87bad820c290dd9b03616de240aa6db/ac" data-source="browser" onmousemove="i18n(this)">browser</span></dt> <dd> <p><span data-i18n="69ff827b0cd0653d304a8543e4fbaae179fe2df2b365d05ed3b9e8eb27c250bb/d6" data-source="Start a tree browser showing all files in the specified commit. Files selected through the browser are opened in the blame viewer." onmousemove="i18n(this)">&Zcy;&acy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;&iecy; &bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy; &dcy;&iecy;&rcy;&iecy;&vcy;&acy;, &ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&acy;&yucy;&shchcy;&icy;&jcy; &vcy;&scy;&iecy; &fcy;&acy;&jcy;&lcy;&ycy; &vcy; &ucy;&kcy;&acy;&zcy;&acy;&ncy;&ncy;&ocy;&mcy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&iecy;. &Fcy;&acy;&jcy;&lcy;&ycy;, &vcy;&ycy;&bcy;&rcy;&acy;&ncy;&ncy;&ycy;&iecy; &chcy;&iecy;&rcy;&iecy;&zcy; &bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy;, &ocy;&tcy;&kcy;&rcy;&ycy;&vcy;&acy;&yucy;&tcy;&scy;&yacy; &vcy; &scy;&rcy;&iecy;&dcy;&scy;&tcy;&vcy;&iecy; &pcy;&rcy;&ocy;&scy;&mcy;&ocy;&tcy;&rcy;&acy; &ocy;&bcy;&vcy;&icy;&ncy;&iecy;&ncy;&icy;&jcy;.</span></p> </dd> <dt id="Documentation/git-gui.txt-citool"><span data-i18n="d11b4e7a5673a70cb4c76a0915ebf8139561c77857db719bb0d63dd14465fc16/3e" data-source="citool" onmousemove="i18n(this)">citool</span></dt> <dd> <p><span data-i18n="a1b430b99eae83231829d93dd5f9a257a37780c3ee2ac8153b2da611fd424ab6/6b" data-source="Start &lt;code&gt;git gui&lt;/code&gt; and arrange to make exactly one commit before exiting and returning to the shell. The interface is limited to only commit actions, slightly reducing the application&amp;rsquo;s startup time and simplifying the menubar." onmousemove="i18n(this)">&Zcy;&acy;&pcy;&ucy;&scy;&tcy;&icy;&tcy;&iecy;  <code>git gui</code>  &icy; &scy;&dcy;&iecy;&lcy;&acy;&jcy;&tcy;&iecy; &rcy;&ocy;&vcy;&ncy;&ocy; &ocy;&dcy;&ncy;&ucy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&yucy; &pcy;&iecy;&rcy;&iecy;&dcy; &vcy;&ycy;&khcy;&ocy;&dcy;&ocy;&mcy; &icy; &vcy;&ocy;&zcy;&vcy;&rcy;&acy;&tcy;&ocy;&mcy; &vcy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&ucy;. &Icy;&ncy;&tcy;&iecy;&rcy;&fcy;&iecy;&jcy;&scy; &ocy;&gcy;&rcy;&acy;&ncy;&icy;&chcy;&iecy;&ncy; &tcy;&ocy;&lcy;&softcy;&kcy;&ocy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&iecy;&jcy; &dcy;&iecy;&jcy;&scy;&tcy;&vcy;&icy;&jcy;, &chcy;&tcy;&ocy; &ncy;&iecy;&mcy;&ncy;&ocy;&gcy;&ocy; &scy;&ocy;&kcy;&rcy;&acy;&shchcy;&acy;&iecy;&tcy; &vcy;&rcy;&iecy;&mcy;&yacy; &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy; &pcy;&rcy;&icy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&yacy; &icy; &ucy;&pcy;&rcy;&ocy;&shchcy;&acy;&iecy;&tcy; &scy;&tcy;&rcy;&ocy;&kcy;&ucy; &mcy;&iecy;&ncy;&yucy;.</span></p> </dd> <dt id="Documentation/git-gui.txt-version"><span data-i18n="5ca4f3850ccc331aaf8a257d6086e526a3b42a63e18cb11d020847985b31d188/37" data-source="version" onmousemove="i18n(this)">version</span></dt> <dd> <p><span data-i18n="64e15d522a4aa4176f71bcef728894be15cca4c914abae836574e08bcc55bb84/f2" data-source="Display the currently running version of &lt;code&gt;git gui&lt;/code&gt;." onmousemove="i18n(this)">&Ocy;&tcy;&ocy;&bcy;&rcy;&acy;&zhcy;&iecy;&ncy;&icy;&iecy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&jcy; &vcy;&iecy;&rcy;&scy;&icy;&icy;  <code>git gui</code> .</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_examples"><span data-i18n="e68ee04dff59551b7d1ae07a2f8a00dc61d841628948da3d2781630706a05e92/38" data-source="Examples" onmousemove="i18n(this)">Examples</span></h2> <div> <div> <dl> <dt id="Documentation/git-gui.txt-codegitguiblameMakefilecode"> <code>git gui blame Makefile</code> </dt> <dd> <p><span data-i18n="aef6508bf87ae83972291ba0400fa6d2d2c6ab8bce611290992aed2bc2e1b9df/a1" data-source="Show the contents of the file &lt;code&gt;Makefile&lt;/code&gt; in the current working directory, and provide annotations for both the original author of each line, and who moved the line to its current location. The uncommitted file is annotated, and uncommitted changes (if any) are explicitly attributed to &lt;code&gt;Not Yet Committed&lt;/code&gt;." onmousemove="i18n(this)">&Pcy;&ocy;&kcy;&acy;&zhcy;&icy;&tcy;&iecy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&mcy;&ocy;&iecy; &fcy;&acy;&jcy;&lcy;&acy;  <code>Makefile</code>  &vcy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&mcy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&mcy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&iecy; &icy; &pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&softcy;&tcy;&iecy; &acy;&ncy;&ncy;&ocy;&tcy;&acy;&tscy;&icy;&icy; &kcy;&acy;&kcy; &dcy;&lcy;&yacy; &icy;&scy;&khcy;&ocy;&dcy;&ncy;&ocy;&gcy;&ocy; &acy;&vcy;&tcy;&ocy;&rcy;&acy; &kcy;&acy;&zhcy;&dcy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;, &tcy;&acy;&kcy; &icy; &dcy;&lcy;&yacy; &tcy;&ocy;&gcy;&ocy;, &kcy;&tcy;&ocy; &pcy;&iecy;&rcy;&iecy;&mcy;&iecy;&scy;&tcy;&icy;&lcy; &scy;&tcy;&rcy;&ocy;&kcy;&ucy; &vcy; &iecy;&iecy; &tcy;&iecy;&kcy;&ucy;&shchcy;&iecy;&iecy; &mcy;&iecy;&scy;&tcy;&ocy;&pcy;&ocy;&lcy;&ocy;&zhcy;&iecy;&ncy;&icy;&iecy;. &Ncy;&iecy;&zcy;&acy;&fcy;&icy;&kcy;&scy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&jcy; &fcy;&acy;&jcy;&lcy; &acy;&ncy;&ncy;&ocy;&tcy;&icy;&rcy;&ucy;&iecy;&tcy;&scy;&yacy;, &acy; &ncy;&iecy;&zcy;&acy;&fcy;&icy;&kcy;&scy;&icy;&rcy;&ocy;&vcy;&acy;&ncy;&ncy;&ycy;&iecy; &icy;&zcy;&mcy;&iecy;&ncy;&iecy;&ncy;&icy;&yacy; (&iecy;&scy;&lcy;&icy; &tcy;&acy;&kcy;&ocy;&vcy;&ycy;&iecy; &icy;&mcy;&iecy;&yucy;&tcy;&scy;&yacy;) &yacy;&vcy;&ncy;&ocy; &pcy;&rcy;&icy;&pcy;&icy;&scy;&ycy;&vcy;&acy;&yucy;&tcy;&scy;&yacy;  <code>Not Yet Committed</code>  .</span></p> </dd> <dt id="Documentation/git-gui.txt-codegitguiblamev0998Makefilecode"> <code>git gui blame v0.99.8 Makefile</code> </dt> <dd> <p><span data-i18n="09b562297953ac95d3f667b9049b0af0f5583f96c666a1b0a77146e7d38f3da3/91" data-source="Show the contents of &lt;code&gt;Makefile&lt;/code&gt; in revision &lt;code&gt;v0.99.8&lt;/code&gt; and provide annotations for each line. Unlike the above example the file is read from the object database and not the working directory." onmousemove="i18n(this)">&Pcy;&ocy;&kcy;&acy;&zhcy;&icy;&tcy;&iecy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&mcy;&ocy;&iecy;  <code>Makefile</code>  &vcy; &vcy;&iecy;&rcy;&scy;&icy;&icy;  <code>v0.99.8</code>  &icy; &pcy;&rcy;&iecy;&dcy;&ocy;&scy;&tcy;&acy;&vcy;&softcy;&tcy;&iecy; &acy;&ncy;&ncy;&ocy;&tcy;&acy;&tscy;&icy;&icy; &dcy;&lcy;&yacy; &kcy;&acy;&zhcy;&dcy;&ocy;&jcy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;. &Vcy; &ocy;&tcy;&lcy;&icy;&chcy;&icy;&iecy; &ocy;&tcy; &pcy;&rcy;&icy;&vcy;&iecy;&dcy;&iecy;&ncy;&ncy;&ocy;&gcy;&ocy; &vcy;&ycy;&shcy;&iecy; &pcy;&rcy;&icy;&mcy;&iecy;&rcy;&acy;, &fcy;&acy;&jcy;&lcy; &chcy;&icy;&tcy;&acy;&iecy;&tcy;&scy;&yacy; &icy;&zcy; &bcy;&acy;&zcy;&ycy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy; &ocy;&bcy;&hardcy;&iecy;&kcy;&tcy;&ocy;&vcy;, &acy; &ncy;&iecy; &icy;&zcy; &rcy;&acy;&bcy;&ocy;&chcy;&iecy;&gcy;&ocy; &kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;&acy;.</span></p> </dd> <dt id="Documentation/git-gui.txt-codegitguiblame--line100Makefilecode"> <code>git gui blame --line=100 Makefile</code> </dt> <dd> <p><span data-i18n="b2d67197d51b346164cdfedaf8db73fe914daff20478f5bf711cf015825999ba/22" data-source="Loads annotations as described above and automatically scrolls the view to center on line &lt;code&gt;100&lt;/code&gt;." onmousemove="i18n(this)">&Zcy;&acy;&gcy;&rcy;&ucy;&zhcy;&acy;&iecy;&tcy; &acy;&ncy;&ncy;&ocy;&tcy;&acy;&tscy;&icy;&icy;, &kcy;&acy;&kcy; &ocy;&pcy;&icy;&scy;&acy;&ncy;&ocy; &vcy;&ycy;&shcy;&iecy;, &icy; &acy;&vcy;&tcy;&ocy;&mcy;&acy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&icy; &pcy;&rcy;&ocy;&kcy;&rcy;&ucy;&chcy;&icy;&vcy;&acy;&iecy;&tcy; &pcy;&rcy;&iecy;&dcy;&scy;&tcy;&acy;&vcy;&lcy;&iecy;&ncy;&icy;&iecy; &dcy;&ocy; &tscy;&iecy;&ncy;&tcy;&rcy;&acy; &scy;&tcy;&rcy;&ocy;&kcy;&icy;  <code>100</code> .</span></p> </dd> <dt id="Documentation/git-gui.txt-codegitguicitoolcode"> <code>git gui citool</code> </dt> <dd> <p><span data-i18n="23b7e738450901a93103400f0c84b5695afddb87c1b28cf53a0c604f76d323d3/3e" data-source="Make one commit and return to the shell when it is complete. This command returns a non-zero exit code if the window was closed in any way other than by making a commit." onmousemove="i18n(this)">&Scy;&dcy;&iecy;&lcy;&acy;&jcy;&tcy;&iecy; &ocy;&dcy;&icy;&ncy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy; &icy; &vcy;&iecy;&rcy;&ncy;&icy;&tcy;&iecy;&scy;&softcy; &vcy; &ocy;&bcy;&ocy;&lcy;&ocy;&chcy;&kcy;&ucy;, &kcy;&ocy;&gcy;&dcy;&acy; &ocy;&ncy; &bcy;&ucy;&dcy;&iecy;&tcy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&iecy;&ncy;. &Ecy;&tcy;&acy; &kcy;&ocy;&mcy;&acy;&ncy;&dcy;&acy; &vcy;&ocy;&zcy;&vcy;&rcy;&acy;&shchcy;&acy;&iecy;&tcy; &ncy;&iecy;&ncy;&ucy;&lcy;&iecy;&vcy;&ocy;&jcy; &kcy;&ocy;&dcy; &vcy;&ycy;&khcy;&ocy;&dcy;&acy;, &iecy;&scy;&lcy;&icy; &ocy;&kcy;&ncy;&ocy; &bcy;&ycy;&lcy;&ocy; &zcy;&acy;&kcy;&rcy;&ycy;&tcy;&ocy; &kcy;&acy;&kcy;&icy;&mcy;-&lcy;&icy;&bcy;&ocy; &scy;&pcy;&ocy;&scy;&ocy;&bcy;&ocy;&mcy;, &kcy;&rcy;&ocy;&mcy;&iecy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy;.</span></p> </dd> <dt id="Documentation/git-gui.txt-codegitguicitool--amendcode"> <code>git gui citool --amend</code> </dt> <dd> <p><span data-i18n="31d380683b57bdb848d363e7ffdf7658566bba5a5d13cbaed9f57b18a66064a7/bf" data-source="Automatically enter the &lt;code&gt;Amend Last Commit&lt;/code&gt; mode of the interface." onmousemove="i18n(this)">&Acy;&vcy;&tcy;&ocy;&mcy;&acy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&icy; &vcy;&khcy;&ocy;&dcy;&icy;&tcy; &vcy; &rcy;&iecy;&zhcy;&icy;&mcy; &icy;&ncy;&tcy;&iecy;&rcy;&fcy;&iecy;&jcy;&scy;&acy;  <code>Amend Last Commit</code> .</span></p> </dd> <dt id="Documentation/git-gui.txt-codegitguicitool--nocommitcode"> <code>git gui citool --nocommit</code> </dt> <dd> <p><span data-i18n="5d1f9e0a1c30c724e301a8403cb3596b5626d35044faf6b2a23345f0079a5afe/6f" data-source="Behave as normal citool, but instead of making a commit simply terminate with a zero exit code. It still checks that the index does not contain any unmerged entries, so you can use it as a GUI version of &lt;a href=&quot;git-mergetool&quot;&gt;git-mergetool[1]&lt;/a&gt;" onmousemove="i18n(this)">&Vcy;&iecy;&dcy;&icy;&tcy;&iecy; &scy;&iecy;&bcy;&yacy; &kcy;&acy;&kcy; &ocy;&bcy;&ycy;&chcy;&ncy;&ycy;&jcy; citool, &ncy;&ocy; &vcy;&mcy;&iecy;&scy;&tcy;&ocy; &fcy;&icy;&kcy;&scy;&acy;&tscy;&icy;&icy; &pcy;&rcy;&ocy;&scy;&tcy;&ocy; &zcy;&acy;&vcy;&iecy;&rcy;&shcy;&icy;&tcy;&iecy; &rcy;&acy;&bcy;&ocy;&tcy;&ucy; &scy; &ncy;&ucy;&lcy;&iecy;&vcy;&ycy;&mcy; &kcy;&ocy;&dcy;&ocy;&mcy; &vcy;&ycy;&khcy;&ocy;&dcy;&acy;. &Ocy;&ncy; &pcy;&ocy;-&pcy;&rcy;&iecy;&zhcy;&ncy;&iecy;&mcy;&ucy; &pcy;&rcy;&ocy;&vcy;&iecy;&rcy;&yacy;&iecy;&tcy;, &chcy;&tcy;&ocy; &icy;&ncy;&dcy;&iecy;&kcy;&scy; &ncy;&iecy; &scy;&ocy;&dcy;&iecy;&rcy;&zhcy;&icy;&tcy; &ncy;&iecy;&scy;&vcy;&yacy;&zcy;&acy;&ncy;&ncy;&ycy;&khcy; &zcy;&acy;&pcy;&icy;&scy;&iecy;&jcy;, &pcy;&ocy;&ecy;&tcy;&ocy;&mcy;&ucy; &vcy;&ycy; &mcy;&ocy;&zhcy;&iecy;&tcy;&iecy; &icy;&scy;&pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&softcy; &iecy;&gcy;&ocy; &kcy;&acy;&kcy; &vcy;&iecy;&rcy;&scy;&icy;&yucy;  <a href="git-mergetool.html">git-mergetool[1]</a>  &scy; &gcy;&rcy;&acy;&fcy;&icy;&chcy;&iecy;&scy;&kcy;&icy;&mcy; &icy;&ncy;&tcy;&iecy;&rcy;&fcy;&iecy;&jcy;&scy;&ocy;&mcy;.</span></p> </dd> <dt id="Documentation/git-gui.txt-codegitcitoolcode"> <code>git citool</code> </dt> <dd> <p><span data-i18n="5639a5520551f1b578a9303ab0915c1da714d4a4a4ccd633e0a2092390e18012/d6" data-source="Same as &lt;code&gt;git gui citool&lt;/code&gt; (above)." onmousemove="i18n(this)">&Tcy;&ocy; &zhcy;&iecy;, &chcy;&tcy;&ocy;  <code>git gui citool</code>  (&vcy;&ycy;&shcy;&iecy;).</span></p> </dd> <dt id="Documentation/git-gui.txt-codegitguibrowsermaintcode"> <code>git gui browser maint</code> </dt> <dd> <p><span data-i18n="47ccf7b7d55dc5a3f987c33fceca4089c06f5bbd6c62fb342e7890c3b722d73e/32" data-source="Show a browser for the tree of the &lt;code&gt;maint&lt;/code&gt; branch. Files selected in the browser can be viewed with the internal blame viewer." onmousemove="i18n(this)">&Pcy;&ocy;&kcy;&acy;&zcy;&acy;&tcy;&softcy; &bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy; &dcy;&iecy;&rcy;&iecy;&vcy;&acy; &vcy;&iecy;&tcy;&kcy;&icy;  <code>maint</code> . &Fcy;&acy;&jcy;&lcy;&ycy;, &vcy;&ycy;&bcy;&rcy;&acy;&ncy;&ncy;&ycy;&iecy; &vcy; &bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy;&iecy;, &mcy;&ocy;&zhcy;&ncy;&ocy; &pcy;&rcy;&ocy;&scy;&mcy;&ocy;&tcy;&rcy;&iecy;&tcy;&softcy; &scy; &pcy;&ocy;&mcy;&ocy;&shchcy;&softcy;&yucy; &vcy;&ncy;&ucy;&tcy;&rcy;&iecy;&ncy;&ncy;&iecy;&gcy;&ocy; &scy;&rcy;&iecy;&dcy;&scy;&tcy;&vcy;&acy; &pcy;&rcy;&ocy;&scy;&mcy;&ocy;&tcy;&rcy;&acy; &ocy;&bcy;&vcy;&icy;&ncy;&iecy;&ncy;&icy;&jcy;.</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_see_also"><span data-i18n="2fa97693b70fa87b95b2d1bdf9558e4ac65d5e82d145f13a03849c4d9c4957a9/40" data-source="See also" onmousemove="i18n(this)">See also</span></h2> <div> <div> <dl> <dt id="Documentation/git-gui.txt-ahrefdocsgitkgitk1a"> <a href="gitk.html"><span data-i18n="711eec673fc0aab97701ff14423dae251ff268c2cadd94c808fd41ef9f88b41d/a5" data-source="gitk[1]" onmousemove="i18n(this)">gitk[1]</span></a> </dt> <dd> <p><span data-i18n="9ab96c221d07b165ae7dc64bd823f15c7ed2b2f4dee88d400312b7336d8487b9/cc" data-source="The Git repository browser. Shows branches, commit history and file differences. gitk is the utility started by &lt;code&gt;git gui&lt;/code&gt;&amp;apos;s Repository Visualize actions." onmousemove="i18n(this)">&Bcy;&rcy;&acy;&ucy;&zcy;&iecy;&rcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;  Git . &Pcy;&ocy;&kcy;&acy;&zcy;&ycy;&vcy;&acy;&iecy;&tcy; &vcy;&iecy;&tcy;&kcy;&icy;, &icy;&scy;&tcy;&ocy;&rcy;&icy;&yucy; &kcy;&ocy;&mcy;&mcy;&icy;&tcy;&ocy;&vcy; &icy; &rcy;&acy;&zcy;&lcy;&icy;&chcy;&icy;&yacy; &vcy; &fcy;&acy;&jcy;&lcy;&acy;&khcy;. gitk &mdash; &ecy;&tcy;&ocy; &ucy;&tcy;&icy;&lcy;&icy;&tcy;&acy;, &zcy;&acy;&pcy;&ucy;&scy;&kcy;&acy;&iecy;&mcy;&acy;&yacy; &dcy;&iecy;&jcy;&scy;&tcy;&vcy;&icy;&yacy;&mcy;&icy; &vcy;&icy;&zcy;&ucy;&acy;&lcy;&icy;&zcy;&acy;&tscy;&icy;&icy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy;  <code>git gui</code> .</span></p> </dd> </dl> </div> </div> <h2 class="text-body-emphasis"  id="_other"><span data-i18n="f97e9da0e3b879f0a9df979ae260a5f7e1371edb127c1862d4f861981166cdc1/7c" data-source="Other" onmousemove="i18n(this)">Other</span></h2> <div> <p><span data-i18n="1382e1f90bca4009d3699c1b42886b18201ab3052a8ae905759ff06599f94ce8/5a" data-source="&lt;code&gt;git gui&lt;/code&gt; is actually maintained as an independent project, but stable versions are distributed as part of the Git suite for the convenience of end users." onmousemove="i18n(this)"><code>git gui</code>  &fcy;&acy;&kcy;&tcy;&icy;&chcy;&iecy;&scy;&kcy;&icy; &pcy;&ocy;&dcy;&dcy;&iecy;&rcy;&zhcy;&icy;&vcy;&acy;&iecy;&tcy;&scy;&yacy; &kcy;&acy;&kcy; &ncy;&iecy;&zcy;&acy;&vcy;&icy;&scy;&icy;&mcy;&ycy;&jcy; &pcy;&rcy;&ocy;&iecy;&kcy;&tcy;, &ncy;&ocy; &dcy;&lcy;&yacy; &ucy;&dcy;&ocy;&bcy;&scy;&tcy;&vcy;&acy; &kcy;&ocy;&ncy;&iecy;&chcy;&ncy;&ycy;&khcy; &pcy;&ocy;&lcy;&softcy;&zcy;&ocy;&vcy;&acy;&tcy;&iecy;&lcy;&iecy;&jcy; &scy;&tcy;&acy;&bcy;&icy;&lcy;&softcy;&ncy;&ycy;&iecy; &vcy;&iecy;&rcy;&scy;&icy;&icy; &rcy;&acy;&scy;&pcy;&rcy;&ocy;&scy;&tcy;&rcy;&acy;&ncy;&yacy;&yucy;&tcy;&scy;&yacy; &kcy;&acy;&kcy; &chcy;&acy;&scy;&tcy;&softcy; &pcy;&acy;&kcy;&iecy;&tcy;&acy;  Git .</span></p> <p><span data-i18n="569faa3a9b9df47d4e800c0ef4d4510e19d028f5e1e41d5780eacd694a00f6b2/26" data-source="The official repository of the &lt;code&gt;git gui&lt;/code&gt; project can be found at:" onmousemove="i18n(this)">&Ocy;&fcy;&icy;&tscy;&icy;&acy;&lcy;&softcy;&ncy;&ycy;&jcy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&jcy; &pcy;&rcy;&ocy;&iecy;&kcy;&tcy;&acy;  <code>git gui</code>  &mcy;&ocy;&zhcy;&ncy;&ocy; &ncy;&acy;&jcy;&tcy;&icy; &pcy;&ocy; &acy;&dcy;&rcy;&iecy;&scy;&ucy;:</span></p> <div> <div> <pre class="hljs language-bash">https://github.com/prati0100/git-gui.git/</pre> </div> </div> </div><address>
+<p>
+    &copy; 2012&ndash;2024 Scott Chacon and others<br/>Licensed under the MIT License.<br/>
+<a href="https://git-scm.com/docs/git-gui">https://git-scm.com/docs/git-gui</a>
+</p>
+</address>                </article>
+            </main>
+
+            <br>
+            <br>
+            <hr>
+
+                            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6424571640879890"
+     data-ad-slot="3954319254"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            
+        </div>
+
+        <!-- -->
+
+        <div class="col-md-3">
+            <br>
+            <form action="-index-.html">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for Git" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <br>
+
+                            <div class="list-group list-group-flush">
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-hash-object.html">
+                            git hash-object                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-help.html">
+                            git help                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-hook.html">
+                            git hook                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-http-backend.html">
+                            git http-backend                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-http-fetch.html">
+                            git http-fetch                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-http-push.html">
+                            git http-push                        </a>
+                                            <a class="list-group-item list-group-item-action text-primary-emphasis px-2 text-truncate" href="git-imap-send.html">
+                            git imap-send                        </a>
+                                    </div>
+            
+            <br>
+            <div class="my-3">
+                   <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-6424571640879890"
+        data-ad-slot="3777011170"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>            </div>
+            <br>
+
+            
+            
+        </div>
+    </div>
+</div>    <!--/sse-->
+
+    <footer>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link ps-0" href="https://runebook.dev/">Help us Improve Translation</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <a href="git-gui.html#" class="fs-5" aria-label="Top">
+                                <i class="bi bi-arrow-up-square-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </footer>
+    <script src="../../../runebook.js"></script>
+</body>
+
+</html>
