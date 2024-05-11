@@ -1,0 +1,165 @@
+#!/bin/sh
+#
+# Copyright (C) 2012-2015, 2018  Etersoft
+# Copyright (C) 2012-2015, 2018  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-install
+load_helper epm-search
+
+# for zypper before SUSE/11.0
+__use_zypper_dry_run()
+{
+    a='' zypper install --help 2>&1 | grep -q -- "--dry-run" && echo "--dry-run"
+}
+
+__use_yum_assumeno()
+{
+    a='' yum --help 2>&1 | grep -q -- "--assumeno"
+}
+
+
+__check_yum_result()
+{
+    grep -q "^No package" $1 && return 1
+    grep -q "^Complete!" $1 && return 0
+    grep -q "Exiting on user [Cc]ommand" $1 && return 0
+    # dnf issue
+    grep -q "^Operation aborted." $1 && return 0
+    # return default result by default
+    return $2
+}
+
+__check_pacman_result()
+{
+    grep -q "^error: target not found:" $1 && return 1
+    grep -q "^Total Installed Size:" $1 && return 0
+    grep -q "^Total Download Size:" $1 && return 0
+    # return default result by default
+    return $2
+}
+
+
+_epm_do_simulate()
+{
+    local CMD
+    local RES=0
+    local filenames="$*"
+
+    case $PMTYPE in
+        apt-rpm|apt-dpkg)
+            CMD="apt-get --simulate install"
+            ;;
+        aptitude-dpkg)
+            CMD="aptitude -s install"
+            ;;
+        yum-rpm)
+            if __use_yum_assumeno ; then
+                store_output sudocmd yum --assumeno install $filenames
+                __check_yum_result $RC_STDOUT $?
+            else
+                store_output sudocmd yum install $filenames <<EOF
+n
+EOF
+                __check_yum_result $RC_STDOUT $?
+            fi
+            RES=$?
+            clean_store_output
+            return $RES ;;
+        dnf-rpm)
+            store_output sudocmd dnf --assumeno install $filenames
+            __check_yum_result $RC_STDOUT $?
+            RES=$?
+            clean_store_output
+            return $RES ;;
+        urpm-rpm)
+            CMD="urpmi --test --auto"
+            ;;
+        eopkg)
+            CMD="eopkg --dry-run install"
+            ;;
+        zypper-rpm)
+            if ! __use_zypper_dry_run >/dev/null ; then
+                fatal "zypper is too old: does not support --dry-run"
+            fi
+            CMD="zypper --non-interactive install --dry-run"
+            ;;
+        emerge)
+            local res=0
+            for pkg in $filenames ; do
+            is_installed $pkg && continue
+            docmd emerge --pretend $pkg && continue
+            pkg=1
+            break
+            done
+            return $res ;;
+        opkg)
+            docmd --noaction install $filenames
+            return $res ;;
+        pacman)
+            store_output sudocmd pacman -v -S $filenames <<EOF
+no
+EOF
+            __check_pacman_result $RC_STDOUT $?
+            RES=$?
+            clean_store_output
+            return $RES ;;
+        slackpkg)
+            #docmd /usr/sbin/slackpkg -batch=on -default_answer=yes download
+            # just try search every package
+            # FIXME: epm_search have to return false status code if the package does not found
+            local pkg res
+            res=0
+            for pkg in $filenames ; do
+                # FIXME: -[0-0] does not work in search!
+                # FIXME: we need strict search here (not find gst-plugins-base if search for gst-plugins
+                # TODO: use short?
+                # use verbose for get package status
+                #pkg_filenames="$pkg-[0-9]" verbose=--verbose __epm_search_internal | grep -E "(installed|upgrade)" && continue
+                #pkg_filenames="$pkg" verbose=--verbose __epm_search_internal | grep -E "(installed|upgrade)" && continue
+                __epm_search_internal "$pkg" | grep -q "^$pkg-[0-9]" && continue
+                res=1
+                info "Package '$pkg' does not found in repository."
+            done
+            return $res ;;
+        *)
+            fatal "Have no suitable simulate command for $PMTYPE"
+            ;;
+    esac
+
+    sudocmd $CMD $filenames
+}
+
+epm_simulate()
+{
+    [ -z "$pkg_filenames" ] && info "Simulate: Skip empty list" && return 22
+
+    local filenames="$(echo $pkg_filenames | filter_out_installed_packages)"
+
+    [ -z "$filenames" ] && info "Simulate: All packages are already installed" && return 0
+
+    _epm_do_simulate $filenames
+    local RES=$?
+    if [ -z "$quiet" ] ; then
+        if [ "$RES" = 0 ] ; then
+            info "Simulate result: $filenames package(s) CAN BE installed"
+        else
+            info "Simulate result: There are PROBLEMS with install some package(s)"
+        fi
+    fi
+    return $RES
+}
+

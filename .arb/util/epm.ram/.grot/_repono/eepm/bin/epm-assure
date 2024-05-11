@@ -1,0 +1,117 @@
+#!/bin/sh
+#
+# Copyright (C) 2013-2016  Etersoft
+# Copyright (C) 2013-2016  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+__check_command_in_path()
+{
+    # with hack for sudo case
+    ( PATH=$PATH:/sbin:/usr/sbin print_command_path "$1" )
+}
+
+# returns TRUE if package version is omitted, or package is not installed, or version is too old
+__epm_need_update()
+{
+    local PACKAGE="$1"
+    local PACKAGEVERSION="$2"
+
+    [ -n "$PACKAGEVERSION" ] || return 0
+
+    load_helper epm-query
+    is_installed "$PACKAGE" || return 0
+
+    load_helper epm-print
+    # epm print version for package N
+    local INSTALLEDVERSION=$(query_package_field "version" "$PACKAGE")
+    # if needed >= installed, return 0
+    [ "$(compare_version "$PACKAGEVERSION" "$INSTALLEDVERSION")" -gt 0 ] && return 0
+
+    return 1
+}
+
+__epm_assure_checking()
+{
+    local CMD="$1"
+    local PACKAGE="$2"
+    local PACKAGEVERSION="$3"
+
+    [ -n "$PACKAGEVERSION" ] && return 1
+
+    if is_dirpath "$CMD" ; then
+        # TODO: check for /usr/bin, /bin, /usr/sbin, /sbin
+        if [ -e "$CMD" ] ; then
+            if [ -n "$verbose" ] ; then
+                info "File or directory $CMD is already exists."
+                epm qf "$CMD" >&2
+            fi
+            return 0
+        fi
+
+        [ -n "$PACKAGE" ] || fatal "You need run with package name param when use with absolute path to non executable file"
+        return 1
+    fi
+
+    if __check_command_in_path "$CMD" >/dev/null ; then
+        if [ -n "$verbose" ] ; then
+            local compath="$(__check_command_in_path "$1")"
+            info "Command $CMD is exists: $compath"
+            epm qf "$compath" >&2
+        fi
+        return 0
+    fi
+
+    return 1
+}
+
+# Do fast checking for command and install package if the command does not exist
+
+# $1 - command name
+# $2 - [package name]
+# $3 - [needed package version]
+
+epm_assure()
+{
+    local CMD="$1"
+    local PACKAGE="$2"
+    local PACKAGEVERSION="$3"
+    [ -n "$PACKAGE" ] || PACKAGE="$1"
+
+    __epm_assure_checking $CMD $PACKAGE $PACKAGEVERSION && return 0
+
+    info "Installing appropriate package for $CMD command..."
+    __epm_need_update $PACKAGE $PACKAGEVERSION || return 0
+
+    # can't be used in epm ei case
+    #docmd epm --auto install $PACKAGE || return
+    load_helper epm-install
+    (repack='' pkg_names="$PACKAGE" pkg_files='' pkg_urls='' epm_install ) || return
+
+    # https://bugzilla.altlinux.org/42240
+    load_helper epm-mark
+    epm_mark_auto "$PACKAGE"
+
+    # no check if we don't need a version
+    [ -n "$PACKAGEVERSION" ] || return 0
+
+    # check if we couldn't update and still need update
+    __epm_need_update $PACKAGE $PACKAGEVERSION || return 0
+
+    local textpackage
+    [ -n "$PACKAGEVERSION" ] && textpackage=" >= $PACKAGEVERSION"
+    warning "Can't assure in '$CMD' command from $PACKAGE$textpackage package"
+    return 1
+}

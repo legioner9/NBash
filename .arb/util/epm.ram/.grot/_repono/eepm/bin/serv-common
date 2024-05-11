@@ -1,0 +1,50 @@
+#!/bin/sh
+#
+# Copyright (C) 2012, 2016  Etersoft
+# Copyright (C) 2012, 2016  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+# Common call service
+serv_common()
+{
+    local SERVICE="$1"
+    shift
+    case $SERVICETYPE in
+        service-chkconfig|service-upstart)
+            if is_anyservice $SERVICE ; then
+                fatal "Have no idea how to call anyservice service with args"
+            fi
+            sudocmd service $SERVICE "$@"
+            ;;
+        service-initd|service-update)
+            sudocmd $INITDIR/$SERVICE "$@"
+            ;;
+        systemd)
+            # run init script directly (for nonstandart commands)
+            if [ -x $INITDIR/$SERVICE ] ; then
+                sudocmd $INITDIR/$SERVICE "$@"
+            else
+                sudocmd systemctl "$@" $SERVICE
+            fi
+            ;;
+        runit)
+            sudocmd sv $SERVICE "$@"
+            ;;
+        *)
+            fatal "Have no suitable command for $SERVICETYPE"
+            ;;
+    esac
+}

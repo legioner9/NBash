@@ -1,0 +1,189 @@
+#!/bin/sh
+#
+# Copyright (C) 2009, 2012, 2016  Etersoft
+# Copyright (C) 2009, 2012, 2016  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+# copied from etersoft-build-utils/bin/rpmqf
+
+# TODO: check for lib64/name situations
+__abs_filename()
+{
+    if echo "$1" | grep -q "/" ; then
+        echo "$1"
+        return
+    fi
+    if [ -e "$1" ] ; then
+        echo "$(pwd)/$1"
+        return
+    fi
+    echo "$1"
+}
+
+__do_query_real_file()
+{
+    local TOFILE
+    
+    # get canonical path
+    if [ -e "$1" ] ; then
+        TOFILE="$(__abs_filename "$1")"
+    else
+        TOFILE=$(print_command_path "$1" || echo "$1")
+        if [ "$TOFILE" != "$1" ] ; then
+            info " > $1 is placed as $TOFILE"
+        fi
+    fi
+
+    [ -n "$TOFILE" ] || return
+
+    local RES
+    if [ -n "$short" ] ; then
+        __do_short_query "$TOFILE"
+        RES=$?
+    else
+        __do_query "$TOFILE"
+        RES=$?
+    fi
+
+    # get value of symbolic link
+    if [ -L "$TOFILE" ] ; then
+        local LINKTO
+        LINKTO=$(readlink -- "$TOFILE")
+        info " > $TOFILE is link to $LINKTO"
+        LINKTO=$(readlink -f -- "$TOFILE")
+        __do_query_real_file "$LINKTO"
+        return
+    else
+        return $RES
+    fi
+}
+
+dpkg_print_name_version()
+{
+    local ver i
+    for i in "$@" ; do
+        [ -n "$i" ] || continue
+        ver=$(dpkg -s "$i" 2>/dev/null | grep "Version:" | sed -e "s|Version: ||g")
+        if [ -z "$ver" ] ; then
+            echo "$i"
+        else
+            echo "$i-$ver"
+        fi
+    done
+}
+
+
+__do_query()
+{
+    local CMD
+    case $PMTYPE in
+        *-dpkg)
+            showcmd dpkg -S "$1"
+            dpkg_print_name_version "$(dpkg -S "$1" | grep -v "^diversion by" | sed -e "s|:.*||")"
+            return ;;
+        *-rpm)
+            CMD="rpm -qf"
+            ;;
+        emerge)
+            assure_exists equery
+            CMD="equery belongs"
+            ;;
+        pacman)
+            CMD="pacman -Qo"
+            ;;
+        pkgng)
+            CMD="pkg which"
+            ;;
+        conary)
+            CMD="conary query --path"
+            ;;
+        slackpkg)
+            # note: need remove leading slash for grep
+            docmd grep -R -- "$(echo $@ | sed -e 's|^/\+||g')" /var/log/packages | sed -e "s|/var/log/packages/||g"
+            return
+            ;;
+        opkg)
+            CMD="opkg search"
+            ;;
+        eopkg)
+            CMD="eopkg search-file"
+            ;;
+        xbps)
+            # FIXME: maybe it is search file?
+            CMD="xbps-query -o"
+            ;;
+        aptcyg)
+            #CMD="apt-cyg packageof"
+            # is not implemented locally
+            return 1
+            ;;
+        *)
+            fatal "Have no suitable query command for $PMTYPE"
+            ;;
+    esac
+
+    docmd $CMD $@
+}
+
+
+__do_short_query()
+{
+    local CMD
+    case $PMTYPE in
+        *-rpm)
+            CMD="rpm -qf --queryformat %{NAME}\n"
+            ;;
+        apt-dpkg)
+            docmd dpkg -S "$1" | sed -e "s|:.*||"
+            return ;;
+        NOemerge)
+            assure_exists equery
+            CMD="equery belongs"
+            ;;
+        NOpacman)
+            CMD="pacman -Qo"
+            ;;
+        NOslackpkg)
+            # note: need remove leading slash for grep
+            docmd grep -R "$(echo $@ | sed -e 's|^/\+||g')" /var/log/packages | sed -e "s|/var/log/packages/||g"
+            return
+            ;;
+        *)
+            fatal "Have no suitable query command for $PMTYPE"
+            ;;
+    esac
+
+    docmd $CMD $@
+}
+
+
+epm_query_file()
+{
+    # file can exists or not
+    [ -n "$pkg_filenames" ] || fatal "Run query without file names"
+
+
+    #load_helper epm-search_file
+
+    res=0
+    for pkg in $pkg_filenames ; do
+        __do_query_real_file "$pkg" || res=$?
+    done
+
+    [ "$res" = "0" ] || info "Try epm sf for search file in all packages of the repositories"
+    #|| pkg_filenames="$FULLFILEPATH" epm_search_file
+    return $res
+}

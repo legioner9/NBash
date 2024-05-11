@@ -1,0 +1,264 @@
+#!/bin/sh
+#
+# Copyright (C) 2023  Etersoft
+# Copyright (C) 2023  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-query
+
+
+__convert_pkgallowscripts_to_regexp()
+{
+    local tmpalf
+    tmpalf="$(mktemp)" || fatal
+    # copied from eget's filter_glob
+    # check man glob
+    # remove commentы and translate glob to regexp
+    grep -v "^[[:space:]]*#" "$1" | grep -v "^[[:space:]]*$" | sed -e "s|\*|.*|g" -e "s|?|.|g" -e "s|^|^|" -e "s|$|\$|" >$tmpalf
+    echo "$tmpalf"
+}
+
+__epm_package_name_ok_scripts()
+{
+    local name="$1"
+    local alf="$CONFIGDIR/pkgallowscripts.list"
+    [ -s "$alf" ] || return 1
+    [ -n "$name" ] || return 1
+    local tmpalf=$(__convert_pkgallowscripts_to_regexp "$alf")
+    remove_on_exit $tmpalf
+    echo "$name" | grep -q -f $tmpalf
+    local res=$?
+    rm $tmpalf
+    return $res
+}
+
+__epm_package_ok_scripts()
+{
+    local pkg="$1"
+    local name
+    # TODO: improve epm print name and use it here
+    name="$(epm print field Name for "$pkg" 2>/dev/null)"
+    [ -n "$name" ] || return 1
+    __epm_package_name_ok_scripts "$name"
+}
+
+__epm_vendor_ok_scripts()
+{
+    local vendor="$1"
+    local alf="$CONFIGDIR/vendorallowscripts.list"
+    [ -s "$alf" ] || return 1
+    [ -n "$vendor" ] || return 1
+    local tmpalf=$(__convert_pkgallowscripts_to_regexp "$alf")
+    remove_on_exit $tmpalf
+    echo "$vendor" | grep -q -f $tmpalf
+    local res=$?
+    rm $tmpalf
+    return $res
+}
+
+
+epm_status_installable()
+{
+    local pkg="$1"
+    #LANG=C epm policy "$pkg" | grep Candidate >/dev/null 2>/dev/null
+    if [ -n "$verbose" ] ; then
+        docmd epm install --simulate "$pkg"
+    else
+        epm install --simulate "$pkg" 2>/dev/null >/dev/null
+    fi
+}
+
+# allowed to use scripts 
+epm_status_certified()
+{
+    local pkg="$1"
+    load_helper epm-install
+    __epm_package_ok_scripts "$pkg" && return
+
+    local vendor
+    vendor="$(epm print field Vendor for "$pkg" 2>/dev/null)"
+    [ -n "$vendor" ] || return
+    __epm_vendor_ok_scripts "$vendor" && return
+}
+
+
+# check if the package is really package (check accessibility)
+epm_status_validate()
+{
+    local pkg="$1"
+    local rpmversion="$(epm print field Version for "$pkg" 2>/dev/null)"
+    [ -n "$rpmversion" ]
+}
+
+epm_status_original()
+{
+    local pkg="$1"
+
+    #is_installed $pkg || fatal "FIXME: implemented for installed packages as for now"
+
+    case $DISTRNAME in
+        ALTLinux)
+            epm_status_validate $pkg || return 1
+            epm_status_repacked $pkg && return 1
+
+            # not for all packages
+            #[ "$(epm print field Vendor for package $pkg)" = "ALT Linux Team" ] || return
+
+            local distribution
+            distribution="$(epm print field Distribution for "$pkg" 2>/dev/null )"
+            echo "$distribution" | grep -q "^ALT" || return 1
+
+            # mc in Sisyphus has not a signature
+            #local sig
+            #sig="$(epm print field sigpgp for "$pkg" 2>/dev/null )"
+            #[ "$sig" = "(none)" ] && return 1
+
+            # FIXME: how to check if the package is from ALT repo (verified)?
+            local release="$(epm print release from package "$pkg" 2>/dev/null )"
+            echo "$release" | grep -q "^alt" || return 1
+            return 0
+            ;;
+        *)
+            fatal "Unsupported $DISTRNAME"
+            ;;
+    esac
+    return 1
+}
+
+epm_status_repacked()
+{
+    local pkg="$1"
+
+    #is_installed $pkg || fatal "FIXME: implemented for installed packages as for now"
+
+    case $BASEDISTRNAME in
+        alt)
+            epm_status_validate $pkg || return
+            local packager="$(epm print field Packager for "$1" 2>/dev/null)"
+            [ "$packager" = "EPM <support@etersoft.ru>" ] && return 0
+            [ "$packager" = "EPM <support@eepm.ru>" ] && return 0
+            ;;
+        *)
+            fatal "Unsupported $BASEDISTRNAME"
+            ;;
+    esac
+    return 1
+}
+
+
+epm_status_thirdparty()
+{
+    local pkg="$1"
+
+    #is_installed $pkg || fatal "FIXME: implemented for installed packages as for now"
+
+    case $BASEDISTRNAME in
+        alt)
+            ## FIXME: some repo packages have wrong Packager
+            #local packager="$(epm print field Packager for "$1" 2>/dev/null)"
+            #echo "$packager" && grep -q "altlinux" && return 0
+            #echo "$packager" && grep -q "basealt" && return 0
+            epm_status_validate $pkg || return 1
+
+            local distribution
+            distribution="$(epm print field Distribution for "$pkg" 2>/dev/null )"
+            echo "$distribution" | grep -q "^ALT" && return 1
+            echo "$distribution" | grep -q "^EEPM" && return 1
+            return 0
+            ;;
+        *)
+            fatal "Unsupported $BASEDISTRNAME"
+            ;;
+    esac
+    return 1
+}
+
+
+epm_status_help()
+{
+    cat <<EOF
+
+epm status - check status of the package and return result via exit code
+Usage: epm status [options] <package>
+
+Options:
+  --installed           check if <package> is installed
+  --installable         check if <package> can be installed from the repo
+  --original            check if <package> is from distro repo
+  --certified           check if <package> is certified that it can be installed without repacking
+  --thirdparty          check if <package> from a third-party source (didn't packed for this distro)
+  --repacked            check if <package> was repacked with epm repack
+  --validate            check if <package> is accessible (we can get a fields from it)
+
+EOF
+}
+
+epm_status()
+{
+    local option="$1"
+
+    if [ -z "$1" ] ; then
+        epm_status_help >&2
+        exit 1
+    fi
+
+    shift
+
+    # TODO: allow both option
+    case "$option" in
+        -h|--help)
+            epm_status_help
+            return
+            ;;
+        --installed)
+            is_installed "$@"
+            return
+            ;;
+        --original)
+            epm_status_original "$@"
+            return
+            ;;
+        --certified|--allowed-scripts)
+            epm_status_certified "$@"
+            return
+            ;;
+         --third-party|--thirdparty|--thirdpart)
+            epm_status_thirdparty "$@"
+            return
+            ;;
+        --repacked)
+            epm_status_repacked "$@"
+            return
+            ;;
+        --validate)
+            epm_status_validate "$@"
+            return
+            ;;
+        --installable)
+            epm_status_installable "$@"
+            return
+            ;;
+        -*)
+            fatal "Unknown option $option, use epm status --help to get info"
+            ;;
+        *)
+            fatal "No option before $option, use epm status --help to get info"
+            ;;
+    esac
+
+    epm_status_help >&2
+    fatal "Run with appropriate option"
+}

@@ -1,0 +1,154 @@
+#!/bin/sh
+#
+# Copyright (C) 2013  Etersoft
+# Copyright (C) 2013  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-query
+load_helper epm-print
+
+epm_provides_files()
+{
+    local pkg_files="$*"
+    [ -n "$pkg_files" ] || return
+
+    local PKGTYPE="$(get_package_type $pkg_files)"
+
+    case $PKGTYPE in
+        rpm)
+            assure_exists rpm
+            if [ -n "$short" ] ; then
+                docmd rpm -q --provides -p $pkg_files | sed -e 's| .*||'
+            else
+                docmd rpm -q --provides -p $pkg_files
+            fi
+            ;;
+        deb)
+            assure_exists dpkg
+            # FIXME: will we provide ourself?
+            docmd dpkg -I $pkg_files | grep "^ *Provides:" | sed "s|^ *Provides:||g"
+            ;;
+        *)
+            fatal "Have no suitable command for $PMTYPE"
+            ;;
+    esac
+}
+
+
+epm_provides_names()
+{
+    local pkg_names="$*"
+    local CMD
+    [ -n "$pkg_names" ] || return
+
+# by package name
+case $PMTYPE in
+    apt-rpm)
+        # FIXME: need fix for a few names case
+        # TODO: separate this function to two section
+        if is_installed $pkg_names ; then
+            CMD="rpm -q --provides"
+        else
+            EXTRA_SHOWDOCMD=' | grep "Provides:"'
+            if [ -n "$short" ] ; then
+                docmd apt-cache show $pkg_names | grep "Provides:" | sed -e 's|, |\n|g' -e 's|Provides: ||' -e 's| .*||'
+            else
+                docmd apt-cache show $pkg_names | grep "Provides:" | sed -e 's|, |\n|g' -e 's|Provides: ||'
+            fi
+            return
+        fi
+        ;;
+    urpm-rpm)
+        if is_installed $pkg_names ; then
+            CMD="rpm -q --provides"
+        else
+            CMD="urpmq --provides"
+        fi
+        ;;
+    zypper-rpm)
+        if is_installed $pkg_names ; then
+            CMD="rpm -q --provides"
+        else
+            fatal "FIXME: use hi level commands or download firstly"
+        fi
+        ;;
+    yum-rpm)
+        if is_installed $pkg_names ; then
+            CMD="rpm -q --provides"
+        else
+            fatal "FIXME: use hi level commands or download firstly"
+        fi
+        ;;
+    dnf-rpm)
+        if is_installed $pkg_names ; then
+            CMD="rpm -q --provides"
+        else
+            CMD="dnf repoquery --provides"
+        fi
+        ;;
+    emerge)
+        assure_exists equery
+        CMD="equery files"
+        ;;
+#    yum-rpm)
+#        CMD="yum deplist"
+#        ;;
+    pkgng)
+        CMD="pkg info -b"
+        ;;
+    apt-dpkg)
+        # FIXME: need fix for a few names case
+        if is_installed $pkg_names ; then
+            showcmd dpkg -s $pkg_names
+            a='' dpkg -s $pkg_names | grep "^Provides:" | sed "s|^Provides:||g"
+            return
+        else
+            EXTRA_SHOWDOCMD=' | grep "Provides:"'
+            docmd apt-cache show $pkg_names | grep "Provides:" | sed -e 's|, |\n|g' | grep -v "^Provides:"
+            return
+        fi
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+
+if [ -n "$direct" ] && [ "$CMD" = "rpm -q --provides" ] ; then
+    # do universal provides
+    docmd $CMD $pkg_names | sed -e 's| .*||' | grep -F "()"
+    a= $CMD $pkg_names | sed -e 's| .*||' | grep -v -E "^(lib|ld-linux)"
+elif [ -n "$short" ] ; then
+    docmd $CMD $pkg_names | sed -e 's| .*||'
+else
+    docmd $CMD $pkg_names
+fi
+
+}
+
+epm_provides()
+{
+    # if possible, it will put pkg_urls into pkg_files or pkg_names
+    if [ -n "$pkg_urls" ] ; then
+        load_helper epm-download
+        __handle_pkg_urls_to_checking
+    fi
+
+    [ -n "$pkg_filenames" ] || fatal "Provides: package name is missed"
+
+    epm_provides_files $pkg_files
+    # shellcheck disable=SC2046
+    epm_provides_names $(print_name $pkg_names)
+}

@@ -2,6 +2,10 @@
 
     /home/st/REPOBARE/_repo/Book/.git
 
+## git rev-parse --show-toplevel
+
+    /home/st/REPOBARE/_repo/Book
+
 ## git config --list 
 
     tail: 
@@ -104,3 +108,15 @@
         --show-origin         show origin of config (file, standard input, blob, command line)
         --show-scope          show scope of config (worktree, local, global, system, command)
         --default <value>     with --get, use default value when missing entry
+
+## git var -l
+
+    user.email=legioner9@inbox.ru
+    user.name=[alt]legioner9
+    core.editor=gvim -v
+    safe.directory=${COMMUNIS_PATH}
+    safe.directory=${COMMUNIS_PATH}
+    GIT_COMMITTER_IDENT=[alt]legioner9 <legioner9@inbox.ru> 1715414750 +0700
+    GIT_AUTHOR_IDENT=[alt]legioner9 <legioner9@inbox.ru> 1715414750 +0700
+    GIT_EDITOR=gvim -v
+    GIT_PAGER=less -RS

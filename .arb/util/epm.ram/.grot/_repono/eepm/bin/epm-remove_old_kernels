@@ -1,0 +1,85 @@
+#!/bin/sh
+#
+# Copyright (C) 2016-2017  Etersoft
+# Copyright (C) 2016-2017  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-sh-warmup
+
+epm_remove_old_kernels()
+{
+
+    warmup_bases
+
+    case $BASEDISTRNAME in
+    "alt")
+        load_helper epm-query_package
+        if ! __epm_query_package kernel-image >/dev/null ; then
+            info "No installed kernel packages, skipping cleaning"
+            return
+        fi
+        assure_exists update-kernel update-kernel 0.9.9
+        sudocmd remove-old-kernels $dryrun $(subst_option non_interactive -y) "$@"
+
+        [ -n "$dryrun" ] && return
+
+        # remove unused nvidia drivers
+        if is_command nvidia-clean-driver ; then
+            if [ -n "$non_interactive" ] ; then
+                yes | sudocmd nvidia-clean-driver
+            else
+                sudocmd nvidia-clean-driver
+            fi
+        fi
+
+        return ;;
+    esac
+
+    case $DISTRNAME in
+    Ubuntu)
+        load_helper epm-query_package
+        if ! __epm_query_package linux-image >/dev/null ; then
+            info "No installed kernel packages, skipping cleaning"
+            return
+        fi
+        info "Note: it is enough to use eepm autoremove for old kernel removing..."
+        info "Check also http://ubuntuhandbook.org/index.php/2016/05/remove-old-kernels-ubuntu-16-04/"
+        # http://www.opennet.ru/tips/2980_ubuntu_apt_clean_kernel_packet.shtml
+        case $DISTRVERSION in
+        10.04|12.04|14.04|15.04|15.10)
+            assure_exists purge-old-kernels bikeshed
+            ;;
+        *)
+            # since Ubuntu 16.04
+            assure_exists purge-old-kernels byobu
+            ;;
+        esac
+        sudocmd purge-old-kernels "$@"
+        return ;;
+    Gentoo)
+        sudocmd emerge -P gentoo-sources
+        return ;;
+    VoidLinux)
+        sudocmd vkpurge rm all
+        return ;;
+    esac
+
+    case $PMTYPE in
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+    esac
+}

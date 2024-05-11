@@ -1,0 +1,207 @@
+#!/bin/sh
+#
+# Copyright (C) 2023  Etersoft
+# Copyright (C) 2023  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-sh-altlinux
+
+
+# allowed files too
+__epm_get_file_from_url()
+{
+    local url="$1"
+    local tmpfile
+    tmpfile=$(mktemp) || fatal
+    remove_on_exit $tmpfile
+    eget -O "$tmpfile" "$url" >/dev/null
+    echo "$tmpfile"
+}
+
+__epm_addkey_altlinux()
+{
+    local name
+    local url="$1"
+    shift
+    if is_url "$url" ; then
+        name="$(basename "$url" .gpg)"
+    else
+        name="$url"
+        url="$1"
+        shift
+    fi
+
+    local fingerprint
+    if is_url "$url" ; then
+        fingerprint="$1"
+        shift
+    else
+        fingerprint="$url"
+        url=""
+    fi
+
+    local comment="$1"
+    # compat
+    [ -n "$2" ] && name="$2"
+
+    [ -s /etc/apt/vendors.list.d/$name.list ] && return
+
+# TODO: get this info from the gpg key
+    cat << EOF | sudorun tee /etc/apt/vendors.list.d/$name.list
+simple-key "$name" {
+        FingerPrint "$fingerprint";
+        Name "$comment";
+}
+EOF
+    if [ -n "$url" ] ; then
+        local tmpfile=$(__epm_get_file_from_url $url) || fatal
+        sudocmd gpg --no-default-keyring --keyring /usr/lib/alt-gpgkeys/pubring.gpg --import $tmpfile
+    fi
+}
+
+
+__epm_addkey_alpine()
+{
+    local name
+    local url="$1"
+    shift
+    if is_url "$url" ; then
+        name="$(basename "$url" .rsa)"
+    else
+        name="$url"
+        url="$1"
+        shift
+    fi
+
+    local target="/etc/apk/keys/$name.rsa"
+
+    [ -s $target ] && return
+
+    local tmpfile=$(__epm_get_file_from_url $url) || fatal
+    sudocmd cp $tmpfile $target
+}
+
+
+__epm_addkey_dnf()
+{
+    local name
+    local url="$1"
+    shift
+    if is_url "$url" ; then
+        name="$(basename "$url" .gpg)"
+    else
+        name="$url"
+        url="$1"
+        shift
+    fi
+    local gpgkeyurl="$1"
+    local nametext="$2"
+    # compat
+    [ -n "$3" ] && name="$3"
+
+    # TODO: missed name, nametext, gpgkeyurl (disable gpgcheck=1)
+
+    local target="/etc/yum.repos.d/$name.repo"
+    [ -s $target ] && return
+
+    local tmpfile
+    tmpfile=$(mktemp) || fatal
+    remove_on_exit $tmpfile
+    cat >$tmpfile <<EOF
+[$name]
+name=$nametext
+baseurl=$url
+gpgcheck=1
+enabled=1
+gpgkey=$gpgkeyurl
+EOF
+    chmod 644 $tmpfile
+    sudocmd cp $tmpfile $target
+}
+
+
+__epm_addkey_deb()
+{
+    local name
+    local url="$1"
+    shift
+    if is_url "$url" ; then
+        name="$(basename "$url" .gpg)"
+    else
+        name="$url"
+        url="$1"
+        shift
+    fi
+    local fingerprint="$1"
+    local comment="$2"
+    # compat
+    [ -n "$3" ] && name="$3"
+
+    # FIXME: check by GPG PUBKEY
+    [ -s /etc/apt/trusted.gpg.d/$name.gpg ] && return
+
+    if [ -z "$fingerprint" ] ; then
+        local tmpfile=$(__epm_get_file_from_url $url) || fatal
+        if cat $tmpfile | head -n3 | grep -- "-----BEGIN PGP PUBLIC KEY BLOCK-----" ; then
+            # This is a GnuPG extension to OpenPGP
+            cat $tmpfile | a= gpg --dearmor >$tmpfile
+        fi
+        sudocmd apt-key add $tmpfile
+#
+#        if [ ! -f /etc/apt/trusted.gpg.d/$name.gpg ]; then
+#                epm tool eget -q -O /etc/apt/trusted.gpg.d/$name.gpg https://example.com/$name.gpg > /dev/null
+#                chmod 0644 /etc/apt/trusted.gpg.d/$name.gpg
+#        fi
+
+        return
+    fi
+    sudocmd apt-key adv --keyserver "$url" --recv "$fingerprint"
+}
+
+
+epm_addkey()
+{
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ] || [ -z "$1" ] ; then
+    echo "Usage: $ epm repo addkey [name] [url] [fingerprint/gpgkey] [comment/name]"
+    return
+fi
+
+# initialize here
+remove_on_exit
+
+case $BASEDISTRNAME in
+    "alt")
+        __epm_addkey_altlinux "$@"
+        return
+        ;;
+    "alpine")
+        __epm_addkey_alpine "$@"
+        return
+        ;;
+esac
+
+case $PMTYPE in
+    apt-dpkg)
+        __epm_addkey_deb "$@"
+        ;;
+    dnf-*|yum-*)
+        __epm_addkey_dnf "$@"
+        ;;
+esac
+
+}
+

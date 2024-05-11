@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# Copyright (C) 2012  Etersoft
+# Copyright (C) 2012  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-packages
+load_helper epm-search
+
+__epm_query_package()
+{
+    (pkg_filenames="$*" quoted_args="$*" quiet=1 epm_query_package)
+}
+
+epm_query_package()
+{
+    [ -n "$pkg_filenames" ] || fatal "Please, use search with some argument or run epmqa for get all packages."
+    # FIXME: do it better
+    local MGS
+    MGS=$(eval __epm_search_make_grep $quoted_args)
+    EXTRA_SHOWDOCMD=$MGS
+    # Note: get all packages list and do grep
+    eval "epm_packages $MGS"
+}

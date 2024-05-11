@@ -1,0 +1,66 @@
+#!/bin/sh
+#
+# Copyright (C) 2012, 2016, 2021  Etersoft
+# Copyright (C) 2012, 2016, 2021  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+# List all available services
+serv_list_all()
+{
+    case $SERVICETYPE in
+        service-chkconfig|service-upstart)
+            if [ -n "$short" ] ; then
+                # service --status-all for Ubuntu/Fedora
+                sudocmd chkconfig --list | cut -f1 | grep -v "^$" | grep -v "xinetd:$" | cut -f 1 -d" "
+            else
+                # service --status-all for Ubuntu/Fedora
+                sudocmd chkconfig --list | cut -f1 | grep -v "^$" | grep -v "xinetd:$"
+            fi
+            if [ -n "$ANYSERVICE" ] ; then
+                if [ -n "$short" ] ; then
+                    sudocmd anyservice --quiet list | cut -f 1 -d" "
+                else
+                    sudocmd anyservice --quiet list
+                fi
+                return
+            fi
+            ;;
+        service-initd|service-update)
+            if [ -n "$short" ] ; then
+                sudocmd ls $INITDIR/ | grep -v README | cut -f 1 -d" "
+            else
+                sudocmd ls $INITDIR/ | grep -v README
+            fi
+            ;;
+        systemd)
+            if [ -n "$short" ] ; then
+                docmd systemctl list-unit-files --type=service "$@" | sed -e 's|\.service.*||' | grep -v 'unit files listed' | grep -v '^$'
+            else
+                docmd systemctl list-unit-files --type=service "$@"
+            fi
+            ;;
+        openrc)
+            if [ -n "$short" ] ; then
+                sudocmd rc-service -l | cut -f 1 -d" "
+            else
+                sudocmd rc-service -l
+            fi
+            ;;
+        *)
+            fatal "Have no suitable command for $SERVICETYPE"
+            ;;
+    esac
+}

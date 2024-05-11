@@ -1,0 +1,138 @@
+#!/bin/sh
+#
+# Copyright (C) 2021  Etersoft
+# Copyright (C) 2021  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-sh-altlinux
+
+epm_repo_help()
+{
+    get_help HELPCMD $SHAREDIR/epm-repo
+    cat <<EOF
+
+Examples:
+  epm repo set p9
+  epm repo switch p10
+  epm repo add autoimports
+  epm repo list
+  epm repo change yandex
+EOF
+}
+
+
+epm_repo()
+{
+    local CMD="$1"
+    [ -n "$CMD" ] && shift
+    case $CMD in
+    "-h"|"--help"|help)               # HELPCMD: help
+        epm_repo_help
+        ;;
+    ""|list)                          # HELPCMD: list enabled repositories (-a|--all for list disabled repositorires too)
+        load_helper epm-repolist
+        epm_repolist "$@"
+        ;;
+    change)                           # HELPCMD: <mirror>: switch sources to the mirror (supports etersoft/yandex/basealt/altlinux.org/eterfund.org): rewrite URLs to the specified server
+        load_helper epm-repofix
+        epm_repofix "$@"
+        ;;
+    set)                              # HELPCMD: <mirror>: remove all existing sources and add mirror for the branch
+        epm repo rm all
+        epm addrepo "$@"
+        ;;
+    switch)                           # HELPCMD: switch repo to <repo>: rewrite URLs to the repo (but use epm release-upgrade [Sisyphus|p10] for upgrade to a next branch)
+        load_helper epm-repofix
+        epm_reposwitch "$@"
+        ;;
+    enable)                           # HELPCMD: enable <repo>
+        load_helper epm-repoenable
+        epm_repoenable "$@"
+        ;;
+    disable)                          # HELPCMD: disable <repo>
+        load_helper epm-repodisable
+        epm_repodisable "$@"
+        ;;
+    addkey)                           # HELPCMD: add repository gpg key (by URL or file) (run with --help to detail)
+        load_helper epm-repo-addkey
+        epm_addkey "$@"
+        ;;
+    clean)                            # HELPCMD: remove temp. repos (tasks and CD-ROMs)
+        [ "$BASEDISTRNAME" = "alt" ] || fatal "TODO: only ALT now is supported"
+        # TODO: check for ALT
+        sudocmd apt-repo $dryrun clean
+        ;;
+    save)                             # HELPCMD: save sources lists to a temp place
+        load_helper epm-reposave
+        epm_reposave "$@"
+        ;;
+    restore)                          # HELPCMD: restore sources lists from a temp place
+        load_helper epm-reposave
+        epm_reporestore "$@"
+        ;;
+    reset)                            # HELPCMD: reset repo lists to the distro default
+        load_helper epm-reposave
+        epm_reporeset "$@"
+        ;;
+    status)                           # HELPCMD: print repo status
+        load_helper epm-reposave
+        epm_repostatus "$@"
+        ;;
+    add)                              # HELPCMD: add package repo (etersoft, autoimports, archive 2017/01/31); run with param to get list
+        load_helper epm-addrepo
+        epm_addrepo "$@"
+        ;;
+    Add)                              # HELPCMD: like add, but do update after add
+        load_helper epm-addrepo
+        epm_addrepo "$@"
+        epm update
+        ;;
+    rm|del|remove)                     # HELPCMD: remove repository from the sources lists (epm repo remove all for all)
+        load_helper epm-removerepo
+        epm_removerepo "$@"
+        ;;
+    fix)                              # HELPCMD: fix paths in sources lists (ALT Linux only)
+        load_helper epm-repofix
+        epm_repofix "$@"
+        ;;
+
+# HELPCMD: PART: Local repo commands:
+    create)                            # HELPCMD: create (initialize) repo: [path] [name]
+        load_helper epm-repoindex
+        epm_repocreate "$@"
+        ;;
+    index)                            # HELPCMD: index repo (update indexes): [--init] [path] [name]
+        load_helper epm-repoindex
+        epm_repoindex "$@"
+        ;;
+    pkgadd)                           # HELPCMD: add to <dir> applied <package-filename1> [<package-filename2>...]
+        load_helper epm-repopkg
+        epm_repo_pkgadd "$@"
+        ;;
+    pkgupdate)                        # HELPCMD: replace in <dir> with new <package-filename1> [<package-filename2>...]
+        load_helper epm-repopkg
+        epm_repo_pkgupdate "$@"
+        ;;
+    pkgdel)                           # HELPCMD: del from <dir> <package1> [<package2>...]
+        load_helper epm-repopkg
+        epm_repo_pkgdel "$@"
+        ;;
+    *)
+        fatal "Unknown command $ epm repo '$CMD'"
+        ;;
+esac
+
+}

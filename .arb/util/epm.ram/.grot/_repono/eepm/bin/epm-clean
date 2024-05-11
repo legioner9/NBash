@@ -1,0 +1,103 @@
+#!/bin/sh
+#
+# Copyright (C) 2012,2014,2016  Etersoft
+# Copyright (C) 2012,2014,2016  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+__remove_alt_apt_cache_file()
+{
+    sudocmd rm -vf /var/cache/apt/*.bin
+    sudocmd rm -vf /var/cache/apt/partial/*
+    sudocmd rm -vf /var/lib/apt/lists/*pkglist*
+    sudocmd rm -vf /var/lib/apt/lists/*release*
+    return 0
+}
+
+__remove_deb_apt_cache_file()
+{
+    sudocmd rm -vf /var/cache/apt/*.bin
+    sudocmd rm -vf /var/cache/apt/archives/partial/*
+    sudocmd rm -vf /var/lib/apt/lists/*Packages*
+    sudocmd rm -vf /var/lib/apt/lists/*Release*
+    sudocmd rm -vf /var/lib/apt/lists/*Translation*
+    return 0
+}
+
+epm_clean()
+{
+
+[ -z "$*" ] || fatal "No arguments are allowed here"
+
+
+case $PMTYPE in
+    apt-rpm)
+        sudocmd apt-get clean $dryrun
+        [ -n "$direct" ] && __remove_alt_apt_cache_file || info "Use epm clean --direct to remove all downloaded indexes."
+        ;;
+    apt-dpkg)
+        sudocmd apt-get clean $dryrun
+        [ -n "$direct" ] && __remove_deb_apt_cache_file || info "Use epm clean --direct to remove all downloaded indexes."
+        ;;
+    aptitude-dpkg)
+        sudocmd aptitude clean
+        [ -n "$direct" ] && __remove_deb_apt_cache_file || info "Use epm clean --direct to remove all downloaded indexes."
+        ;;
+    yum-rpm)
+        sudocmd yum clean all
+        #sudocmd yum makecache
+        ;;
+    dnf-rpm)
+        sudocmd dnf clean all
+        ;;
+    urpm-rpm)
+        sudocmd urpmi --clean
+        ;;
+    homebrew)
+        sudocmd brew cleanup -s
+        ;;
+    pacman)
+        sudocmd pacman -Sc --noconfirm
+        ;;
+    zypper-rpm)
+        sudocmd zypper clean
+        ;;
+    nix)
+        sudocmd nix-collect-garbage
+        ;;
+    slackpkg)
+        ;;
+    eopkg)
+        sudocmd eopkg delete-cache
+        ;;
+    pkgng)
+        sudocmd pkg clean -a
+        ;;
+    appget)
+        sudocmd appget clean
+        ;;
+    xbps)
+        sudocmd xbps-remove -O
+        ;;
+    termux-pkg)
+        sudocmd pkg clean
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+    info "Note: Also you can try (with CAUTION) '# epm autoremove' and '# epm autoorphans' commands to remove obsoleted and unused packages."
+
+}

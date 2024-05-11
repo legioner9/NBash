@@ -1,0 +1,177 @@
+#!/bin/sh
+#
+# Copyright (C) 2012, 2014, 2016, 2019  Etersoft
+# Copyright (C) 2012, 2014, 2016, 2019  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-query
+
+__epm_info_rpm_low()
+{
+    if [ -n "$pkg_files" ] ; then
+        docmd rpm -qip $pkg_files
+    fi
+    [ -z "$pkg_names" ] && return
+    is_installed $pkg_names && docmd rpm -qi $pkg_names && return
+}
+
+__epm_info_by_pkgtype()
+{
+    [ -n "$pkg_files" ] || return 1
+
+    case $(get_package_type $pkg_files) in
+        rpm)
+            __epm_info_rpm_low && return
+            ;;
+        deb)
+            docmd dpkg -I $pkg_files
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+__epm_info_by_pmtype()
+{
+case $PMTYPE in
+    apt-dpkg)
+        if [ -n "$pkg_files" ] ; then
+            docmd dpkg -I $pkg_files
+        fi
+        [ -z "$pkg_names" ] && return
+        is_installed $pkg_names && docmd dpkg -p $pkg_names && return
+        docmd apt-cache show $pkg_names
+        ;;
+    aptitude-dpkg)
+        if [ -n "$pkg_files" ] ; then
+            docmd dpkg -I $pkg_files
+        fi
+        [ -z "$pkg_names" ] && return
+        docmd aptitude show $pkg_names
+        ;;
+    *-rpm)
+        __epm_info_rpm_low && return
+        case $PMTYPE in
+            apt-rpm)
+                docmd apt-cache show $pkg_names
+                ;;
+            packagekit)
+                docmd pkcon get-details $pkg_names
+                ;;
+            yum-rpm)
+                docmd yum info $pkg_names
+                ;;
+            urpmi-rpm)
+                docmd urpmq -i $pkg_names
+                ;;
+            dnf-rpm)
+                docmd dnf info $pkg_names
+                ;;
+            zypper-rpm)
+                docmd zypper info $pkg_names
+                ;;
+            *)
+                warning "Unknown command for $PMTYPE"
+                ;;
+        esac
+        ;;
+    packagekit)
+        # TODO: get-details-local
+        docmd pkcon get-details $pkg_names
+        ;;
+    pacman)
+        is_installed $pkg_names && docmd pacman -Qi $pkg_names && return
+        docmd pacman -Si $pkg_names
+        ;;
+    aura)
+        is_installed $pkg_names && docmd pacman -Qi $pkg_names && return
+        docmd aura -Ai $pkg_names
+        ;;
+    npackd)
+        # FIXME: --version=
+        docmd npackdcl info --package=$pkg_names
+        ;;
+    conary)
+        is_installed $pkg_names && docmd conary query $pkg_names --info && return
+        docmd conary repquery $pkg_names --info
+        ;;
+    emerge)
+        assure_exists equery
+        docmd equery meta $pkg_names
+        docmd equery which $pkg_names
+        docmd equery uses $pkg_names
+        docmd equery size $pkg_names
+        ;;
+    slackpkg)
+        docmd /usr/sbin/slackpkg info $pkg_names
+        ;;
+    opkg)
+        docmd opkg info $pkg_names
+        ;;
+    apk)
+        docmd apk info $pkg_names
+        ;;
+    pkgng)
+        docmd pkg info $pkg_names
+        ;;
+    xbps)
+        docmd xbps-query --show $pkg_names
+        ;;
+    homebrew)
+        docmd brew info $pkg_names
+        ;;
+    aptcyg)
+        docmd apt-cyg show $pkg_names
+        ;;
+    eopkg)
+        docmd eopkg info $pkg_files $pkg_names
+        ;;
+    appget)
+        docmd appget view $pkg_names
+        ;;
+    winget)
+        docmd winget show $pkg_names
+        ;;
+    termux-pkg)
+        docmd pkg show $pkg_names
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+}
+
+
+# TODO: separate to _files and _names parts
+# implement _files part per package, not by PMTYPE (see filelist)
+epm_info()
+{
+
+# if possible, it will put pkg_urls into pkg_files or pkg_names
+if [ -n "$pkg_urls" ] ; then
+    load_helper epm-download
+    __handle_pkg_urls_to_checking
+fi
+
+[ -n "$pkg_filenames" ] || fatal "Info: package name is missed"
+
+__epm_info_by_pkgtype || __epm_info_by_pmtype
+
+local RETVAL=$?
+
+return $RETVAL
+}

@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# Copyright (C) 2012, 2016, 2021  Etersoft
+# Copyright (C) 2012, 2016, 2021  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper serv-start
+load_helper serv-status
+
+# Enable service by default
+serv_enable()
+{
+    local SERVICE="$1"
+
+    is_service_autostart $1 && info "Service $1 is already enabled for startup" && return
+
+    case $SERVICETYPE in
+        service-chkconfig)
+            if is_anyservice $SERVICE ; then
+                sudocmd anyservice $SERVICE on
+                return
+            fi
+            sudocmd chkconfig --add $1 || return
+            sudocmd chkconfig $1 on
+            ;;
+        service-upstart)
+            sudocmd chkconfig --add $1 || return
+            sudocmd chkconfig $1 on
+            ;;
+        service-initd|service-update)
+            sudocmd update-rc.d $1 defaults
+            ;;
+        systemd)
+            sudocmd systemctl enable $1
+            ;;
+        openrc)
+            sudocmd rc-update add $1 default
+            ;;
+        runit)
+            assure_exists $SERVICE
+            [ -r "/etc/sv/$SERVICE" ] || fatal "Can't find /etc/sv/$SERVICE"
+            sudocmd ln -s /etc/sv/$SERVICE /var/service/
+            ;;
+        *)
+            fatal "Have no suitable command for $SERVICETYPE"
+            ;;
+    esac
+}

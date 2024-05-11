@@ -1,0 +1,130 @@
+#!/bin/sh
+#
+# Copyright (C) 2023  Etersoft
+# Copyright (C) 2023  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-sh-altlinux
+
+# copied from epm-addrepo
+get_archlist()
+{
+    echo "noarch"
+    echo "$DISTRARCH"
+    case $DISTRARCH in
+        x86_64)
+            echo "i586"
+            ;;
+    esac
+}
+
+# https://www.altlinux.org/APT_%D0%B2_ALT_Linux/CreateRepository
+__epm_repoindex_alt()
+{
+    local archlist="i586 x86_64 x86_64-i586 aarch64 noarch"
+
+    local init=''
+    if [ "$1" = "--init" ] ; then
+        init='--init'
+        shift
+    fi
+
+    epm assure genbasedir apt-repo-tools || fatal
+    REPO_DIR="$1"
+    # TODO: check if we inside arch dir or RPMS.*
+    [ -n "$REPO_DIR" ] || REPO_DIR="$(pwd)"
+    if [ -z "$init" ] ; then
+        [ -d "$REPO_DIR" ] || fatal "Repo dir $REPO_DIR does not exist"
+    fi
+
+    REPO_NAME="$2"
+    if [ -z "$REPO_NAME" ] ; then
+        # default name
+        REPO_NAME="addon"
+        # detect name if already exists
+        for arch in $archlist ; do
+            local rd="$(echo $REPO_DIR/$arch/RPMS.*)"
+            [ -d "$rd" ] && REPO_NAME="$(echo "$rd" | sed -e 's|.*\.||')" && break
+        done
+    fi
+
+    if [ -n "$init" ] ; then
+        for arch in $(get_archlist); do
+            mkdir -pv "$REPO_DIR/$arch/base/"
+            mkdir -pv "$REPO_DIR/$arch/RPMS.$REPO_NAME/"
+        done
+        return
+    fi
+
+    for arch in $archlist; do
+        [ -d "$REPO_DIR/$arch/RPMS.$REPO_NAME" ] || continue
+        mkdir -pv "$REPO_DIR/$arch/base/"
+        docmd genbasedir --bloat --progress --topdir=$REPO_DIR $arch $REPO_NAME
+    done
+}
+
+__epm_repoindex_deb()
+{
+    local init=''
+    if [ "$1" = "--init" ] ; then
+        init='--init'
+        shift
+    fi
+
+    local dir="$1"
+    docmd mkdir -pv "$dir" || fatal
+    assure_exists gzip
+    docmd dpkg-scanpackages -t deb "$dir" | gzip | cat > "$dir/Packages.gz"
+}
+
+
+epm_repoindex()
+{
+
+case $PMTYPE in
+    apt-rpm)
+        __epm_repoindex_alt "$@"
+        ;;
+    apt-dpkg|aptitude-dpkg)
+        __epm_repoindex_deb "$@"
+        ;;
+    yum-rpm)
+        epm install --skip-installed yum-utils createrepo || fatal
+        docmd mkdir -pv "$@"
+        docmd createrepo -v -s md5 "$@"
+        docmd verifytree
+        ;;
+    dnf-rpm)
+        epm install --skip-installed yum-utils createrepo || fatal
+        docmd mkdir -pv "$@"
+        docmd createrepo -v -s md5 "$@"
+        docmd verifytree
+        ;;
+    eoget)
+        docmd eoget index "$@"
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+
+}
+
+
+epm_repocreate()
+{
+    epm_repoindex --init "$@"
+}

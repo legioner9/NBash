@@ -1,0 +1,203 @@
+#!/bin/sh
+#
+# Copyright (C) 2012, 2014, 2016, 2019, 2021  Etersoft
+# Copyright (C) 2012, 2014, 2016, 2019, 2021  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-check_updated_repo
+load_helper epm-sh-warmup
+
+epm_upgrade()
+{
+    local CMD
+
+    # it is useful for first time running
+    update_repo_if_needed
+
+    warmup_bases
+
+    if [ "$BASEDISTRNAME" = "alt" ] ; then
+        load_helper epm-sh-altlinux
+        if tasknumber "$@" >/dev/null ; then
+            load_helper epm-addrepo
+            load_helper epm-reposave
+            load_helper epm-removerepo
+            load_helper epm-Install
+
+            local installlist="$(get_task_packages $*)"
+            # hack: drop -devel packages to avoid package provided by multiple packages
+            installlist="$(estrlist reg_exclude ".*-devel .*-devel-static" "$installlist")"
+            [ -n "$verbose" ] && info "Packages from task(s): $installlist"
+            # install only installed packages (simulate upgrade packages)
+            installlist="$(get_only_installed_packages "$installlist")"
+            [ -n "$verbose" ] && info "Packages to upgrade: $installlist"
+            if [ -z "$installlist" ] ; then
+                warning "There is no installed packages for upgrade from task $*"
+                return 22
+            fi
+
+            try_change_alt_repo
+            epm_addrepo "$@"
+            __epm_update
+            (pkg_names="$installlist" epm_install) || fatal "Can't update repo"
+            epm_removerepo "$@"
+            end_change_alt_repo
+
+            return
+        fi
+    fi
+
+    # Solus supports upgrade for a package (with all dependencies)
+    if [ -n "$1" ] && [ "$DISTRNAME" = "Solus" ] ; then
+        sudocmd eopkg upgrade "$@"
+        return
+    fi
+
+    # if possible, it will put pkg_urls into pkg_files and reconstruct pkg_filenames
+    if [ -n "$pkg_urls" ] ; then
+        info "Downloading packages assigned to upgrade ..."
+        load_helper epm-download
+        __handle_pkg_urls_to_install
+    fi
+
+    info "Running command for upgrade packages"
+
+
+    case $PMTYPE in
+        *-rpm)
+            # upgrade only install files from the list
+            if [ -n "$pkg_files" ] ; then
+                load_helper epm-install
+                #sudocmd rpm -Fvh $pkg_files
+                (pkg_files=$pkg_files force="$force -F" epm_install)
+                return
+            elif [ -n "$pkg_names" ] ; then
+                # hack for https://bugzilla.altlinux.org/41225
+                case "$pkg_names" in
+                    -*)
+                        fatal "Option $pkg_names is not allowed here"
+                esac
+                load_helper epm-install
+                (pkg_names=$(get_only_installed_packages $pkg_names) epm_install)
+                return
+            fi
+        ;;
+    esac
+
+    case $PMTYPE in
+    apt-rpm|apt-dpkg)
+        local APTOPTIONS="$dryrun $(subst_option non_interactive -y) $(subst_option verbose "-V -o Debug::pkgMarkInstall=1 -o Debug::pkgProblemResolver=1")"
+        CMD="apt-get $APTOPTIONS $noremove $force_yes dist-upgrade"
+        ;;
+    aptitude-dpkg)
+        CMD="aptitude dist-upgrade"
+        ;;
+    packagekit)
+        docmd pkcon update
+        return
+        ;;
+    yum-rpm)
+        local OPTIONS="$(subst_option non_interactive -y)"
+        # can do update repobase automagically
+        CMD="yum $OPTIONS update $*"
+        ;;
+    dnf-rpm)
+        local OPTIONS="$(subst_option non_interactive -y)"
+        CMD="dnf $OPTIONS distro-sync $*"
+        ;;
+    snappy)
+        CMD="snappy update"
+        ;;
+    urpm-rpm)
+        # or --auto-select --replace-files
+        CMD="urpmi --update --auto-select $*"
+        ;;
+    zypper-rpm)
+        CMD="zypper $(subst_option non_interactive --non-interactive) dist-upgrade"
+        ;;
+    pacman)
+        CMD="pacman -S -u $force"
+        ;;
+    aura)
+        CMD="aura -A -u"
+        ;;
+    emerge)
+        CMD="emerge -NuDa world"
+        ;;
+    conary)
+        CMD="conary updateall"
+        ;;
+    pkgsrc)
+        CMD="freebsd-update fetch install"
+        ;;
+    pkgng)
+        CMD="pkg upgrade"
+        ;;
+    apk)
+        CMD="apk upgrade"
+        ;;
+    choco)
+        CMD="choco update all"
+        ;;
+    homebrew)
+        #CMD="brew upgrade"
+        sudocmd brew upgrade $(brew outdated)
+        return
+        ;;
+    opkg)
+        CMD="opkg upgrade"
+        ;;
+    eopkg)
+        CMD="eopkg upgrade"
+        ;;
+    slackpkg)
+        CMD="/usr/sbin/slackpkg upgrade-all"
+        ;;
+    guix)
+        CMD="guix package -u"
+        ;;
+    appget)
+        CMD="$PMTYPE update-all"
+        ;;
+    winget)
+        if [ -z "$1" ] ; then
+            sudocmd winget upgrade --all
+            return
+        fi
+        CMD="winget upgrade"
+        ;;
+    aptcyg)
+        # shellcheck disable=SC2046
+        docmd_foreach "epm install" $(short=1 epm packages)
+        return
+        ;;
+    xbps)
+        CMD="xbps-install -Su"
+        ;;
+    nix)
+        CMD="nix-env -u $dryrun"
+        ;;
+    termux-pkg)
+        CMD="pkg upgrade"
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+    esac
+
+    sudocmd $CMD "$@"
+
+}

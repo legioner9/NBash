@@ -1,0 +1,374 @@
+#!/bin/sh
+#
+# Copyright (C) 2020, 2022, 2023  Etersoft
+# Copyright (C) 2020, 2022, 2023  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+# TODO: move to a common place and use
+__is_wildcard()
+{
+    echo "$1" | grep -q "[*?]"
+}
+
+__alt_mark_hold_package()
+{
+        local pkg="$1"
+        showcmd "echo \"RPM::Hold {\"^$pkg\";};\" > /etc/apt/apt.conf.d/hold-$pkg.conf"
+        echo "RPM::Hold {\"^$pkg\";};" | sudorun tee "/etc/apt/apt.conf.d/hold-$pkg.conf" >/dev/null
+}
+
+__alt_test_glob()
+{
+    echo "$*" | grep -q "\.[*?]" && warning "Only glob symbols * and ? are supported. Don't use regexp here!"
+}
+
+__alt_mark_hold()
+{
+    # TODO: do more long checking via apt
+    local pkg
+    local i
+    __alt_test_glob "$*"
+    for i in "$@" ; do
+        if __is_wildcard "$i" ; then
+            local pkglist
+            pkglist="$(epm qp --short "^$i")" || continue
+            for pkg in $pkglist ; do
+                __alt_mark_hold_package $pkg
+            done
+            return
+        else
+            pkg="$(epm query --short "$i")" || continue
+        fi
+        __alt_mark_hold_package $pkg
+    done
+}
+
+__alt_mark_unhold()
+{
+    # TODO: do more long checking via apt
+    local pkg
+    local i
+    __alt_test_glob "$*"
+    for i in "$@" ; do
+        pkg="$(epm query --short "$i")" || pkg="$i"
+        sudocmd rm -fv /etc/apt/apt.conf.d/hold-$pkg.conf
+    done
+}
+
+__alt_mark_showhold()
+{
+    grep -h "RPM::Hold" /etc/apt/apt.conf.d/hold-*.conf 2>/dev/null | sed -e 's|RPM::Hold {"^\(.*\)";};|\1|'
+}
+
+__dnf_assure_versionlock()
+{
+    epm assure /etc/dnf/plugins/versionlock.conf 'dnf-command(versionlock)'
+}
+
+__dnf_is_supported_versionlock()
+{
+    [ -f /etc/dnf/plugins/versionlock.conf ]
+}
+
+epm_mark_hold()
+{
+
+case $BASEDISTRNAME in
+    "alt")
+        __alt_mark_hold "$@"
+        exit
+        ;;
+esac
+
+case $PMTYPE in
+    apt-dpkg)
+        sudocmd apt-mark hold "$@"
+        ;;
+    dnf-rpm)
+        __dnf_assure_versionlock
+        sudocmd dnf versionlock add "$@"
+        ;;
+    zypper-rpm)
+        sudocmd zypper al "$@"
+        ;;
+    emerge)
+        info "Check /etc/portage/package.mask"
+        ;;
+    pacman)
+        info "Manually: edit /etc/pacman.conf modifying IgnorePkg array"
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+
+}
+
+
+epm_mark_unhold()
+{
+
+case $BASEDISTRNAME in
+    "alt")
+        __alt_mark_unhold "$@"
+        exit
+        ;;
+esac
+
+case $PMTYPE in
+    apt-dpkg)
+        sudocmd apt-mark unhold "$@"
+        ;;
+    dnf-rpm)
+        __dnf_assure_versionlock
+        sudocmd dnf versionlock delete "$@"
+        ;;
+    zypper-rpm)
+        sudocmd zypper rl "$@"
+        ;;
+    emerge)
+        info "Check /etc/portage/package.mask (package.unmask)"
+        ;;
+    pacman)
+        info "Manually: edit /etc/pacman.conf removing package from IgnorePkg line"
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+
+}
+
+
+epm_mark_showhold()
+{
+
+case $BASEDISTRNAME in
+    "alt")
+        __alt_mark_showhold "$@"
+        exit
+        ;;
+esac
+
+case $PMTYPE in
+    apt-dpkg)
+        docmd apt-mark showhold "$@"
+        ;;
+    dnf-rpm)
+        # there is no hold entries without versionlock
+        __dnf_is_supported_versionlock || return 0
+        __dnf_assure_versionlock
+        if [ -n "$short" ] ; then
+            load_helper epm-query
+            docmd dnf versionlock list "$@" | sed -e 's|\.\*$||' | grep -v " " | filter_pkgnames_to_short
+        else
+            docmd dnf versionlock list "$@"
+        fi
+        ;;
+    zypper-rpm)
+        docmd zypper ll "$@"
+        ;;
+    emerge)
+        cat /etc/portage/package.mask
+        ;;
+    pacman)
+        cat /etc/pacman.conf
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+
+}
+
+epm_mark_checkhold()
+{
+# workaround against epm assure questions
+case $PMTYPE in
+    dnf-rpm)
+        # there is no hold entries without versionlock
+        __dnf_is_supported_versionlock || return 1
+        __dnf_assure_versionlock
+        load_helper epm-query
+        docmd dnf versionlock list | grep "^$1" | sed -e 's|\.\*$||' | grep -v " " | filter_pkgnames_to_short | grep -q "^$1$"
+        return
+        ;;
+esac
+
+epm_mark_showhold | grep -q "^$1$"
+
+}
+
+
+epm_mark_auto()
+{
+
+case $BASEDISTRNAME in
+    "alt")
+        sudocmd apt-mark auto "$@"
+        exit
+        ;;
+esac
+
+case $PMTYPE in
+    apt-dpkg)
+        sudocmd apt-mark auto "$@"
+        ;;
+    dnf-rpm)
+        sudocmd dnf mark remove "$@"
+        ;;
+    pacman)
+            sudocmd pacman -D --asdeps "$@"
+        ;;
+    emerge)
+            sudocmd emerge --oneshot "$@"
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+
+}
+
+
+epm_mark_manual()
+{
+
+case $BASEDISTRNAME in
+    "alt")
+        sudocmd apt-mark manual "$@"
+        exit
+        ;;
+esac
+
+case $PMTYPE in
+    apt-dpkg)
+        sudocmd apt-mark manual "$@"
+        ;;
+    dnf-rpm)
+        sudocmd dnf mark install "$@"
+        ;;
+    pacman)
+            sudocmd pacman -D --asexplicit "$@"
+        ;;
+    emerge)
+            sudocmd emerge --select "$@"
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+
+}
+
+
+epm_mark_showauto()
+{
+
+case $BASEDISTRNAME in
+    "alt")
+        sudocmd apt-mark showauto "$@"
+        exit
+        ;;
+esac
+
+case $PMTYPE in
+    apt-dpkg)
+        sudocmd apt-mark showauto "$@"
+        ;;
+    dnf-rpm)
+        sudocmd dnf repoquery --unneeded
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+
+}
+
+epm_mark_showmanual()
+{
+
+case $BASEDISTRNAME in
+    "alt")
+        sudocmd apt-mark showmanual "$@"
+        exit
+        ;;
+esac
+
+case $PMTYPE in
+    apt-dpkg)
+        sudocmd apt-mark showmanual "$@"
+        ;;
+    dnf-rpm)
+        sudocmd dnf repoquery --userinstalled
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+
+}
+
+epm_mark_help()
+{
+    echo "mark is the interface for marking packages"
+            get_help HELPCMD $SHAREDIR/epm-mark
+    cat <<EOF
+Examples:
+  epm mark hold mc
+  epm manual mc
+EOF
+}
+
+epm_mark()
+{
+    local CMD="$1"
+    [ -n "$CMD" ] && shift
+    case "$CMD" in
+    ""|"-h"|"--help"|help)               # HELPCMD: help
+        epm_mark_help
+        ;;
+    hold)                             # HELPCMD: mark the given package(s) as held back
+        epm_mark_hold "$@"
+        ;;
+    unhold)                           # HELPCMD: unset the given package(s) as held back
+        epm_mark_unhold "$@"
+        ;;
+    showhold)                         # HELPCMD: print the list of packages on hold
+        epm_mark_showhold "$@"
+        ;;
+    checkhold)                         # HELPCMD: return true if the package is on hold
+        epm_mark_checkhold "$@"
+        ;;
+    auto)                             # HELPCMD: mark the given package(s) as automatically installed
+        epm_mark_auto "$@"
+        ;;
+    manual)                           # HELPCMD: mark the given package(s) as manually installed
+        epm_mark_manual "$@"
+        ;;
+    showauto)                         # HELPCMD: print the list of automatically installed packages
+        epm_mark_showauto "$@"
+        ;;
+    showmanual)                       # HELPCMD: print the list of manually installed packages
+        epm_mark_showmanual "$@"
+        ;;
+    *)
+        fatal "Unknown command $ epm repo '$CMD'"
+        ;;
+esac
+
+}

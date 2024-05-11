@@ -1,0 +1,205 @@
+#!/bin/sh
+#
+# Copyright (C) 2012, 2016, 2017, 2020  Etersoft
+# Copyright (C) 2012, 2016, 2017, 2020  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-sh-warmup
+
+__epm_packages_sort()
+{
+# FIXME: sort depends on --sort value
+case $PMTYPE in
+    *-rpm)
+        # FIXME: space with quotes problems, use point instead
+        warmup_rpmbase
+        docmd rpm -qa --queryformat "%{size}@%{name}-%{version}-%{release}\n" "$@" | sed -e "s|@| |g" | sort -n -k1
+        ;;
+    *-dpkg)
+        warmup_dpkgbase
+        docmd dpkg-query -W --showformat="\${Installed-Size}@\${Package}-\${Version}:\${Architecture}\n" "$@" | sed -e "s|@| |g" | sort -n -k1
+        ;;
+    *)
+        fatal "Sorted package list function is not implemented for $PMTYPE"
+        ;;
+esac
+}
+
+__aptcyg_print_full()
+{
+    #showcmd apt-cyg show
+    local VERSION=$(apt-cyg show "$1" | grep -m1 "^version: " | sed -e "s|^version: ||g")
+    echo "$1-$VERSION"
+}
+
+__fo_pfn()
+{
+    grep -v "^$" | grep -- "$*"
+}
+
+# TODO: we have a problem with error status here
+epm_packages()
+{
+    local CMD
+    [ -n "$sort" ] && __epm_packages_sort "$@" && return
+
+case $PMTYPE in
+    *-dpkg)
+        warmup_dpkgbase
+        # FIXME: strong equal
+        #CMD="dpkg -l $pkg_filenames"
+        CMD="dpkg-query -W --showformat=\${db:Status-Abbrev}\${Package}-\${Version}:\${Architecture}\n"
+        # TODO: ${Architecture}
+        [ -n "$short" ] && CMD="dpkg-query -W --showformat=\${db:Status-Abbrev}\${Package}\n"
+        showcmd $CMD "$@"
+        $CMD "$@" | grep "^i" | sed -e "s|.* ||g" | __fo_pfn "$@"
+        return ;;
+    *-rpm)
+        warmup_rpmbase
+        # FIXME: strong equal
+        CMD="rpm -qa"
+        [ -n "$short" ] && CMD="rpm -qa --queryformat %{name}\n"
+        docmd $CMD "$@" | __fo_pfn "$@"
+        return ;;
+    packagekit)
+        docmd pkcon get-packages --filter installed
+        ;;
+    snappy)
+        CMD="snappy info"
+        ;;
+    snap)
+        CMD="snap list"
+        ;;
+    flatpak)
+        CMD="flatpak list --app"
+        ;;
+    emerge)
+        CMD="qlist -I -C"
+        # print with colors for console output
+        isatty && CMD="qlist -I"
+        ;;
+    pkgsrc)
+        CMD="pkg_info"
+        showcmd $CMD
+        $CMD | sed -e "s| .*||g" | __fo_pfn "$@"
+        return ;;
+    pkgng)
+        if [ -n "$@" ] ; then
+            CMD="pkg info -E $@"
+        else
+            CMD="pkg info"
+        fi
+        showcmd $CMD
+        if [ -n "$short" ] ; then
+            $CMD | sed -e "s| .*||g" | sed -e "s|-[0-9].*||g" | __fo_pfn "$@"
+        else
+            $CMD | sed -e "s| .*||g" | __fo_pfn "$@"
+        fi
+        return ;;
+    pacman)
+        CMD="pacman -Qs $@"
+        showcmd $CMD
+        if [ -n "$short" ] ; then
+            $CMD | sed -e "s| .*||g" -e "s|.*/||g" | __fo_pfn "$@"
+            return
+        fi
+        ;;
+    npackd)
+        CMD="npackdcl list --status=installed"
+        # TODO: use search if pkg_filenames is not empty
+        ;;
+    conary)
+        CMD="conary query"
+        ;;
+    eopkg)
+        CMD="eopkg list-installed"
+        ;;
+    choco)
+        CMD="choco list"
+        ;;
+    slackpkg)
+        CMD="ls -1 /var/log/packages/"
+        if [ -n "$short" ] ; then
+            # FIXME: does not work for libjpeg-v8a
+            # TODO: remove last 3 elements (if arch is second from the last?)
+            # FIXME this hack
+            docmd ls -1 /var/log/packages/ | sed -e "s|-[0-9].*||g" | sed -e "s|libjpeg-v8a.*|libjpeg|g" | __fo_pfn "$@"
+            return
+        fi
+        ;;
+    homebrew)
+        docmd brew list | xargs -n1 echo
+        ;;
+    opkg)
+        CMD="opkg list-installed"
+        ;;
+    apk)
+        CMD="apk list --installed"
+        ;;
+    nix)
+        CMD="nix-env -q"
+        ;;
+    tce)
+        CMD="ls -1 /usr/local/tce.installed"
+        ;;
+    guix)
+        CMD="guix package -I"
+        ;;
+    appget)
+        CMD="appget list"
+        ;;
+    winget)
+        CMD="winget list"
+        ;;
+    termux-pkg)
+        docmd pkg list-installed
+        ;;
+    xbps)
+        CMD="xbps-query -l"
+        showcmd $CMD
+        if [ -n "$short" ] ; then
+            $CMD | sed -e "s|^ii ||g" -e "s| .*||g" -e "s|\(.*\)-.*|\1|g" | __fo_pfn "$@"
+        else
+            $CMD | sed -e "s|^ii ||g" -e "s| .*||g" | __fo_pfn "$@"
+        fi
+        return 0
+        ;;
+    android)
+        CMD="pm list packages"
+        showcmd $CMD
+        $CMD | sed -e "s|^package:||g" | __fo_pfn "$@"
+        return
+        ;;
+    aptcyg)
+        CMD="apt-cyg list $@"
+        if [ -z "$short" ] ; then
+            showcmd $CMD
+            # TODO: fix this slow way
+            for i in $($CMD) ; do
+                __aptcyg_print_full $i
+            done
+            return
+        fi
+        ;;
+    *)
+        fatal "Have no suitable query command for $PMTYPE"
+        ;;
+esac
+
+docmd $CMD | __fo_pfn "$@"
+# FIXME: we print empty lines, but will lost error status
+
+}

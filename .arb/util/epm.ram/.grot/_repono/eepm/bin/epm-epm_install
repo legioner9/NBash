@@ -1,0 +1,148 @@
+#!/bin/sh
+
+# Copyright (C) 2016, 2020, 2023  Etersoft
+# Copyright (C) 2016  Danil Mikhailov <danil@etersoft.ru>
+# Copyright (C) 2016, 2020, 2023  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-install
+
+# default repo
+EPM_KORINF_REPO_URL="https://updates.etersoft.ru/pub/Korinf"
+
+__epm_korinf_site_mask() {
+    local MASK="$1"
+    local archprefix=""
+    # short hack to install needed package
+    rhas "$MASK" "[-_]" || MASK="${MASK}[-_][0-9]"
+    # set arch for Korinf compatibility
+    [ "$SYSTEMARCH" = "x86_64" ] && archprefix="x86_64/"
+    local URL="$EPM_KORINF_REPO_URL/$archprefix$DISTRNAME/$DISTRVERSION"
+    if ! eget --check "$URL" ; then
+        tURL="$EPM_KORINF_REPO_URL/$archprefix$BASEDISTRNAME/$DISTRREPONAME"
+        docmd eget --check "$tURL" && URL="$tURL"
+    fi
+    eget --list --latest "$URL/$MASK*.$PKGFORMAT"
+}
+
+__epm_korinf_list() {
+    local MASK="$1"
+    MASK="$(__epm_korinf_site_mask "$MASK")"
+    showcmd eget --list "$MASK"
+    eget --list "$MASK" | sort
+}
+
+
+__epm_korinf_install() {
+
+    local pkg pkgurl
+    local pkg_urls=''
+    for pkgurl in $* ; do
+        pkg="$(__epm_korinf_site_mask "$pkgurl")"
+        [ -n "$pkg" ] || fatal "Can't get package url from $pkgurl"
+        [ -n "$pkg_urls" ] && pkg_urls="$pkg_urls $pkg" || pkg_urls="$pkg"
+    done
+    # due Error: Can't use epm call from the piped script
+    #epm install $(__epm_korinf_site_mask "$PACKAGE")
+    pkg_names='' pkg_files='' epm_install
+}
+
+__epm_korinf_install_eepm()
+{
+
+    if [ "$BASEDISTRNAME" = "alt" ] && [ "$DISTRVERSION" != "Sisyphus" ] && [ "$EPMMODE" = "package" ] ; then
+        if epm status --original eepm ; then
+            warning "Using external (Korinf) repo is forbidden for stable ALT branch $DISTRVERSION."
+            info "Check https://bugzilla.altlinux.org/44314 for reasons."
+            info "You can install eepm package from Korinf manually, check instruction at https://eepm.ru"
+            info ""
+            info "Trying update eepm from the stable ALT repository ..."
+            docmd epm install eepm
+            return
+        fi
+    fi
+
+    # enable interactive for install eepm from console
+    if inputisatty && [ "$EPMMODE" != "pipe" ] ; then
+        [ -n "$non_interactive" ] || interactive="--interactive"
+    else
+        [ -n "$interactive" ] || non_interactive="--auto"
+    fi
+
+    # as now, can't install one package from task (and old apt-repo can't install one package)
+    if false && [ "$BASEDISTRNAME" = "alt" ] && [ -z "$direct" ] ; then
+        local task="$(docmd eget -O- https://eepm.ru/vendor/alt/task)"
+        if [ -n "$task" ] ; then
+            docmd epm install $task
+            return
+        else
+            info "Can't get actual task for ALT, fallback to Korinf"
+        fi
+    fi
+
+    pkg_list="eepm"
+    # TODO: reenable eepm-repack build
+    # don't lose epm-repack if installed
+    # is_installed epm-repack && pkg_list="$pkg_list eepm-repack"
+
+    # enable scripts to resolve dependencies with apt
+    scripts='--scripts' __epm_korinf_install $pkg_list
+}
+
+epm_epm_install_help()
+{
+    echo "epm ei [URL] [packages] - install packages from EPM based Korinf repository"
+            get_help HELPCMD $SHAREDIR/epm-epm_install
+    cat <<EOF
+
+Default Korinf repository: $EPM_KORINF_REPO_URL
+
+Examples:
+  epm ei [epm|eepm]                 - install latest eepm (default action)
+  epm ei <package1> [<package2>...] - install package(s) from default Korinf repo
+  epm http://someurl.ru <package>   - install package(s) from a repo defined by URL
+  epm --list <package mask>         - list available packages by mask
+EOF
+}
+
+
+epm_epm_install()
+{
+    if is_url "$1" ; then
+        EPM_KORINF_REPO_URL="$1"
+        info "Using $EPM_KORINF_REPO_URL repo ..."
+        shift
+    fi
+
+    case "$1" in
+        ""|epm|eepm)
+            # install epm by default
+            __epm_korinf_install_eepm
+            return
+            ;;
+        -h|--help)                     # HELPCMD: help
+            epm_epm_install_help
+            return
+            ;;
+        --list)                        # HELPCMD: list only packages
+            shift
+            __epm_korinf_list "$1"
+            return
+            ;;
+    esac
+
+    __epm_korinf_install "$@"
+}

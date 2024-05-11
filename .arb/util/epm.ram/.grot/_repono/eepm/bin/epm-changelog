@@ -1,0 +1,121 @@
+#!/bin/sh
+#
+# Copyright (C) 2012, 2016  Etersoft
+# Copyright (C) 2012, 2016  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-query
+
+__epm_changelog_apt()
+{
+    local i
+    for i in $@ ; do
+        docmd apt-cache show $i | grep -A 1000 "^Changelog:"
+    done
+}
+
+__epm_changelog_files()
+{
+    [ -z "$*" ] && return
+
+    # TODO: detect every file
+    case $(get_package_type $1) in
+        rpm)
+            assure_exists rpm
+            docmd_foreach "rpm -q -p --changelog" $@
+            ;;
+#        deb)
+#            
+#            ;;
+        *)
+            fatal "Have no suitable command for $1"
+            ;;
+    esac
+}
+
+__epm_changelog_local_names()
+{
+    [ -z "$*" ] && return
+
+    case $PMTYPE in
+        apt-rpm|yum-rpm|dnf-rpm|urpm-rpm|zypper-rpm)
+            docmd_foreach "rpm -q --changelog" $@
+            ;;
+        apt-dpkg|aptitude-dpkg)
+            docmd zcat /usr/share/doc/$1/changelog.Debian.gz
+            ;;
+        emerge)
+            assure_exists equery
+            docmd equery changes -f $1
+            ;;
+        pacman)
+            docmd pacman -Qc $1
+            ;;
+        *)
+            fatal "Have no suitable command for $PMTYPE"
+            ;;
+    esac
+}
+
+__epm_changelog_unlocal_names()
+{
+    [ -z "$*" ] && return
+
+    case $PMTYPE in
+        apt-rpm)
+            __epm_changelog_apt "$1"
+            ;;
+        #apt-dpkg)
+        #    # FIXME: only first pkg
+        #    docmd zcat /usr/share/doc/$1/changelog.Debian.gz | less
+        #    ;;
+        #yum-rpm)
+        #    sudocmd yum clean all
+        #    ;;
+        urpm-rpm)
+            docmd urpmq --changelog "$1"
+            ;;
+        #zypper-rpm)
+        #    sudocmd zypper clean
+        #    ;;
+        emerge)
+            assure_exists equery
+            docmd equery changes -f "$1"
+            ;;
+        *)
+            fatal "Have no suitable command for $PMTYPE. Try install the package firstly."
+            ;;
+    esac
+
+}
+
+
+epm_changelog()
+{
+    [ -n "$pkg_filenames" ] || fatal "Changelog: Missing package(s) name"
+
+    __epm_changelog_files $pkg_files
+
+    # TODO: add less or bat
+    local pkg
+    for pkg in $pkg_names ; do
+        if is_installed $pkg ; then
+            __epm_changelog_local_names $pkg
+        else
+            __epm_changelog_unlocal_names $pkg
+        fi
+    done
+}

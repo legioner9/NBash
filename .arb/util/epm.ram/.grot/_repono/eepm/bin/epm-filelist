@@ -1,0 +1,208 @@
+#!/bin/sh
+#
+# Copyright (C) 2012-2018  Etersoft
+# Copyright (C) 2012-2018  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-query
+load_helper epm-print
+load_helper epm-sh-warmup
+
+# TODO: port or rewrite apt-file
+# https://bugzilla.altlinux.org/show_bug.cgi?id=14449
+# see also epm-search-file
+__alt_local_content_filelist()
+{
+    load_helper epm-sh-altlinux
+    load_helper epm-sh-altlinux-contents-index
+    load_helper epm-check_updated_repo
+
+    check_alt_contents_index || init_alt_contents_index
+    update_repo_if_needed
+    local CI="$(cat $ALT_CONTENTS_INDEX_LIST)"
+
+    # TODO: safe way to use less or bat
+    #local OUTCMD="less"
+    #[ -n "$USETTY" ] || OUTCMD="cat"
+    OUTCMD="cat"
+
+    {
+        [ -n "$USETTY" ] && info "Search in $CI for $1..."
+        ercat $CI | grep -h -P -- ".*\t$1$" | sed -e "s|\(.*\)\t\(.*\)|\1|g"
+    } | $OUTCMD
+}
+
+__deb_local_content_filelist()
+{
+    showcmd "apt-file list $1 | grep '^$1: ' | sed -e 's|$1: ||g'"
+    a='' apt-file list "$1" | grep "^$1: " | sed -e "s|$1: ||g"
+}
+
+
+__epm_filelist_remote()
+{
+    [ -z "$*" ] && return
+
+    case $BASEDISTRNAME in
+        alt)
+            # TODO: use RESTful interface to prometeus? See ALT bug #29496
+            docmd_foreach __alt_local_content_filelist "$@"
+            return
+            ;;
+    esac
+
+    case $PMTYPE in
+        apt-dpkg)
+            assure_exists apt-file || return
+            if sudo_allowed ; then
+                sudocmd apt-file update
+            else
+                info "sudo requires a password, skip apt-file update"
+            fi
+            docmd_foreach __deb_local_content_filelist "$@"
+            ;;
+        packagekit)
+            docmd pkcon get-files "$@"
+            ;;
+        yum-rpm)
+            assure_exists yum-utils || return
+            docmd repoquery -q -l "$@"
+            ;;
+        dnf-rpm)
+            assure_exists dnf-plugins-core || return
+            docmd dnf repoquery -l "$@"
+            ;;
+        *)
+            fatal "Query filelist for non installed packages is not implemented yet."
+            ;;
+    esac
+}
+
+__epm_filelist_file()
+{
+    local CMD
+
+    [ -z "$*" ] && return
+
+    # TODO: allow a new packages
+    case $(get_package_type $1) in
+        rpm)
+            assure_exists rpm
+            CMD="rpm -qlp"
+            ;;
+        deb)
+            assure_exists dpkg
+            CMD="dpkg --contents"
+            ;;
+        eopkg)
+            assure_exists eopkg
+            CMD="eopkg --files info"
+            ;;
+        *)
+            fatal "Have no suitable query command for $PMTYPE"
+            ;;
+    esac
+
+    # TODO: add less
+    docmd $CMD $@
+}
+
+__epm_filelist_name()
+{
+    local CMD
+
+    [ -z "$*" ] && return
+
+    warmup_lowbase
+
+    case $PMTYPE in
+        *-rpm)
+            CMD="rpm -ql"
+            ;;
+        *-dpkg)
+            CMD="dpkg -L"
+            ;;
+        packagekit)
+            CMD="pkcon get-files"
+            ;;
+        android)
+            CMD="pm list packages -f"
+            ;;
+        termux-pkg)
+            CMD="pkg files"
+            ;;
+        conary)
+            CMD="conary query --ls"
+            ;;
+        pacman)
+            docmd pacman -Ql $@ | sed -e "s|.* ||g"
+            return
+            ;;
+        emerge)
+            assure_exists equery
+            CMD="equery files"
+            ;;
+        homebrew)
+            CMD="brew list"
+            ;;
+        pkgng)
+            CMD="pkg info -l"
+            ;;
+        opkg)
+            CMD="opkg files"
+            ;;
+        apk)
+            docmd apk manifest $@ | sed -e 's|^sha1.* |/|'
+            return
+            ;;
+        eopkg)
+            docmd eopkg --files -s info $@ | grep "^/"
+            return
+            ;;
+        xbps)
+            CMD="xbps-query -f"
+            ;;
+        aptcyg)
+            docmd apt-cyg listfiles $@ | sed -e "s|^|/|g"
+            return
+            ;;
+        slackpkg)
+            is_installed $@ || fatal "Query filelist for non installed packages is not implemented yet"
+            docmd awk 'BEGIN{desk=1}{if(/^FILE LIST:$/){desk=0} else if (desk==0) {print}}' /var/log/packages/${pkg_filenames}*
+            return
+            ;;
+        *)
+            fatal "Have no suitable query command for $PMTYPE"
+            ;;
+    esac
+
+    # TODO: add less or bat (for any output in the function)
+    docmd $CMD $@ && return
+    # TODO: may be we need check is installed before prev. line?
+    is_installed $@ || __epm_filelist_remote $@
+}
+
+
+epm_filelist()
+{
+    [ -n "$pkg_filenames" ] || fatal "Filelist: package name is missed"
+
+
+    __epm_filelist_file $pkg_files || return
+    # shellcheck disable=SC2046
+    __epm_filelist_name $(print_name $pkg_names) || return
+
+}

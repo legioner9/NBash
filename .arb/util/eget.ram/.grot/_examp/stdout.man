@@ -1,0 +1,75 @@
+Установка bitrix24...
+ # /usr/bin/env bash /etc/eepm/play.d/bitrix24.sh --run 
+ # epm --short --version
+ # eget -q -O- https://eepm.ru/releases/3.62.2/app-versions/bitrix24
+
+Installing Bitrix24 desktop client from the official site as bitrix24 package ...
+
+Warning: Specifying the version is not supported by vendor. Downloading latest version ...
+
+ # epm install --repack https://dl.bitrix24.com/b24/bitrix24_desktop.rpm
+ # eget --latest https://dl.bitrix24.com/b24/bitrix24_desktop.rpm
+ # /usr/bin/wget --content-disposition https://dl.bitrix24.com/b24/bitrix24_desktop.rpm
+--2024-05-11 19:44:16--  https://dl.bitrix24.com/b24/bitrix24_desktop.rpm
+Распознаётся dl.bitrix24.com (dl.bitrix24.com)… 213.219.214.93
+Подключение к dl.bitrix24.com (dl.bitrix24.com)|213.219.214.93|:443... соединение установлено.
+HTTP-запрос отправлен. Ожидание ответа… 200 OK
+Длина: 199960126 (191M) [application/x-redhat-package-manager]
+Сохранение в: «bitrix24_desktop.rpm»
+
+     0K .......... .......... .......... .......... ..........  0%  982K 3m19s
+    50K .......... .......... .......... .......... ..........  0% 1024K 3m15s
+
+    195150K .......... .......... .......... .......... .......... 99% 1,01M 0s
+    195200K .......... .......... .......... .......... .......... 99% 1,20M 0s
+    195250K .......... .......... ...                             100% 31,1M=2m16s
+
+2024-05-11 19:46:33 (1,40 MB/s) - «bitrix24_desktop.rpm» сохранён [199960126/199960126]
+
+Installing appropriate package for alien command...
+ # apt-get -y --force-yes -o APT::Install::VirtualVersion=true -o APT::Install::Virtual=true -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install alien
+Чтение списков пакетов...
+Построение дерева зависимостей...
+Следующие НОВЫЕ пакеты будут установлены:
+  alien
+0 будет обновлено, 1 новых установлено, 0 пакетов будет удалено и 63 не будет обновлено.
+Необходимо получить 45,7kB архивов.
+После распаковки потребуется дополнительно 110kB дискового пространства.
+Получено: 1 http://ftp.altlinux.org p10/branch/noarch/classic alien 8.95-alt9:sisyphus+278038.100.1.2@1625982021 [45,7kB]
+Получено 45,7kB за 0s (146kB/s).
+Совершаем изменения...
+Подготовка...                           ################################# [100%]
+Обновление / установка...
+1: alien-8.95-alt9                      ################################# [100%]
+Завершено.
+
+Repacking /var/tmp/tmp.LJZqyMOmuG/bitrix24_desktop.rpm to local rpm format (inside /var/tmp/tmp.XsrzRhmo3c/bitrix24_desktop.rpm.tmpdir) ...
+ # alien --generate --to-rpm ../bitrix24_desktop.rpm
+Warning: Skipping conversion of scripts in package bitrix24: postinst prerm
+Warning: Use the --scripts parameter to include the scripts.
+Use of uninitialized value in concatenation (.) or string at /usr/share/perl5/Alien/Package/Rpm.pm line 342, <GETPERMS> line 326.
+ # /usr/bin/env bash /etc/eepm/repack.d/generic.sh /var/tmp/tmp.XsrzRhmo3c/bitrix24_desktop.rpm.tmpdir/bitrix24-14.4.0 /var/tmp/tmp.XsrzRhmo3c/bitrix24_desktop.rpm.tmpdir/bitrix24-14.4.0-2.spec bitrix24 /var/tmp/tmp.LJZqyMOmuG/bitrix24_desktop.rpm 
+ # /usr/bin/env bash /etc/eepm/repack.d/bitrix24.sh /var/tmp/tmp.XsrzRhmo3c/bitrix24_desktop.rpm.tmpdir/bitrix24-14.4.0 /var/tmp/tmp.XsrzRhmo3c/bitrix24_desktop.rpm.tmpdir/bitrix24-14.4.0-2.spec bitrix24 /var/tmp/tmp.LJZqyMOmuG/bitrix24_desktop.rpm 
+Removing /etc/apt/sources.list.d dir ...
+Removing /etc/yum.repos.d dir ...
+Removing /etc/apt/trusted.gpg.d dir ...
+Scanning for required libs soname ...
+  Getting executable requires ...
+  Getting libs requires ...
+  Getting internal provides ...
+Requires: libGL.so.1 libX11.so.6 libXau.so.6 libXcomposite.so.1 libXcursor.so.1 libXdamage.so.1
+Requires: libXdmcp.so.6 libXext.so.6 libXfixes.so.3 libXi.so.6 libXinerama.so.1 libXrandr.so.2
+Requires: libXss.so.1 libXtst.so.6 libasound.so.2 libatk-1.0.so.0 libatk-bridge-2.0.so.0 libatspi.so.0
+Requires: libc.so.6 libcairo-gobject.so.2 libcairo.so.2 libcups.so.2 libdbus-1.so.3 libdl.so.2
+Requires: libdrm.so.2 libexpat.so.1 libgbm.so.1 libgcc_s.so.1 libgdk-3.so.0 libgdk_pixbuf-2.0.so.0
+Requires: libgio-2.0.so.0 libglib-2.0.so.0 libgobject-2.0.so.0 libgthread-2.0.so.0 libgtk-3.so.0 libm.so.6
+Requires: libnotify.so.4 libnspr4.so libnss3.so libnssutil3.so libpango-1.0.so.0 libpangocairo-1.0.so.0
+Requires: libpixman-1.so.0 libpng16.so.16 libpthread.so.0 librt.so.1 libsmime3.so libstdc++.so.6
+Requires: libtiff.so.5 libwayland-client.so.0 libxcb-shm.so.0 libxcb.so.1 libxkbcommon.so.0 libz.so.1
+ # /usr/bin/rpmbuild --buildroot /var/tmp/tmp.XsrzRhmo3c/bitrix24_desktop.rpm.tmpdir/bitrix24-14.4.0 --target x86_64 -bb /var/tmp/tmp.XsrzRhmo3c/bitrix24_desktop.rpm.tmpdir/bitrix24-14.4.0-2.spec
+WARNING: %%% You are trying install package /var/tmp/tmp.XsrzRhmo3c/bitrix24-14.4.0-epm1.repacked.2.x86_64.rpm repacked from third-party software source. Use it at your own risk. %%%
+ # rpm -Uvh /var/tmp/tmp.XsrzRhmo3c/bitrix24-14.4.0-epm1.repacked.2.x86_64.rpm
+Подготовка...                           ################################# [100%]
+Обновление / установка...
+1: bitrix24-100:14.4.0-epm1.repacked.2  ################################# [100%]
+Running /usr/lib/rpm/posttrans-filetriggers

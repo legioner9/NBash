@@ -1,0 +1,87 @@
+#!/bin/sh
+#
+# Copyright (C) 2012-2019  Etersoft
+# Copyright (C) 2012-2019  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-check_updated_repo
+
+epm_check()
+{
+update_repo_if_needed
+local APTOPTIONS="$(subst_option non_interactive -y)"
+local DNFOPTIONS="$(subst_option non_interactive -y) $(subst_option verbose --verbose) "
+case $PMTYPE in
+    apt-rpm)
+        #sudocmd apt-get check || exit
+        #sudocmd apt-get update || exit
+        sudocmd apt-get -f $APTOPTIONS install || return
+        info "You can use epm dedup also"
+        ;;
+    apt-dpkg)
+        #sudocmd apt-get check || exit
+        #sudocmd apt-get update || exit
+        sudocmd apt-get -f $APTOPTIONS install || return
+        ;;
+    packagekit)
+        docmd pkcon repair
+        ;;
+    aptitude-dpkg)
+        sudocmd aptitude -f $APTOPTIONS install || return
+        #sudocmd apt-get autoremove
+        ;;
+    yum-rpm)
+        docmd yum check $DNFOPTIONS
+        docmd package-cleanup --problems
+
+        #docmd package-cleanup --dupes
+        sudocmd package-cleanup --cleandupes
+
+        docmd rpm -Va --nofiles --nodigest
+        ;;
+    dnf-rpm)
+        sudocmd dnf check $DNFOPTIONS
+        ;;
+    emerge)
+        sudocmd revdep-rebuild
+        ;;
+    #urpm-rpm)
+    #    sudocmd urpme --auto-orphans
+    #    ;;
+    zypper-rpm)
+        sudocmd zypper $(subst_option non_interactive --non-interactive) verify
+        ;;
+    conary)
+        sudocmd conary verify
+        ;;
+    pkgng)
+        sudocmd pkg check -d -a
+        ;;
+    homebrew)
+        docmd brew doctor
+        ;;
+    xbps)
+        sudocmd xbps-pkgdb -a
+        ;;
+    apk)
+        sudocmd apk fix
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+
+}

@@ -1,0 +1,153 @@
+#!/bin/sh
+#
+# Copyright (C) 2012,2014,2016  Etersoft
+# Copyright (C) 2012,2014,2016  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-check_updated_repo
+
+__epm_add_alt_apt_downgrade_preferences()
+{
+    [ -r /etc/apt/preferences ] && fatal "/etc/apt/preferences already exists"
+    cat <<EOF | sudocmd tee /etc/apt/preferences
+# classic repo
+Package: *
+Pin: release c=classic
+Pin-Priority: 1001
+
+# overload with addon repo
+Package: *
+Pin: release c=addon
+Pin-Priority: 1101
+
+# main repo
+Package: *
+Pin: release c=main
+Pin-Priority: 1201
+
+# overload with test (task) repo
+Package: *
+Pin: release c=task
+Pin-Priority: 1301
+EOF
+}
+
+# See https://wiki.debian.org/ru/AptPreferences
+__epm_add_deb_apt_downgrade_preferences()
+{
+    [ -r /etc/apt/preferences ] && fatal "/etc/apt/preferences already exists"
+    info "Running with /etc/apt/preferences:"
+    cat <<EOF | sudorun tee /etc/apt/preferences
+Package: *
+Pin: release a=stable
+Pin-Priority: 1001
+
+Package: *
+Pin: release a=testing
+Pin-Priority: 900
+
+Package: *
+Pin: release a=unstable
+Pin-Priority: 800
+EOF
+}
+
+__epm_remove_apt_downgrade_preferences()
+{
+    sudocmd rm -f /etc/apt/preferences
+}
+
+epm_downgrade()
+{
+    local CMD
+
+    # it is useful for first time running
+    update_repo_if_needed
+
+    # if possible, it will put pkg_urls into pkg_files and reconstruct pkg_filenames
+    if [ -n "$pkg_urls" ] ; then
+        info "Downloading packages assigned to downgrade ..."
+        load_helper epm-download
+        __handle_pkg_urls_to_install
+    fi
+
+    info "Running command for downgrade packages"
+
+    case $BASEDISTRNAME in
+    alt)
+        # pass pkg_filenames too
+        if [ -n "$pkg_names" ] ; then
+            __epm_add_alt_apt_downgrade_preferences || return
+            load_helper epm-install
+            (pkg_names=$(get_only_installed_packages $pkg_names) epm_install)
+            __epm_remove_apt_downgrade_preferences
+        elif [ -n "$pkg_files" ] ; then
+            load_helper epm-install
+            local pkgs=''
+            local i
+            for i in $pkg_files ; do
+                local pkgname="$(epm print name for package $i)"
+                is_installed $pkgname || continue
+                pkgs="$pkgs $i"
+            done
+            (force="$force --oldpackage" epm_install_files $pkgs)
+        else
+            __epm_add_alt_apt_downgrade_preferences || return
+            load_helper epm-upgrade
+            epm_upgrade "$@"
+            __epm_remove_apt_downgrade_preferences
+        fi
+        return
+        ;;
+    esac
+
+    case $PMTYPE in
+    #apt-rpm)
+    #    ;;
+    apt-dpkg)
+        local APTOPTIONS="$(subst_option non_interactive -y) $force_yes"
+        __epm_add_deb_apt_downgrade_preferences || return
+        if [ -n "$pkg_filenames" ] ; then
+            sudocmd apt-get $APTOPTIONS install $pkg_filenames
+        else
+            sudocmd apt-get $APTOPTIONS dist-upgrade
+        fi
+        __epm_remove_apt_downgrade_preferences
+        ;;
+    yum-rpm)
+        # can do update repobase automagically
+        if [ -n "$pkg_filenames" ] ; then
+            sudocmd yum downgrade $pkg_filenames
+        else
+            sudocmd yum distro-sync
+        fi
+        ;;
+    dnf-rpm)
+        if [ -n "$pkg_filenames" ] ; then
+            sudocmd dnf downgrade $pkg_filenames
+        else
+            sudocmd dnf distro-sync
+        fi
+        ;;
+    urpm-rpm)
+        assure_exists urpm-reposync urpm-tools
+        sudocmd urpm-reposync -v
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+    esac
+}

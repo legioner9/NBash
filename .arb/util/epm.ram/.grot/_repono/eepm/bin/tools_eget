@@ -1,0 +1,1426 @@
+#!/bin/sh
+# eget - simply shell on wget for loading directories over http (wget does not support wildcard for http)
+# Use:
+# eget http://ftp.altlinux.ru/pub/security/ssl/*
+#
+# Copyright (C) 2014-2014, 2016, 2020, 2022  Etersoft
+# Copyright (C) 2014 Daniil Mikhailov <danil@etersoft.ru>
+# Copyright (C) 2016-2017, 2020, 2022 Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+init_eget()
+{
+PROGDIR=$(dirname "$0")
+PROGNAME=$(basename "$0")
+CMDSHELL="/bin/sh"
+[ "$PROGDIR" = "." ] && PROGDIR="$(pwd)"
+if [ "$0" = "/dev/stdin" ] || [ "$0" = "sh" ] ; then
+    PROGDIR=""
+    PROGNAME=""
+fi
+}
+init_eget
+
+
+fatal()
+{
+    echo "FATAL: $*" >&2
+    exit 1
+}
+
+info()
+{
+    [ -n "$quiet" ] && return
+    echo "$*" >&2
+}
+
+eget()
+{
+	if [ -n "$EPMMODE" ] ; then
+		# if embedded in epm
+		(unset EGET_IPFS_GATEWAY; unset EGET_IPFS_API ; unset EGET_IPFS_DB ; EGET_BACKEND=$ORIG_EGET_BACKEND internal_tools_eget "$@" )
+		return
+	fi
+
+	[ -n "$PROGNAME" ] || fatal "pipe mode is not supported"
+
+	local bashopt=''
+	#[ -n "$verbose" ] && bashopt='-x'
+
+	(unset EGET_IPFS_GATEWAY; unset EGET_IPFS_API ; unset EGET_IPFS_DB ; EGET_BACKEND=$ORIG_EGET_BACKEND $CMDSHELL $bashopt $PROGDIR/$PROGNAME "$@" )
+}
+
+# TODO:
+arch="$(uname -m)"
+
+# copied from eepm project
+
+# copied from /etc/init.d/outformat (ALT Linux)
+isatty()
+{
+	# Set a sane TERM required for tput
+	[ -n "$TERM" ] || TERM=dumb
+	export TERM
+	test -t 1
+}
+
+isatty2()
+{
+	# check stderr
+	test -t 2
+}
+
+
+check_tty()
+{
+	isatty || return
+	is_command tput >/dev/null 2>/dev/null || return
+	# FreeBSD does not support tput -S
+	echo | a= tput -S >/dev/null 2>/dev/null || return
+	export USETTY="tput -S"
+}
+
+: ${BLACK:=0} ${RED:=1} ${GREEN:=2} ${YELLOW:=3} ${BLUE:=4} ${MAGENTA:=5} ${CYAN:=6} ${WHITE:=7}
+
+set_boldcolor()
+{
+	[ -n "$USETTY" ] || return
+	{
+		echo bold
+		echo setaf $1
+	} | $USETTY
+}
+
+set_color()
+{
+	[ -n "$USETTY" ] || return
+	{
+		echo setaf $1
+	} | $USETTY
+}
+
+restore_color()
+{
+	[ -n "$USETTY" ] || return
+	{
+		echo op; # set Original color Pair.
+		echo sgr0; # turn off all special graphics mode (bold in our case).
+	} | $USETTY
+}
+
+
+echover()
+{
+    [ -n "$verbose" ] || return
+    echo "$*" >&2
+}
+
+# Print command line and run command line
+showcmd()
+{
+	if [ -z "$quiet" ] ; then
+		set_boldcolor $GREEN
+		local PROMTSIG="\$"
+		[ "$UID" = 0 ] && PROMTSIG="#"
+		echo " $PROMTSIG $@"
+		restore_color
+	fi >&2
+}
+
+# Print command line and run command line
+docmd()
+{
+	showcmd "$@"
+	"$@"
+}
+
+verdocmd()
+{
+	[ -n "$verbose" ] && showcmd "$@"
+	"$@"
+}
+
+
+# copied from epm
+# print a path to the command if exists in $PATH
+if a= which which 2>/dev/null >/dev/null ; then
+    # the best case if we have which command (other ways needs checking)
+    # TODO: don't use which at all, it is binary, not builtin shell command
+print_command_path()
+{
+    a= which -- "$1" 2>/dev/null
+}
+elif a= type -a type 2>/dev/null >/dev/null ; then
+print_command_path()
+{
+    a= type -fpP -- "$1" 2>/dev/null
+}
+else
+print_command_path()
+{
+    a= type "$1" 2>/dev/null | sed -e 's|.* /|/|'
+}
+fi
+
+# check if <arg> is a real command
+is_command()
+{
+    print_command_path "$1" >/dev/null
+}
+
+# add realpath if missed
+if ! is_command realpath ; then
+realpath()
+{
+    [ -n "$*" ] || return
+    readlink -f "$@"
+}
+fi
+
+
+# check man glob
+filter_glob()
+{
+	[ -z "$1" ] && cat && return
+	# translate glob to regexp
+	grep "$(echo "$1" | sed -e 's|\.|\\.|g' -e 's|\*|.*|g' -e 's|\?|.|g' )$"
+}
+
+filter_order()
+{
+    if [ -n "$SECONDLATEST" ] ; then
+        sort -V | tail -n2 | head -n1
+        return
+    fi
+    [ -z "$LATEST" ] && cat && return
+    sort -V | tail -n1
+}
+
+
+is_fileurl()
+{
+    echo "$1" | grep -q "^/" && return
+    echo "$1" | grep -q "^file:/"
+}
+
+path_from_url()
+{
+    echo "$1" | sed -e 's|^file://*|/|'
+}
+
+is_url()
+{
+    echo "$1" | grep -q "^[filehtps]*:/"
+}
+
+is_strange_url()
+{
+    local URL="$1"
+    is_url "$URL" || return
+    echo "$URL" | grep -q "[?&]"
+}
+
+is_ipfs_hash()
+{
+    # If a CID is 46 characters starting with "Qm", it's a CIDv0
+    echo "$1" | grep -q -E "^Qm[[:alnum:]]{44}$" && return
+    # TODO: CIDv1 support, see https://github.com/multiformats/cid
+    return 1
+}
+
+is_ipfsurl()
+{
+    is_ipfs_hash "$1" && return
+    echo "$1" | grep -q "^ipfs://"
+}
+
+is_httpurl()
+{
+    # TODO: improve
+    echo "$1" | grep -q "^https://" & return
+    echo "$1" | grep -q "^http://" & return
+}
+
+cid_from_url()
+{
+    echo "$1" | sed -e 's|^ipfs://*||' -e 's|\?.*||'
+}
+
+
+# args: cmd <URL> <options>
+# will run cmd <options> <URL>
+download_with_mirroring()
+{
+    local CMD="$1"
+    shift
+    local URL="$1"
+    shift
+
+    local res
+    $CMD "$@" "$URL" && return
+    res=$?
+    [ -n "$CHECKMIRRORS" ] || return $res
+
+    MIRROR="https://mirror.eterfund.ru"
+    SECONDURL="$(echo "$URL" | sed -e "s|^.*://|$MIRROR/|")"
+    $CMD "$@" "$SECONDURL" && URL="$SECONDURL" && return
+
+    MIRROR="https://mirror.eterfund.org"
+    SECONDURL="$(echo "$URL" | sed -e "s|^.*://|$MIRROR/|")"
+    $CMD "$@" "$SECONDURL" && URL="$SECONDURL" && return
+}
+
+
+
+check_tty
+
+quiet=''
+verbose=''
+WGETNOSSLCHECK=''
+CURLNOSSLCHECK=''
+AXELNOSSLCHECK=''
+WGETUSERAGENT=''
+CURLUSERAGENT=''
+AXELUSERAGENT=''
+WGETHEADER=''
+CURLHEADER=''
+AXELHEADER=''
+WGETCOMPRESSED=''
+CURLCOMPRESSED=''
+AXELCOMPRESSED=''
+WGETQ='' #-q
+CURLQ='' #-s
+AXELQ='' #-q
+# TODO: aria2c
+# TODO: wget --trust-server-names
+# TODO: 
+WGETNAMEOPTIONS='--content-disposition'
+CURLNAMEOPTIONS='--remote-name --remote-time --remote-header-name'
+AXELNAMEOPTIONS=''
+
+
+LISTONLY=''
+CHECKURL=''
+GETRESPONSE=''
+GETFILENAME=''
+GETREALURL=''
+GETIPFSCID=''
+LATEST=''
+SECONDLATEST=''
+CHECKMIRRORS=''
+TARGETFILE=''
+FORCEIPV=''
+
+
+set_quiet()
+{
+    WGETQ='-q'
+    CURLQ='-s'
+    AXELQ='-q'
+    quiet=1
+}
+
+
+eget_help()
+{
+cat <<EOF
+
+eget - wget like downloader wrapper with wildcard support in filename part of URL
+Usage: eget [options] http://somesite.ru/dir/na*.log
+
+Options:
+    -q|--quiet                - quiet mode
+    --verbose                 - verbose mode
+    -k|--no-check-certificate - skip SSL certificate chain support
+    -H|--header               - use <header> (X-Cache:1 for example)
+    -U|-A|--user-agent        - send browser like UserAgent
+    --compressed              - request a compressed response and automatically decompress the content
+    -4|--ipv4|--inet4-only    - use only IPV4
+    -6|--ipv6|--inet6-only    - use only IPV6
+    -O-|-O -                  - output downloaded file to stdout
+    -O file                   - download to this file
+    --latest                  - print only latest version of a file
+    --second-latest           - print only second to latest version of a file
+    --allow-mirrors           - check mirrors if url is not accessible
+
+    --list|--list-only        - print only URLs
+    --check URL               - check if the URL is accessible (returns HTTP 200 OK)
+    --get-response URL        - get response with all headers (ever if HEAD is not acceptable)
+    --get-filename URL        - print filename for the URL (via Content-Disposition if applicable)
+    --get-real-url URL        - print URL after all redirects
+    --get-ipfs-cid URL        - print CID for URL (after all redirects)
+
+Supported URLs:
+  ftp:// http:// https:// file:/ ipfs://
+
+Supported backends (set like EGET_BACKEND=curl)
+  wget curl (todo: aria2c)
+
+Examples:
+  $ eget http://ftp.somesite.ru/package-*.x64.tar
+  $ eget http://ftp.somesite.ru/package *.tar
+  $ eget https://github.com/owner/project package*.ext
+  $ eget -O myname ipfs://QmVRUjnsnxHWkjq91KreCpUk4D9oZEbMwNQ3rzdjwND5dR
+  $ eget --list http://ftp.somesite.ru/package-*.tar
+  $ eget --check http://ftp.somesite.ru/test
+  $ eget --list http://download.somesite.ru 'package-*.tar.xz'
+  $ eget --list --latest https://github.com/telegramdesktop/tdesktop/releases 'tsetup.*.tar.xz'
+
+EOF
+}
+
+
+if [ -z "$1" ] ; then
+    echo "eget - wget like downloader wrapper with wildcard support, uses wget or curl as backend" >&2
+    echo "Run $0 --help to get help" >&2
+    exit 1
+fi
+
+
+while [ -n "$1" ] ; do
+
+    case "$1" in
+        -h|--help)
+            eget_help
+            exit
+            ;;
+        -q|--quiet)
+            set_quiet
+            ;;
+        --verbose)
+            verbose="$1"
+            ;;
+        -k|--no-check-certificate)
+            WGETNOSSLCHECK='--no-check-certificate'
+            CURLNOSSLCHECK='-k'
+            AXELNOSSLCHECK='--insecure'
+            ;;
+        -H|--header)
+            shift
+            WGETHEADER="--header=$1"
+            CURLHEADER="--header $1"
+            AXELHEADER="--header=$1"
+            ;;
+        -U|-A|--user-agent)
+            user_agent="Mozilla/5.0 (X11; Linux $arch) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+            WGETUSERAGENT="-U '$user_agent'"
+            CURLUSERAGENT="-A '$user_agent'"
+            AXELUSERAGENT="--user-agent='$user_agent'"
+            ;;
+        --compressed)
+            CURLCOMPRESSED='--compressed'
+            WGETCOMPRESSED='--compression=auto'
+            ;;
+        -4|--ipv4|--inet4-only)
+            FORCEIPV="-4"
+            ;;
+        -6|--ipv6|--inet6-only)
+            FORCEIPV="-6"
+            ;;
+        --list|--list-only)
+            LISTONLY="$1"
+            set_quiet
+            ;;
+        --check)
+            CHECKURL="$1"
+            #set_quiet
+            ;;
+        --get-filename)
+            GETFILENAME="$1"
+            ;;
+        --get-response)
+            GETRESPONSE="$1"
+            ;;
+        --get-real-url)
+            GETREALURL="$1"
+            ;;
+        --get-ipfs-cid)
+            GETIPFSCID="$1"
+            ;;
+        --latest)
+            LATEST="$1"
+            ;;
+        --second-latest)
+            SECONDLATEST="$1"
+            ;;
+        --check-mirrors)
+            CHECKMIRRORS="$1"
+            ;;
+        -O)
+            shift
+            TARGETFILE="$1"
+            ;;
+        -O-)
+            TARGETFILE="-"
+            ;;
+        -*)
+            fatal "Unknown option '$1', check eget --help."
+            ;;
+        *)
+            break
+            ;;
+    esac
+    shift
+done
+
+
+#############################3
+# defaults
+
+# https://github.com/ipfs/kubo/issues/5541
+ipfs_diag_timeout='--timeout 60s'
+
+ipfs_api_local="/ip4/127.0.0.1/tcp/5001"
+[ -n "$EGET_IPFS_API" ] && ipfs_api_local="$EGET_IPFS_API"
+
+ipfs_api_brave="/ip4/127.0.0.1/tcp/45005"
+
+ipfs_gateway="https://cloudflare-ipfs.com/ipfs"
+[ -n "$EGET_IPFS_GATEWAY" ] && ipfs_gateway="$EGET_IPFS_GATEWAY"
+IPFS_GATEWAY="$ipfs_gateway"
+
+# Test data: https://etersoft.ru/templates/etersoft/images/logo.png
+ipfs_checkQm="QmYwf2GAMvHxfFiUFL2Mr6KUG6QrDiupqGc8ms785ktaYw"
+
+get_ipfs_brave()
+{
+    local ipfs_brave="$(ls ~/.config/BraveSoftware/Brave-Browser/*/*/go-ipfs_* | sort | tail -n1 2>/dev/null)"
+    [ -n "$ipfs_brave" ] && [ -x "$ipfs_brave" ] || return
+    echo "$ipfs_brave"
+}
+
+ipfs_api_access()
+{
+    [ -n "$IPFS_CMD" ] || fatal "IPFS is disabled"
+    if [ -n "$verbose" ] ; then
+         verdocmd $IPFS_CMD --api $IPFS_API $ipfs_diag_timeout diag sys >/dev/null
+    else
+         verdocmd $IPFS_CMD --api $IPFS_API $ipfs_diag_timeout diag sys >/dev/null 2>/dev/null
+    fi
+}
+
+ipfs_check()
+{
+    [ -n "$IPFS_CMD" ] || fatal "IPFS is disabled"
+    verdocmd $IPFS_CMD --api $IPFS_API $ipfs_diag_timeout cat "$1" >/dev/null
+}
+
+
+
+select_ipfs_mode()
+{
+    IPFS_CMD="$(print_command_path ipfs)"
+    if [ -n "$IPFS_CMD" ] ; then
+        IPFS_API="$ipfs_api_local"
+        if ipfs_api_access ; then
+            ipfs_mode="local" && return
+            #if ipfs_check "$ipfs_checkQm" ; then
+            #    ipfs_mode="local" && return
+            #else
+            #    info "Skipped local: it is accessible via $IPFS_CMD --api $IPFS_API, but can't return shared $ipfs_checkQm"
+            #fi
+        fi
+    fi
+
+    IPFS_CMD="$(get_ipfs_brave)"
+    # if no EGET_IPFS_API, check brave
+    if [ -z "$EGET_IPFS_API" ] && [ -n "$IPFS_CMD" ] ; then
+        IPFS_API="$ipfs_api_brave"
+        if ipfs_api_access ; then
+            ipfs_mode="brave" && return
+            #if ipfs_check "$ipfs_checkQm" ; then
+            #    ipfs_mode="brave" && return
+            #else
+            #    info "Skipped Brave: it is accessible via $IPFS_CMD --api $IPFS_API, but can't return shared $ipfs_checkQm"
+            #fi
+        fi
+    fi
+
+    # TODO: check checksum
+    if docmd eget --check "$ipfs_gateway/$ipfs_checkQm" ; then
+        ipfs_mode="gateway"
+        return
+    fi
+
+    IPFS_GATEWAY=''
+    if docmd eget --check "$(dirname $ipfs_gateway)" ; then
+       info "IPFS gateway $ipfs_gateway is accessible, but can't return shared $ipfs_checkQm"
+    else
+       info "IPFS gateway $(dirname $ipfs_gateway) is not accessible"
+    fi
+
+    ipfs_mode="disabled"
+}
+
+
+# Functions for work with eget ipfs db
+get_cid_by_url()
+{
+    local URL="$1"
+    [ -r "$EGET_IPFS_DB" ] || return
+    is_fileurl "$URL" && return 1
+    grep -F "$URL Qm" "$EGET_IPFS_DB" | cut -f2 -d" " | grep -E "Qm[[:alnum:]]{44}" | head -n1
+}
+
+put_cid_and_url()
+{
+    local URL="$1"
+    local CID="$2"
+    local FN="$3"
+    [ -w "$EGET_IPFS_DB" ] || return
+
+    is_fileurl "$URL" && return
+
+    echo "$URL $CID $FN" >> "$EGET_IPFS_DB"
+    info "Placed in $EGET_IPFS_DB: $URL $CID $FN"
+}
+
+get_filename_by_cid()
+{
+    local CID="$1"
+    [ -z "$EGET_IPFS_DB" ] && basename "$CID" && return
+    grep -F " $CID " "$EGET_IPFS_DB" | head -n1 | cut -f3 -d" "
+}
+
+get_url_by_cid()
+{
+    local CID="$1"
+    [ -z "$EGET_IPFS_DB" ] && echo "$CID" && return
+    grep -F " $CID " "$EGET_IPFS_DB" | head -n1 | cut -f1 -d" "
+}
+
+###################
+
+
+ipfs_mode="$EGET_IPFS"
+
+# enable auto mode when set $EGET_IPFS_DB
+[ -z "$ipfs_mode" ] && [ -n "$EGET_IPFS_DB" ] && ipfs_mode="auto"
+
+if [ -n "$LISTONLY$CHECKURL" ] ; then
+    ipfs_mode=""
+    EGET_IPFS_DB=''
+fi
+
+
+if [ -n "$ipfs_mode" ] && [ -n "$EGET_IPFS_DB" ] ; then
+    ddb="$(dirname "$EGET_IPFS_DB")"
+    if [ -d "$ddb" ] ; then
+        info "Using eget IPFS db $EGET_IPFS_DB"
+        [ -r "$EGET_IPFS_DB" ] || touch "$EGET_IPFS_DB"
+    else
+        EGET_IPFS_DB=''
+    fi
+fi
+
+
+# detect if we run with ipfs:// or with auto
+if is_ipfsurl "$1" && [ -z "$ipfs_mode" ] || [ "$ipfs_mode" = "auto" ] ; then
+    info "Autodetecting available IPFS relay..."
+    select_ipfs_mode
+    info "Auto selected IPFS mode: $ipfs_mode"
+else
+    [ -n "$ipfs_mode" ] && info "IPFS mode: $ipfs_mode"
+fi
+
+IPFS_CMD=''
+
+if [ "$ipfs_mode" = "disabled" ] ; then
+
+ipfs_get()
+{
+    fatal "IPFS is disabled"
+}
+
+ipfs_put()
+{
+    fatal "IPFS is disabled"
+}
+
+ipfs_cat()
+{
+    fatal "IPFS is disabled"
+}
+
+
+elif [ "$ipfs_mode" = "brave" ] ; then
+    IPFS_CMD="$(get_ipfs_brave)" || fatal "Can't find ipfs command in Brave"
+    IPFS_PRETTY_CMD="~Brave-Browser/$(basename $IPFS_CMD)"
+    IPFS_API="$ipfs_api_brave"
+    ipfs_api_access || fatal "Can't access to Brave IPFS API (Brave browser is not running and IPFS is not activated?)"
+    info "Will use $IPFS_PRETTY_CMD --api $IPFS_API"
+
+elif [ "$ipfs_mode" = "local" ] ; then
+    IPFS_CMD="$(print_command_path ipfs)" || fatal "Can't find ipfs command"
+    IPFS_PRETTY_CMD="$IPFS_CMD"
+    IPFS_API="$ipfs_api_local"
+    ipfs_api_access || fatal "Can't access to IPFS API (ipfs daemon is not running?)"
+    info "Will use $IPFS_PRETTY_CMD --api $IPFS_API"
+
+elif [ "$ipfs_mode" = "gateway" ] ; then
+    info "Will use eget $IPFS_GATEWAY/HASH"
+
+ipfs_get_real_url()
+{
+    [ -n "$IPFS_GATEWAY" ] || fatal "ipfs http gateway is not set"
+    echo "$IPFS_GATEWAY/$1"
+}
+
+ipfs_get()
+{
+    if [ -n "$2" ] ; then
+        docmd eget -O "$2" "$(ipfs_get_real_url "$1")"
+    else
+        docmd eget "$(ipfs_get_real_url "$1")"
+    fi
+}
+
+ipfs_cat()
+{
+    # FIXME:
+    ipfs_get "$1" "-"
+}
+
+ipfs_put()
+{
+    info "IPFS put skipped when a gateway is used"
+    return 1
+}
+elif [ -z "$ipfs_mode" ] ; then
+    :
+else
+    fatal "Unsupported eget ipfs mode $ipfs_mode"
+fi
+
+if [ -n "$IPFS_CMD" ] ; then
+
+ipfs_get_real_url()
+{
+    return 1
+}
+
+ipfs_get()
+{
+    [ -n "$IPFS_CMD" ] || fatal "ipfs api is not usable"
+    if [ -n "$2" ] ; then
+        showcmd $IPFS_PRETTY_CMD --api $IPFS_API get -o "$2" "$1"
+        $IPFS_CMD --api $IPFS_API get -o "$2" "$1"
+    else
+        showcmd $IPFS_PRETTY_CMD --api $IPFS_API get "$1"
+        $IPFS_CMD --api $IPFS_API get "$1"
+    fi
+}
+
+ipfs_put()
+{
+    [ -n "$IPFS_CMD" ] || fatal "ipfs api is not usable"
+
+    # detect if -q is used (will output Qm instead of addded Qm)
+    local qu="$1"
+    [ "$qu" = "-q" ] || qu=''
+
+    showcmd $IPFS_PRETTY_CMD --api $IPFS_API add "$@"
+
+    local res
+    res="$($IPFS_CMD --api $IPFS_API add "$@")" || return
+
+    if [ -z "$qu" ] ; then
+        res="$(echo "$res" | grep "^added Qm")" || return
+        res="$(echo "$res" | cut -f2 -d" ")"
+    fi
+
+    is_ipfs_hash "$res" && echo "$res" && return
+    fatal "Can't recognize $res IPFS hash"
+}
+
+ipfs_cat()
+{
+    [ -n "$IPFS_CMD" ] || fatal "ipfs api is not usable"
+    showcmd $IPFS_PRETTY_CMD --api $IPFS_API cat "$1"
+    $IPFS_CMD --api $IPFS_API cat "$1"
+}
+
+fi
+###############################
+
+
+
+WGET="$(print_command_path wget)"
+CURL="$(print_command_path curl)"
+
+ORIG_EGET_BACKEND="$EGET_BACKEND"
+# override backend
+if is_fileurl "$1" ; then
+    EGET_BACKEND="file"
+elif is_ipfsurl "$1" ; then
+    EGET_BACKEND="ipfs"
+fi
+
+
+case "$EGET_BACKEND" in
+    file|ipfs)
+        ;;
+    wget)
+        [ -n "$WGET" ] || fatal "There are no wget in the system but you forced using it via EGET_BACKEND. Install it with $ epm install wget"
+        ;;
+    curl)
+        [ -n "$CURL" ] || fatal "There are no curl in the system but you forced using it via EGET_BACKEND. Install it with $ epm install curl"
+        ;;
+    '')
+        [ -n "$WGET" ] && EGET_BACKEND="wget"
+        [ -z "$EGET_BACKEND" ] && [ -n "$CURL" ] && EGET_BACKEND="curl"
+        [ -n "$EGET_BACKEND" ] || fatal "There are no wget nor curl in the system. Install something with $ epm install wget"
+        ;;
+    *)
+        fatal "Uknown EGET_BACKEND $EGET_BACKEND"
+        ;;
+esac
+
+
+
+if [ "$EGET_BACKEND" = "file" ] ; then
+
+# put remote content to stdout
+url_scat()
+{
+    local URL="$1"
+    cat "$(path_from_url "$URL")"
+}
+# download to default name of to $2
+url_sget()
+{
+    local URL="$1"
+    if [ "$2" = "/dev/stdout" ] || [ "$2" = "-" ] ; then
+       scat "$URL"
+       return
+    elif [ -n "$2" ] ; then
+       cp -av "$(path_from_url "$URL")" "$2"
+       return
+    fi
+    cp -av "$(path_from_url "$URL")" .
+}
+
+url_check()
+{
+    local URL="$1"
+    test -f "$(path_from_url "$URL")"
+}
+
+url_get_filename()
+{
+    basename "$1"
+}
+
+url_get_real_url()
+{
+    echo "$1"
+}
+
+elif [ "$EGET_BACKEND" = "ipfs" ] ; then
+
+# put remote content to stdout
+url_scat()
+{
+    local URL="$1"
+    ipfs_cat "$(cid_from_url "$URL")"
+}
+# download to default name of to $2
+url_sget()
+{
+    local URL="$1"
+    if [ "$2" = "/dev/stdout" ] || [ "$2" = "-" ] ; then
+       scat "$URL"
+       return
+    elif [ -n "$2" ] ; then
+       ipfs_get "$(cid_from_url "$URL")" "$2"
+       return
+    fi
+
+    local fn="$(url_print_filename_from_url "$URL")"
+    if [ -n "$fn" ] ; then
+       ipfs_get "$(cid_from_url "$URL")" "$fn"
+       return
+    fi
+
+    ipfs_get "$(cid_from_url "$URL")"
+}
+
+url_check()
+{
+    local URL="$1"
+    # TODO: improve me
+    scat "$URL" >/dev/null
+}
+
+url_print_filename_from_url()
+{
+    local URL="$1"
+    local fn="$(echo "$URL" | sed -e 's|ipfs://.*\?filename=||')"
+    [ "$URL" != "$fn" ] && echo "$fn" && return
+}
+
+url_get_filename()
+{
+    local URL="$1"
+    url_print_filename_from_url "$URL" && return
+    local CID="$(cid_from_url "$URL")"
+    get_filename_by_cid "$CID"
+}
+
+url_get_real_url()
+{
+    local URL="$1"
+    local CID="$(cid_from_url "$URL")"
+    # if we use gateway, return URL with gateway
+    ipfs_get_real_url "$URL" && return
+    get_url_by_cid "$CID"
+}
+
+
+elif [ "$EGET_BACKEND" = "wget" ] ; then
+__wget()
+{
+    if [ -n "$WGETUSERAGENT" ] ; then
+        docmd $WGET $FORCEIPV $WGETQ $WGETCOMPRESSED $WGETHEADER $WGETNOSSLCHECK "$WGETUSERAGENT" "$@"
+    else
+        docmd $WGET $FORCEIPV $WGETQ $WGETCOMPRESSED $WGETHEADER $WGETNOSSLCHECK "$@"
+    fi
+}
+
+# put remote content to stdout
+url_scat()
+{
+    local URL="$1"
+    download_with_mirroring __wget "$URL" -O-
+}
+# download to default name of to $2
+url_sget()
+{
+    local URL="$1"
+    if [ "$2" = "/dev/stdout" ] || [ "$2" = "-" ] ; then
+       scat "$URL"
+       return
+    elif [ -n "$2" ] ; then
+       download_with_mirroring __wget "$URL" -O "$2"
+       return
+    fi
+# TODO: поддержка rsync для известных хостов?
+# Не качать, если одинаковый размер и дата
+# -nc
+# TODO: overwrite always
+    download_with_mirroring __wget "$URL" $WGETNAMEOPTIONS
+}
+
+url_get_response()
+{
+    local URL="$1"
+    local answer
+    answer="$(quiet=1 __wget --spider -S "$URL" 2>&1)"
+    # HTTP/1.1 405 Method Not Allowed
+    if echo "$answer" | grep -q "^ *HTTP/[12.]* 405" ; then
+        (quiet=1 __wget --start-pos=5000G -S "$URL" 2>&1)
+        return
+    fi
+    echo "$answer"
+}
+
+
+elif [ "$EGET_BACKEND" = "curl" ] ; then
+
+__curl()
+{
+    if [ -n "$CURLUSERAGENT" ] ; then
+        docmd $CURL $FORCEIPV --fail -L $CURLQ $CURLCOMPRESSED $CURLHEADER "$CURLUSERAGENT" $CURLNOSSLCHECK "$@"
+    else
+        docmd $CURL $FORCEIPV --fail -L $CURLQ $CURLCOMPRESSED $CURLHEADER $CURLNOSSLCHECK "$@"
+    fi
+}
+# put remote content to stdout
+url_scat()
+{
+    local URL="$1"
+    download_with_mirroring __curl "$URL" --output -
+}
+# download to default name of to $2
+url_sget()
+{
+    local URL="$1"
+    local res
+    if [ "$2" = "/dev/stdout" ] || [ "$2" = "-" ] ; then
+       scat "$1"
+       return
+    elif [ -n "$2" ] ; then
+       download_with_mirroring __curl "$URL" --output "$2"
+       return
+    fi
+
+    download_with_mirroring __curl "$URL" $CURLNAMEOPTIONS
+}
+
+url_get_response()
+{
+    local URL="$1"
+    local answer
+    answer="$(quiet=1 __curl -LI "$URL" 2>&1)"
+    # HTTP/1.1 405 Method Not Allowed
+    if echo "$answer" | grep -q "^ *HTTP/[12.]* 405" ; then
+        (quiet=1 __curl -L -i -r0-0 "$URL" 2>&1)
+        return
+    fi
+    echo "$answer"
+}
+
+else
+    fatal "Unknown EGET_BACKEND '$EGET_BACKEND', logical error."
+fi
+
+
+# Common code for both wget and curl (http related)
+if [ "$EGET_BACKEND" = "wget" ] || [ "$EGET_BACKEND" = "curl" ] ; then
+
+url_get_headers()
+{
+    local URL="$1"
+    url_get_response "$URL" | grep -i "^ *[[:alpha:]].*: " | sed -e 's|^ *||' -e 's|\r$||'
+}
+
+url_check()
+{
+    local URL="$1"
+    url_get_response "$URL" | grep "HTTP/" | tail -n1 | grep -q -w "200\|404"
+}
+
+url_get_header()
+{
+    local URL="$1"
+    local HEADER="$2"
+    url_get_headers "$URL" | grep -i "^ *$HEADER: " | sed -e "s|^ *$HEADER: ||i"
+}
+
+url_get_real_url()
+{
+    local URL="$1"
+
+    ! is_httpurl "$URL" && echo "$URL" && return
+
+    # don't check location if we have made form of the URL
+    [ -n "$MADEURL" ] && [ "$MADEURL" = "$URL" ] && echo "$URL" && return
+
+    local loc
+    for loc in $(url_get_header "$URL" "Location" | tac | sed -e 's| .*||') ; do
+        # hack for construct full url from related Location
+        if echo "$loc" | grep -q "^/" ; then
+            loc="$(concatenate_url_and_filename "$(get_host_only "$URL")" "$loc")"
+        fi
+        if ! is_strange_url "$loc" ; then
+            echo "$loc"
+            return
+        fi
+    done
+
+    echo "$URL"
+}
+
+url_get_filename()
+{
+    local URL="$1"
+
+    ! is_httpurl "$URL" && basename "$URL" && return
+
+    # See https://www.cpcwood.com/blog/5-aws-s3-utf-8-content-disposition
+    # https://www.rfc-editor.org/rfc/rfc6266
+    local cd="$(url_get_header "$URL" "Content-Disposition")"
+    if echo "$cd" | grep -qi "filename\*= *UTF-8" ; then
+        #Content-Disposition: attachment; filename="unityhub-amd64-3.3.0.deb"; filename*=UTF-8''"unityhub-amd64-3.3.0.deb"
+        echo "$cd" | sed -e "s|.*filename\*= *UTF-8''||i" -e 's|^"||' -e 's|";$||' -e 's|"$||'
+        return
+    fi
+    if echo "$cd" | grep -qi "filename=" ; then
+        #Content-Disposition: attachment; filename=postman-linux-x64.tar.gz
+        #content-disposition: attachment; filename="code-1.77.1-1680651749.el7.x86_64.rpm"
+        echo "$cd" | sed -e 's|.*filename= *||i' -e 's|^"||' -e 's|";.*||' -e 's|"$||'
+        return
+    fi
+
+    basename "$(url_get_real_url "$URL")"
+}
+
+fi
+
+
+if [ -n "$ipfs_mode" ] && [ -n "$EGET_IPFS_DB" ] &&  ! is_ipfsurl "$1"  ; then
+
+download_to_ipfs()
+{
+    local URL="$1"
+    local res
+    #res="$(url_scat "$URL" | ipfs_put )" || return
+    #res="$(echo "$res" | grep "^added Qm")" || return 1
+    #CID="$(echo "$res" | cut -f2 -d" ")"
+    # with -q to disable progress (mixed with download progress)
+    res="$(url_scat "$URL" | ipfs_put -q)" || return
+    is_ipfs_hash "$res" || return 1
+    echo "$res"
+}
+
+# put remote content to stdout
+scat()
+{
+    local URL="$1"
+    url_scat "$URL"
+
+    # It is list only function. Don't save to IPFS
+    return
+
+    ###################
+
+    local CID="$(get_cid_by_url "$URL")"
+    if [ -n "$CID" ] ; then
+        info "$URL -> $CID"
+        ipfs_cat "$CID"
+        return
+    fi
+
+    CID="$(download_to_ipfs "$URL")" || return
+
+    ipfs_cat "$CID" || return
+
+    local FN="$(url_get_filename "$URL")" || return
+
+    put_cid_and_url "$URL" "$CID" "$FN"
+}
+
+# download to default name of to $2
+sget()
+{
+    local URL="$1"
+    local TARGET="$2"
+
+    if [ -n "$GETFILENAME" ] ; then
+        get_filename "$URL"
+        exit
+    fi
+
+    local REALURL="$(get_real_url "$URL")" || return
+
+    if [ -n "$GETREALURL" ] ; then
+        echo "$REALURL"
+        exit
+    fi
+
+    # skip ipfs for cat
+    if [ "$TARGET" = "/dev/stdout" ] || [ "$TARGET" = "-" ] ; then
+       url_scat "$URL"
+       return
+    fi
+
+
+    #if is_strange_url "$REALURL" ; then
+    #    info "Just download strange URL $REALURL, skipping IPFS"
+    #    url_sget "$REALURL" "$TARGET"
+    #    return
+    #fi
+
+    local CID="$(get_cid_by_url "$REALURL")"
+    if [ -n "$CID" ] ; then
+
+        if [ -n "$GETIPFSCID" ] ; then
+            echo "$CID"
+            exit
+        fi
+
+        if [ -n "$GETFILENAME" ] ; then
+            get_filename_by_cid "$CID"
+            exit
+        fi
+
+        if [ -n "$GETREALURL" ] ; then
+            get_url_by_cid "$CID"
+            exit
+        fi
+
+        if [ -z "$TARGET" ] ; then
+            # TODO: in some cases we can get name from URL...
+            TARGET="$(get_filename_by_cid "$CID")"
+            if [ -z "$TARGET" ] ; then
+                TARGET="$CID"
+            fi
+        fi
+        [ "$URL" = "$REALURL" ] && info "$URL -> $CID -> $TARGET" || info "$URL -> $REALURL -> $CID -> $TARGET"
+        ipfs_get "$CID" "$TARGET" && return
+
+        # fail get from IPFS, fallback
+        url_sget "$REALURL" "$TARGET"
+        return
+    fi
+
+
+    # download and put to IPFS
+    local FN="$(url_get_filename "$REALURL")" || return
+    if [ -z "$TARGET" ] ; then
+        TARGET="$FN"
+    fi
+
+    if [ -n "$GETIPFSCID" ] ; then
+         # add to IPFS and print out CID
+         CID="$(ipfs_put --progress "$REALURL")" || return
+         echo "$CID"
+         exit
+    fi
+
+    # download file and add to IPFS
+    url_sget "$REALURL" "$TARGET" || return
+
+    # don't do ipfs put when gateway is using
+    [ "$ipfs_mode" = "gateway" ] && return
+
+    CID="$(ipfs_put --progress "$TARGET")" || return
+
+    put_cid_and_url "$REALURL" "$CID" "$FN"
+}
+
+check_url_is_accessible()
+{
+    local URL="$1"
+    local REALURL="$(get_real_url "$URL")" || return
+    local CID="$(get_cid_by_url "$REALURL")"
+    if [ -n "$CID" ] ; then
+        [ "$URL" = "$REALURL" ] && info "$URL -> $CID" || info "$URL -> $REALURL -> $CID"
+        ipfs_check "$CID"
+        return
+    fi
+
+    CID="$(download_to_ipfs "$REALURL")" || return
+
+    local FN="$(url_get_filename "$REALURL")" || return
+    ipfs_cat "$CID" >/dev/null || return
+    put_cid_and_url "$REALURL" "$CID" "$FN"
+}
+
+get_filename()
+{
+    url_get_filename "$1"
+}
+
+get_real_url()
+{
+    url_get_real_url "$1"
+}
+
+else
+scat()
+{
+    url_scat "$@"
+}
+
+sget()
+{
+    if [ -n "$GETFILENAME" ] ; then
+        get_filename "$1"
+        exit
+    fi
+
+    if [ -n "$GETREALURL" ] ; then
+        get_real_url "$1"
+        exit
+    fi
+
+    url_sget "$@"
+}
+
+check_url_is_accessible()
+{
+    url_check "$@"
+}
+
+get_filename()
+{
+    url_get_filename "$1"
+}
+
+get_real_url()
+{
+    url_get_real_url "$1"
+}
+
+fi
+
+
+get_github_urls()
+{
+    # https://github.com/OWNER/PROJECT
+    local owner="$(echo "$1" | sed -e "s|^https://github.com/||" -e "s|/.*||")" #"
+    local project="$(echo "$1" | sed -e "s|^https://github.com/$owner/||" -e "s|/.*||")" #"
+    [ -n "$owner" ] || fatal "Can't get owner from $1"
+    [ -n "$project" ] || fatal "Can't get project from $1"
+    local URL="https://api.github.com/repos/$owner/$project/releases"
+    # api sometime returns unformatted json
+    scat $URL | sed -e 's|,\(["{]\)|,\n\1|g' | \
+        grep -i -o -E '"browser_download_url": *"https://.*"' | cut -d'"' -f4
+}
+
+# drop file path from URL
+get_host_only()
+{
+    echo "$1/" | grep -Eo '(.*://[^/]+)'
+}
+
+concatenate_url_and_filename()
+{
+    local url="$(echo "$1" | sed -e 's|/*$||' )"
+    local fn="$(echo "$2" | sed -e 's|^/*||' )"
+    echo "$url/$fn"
+}
+
+# MADEURL filled with latest made URL as flag it is end form of URL
+MADEURL=''
+
+# Args: URL filename
+make_fileurl()
+{
+    local url="$1"
+    local fn="$2"
+
+    fn="$(echo "$fn" | sed -e 's|^./||' -e 's|^/+||')"
+
+    if is_fileurl "$url" ; then
+        # if it is url
+        :
+    elif echo "$fn" | grep -q "^/" ; then
+        # if there is file path from the root of the site
+        url="$(get_host_only "$url")"
+    elif echo "$url" | grep -q -v "/$" ; then
+        # if there is no slash in the end of URL
+        url="$(dirname "$url")"
+    fi
+
+    MADEURL="$(concatenate_url_and_filename "$url" "$fn")"
+    echo "$MADEURL"
+}
+
+get_urls()
+{
+    if is_fileurl "$URL" ; then
+        ls -1 "$(path_from_url "$URL")"
+        return
+    fi
+
+    # cat html, divide to lines by tags and cut off hrefs only
+    scat $URL | sed -e 's|<|<\n|g' -e 's|data-file=|href=|g' -e "s|href=http|href=\"http|g" -e "s|>|\">|g" -e "s|'|\"|g" | \
+         grep -i -o -E 'href="(.+)"' | cut -d'"' -f2
+}
+
+
+if [ -n "$CHECKURL" ] ; then
+    #set_quiet
+    URL="$1"
+    check_url_is_accessible "$URL"
+    res=$?
+    if [ -n "$verbose" ] ; then
+        [ "$res" = "0" ] && echo "$URL is accessible via network" || echo "$URL is NOT accessible via network"
+    fi
+    exit $res
+fi
+
+if [ -n "$GETRESPONSE" ] ; then
+    url_get_response "$1"
+    exit
+fi
+
+
+# separate part for github downloads
+if echo "$1" | grep -q "^https://github.com/" && \
+   echo "$1" | grep -q -v "/download/" && [ -n "$2" ] ; then
+    MASK="$2"
+
+    if [ -n "$LISTONLY" ] ; then
+        get_github_urls "$1" | filter_glob "$MASK" | filter_order
+        exit
+    fi
+
+    ERROR=0
+    for fn in $(get_github_urls "$1" | filter_glob "$MASK" | filter_order) ; do
+        MADEURL="$fn" # mark it is the end form of the URL
+        sget "$fn" "$TARGETFILE" || ERROR=1
+        [ -n "$TARGETFILE" ] && [ "$ERROR" = "0" ] && break
+    done
+    exit
+fi
+
+if is_ipfsurl "$1" ; then
+    [ -n "$2" ] && fatal "too many args when ipfs://Qm... used: extra '$2' arg"
+    sget "$1" "$TARGETFILE"
+    exit
+fi
+
+# if mask is the second arg
+if [ -n "$2" ] ; then
+    URL="$1"
+    MASK="$2"
+else
+    # do not support / at the end without separately specified mask
+    if echo "$1" | grep -q "/$" ; then
+        #fatal "Use http://example.com/e/* to download all files in dir"
+        URL="$1"
+        MASK=""
+    else
+        # drop mask part
+        URL="$(dirname "$1")/"
+        # wildcards allowed only in the last part of path
+        MASK=$(basename "$1")
+    fi
+
+fi
+
+# https://www.freeoffice.com/download.php?filename=freeoffice-2021-1062.x86_64.rpm
+if echo "$URL" | grep -q "[*]" ; then
+    fatal "Error: there are globbing symbol (*) in $URL. It is allowed only for mask part"
+fi
+
+is_url "$MASK" && fatal "eget supports only one URL as argument"
+[ -n "$3" ] && fatal "too many args: extra '$3'. May be you need use quotes for arg with wildcards."
+
+# TODO: curl?
+# If ftp protocol, just download
+if echo "$URL" | grep -q "^ftp://" ; then
+    [ -n "$LISTONLY" ] && fatal "TODO: list files for ftp:// is not supported yet"
+    sget "$1" "$TARGETFILE"
+    exit
+fi
+
+
+if [ -n "$LISTONLY" ] ; then
+    for fn in $(get_urls | filter_glob "$MASK" | filter_order) ; do
+        is_url "$fn" && echo "$fn" && continue
+        make_fileurl "$URL" "$fn"
+    done
+    exit
+fi
+
+# If there is no wildcard symbol like asterisk, just download
+if echo "$MASK" | grep -qv "[*?]" || echo "$MASK" | grep -q "[?].*="; then
+    sget "$1" "$TARGETFILE"
+    exit
+fi
+
+ERROR=0
+for fn in $(get_urls | filter_glob "$MASK" | filter_order) ; do
+    is_url "$fn" || fn="$(make_fileurl "$URL" "$fn" )" #"
+    sget "$fn" "$TARGETFILE" || ERROR=1
+    [ -n "$TARGETFILE" ] && [ "$ERROR" = "0" ] && break
+done
+exit $ERROR
+

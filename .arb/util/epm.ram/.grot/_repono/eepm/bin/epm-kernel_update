@@ -1,0 +1,55 @@
+#!/bin/sh
+#
+# Copyright (C) 2013, 2016, 2017  Etersoft
+# Copyright (C) 2013, 2016, 2017  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-check_updated_repo
+load_helper epm-sh-warmup
+
+epm_kernel_update()
+{
+    warmup_bases
+
+    update_repo_if_needed
+
+    info "Updating system kernel to the latest version..."
+
+    case $BASEDISTRNAME in
+    "alt")
+        load_helper epm-query_package
+        if ! __epm_query_package kernel-image >/dev/null ; then
+            info "No installed kernel packages, skipping update"
+            return
+        fi
+        assure_exists update-kernel update-kernel 0.9.9
+        sudocmd update-kernel $dryrun $(subst_option non_interactive -y) $force $interactive $reinstall $verbose "$@" || return
+        #docmd epm remove-old-kernels "$@" || fatal
+        return ;;
+    esac
+
+    case $PMTYPE in
+    dnf-rpm)
+        docmd epm install kernel
+        ;;
+    apt-*)
+        echo "Skipping: kernel package will update during dist-upgrade"
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+    esac
+}

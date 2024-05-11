@@ -1,0 +1,155 @@
+#!/bin/sh
+#
+# Copyright (C) 2015, 2017  Etersoft
+# Copyright (C) 2015, 2017  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+__epm_orphan_altrpm()
+{
+    docmd apt-cache list-extras
+}
+
+epm_autoorphans()
+{
+
+[ -z "$*" ] || fatal "No arguments are allowed here"
+
+case $BASEDISTRNAME in
+    alt)
+        # ALT Linux only
+        assure_exists /usr/share/apt/scripts/list-extras.lua apt-scripts
+        if [ -z "$dryrun" ] ; then
+            echo "We will try remove all installed packages which are missed in repositories"
+            warning "Use with caution!"
+        fi
+        epm Upgrade || fatal
+        info "Retrieving orphaned packages list ..."
+        local PKGLIST=$(__epm_orphan_altrpm \
+            | sed -e "s/\.32bit//g" \
+            | grep -v -- "^eepm$" \
+            | grep -v -- "^distro_info$" \
+            | grep -v -- "^kernel")
+
+        # TODO: implement for other PMTYPE
+        info "Retrieving packages installed via epm play ..."
+        local play_installed="$(epm play --list-installed-packages)"
+        if [ -n "$play_installed" ] ; then
+            echo "Skip follow packages installed via epm play: $(echo $play_installed | xargs -n1000 echo)"
+            PKGLIST="$(estrlist exclude "$play_installed" "$PKGLIST")"
+        fi
+
+        # TODO: implement for other PMTYPE
+        local hold_packages="$(epm mark --short showhold)"
+        if [ -n "$hold_packages" ] ; then
+            echo "Skip follow packages on hold: $(echo $hold_packages | xargs -n1000 echo)"
+            PKGLIST="$(estrlist exclude "$hold_packages" "$PKGLIST")"
+        fi
+
+        if [ -n "$PKGLIST" ] ; then
+            if [ -z "$dryrun" ] ; then
+                showcmd epm remove $dryrun $force $PKGLIST
+                confirm_info "We will remove packages above."
+            fi
+            info
+            info
+            docmd epm remove $dryrun $force $(subst_option non_interactive --auto) $PKGLIST
+        else
+            echo "There are no orphan packages in the system."
+        fi
+        return 0
+        ;;
+esac
+
+case $PMTYPE in
+    apt-dpkg|aptitude-dpkg)
+        assure_exists deborphan
+        showcmd deborphan
+        a='' deborphan | docmd epm remove $dryrun
+        ;;
+    #aura)
+    #    sudocmd aura -Oj
+    #    ;;
+    yum-rpm)
+        docmd epm upgrade
+        assure_exists package-cleanup yum-utils
+        showcmd package-cleanup --orphans
+        local PKGLIST=$(package-cleanup -q --orphans | grep -v "^eepm-")
+        docmd epm remove $dryrun $PKGLIST
+        ;;
+    dnf-rpm)
+        # TODO: dnf list extras
+        docmd epm upgrade
+        assure_exists package-cleanup dnf-utils
+        showcmd package-cleanup --orphans
+        local PKGLIST=$(package-cleanup -q --orphans | grep -v "^eepm-")
+        docmd epm remove $dryrun $PKGLIST
+        ;;
+    urpm-rpm)
+        if [ -n "$dryrun" ] ; then
+            fatal "--dry-run is not supported yet"
+        else
+            showcmd urpme --report-orphans
+            sudocmd urpme --auto-orphans
+        fi
+        ;;
+    #emerge)
+    #    sudocmd emerge --depclean
+    #    assure_exists revdep-rebuild
+    #    sudocmd revdep-rebuild
+    #    ;;
+    pacman)
+        if [ -n "$dryrun" ] ; then
+            info "Autoorphans packages list:"
+            sudocmd pacman -Qdtq
+        else
+            sudocmd pacman -Qdtq | sudocmd pacman -Rs -
+        fi
+        ;;
+    slackpkg)
+        # clean-system removes non official packages
+        sudocmd slackpkg clean-system
+        ;;
+    eopkg)
+        sudocmd eopkg remove-orphans
+        ;;
+    #guix)
+    #    sudocmd guix gc
+    #    ;;
+    #pkgng)
+    #    sudocmd pkg autoremove
+    #    ;;
+    zypper-rpm)
+        # https://www.linux.org.ru/forum/desktop/11931830
+        assure_exists zypper zypper 1.9.2
+        # For zypper < 1.9.2: zypper se -si | grep 'System Packages'
+        sudocmd zypper packages --orphaned
+        # FIXME: x86_64/i586 are duplicated
+        local PKGLIST=$(zypper packages --orphaned | tail -n +5 | cut -d \| -f 3 | sort -u)
+        docmd epm remove $dryrun --clean-deps $PKGLIST
+        ;;
+    xbps)
+        if [ -n "$dryrun" ] ; then
+            fatal "--dry-run is not supported yet"
+        else
+            sudocmd xbps-remove -o
+        fi
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+
+}

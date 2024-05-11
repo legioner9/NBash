@@ -1,0 +1,157 @@
+#!/bin/bash
+#
+# Copyright (C) 2013, 2023  Etersoft
+# Copyright (C) 2013, 2023  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+have_patool()
+{
+	# TODO: optimize?
+	[ -n "$use_7z" ] && return 1
+	[ -n "$use_patool" ] || is_command patool
+}
+
+set_backend()
+{
+	HAVE_7Z='7z'
+
+	[ "$ERC_BACKEND" = "patool" ] && use_patool=1
+	[ "$ERC_BACKEND" = "7z" ] && use_7z=1
+
+	[ -n "$use_patool" ] && [ -n "$use_7z" ] && fatal "Don't use --use-7z and --use-patool simulateously."
+
+	if [ -n "$use_7z" ] || ! have_patool ; then
+		# TODO: try install patool and p7zip
+		is_command 7za && HAVE_7Z='7za'
+		if ! is_command $HAVE_7Z ; then
+			# 7-zip
+			is_command 7zz && HAVE_7Z='7zz'
+		fi
+		if ! is_command $HAVE_7Z ; then
+			# reduced p7-zip
+			is_command 7zr && HAVE_7Z='7zr'
+		fi
+		is_command $HAVE_7Z || fatal "Could not find any patool or 7-zip backend. Please install p7zip package and retry."
+	fi
+	[ -z "$force" ] || HAVE_7Z="$HAVE_7Z -y"
+}
+
+
+list_subformats()
+{
+	local i
+	for i in gz bz2 xz bzip2 lz4 lzma zst zstd ; do
+		echo "tar.$i"
+	done
+
+	for i in gz bz2 xz lz4 ; do
+		echo "cpio.$i"
+	done
+}
+
+list_extraformats()
+{
+	cat <<EOF
+bz2
+gz
+lz4
+Z
+tgz
+pax
+zst
+zstd
+exe
+EOF
+}
+
+# it is extension list really
+# list all supported formats: tar rar and so on
+list_formats()
+{
+	list_subformats
+	if have_patool ; then
+		a='' patool formats | grep ".* files:" | sed "s/ .*//g"
+	else
+		echo "tar zip 7z tar.7z"
+		list_subformats
+	fi
+	# TODO: do not use patool formats in such case?
+	# See ArchiveCompressions in patool
+	list_extraformats
+}
+
+# returns true if arg is XXX: from list_formats
+is_target_format()
+{
+	[ "${1/:/}" = "$1" ] && return 1
+	local arc="$(echo "$1" | sed -e 's|:.*||g')"
+	list_formats | grep -q "^$arc$" && return 0
+	return 1
+}
+
+# TODO: detect by name, without comparing with existing?
+# 1.zip -> zip
+get_archive_ext()
+{
+	local i
+	for i in $(list_formats) ; do
+		[ -z "${1/*.$i/}" ] && echo "$i" && return
+	done
+	return 1
+}
+
+# 1.zip -> 1
+get_archive_name()
+{
+	local ext
+	ext=$(get_archive_ext "$1")
+	if [ -n "$ext" ] ; then
+		echo $(dirname "$1")/$(basename "$1" .$ext)
+	else
+		echo "$1"
+		return 1
+	fi
+}
+
+# FIXME
+is_plain_text()
+{
+	file --mime-type "$1" | grep -q "text/" && echo "plain" && return
+	file "$1" | grep -q "empty" && echo "plain" && return
+	return 1
+}
+
+
+# TODO: improve
+# TODO: detect by extension as default
+get_archive_type()
+{
+	local aext
+	if [ -r "$1" ] ; then
+		# TODO: rewrite with mime
+		file "$1" | grep -q "Zip archive data" && echo "zip" && return
+		file "$1" | grep -q "RAR archive data" && echo "rar" && return
+	# used for unexists files too
+	#else
+	#	warning "Couldn't read $1, skipping mime checking"
+	fi
+
+	if aext=$(get_archive_ext "$1") ; then
+		echo $aext
+		return
+	fi
+	return 1
+}

@@ -1,0 +1,65 @@
+#!/bin/sh
+#
+# Copyright (C) 2016, 2020  Etersoft
+# Copyright (C) 2016, 2020  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+__serv_log_altlinux()
+{
+    local SERVICE="$1"
+    local PRG="less"
+    [ "$2" = "-f" ] && PRG="tail -f"
+
+    case "$SERVICE" in
+        postfix)
+            sudocmd $PRG /var/log/mail/all /var/log/mail/errors
+            ;;
+        sshd)
+            sudocmd $PRG /var/log/auth/all
+            ;;
+        cups)
+            sudocmd $PRG /var/log/cups/access_log /var/log/cups/error_log
+            ;;
+        fail2ban)
+            sudocmd $PRG /var/log/$SERVICE.log
+            ;;
+        *)
+            fatal "Have no suitable for $SERVICE service"
+            ;;
+    esac
+}
+
+serv_log()
+{
+    local SERVICE="$1"
+    shift
+
+    case $SERVICETYPE in
+        systemd)
+            sudocmd journalctl -b -u "$SERVICE" "$@"
+            ;;
+        *)
+            case $BASEDISTRNAME in
+            "alt")
+                FF="" ; [ "$1" = "-f" ] && FF="-f"
+                __serv_log_altlinux "$SERVICE" $FF
+                return ;;
+            *)
+                fatal "Have no suitable for $DISTRNAME command for $SERVICETYPE"
+                ;;
+            esac
+    esac
+}

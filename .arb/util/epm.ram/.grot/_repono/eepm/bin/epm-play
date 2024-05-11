@@ -1,0 +1,523 @@
+#!/bin/sh
+#
+# Copyright (C) 2015, 2017, 2019, 2020, 2022  Etersoft
+# Copyright (C) 2015, 2017, 2019, 2020, 2022  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+
+__check_installed_app()
+{
+    [ -s $epm_vardir/installed-app ] || return 1
+    grep -q -- "^$1\$" $epm_vardir/installed-app
+}
+
+__save_installed_app()
+{
+    [ -d "$epm_vardir" ] || return 0
+    __check_installed_app "$1" && return 0
+    echo "$1" | sudorun tee -a $epm_vardir/installed-app >/dev/null
+}
+
+__remove_installed_app()
+{
+    [ -s $epm_vardir/installed-app ] || return 0
+    local i
+    for i in $* ; do
+        sudorun sed -i "/^$i$/d" $epm_vardir/installed-app
+    done
+    return 0
+}
+
+
+__is_app_installed()
+{
+    __run_script "$1" --installed "$2"
+    return
+}
+
+__run_script()
+{
+    local script="$psdir/$1.sh"
+    [ -x "$script" ] || return
+    [ -f "$script.rpmnew" ] && warning "There is .rpmnew file(s) in $psdir dir. The play script can be outdated."
+
+    shift
+    [ "$PROGDIR" = "/usr/bin" ] && SCPATH="$PATH" || SCPATH="$PROGDIR:$PATH"
+    ( unset EPMCURDIR ; export PATH=$SCPATH ; $script "$@" )
+    return
+}
+
+__get_app_package()
+{
+    __run_script "$1" --package-name "$2" "$3" 2>/dev/null
+}
+
+
+
+__list_all_app()
+{
+    cd $psdir || fatal
+    for i in *.sh ; do
+       local name=${i/.sh/}
+       [ -n "$IGNOREi586" ] && startwith "$name" "i586-" && continue
+       startwith "$name" "common" && continue
+       echo "$name"
+    done
+    cd - >/dev/null
+}
+
+__list_all_packages()
+{
+    local name
+    for name in $(__list_all_app) ; do
+        __get_app_package $name
+    done
+}
+
+# pkg app
+__list_app_packages_table()
+{
+    local name
+    for name in $(__list_all_app) ; do
+        local pkg="$(__get_app_package $name)"
+        [ -n "$pkg" ] || continue
+        echo "$pkg $name"
+    done
+}
+
+__filter_by_installed_packages()
+{
+    local i
+    local tapt="$1"
+
+    local pkglist
+    pkglist="$(mktemp)" || fatal
+    remove_on_exit $pkglist
+
+    # get intersect between full package list and available packages table
+    epm --short packages | LC_ALL=C sort -u >$pkglist
+    LC_ALL=C join -11 -21 $tapt $pkglist | uniq
+    rm -f $pkglist
+
+    # rpm on Fedora/CentOS no more print missed packages to stderr
+    # get supported packages list and print lines with it
+    #for i in $(epm query --short $(cat $tapt | cut -f1 -d" ") 2>/dev/null) ; do
+    #    grep "^$i " $tapt
+    #done
+}
+
+__get_installed_table()
+{
+    local i
+    local tapt
+    tapt="$(mktemp)" || fatal
+    remove_on_exit $tapt
+    __list_app_packages_table | LC_ALL=C sort -u >$tapt
+    __filter_by_installed_packages $tapt
+    rm -f $tapt
+}
+
+__list_installed_app()
+{
+    # get all installed packages and convert it to a apps list
+    __get_installed_table | cut -f2 -d" "
+}
+
+__list_installed_packages()
+{
+    # get all installed packages
+    __get_installed_table | cut -f1 -d" "
+}
+
+
+# args: script, host arch
+__get_app_description()
+{
+    __run_script "$1" --description "$2" 2>/dev/null
+}
+
+__check_play_script()
+{
+    local script="$psdir/$1.sh"
+    shift
+
+    [ -x "$script" ]
+}
+
+
+__epm_play_run()
+{
+    local script="$psdir/$1.sh"
+    shift
+
+    local addopt
+    addopt="$dryrun $non_interactive"
+
+    local bashopt=''
+    [ -n "$debug" ] && bashopt='-x'
+    #info "Running $($script --description 2>/dev/null) ..."
+    [ "$PROGDIR" = "/usr/bin" ] && SCPATH="$PATH" || SCPATH="$PROGDIR:$PATH"
+    ( export EPM_OPTIONS="$EPM_OPTIONS $addopt" export PATH=$SCPATH ; docmd $CMDSHELL $bashopt $script "$@" )
+}
+
+__epm_play_list_installed()
+{
+    local i
+    if [ -n "$short" ] ; then
+        for i in $(__list_installed_app) ; do
+            # skip hidden apps
+            local desc="$(__get_app_description $i)"
+            [ -n "$desc" ] || continue
+            echo "$i"
+        done
+        exit
+    fi
+    [ -n "$quiet" ] || echo "Installed applications:"
+    for i in $(__list_installed_app) ; do
+        # skip hidden apps
+        local desc="$(__get_app_description $i)"
+        [ -n "$desc" ] || continue
+        [ -n "$quiet" ] || echo -n "  "
+        printf "%-20s - %s\n" "$i" "$desc"
+    done
+}
+
+
+__epm_play_list()
+{
+    local psdir="$1"
+    local extra="$2"
+    local i
+    local IGNOREi586
+    local arch="$SYSTEMARCH"
+    [ "$arch" = "x86_64" ] && IGNOREi586='' || IGNOREi586=1
+
+    if [ -n "$short" ] ; then
+        for i in $(__list_all_app) ; do
+            local desc="$(__get_app_description $i $arch)"
+            [ -n "$desc" ] || continue
+            echo "$i"
+            if [ -n "$extra" ] ; then
+                for j in $(__run_script "$i" "--product-alternatives") ; do
+                    echo "  $i=$j"
+                done
+            fi
+        done
+        exit
+    fi
+
+    for i in $(__list_all_app) ; do
+        local desc="$(__get_app_description $i $arch)"
+        [ -n "$desc" ] || continue
+        [ -n "$quiet" ] || echo -n "  "
+        printf "%-20s - %s\n" "$i" "$desc"
+        if [ -n "$extra" ] ; then
+            for j in $(__run_script "$i" "--product-alternatives") ; do
+                printf "  %-20s - %s\n" "$i=$j" "$desc"
+            done
+        fi
+    done
+}
+
+
+epm_play_help()
+{
+    cat <<EOF
+Usage: epm play [options] [<app>]
+Options:
+    <app>                 - install <app>
+    --remove <app>        - uninstall <app>
+    --update [<app>|all]  - update <app> (or all installed apps) if there is new version
+    --list                - list all installed apps
+    --list-all            - list all available apps
+    --list-scripts        - list all available scripts
+    --short (with --list) - list names only
+    --installed <app>     - check if the app is installed
+    --product-alternatives- list alternatives (use like epm play app=beta)
+
+Examples:
+    epm play --remove opera
+    epm play yandex-browser = beta
+    epm play telegram = beta
+    epm play telegram = 4.7.1
+    epm play --update all
+EOF
+}
+
+
+__epm_play_remove()
+{
+    local prescription
+    for prescription in $* ; do
+        if __check_play_script "$prescription" ; then
+            __epm_play_run $prescription --remove
+            __remove_installed_app "$prescription"
+        else
+            psdir=$prsdir
+            __check_play_script "$prescription" || fatal "We have no idea how to remove $prescription (checked in $psdir and $prsdir)"
+            __epm_play_run "$prescription" --remove || fatal "There was some error during run the script."
+        fi
+    done
+}
+
+
+__epm_play_update()
+{
+    local i RES
+    local CMDUPDATE="$1"
+    shift
+    RES=0
+    for i in $* ; do
+        echo
+        echo "$i"
+            if ! __is_app_installed "$i" ; then
+                warning "$i is not installed"
+                continue
+            fi
+        prescription="$i"
+        if ! __check_play_script $prescription ; then
+            warning "Can't find executable play script for $prescription. Try epm play --remove $prescription if you don't need it anymore."
+            RES=1
+            continue
+        fi
+        __epm_play_run $prescription $CMDUPDATE || RES=$?
+    done
+    return $RES
+}
+
+
+# name argument
+__epm_play_install_one()
+{
+    local prescription="$1"
+    shift
+
+    if __check_play_script "$prescription" ; then
+        #__is_app_installed "$prescription" && info "$$prescription is already installed (use --remove to remove)" && exit 1
+        __epm_play_run "$prescription" --run "$@" && __save_installed_app "$prescription" || fatal "There was some error during install the application."
+    else
+        opsdir=$psdir
+        psdir=$prsdir
+        __check_play_script "$prescription" || fatal "We have no idea how to play $prescription (checked in $opsdir and $prsdir)"
+        __epm_play_run "$prescription" --run "$@" || fatal "There was some error during run $prescription script."
+    fi
+}
+
+
+__epm_play_install()
+{
+   local i RES
+   RES=0
+
+   load_helper epm-check_updated_repo
+
+   update_repo_if_needed
+
+   # get all options
+   options=''
+   for i in  $* ; do
+       case "$i" in
+           --*)
+               options="$options $i"
+               ;;
+       esac
+   done
+
+   while [ -n "$1" ] ; do
+       case "$1" in
+           --*)
+               shift
+               continue
+               ;;
+       esac
+       local p="$1"
+       local v=''
+       # drop spaces
+       n="$(echo $2)"
+       if [ "$n" = "=" ] ; then
+           v="$3"
+           shift 3
+       else
+           shift
+       fi
+       __epm_play_install_one "$p" "$v" $options || RES=1
+   done
+
+   return $RES
+}
+
+__epm_play_download_epm_file()
+{
+    local target="$1"
+    local file="$2"
+    # use short version (3.4.5)
+    local epmver="$(epm --short --version)"
+    local URL
+    for URL in "https://eepm.ru/releases/$epmver/app-versions" "https://eepm.ru/app-versions" ; do
+        info "Updating local IPFS DB in $eget_ipfs_db file from $URL/eget-ipfs-db.txt"
+        docmd eget -q -O "$target" "$URL/$file" && return
+    done
+}
+
+
+__epm_play_initialize_ipfs()
+{
+    if [ ! -d "$(dirname "$eget_ipfs_db")" ] ; then
+        warning "ipfs db dir $eget_ipfs_db does not exist, skipping IPFS mode"
+        return 1
+    fi
+
+    if [ ! -r "$eget_ipfs_db" ] ; then
+        sudorun touch "$eget_ipfs_db" >&2
+        sudorun chmod -v a+rw "$eget_ipfs_db" >&2
+    fi
+
+    # download and merge with local db
+    local t
+    t=$(mktemp) || fatal
+    remove_on_exit $t
+    __epm_play_download_epm_file "$t" "eget-ipfs-db.txt" || warning "Can't update IPFS DB"
+    if [ -s "$t" ] && [ -z "$EPM_IPFS_DB_UPDATE_SKIPPING" ] ; then
+        echo >>$t
+        cat $eget_ipfs_db >>$t
+        sort -u < $t | grep -v "^$" > $eget_ipfs_db
+    fi
+
+    # the only one thing is needed to enable IPFS in eget
+    export EGET_IPFS_DB="$eget_ipfs_db"
+}
+
+epm_play()
+{
+[ "$EPMMODE" = "package" -o "$EPMMODE" = "git" ] || fatal "epm play is not supported in single file mode"
+local psdir="$(realpath $CONFIGDIR/play.d)"
+local prsdir="$(realpath $CONFIGDIR/prescription.d)"
+
+if [ -z "$1" ] ; then
+    [ -n "$short" ] || [ -n "$quiet" ] || echo "Available applications (for current arch $DISTRARCH):"
+    __epm_play_list $psdir
+    exit
+fi
+
+
+while [ -n "$1" ] ; do
+case "$1" in
+    -h|--help)
+        epm_play_help
+        exit
+        ;;
+
+    --ipfs)
+        shift
+        __epm_play_initialize_ipfs
+        ;;
+
+    --remove)
+        shift
+        if [ -z "$1" ] ; then
+            fatal "run --remove with 'all' or a project name"
+        fi
+
+        local list
+        if [ "$1" = "all" ] ; then
+            shift
+            info "Retrieving list of installed apps ..."
+            list="$(__list_installed_app)"
+        else
+            list="$*"
+        fi
+
+        __epm_play_remove $list
+        exit
+        ;;
+
+    --update)
+        shift
+        local CMDUPDATE="--update"
+        # check --force on common.sh side
+        #[ -n "$force" ] && CMDUPDATE="--run"
+
+        if [ -z "$1" ] ; then
+            fatal "run --update with 'all' or a project name"
+        fi
+
+        local list
+        if [ "$1" = "all" ] ; then
+            shift
+            info "Retrieving list of installed apps ..."
+            list="$(__list_installed_app)"
+        else
+            list="$*"
+        fi
+
+        __epm_play_update $CMDUPDATE $list
+        exit
+        ;;
+
+    --installed)
+        shift
+        __is_app_installed "$1" "$2"
+        #[ -n "$quiet" ] && exit
+        exit
+        ;;
+
+    # internal options
+    --installed-version|--package-name|--product-alternatives|--info)
+        __run_script "$2" "$1" "$3"
+        exit
+        ;;
+    --list-installed-packages)
+        __list_installed_packages
+        exit
+        ;;
+    --list|--list-installed)
+        __epm_play_list_installed
+        exit
+        ;;
+
+    --full-list-all)
+        [ -n "$short" ] || [ -n "$quiet" ] || echo "Available applications (for current arch $DISTRARCH):"
+        __epm_play_list $psdir extra
+        exit
+        ;;
+
+    --list-all)
+        [ -n "$short" ] || [ -n "$quiet" ] || echo "Available applications (for current arch $DISTRARCH):"
+        __epm_play_list $psdir
+        [ -n "$quiet" ] || [ -n "$*" ] && exit
+        echo
+        #echo "Run epm play --help for help"
+        epm_play_help
+        exit
+        ;;
+
+    --list-scripts)
+        [ -n "$short" ] || [ -n "$quiet" ] || echo "Run with a name of a play script to run:"
+        __epm_play_list $prsdir
+        exit
+        ;;
+    -*)
+        fatal "Unknown option $1"
+        ;;
+     *)
+        break
+        ;;
+esac
+
+done
+
+__epm_play_install $(echo "$*" | sed -e 's|=| = |g')
+}

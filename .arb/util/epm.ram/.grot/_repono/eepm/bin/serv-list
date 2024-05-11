@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+# Copyright (C) 2012, 2016, 2021  Etersoft
+# Copyright (C) 2012, 2016, 2021  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+# List running services
+serv_list()
+{
+    [ -n "$short" ] || info "Running services:"
+    case $SERVICETYPE in
+#        service-chkconfig)
+#            ;;
+        service-upstart)
+            sudocmd initctl list
+            ;;
+        service-update)
+            sudocmd service --status-all
+            ;;
+        systemd)
+            if [ -n "$short" ] ; then
+                docmd systemctl list-units --type=service "$@" | grep '\.service' | sed -e 's|\.service.*||' -e 's|^ *||'
+            else
+                docmd systemctl list-units --type=service "$@"
+            fi
+            ;;
+        openrc)
+            sudocmd rc-status
+            ;;
+        *)
+            # hack to improve list speed
+            [ "$UID" = 0 ] || { sudocmd $PROGDIR/serv --quiet list ; return ; }
+            load_helper serv-list_all
+            load_helper serv-status
+            for i in $(quiet=1 serv_list_all) ; do
+                is_service_running $i >/dev/null && echo $i
+            done
+            ;;
+    esac
+}

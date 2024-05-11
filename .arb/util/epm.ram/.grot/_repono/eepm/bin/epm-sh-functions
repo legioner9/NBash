@@ -1,0 +1,1053 @@
+#!/bin/sh
+#
+# Copyright (C) 2012, 2014  Etersoft
+# Copyright (C) 2012, 2014  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+# copied from /etc/init.d/outformat (ALT Linux)
+
+
+# FIXME on Android: FIX ME! implement ttyname_r() bionic/libc/bionic/stubs.c:366
+inputisatty()
+{
+    # check stdin
+    #tty -s 2>/dev/null
+    test -t 0
+}
+
+isatty()
+{
+    # check stdout
+    test -t 1
+}
+
+isatty2()
+{
+    # check stderr
+    test -t 2
+}
+
+check_tty()
+{
+    isatty2 || return
+
+    # Set a sane TERM required for tput
+    [ -n "$TERM" ] || TERM=dumb
+    export TERM
+
+    check_core_commands
+
+    # grep -E from busybox may not --color
+    # grep -E from MacOS print help to stderr
+    if grep -E --help 2>&1 | grep -q -- "--color" ; then
+        export EGREPCOLOR="--color"
+    fi
+
+    is_command tput || return
+    # FreeBSD does not support tput -S
+    echo | a= tput -S >/dev/null 2>/dev/null || return
+    USETTY="tput -S"
+}
+
+: ${BLACK:=0} ${RED:=1} ${GREEN:=2} ${YELLOW:=3} ${BLUE:=4} ${MAGENTA:=5} ${CYAN:=6} ${WHITE:=7}
+
+set_boldcolor()
+{
+    [ -n "$USETTY" ] || return
+    {
+        echo bold
+        echo setaf $1
+    } | $USETTY
+}
+
+set_color()
+{
+    [ -n "$USETTY" ] || return
+    {
+        echo setaf $1
+    } | $USETTY
+}
+
+restore_color()
+{
+    [ -n "$USETTY" ] || return
+    {
+        echo op; # set Original color Pair.
+        echo sgr0; # turn off all special graphics mode (bold in our case).
+    } | $USETTY
+}
+
+echover()
+{
+    [ -z "$verbose" ] && return
+    echo "$*" >&2
+}
+
+# echo string without EOL
+echon()
+{
+    # default /bin/sh on MacOS does not recognize -n
+    echo -n "$*" 2>/dev/null || a= /bin/echo -n "$*"
+}
+
+
+# Print command line and run command line
+showcmd()
+{
+    if [ -z "$quiet" ] ; then
+        set_boldcolor $GREEN
+        local PROMTSIG="\$"
+        is_root && PROMTSIG="#"
+        echo " $PROMTSIG $*"
+        restore_color
+    fi >&2
+}
+
+# Print command
+echocmd()
+{
+    set_boldcolor $GREEN
+    local PROMTSIG="\$"
+    is_root && PROMTSIG="#"
+    echo -n "$PROMTSIG $*"
+    restore_color
+}
+
+# Print command line and run command line
+docmd()
+{
+    showcmd "$*$EXTRA_SHOWDOCMD"
+    "$@"
+}
+
+# Run every arg with docmd
+docmd_foreach()
+{
+    local cmd pkg
+    cmd="$1"
+    #showcmd "$@"
+    shift
+    for pkg in "$@" ; do
+        docmd $cmd $pkg
+    done
+}
+
+# run command line with SUDO
+sudorun()
+{
+    set_sudo
+    if [ -z "$SUDO" ] ; then
+        "$@"
+        return
+    fi
+    $SUDO "$@"
+}
+
+# Print command line and run command line with SUDO
+sudocmd()
+{
+    set_sudo
+    [ -n "$SUDO" ] && showcmd "$SUDO $*" || showcmd "$*"
+    sudorun "$@"
+}
+
+# Run every arg with sudocmd
+# Returns on any error
+sudocmd_foreach()
+{
+    local cmd pkg
+    cmd="$1"
+    #showcmd "$@"
+    shift
+    for pkg in "$@" ; do
+        # don't quote $cmd here: it can be a command with an args
+        sudocmd $cmd $pkg || return
+    done
+}
+
+# print full path to files
+make_filepath()
+{
+    local i
+    for i in "$@" ; do
+        [ -f "$i" ] || continue
+        echo "$i" | grep -q "/" && echo "$i" && continue
+        echo "./$i"
+    done
+}
+
+get_firstarg()
+{
+    echon "$1"
+}
+
+get_lastarg()
+{
+    local lastarg
+    eval "lastarg=\${$#}"
+    echon "$lastarg"
+}
+
+# TODO: see etersoft-build-utils/tests/test_isnumber.sh
+isnumber()
+{
+    echo "$*" | filter_strip_spaces | grep -q "^[0-9]\+$"
+}
+
+# copied from strings
+# CHECKME: the same like estrlist has ?
+# Note: used grep -E! write '[0-9]+(first|two)', not '[0-9]\+...'
+rhas()
+{
+    echo "$1" | grep -E -q -- "$2"
+}
+
+# bash specific
+startwith()
+{
+    # rhas "$1" "^$2"
+    [[ "$1" = ${2}* ]]
+}
+
+is_abs_path()
+{
+    #echo "$1" | grep -q "^/"
+    startwith "$1" "/"
+}
+
+# copied from strings
+is_dirpath()
+{
+    [ "$1" = "." ] && return $?
+    # rhas "$1" "/"
+    startwith "$1" "/"
+}
+
+
+filter_strip_spaces()
+{
+        # possible use just
+        #xargs echo
+        sed -e "s| \+| |g" | \
+                sed -e "s|^ ||" | sed -e "s| \$||"
+}
+
+strip_spaces()
+{
+        echo "$*" | filter_strip_spaces
+}
+
+
+# https://superuser.com/questions/422459/substitution-in-text-file-without-regular-expressions
+# http://stackoverflow.com/a/2705678/120999
+# use for subst complex string with symbols treating as regexp
+sed_escape()
+{
+    echo "$*" | sed -e 's/[]()$*.^|[]/\\&/g'
+}
+
+
+# param true false
+subst_option()
+{
+    eval "[ -n \"\$$1\" ]" && echo "$2" || echo "$3"
+}
+
+store_output()
+{
+    # use make_temp_file from etersoft-build-utils
+    RC_STDOUT="$(mktemp)" || fatal
+    remove_on_exit $RC_STDOUT
+    local CMDSTATUS=$RC_STDOUT.pipestatus
+    echo 1 >$CMDSTATUS
+    #RC_STDERR=$(mktemp)
+    ( LC_ALL=C $@ 2>&1 ; echo $? >$CMDSTATUS ) | tee $RC_STDOUT
+    return "$(cat $CMDSTATUS)"
+    # bashism
+    # http://tldp.org/LDP/abs/html/bashver3.html#PIPEFAILREF
+    #return $PIPESTATUS
+}
+
+showcmd_store_output()
+{
+    showcmd "$@"
+    store_output "$@"
+}
+
+clean_store_output()
+{
+    rm -f $RC_STDOUT $RC_STDOUT.pipestatus
+}
+
+# run epm, possible from side repo
+epm()
+{
+    if [ "$EPMMODE" = "pipe" ] ; then
+        epm_main --inscript "$@"
+        return
+    fi
+
+    # run epm again to full initialization
+    local bashopt=''
+    [ -n "$debug" ] && bashopt='-x'
+
+    $CMDSHELL $bashopt $PROGDIR/$PROGNAME --inscript "$@"
+}
+
+# run $SUDO epm, possible from side repo
+sudoepm()
+{
+    [ "$EPMMODE" = "pipe" ] && fatal "Can't use sudo epm call from the piped script"
+
+    local bashopt=''
+    [ -n "$debug" ] && bashopt='-x'
+
+    sudorun $CMDSHELL $bashopt $PROGDIR/$PROGNAME --inscript "$@"
+}
+
+# Print error message and stop the program
+fatal()
+{
+    local PROMOMESSAGE="$EPMPROMOMESSAGE"
+    [ -n "$PROMOMESSAGE" ] || PROMOMESSAGE=" (you can discuss the epm $EPMVERSION problem in Telegram: https://t.me/useepm)"
+    if [ -z "$TEXTDOMAIN" ] ; then
+        set_color $RED >&2
+        echo -n "ERROR: " >&2
+        restore_color >&2
+        echo "$* $PROMOMESSAGE" >&2
+#    else
+#        echog "Error in $0: $@" >&2
+    fi
+#    [ "$TERM" = "screen" ] && echo "(screen detected: waiting ten seconds to exit ...)" >&2 && sleep 10
+    exit 1
+}
+
+# Print debug message
+debug()
+{
+    [ -n "$debug" ] || return
+    if [ -z "$TEXTDOMAIN" ] ; then
+        set_color $YELLOW >&2
+        echo -n "WARNING: " >&2
+        restore_color >&2
+        echo "$*" >&2
+#    else
+#        echog "Error in $0: $@" >&2
+    fi
+}
+
+
+# Print warning message
+warning()
+{
+    if [ -z "$TEXTDOMAIN" ] ; then
+        set_color $YELLOW >&2
+        echo -n "WARNING: " >&2
+        restore_color >&2
+        echo "$*" >&2
+#    else
+#        echog "Error in $0: $@" >&2
+    fi
+}
+
+info()
+{
+    [ -n "$quiet" ] && return
+
+    # print message to stderr if stderr forwarded to (a file)
+    if isatty2 ; then
+        isatty || return 0
+        echo "$*"
+    else
+        echo "$*" >&2
+    fi
+}
+
+
+check_su_root()
+{
+    [ "$BASEDISTRNAME" = "alt" ] || return 0
+
+    is_root || return 0
+
+    echo "$PATH" | grep -q "/usr/sbin" && return 0
+
+    fatal "There is missed /usr/sbin path in PATH. Probably you have used 'su' without '-' to get root access. Use 'esu' or 'su -' command to get root permissions."
+}
+
+
+# if we have not sudo, returns 1 and set SUDO variable to fatal
+SUDO_TESTED=''
+SUDO_CMD='sudo'
+set_sudo()
+{
+    local nofail="$1"
+
+    # cache the result
+    [ -n "$SUDO_TESTED" ] && return "$SUDO_TESTED"
+    SUDO_TESTED="0"
+
+    SUDO=""
+    # skip SUDO if disabled
+    [ -n "$EPMNOSUDO" ] && return
+    if [ "$DISTRNAME" = "Cygwin" ] || [ "$DISTRNAME" = "Windows" ] ; then
+        # skip sudo using on Windows
+        return
+    fi
+
+    check_su_root
+
+    # if we are root, do not need sudo
+    is_root && return
+
+    # start error section
+    SUDO_TESTED="1"
+
+    if ! is_command $SUDO_CMD ; then
+        [ "$nofail" = "nofail" ] || SUDO="fatal 'For this operation run epm under root, or install and tune sudo (http://altlinux.org/sudo)'"
+        SUDO_TESTED="2"
+        return "$SUDO_TESTED"
+    fi
+
+    # if input is a console
+    if inputisatty && isatty && isatty2 ; then
+        if ! $SUDO_CMD -n true ; then
+            info "Please enter sudo user password to use sudo in the current session."
+            if ! $SUDO_CMD -l >/dev/null ; then
+                [ "$nofail" = "nofail" ] || SUDO="fatal 'For this operation run epm under root, or install and tune sudo (http://altlinux.org/sudo)'"
+                SUDO_TESTED="3"
+                return "$SUDO_TESTED"
+            fi
+        fi
+    else
+        # use sudo if one is tuned and tuned without password
+        if ! $SUDO_CMD -l -n >/dev/null 2>/dev/null ; then
+            [ "$nofail" = "nofail" ] || SUDO="fatal 'Can't use sudo (only passwordless sudo is supported here). Please run epm under root or check http://altlinux.org/sudo '"
+            SUDO_TESTED="4"
+            return "$SUDO_TESTED"
+        fi
+    fi
+
+    SUDO_TESTED="0"
+    # FIXME: does not work: sudo -- VARIABLE=some command
+    SUDO="$SUDO_CMD"
+    #SUDO="$SUDO_CMD --"
+    # check for < 1.7 version which do not support -- (and --help possible too)
+    #$SUDO_CMD -h 2>/dev/null | grep -q "  --" || SUDO="$SUDO_CMD"
+
+}
+
+# return TRUE if we can run privileged command
+sudo_allowed()
+{
+    set_sudo nofail
+}
+
+# wait for n seconds (if possible) during executing command
+# args: seconds command
+withtimeout()
+{
+    local TO=$(print_command_path timeout || print_command_path gtimeout)
+    if [ -x "$TO" ] ; then
+        $TO "$@"
+        return
+    fi
+    fatal "Possible indefinite wait due timeout command is missed"
+    # fallback: drop time arg and run without timeout
+    #shift
+    #"$@"
+}
+
+set_eatmydata()
+{
+    # don't use eatmydata (useless)
+    return 0
+    # skip if disabled
+    [ -n "$EPMNOEATMYDATA" ] && return
+    # use if possible
+    is_command eatmydata || return
+    set_sudo
+    # FIXME: check if SUDO already has eatmydata
+    [ -n "$SUDO" ] && SUDO="$SUDO eatmydata" || SUDO="eatmydata"
+    [ -n "$verbose" ] && info "Uwaga! eatmydata is installed, we will use it for disable all sync operations."
+    return 0
+}
+
+# 
+__get_package_for_command()
+{
+    case "$1" in
+        equery|revdep-rebuild)
+            echo 'gentoolkit'
+            ;;
+        update-kernel|remove-old-kernels)
+            echo 'update-kernel'
+            ;;
+    esac
+}
+
+# TODO:
+confirm() {
+    local response
+    # call with a prompt string or use a default
+    read -r -p "${1:-Are you sure? [y/N]} " response
+    case $response in
+        [yY][eE][sS]|[yY])
+            true
+            ;;
+        *)
+            false
+            ;;
+    esac
+}
+
+
+confirm_info()
+{
+    info "$*"
+    if [ -z "$non_interactive" ] ; then
+        confirm "Are you sure? [y/N]" || fatal "Exiting"
+    fi
+
+}
+
+
+is_root()
+{
+    local EFFUID="$(id -u)"
+    [ "$EFFUID" = "0" ]
+}
+
+assure_root()
+{
+    is_root || fatal "run me only under root"
+}
+
+check_su_access()
+{
+    is_command su && return
+    [ ! -f /bin/su ] && warning "/bin/su is missed. Try install su package (http://altlinux.org/su)." && return 1
+    local group="$(stat -c '%G' /bin/su)" || fatal
+    warning "Check if you are in $group group to have access to su command."
+    return 1
+}
+
+check_sudo_access()
+{
+    is_command sudo && return
+    local cmd=''
+    local i
+    for i in /bin/sudo /usr/bin/sudo ; do
+        [ -f $i ] && cmd="$i"
+    done
+    [ ! -f "$cmd" ] && warning "sudo command is missed. Try install sudo package (http://altlinux.org/sudo)." && return 1
+    local group="$(stat -c '%G' "$cmd")" || fatal
+    warning "Check if you are in $group group to have access to sudo command."
+    return 1
+}
+
+check_sudo_access_only()
+{
+    is_command sudo && return
+    local cmd=''
+    local i
+    for i in /bin/sudo /usr/bin/sudo ; do
+        [ -f $i ] && cmd="$i"
+    done
+    [ ! -f "$cmd" ] && return 1
+    local group="$(stat -c '%G' "$cmd")" || fatal
+    warning "sudo command is presence, but is not accessible for you. Check if you are in $group group to have access to sudo command."
+    return 1
+}
+
+esu()
+{
+    if is_root ; then
+        if [ -n "$*" ] ; then
+            [ -n "$quiet" ] || showcmd "$*"
+            exec "$@"
+        else
+            # just shell
+            showcmd "su -"
+            a= exec su -
+        fi
+    fi
+
+    set_pm_type
+
+
+# TODO:
+#quote() {
+#    for arg in "$@"; do
+#        printf '%s\n' "$arg" | sed "s/'/'\\\\''/g;1s/^/'/;\$s/\$/'/"
+#    done
+#}
+
+    escape_args()
+    {
+        local output=''
+        while [ -n "$1" ] ; do
+            if has_space "$1" ; then
+                [ -n "$output" ] && output="$output '$1'" || output="'$1'"
+            else
+                [ -n "$output" ] && output="$output $1" || output="$1"
+            fi
+            shift
+        done
+        echo "$output"
+    }
+
+    escaped="$(escape_args "$@")"
+
+    check_sudo_access_only
+    # sudo is not accessible, will ask root password
+    if ! set_sudo ; then
+        check_su_access
+        #info "Enter root password:"
+        if [ -n "$*" ] ; then
+            [ -n "$quiet" ] || showcmd "su - -c $escaped"
+            a= exec su - -c "$escaped"
+        else
+            # just shell
+            showcmd "su -"
+            a= exec su -
+        fi
+    fi
+
+    check_sudo_access
+
+    #info "You can be asked about your password:"
+    if [ -n "$*" ] ; then
+        [ -n "$quiet" ] || showcmd "$SUDO su - -c $escaped"
+        $SUDO su - -c "$escaped"
+    else
+        showcmd "$SUDO su -"
+        $SUDO su -
+    fi
+}
+
+regexp_subst()
+{
+    local expression="$1"
+    shift
+    sed -i -r -e "$expression" "$@"
+}
+
+# TODO: we we can't use epm directly?
+assure_exists()
+{
+    load_helper epm-assure
+    local package="$2"
+    [ -n "$package" ] || package="$(__get_package_for_command "$1")"
+
+    # ask for install: https://bugzilla.altlinux.org/42240
+    local ask=''
+    [ -n "$non_interactive" ] || ask=1
+
+    ( verbose='' direct='' interactive=$ask epm_assure "$1" $package $3 ) || fatal
+}
+
+assure_exists_erc()
+{
+    load_helper epm-assure
+    local package="erc"
+    ( direct='' epm_assure "$package" ) || epm ei erc || fatal "erc is not available to install."
+}
+
+# will replaced within disabled_eget in packaged version
+eget()
+{
+    # use internal eget only if exists
+    if [ -s $SHAREDIR/tools_eget ] ; then
+        ( EGET_BACKEND=$eget_backend $CMDSHELL $SHAREDIR/tools_eget "$@" )
+        return
+    fi
+    fatal "Internal error: missed tools_eget"
+
+    local EGET
+    # FIXME: we need disable output here, eget can be used for get output
+    assure_exists eget eget 3.3 >/dev/null
+    # run external command, not the function
+    EGET=$(print_command_path eget) || fatal "Missed command eget from installed package eget"
+    $EGET "$@"
+}
+
+
+__epm_assure_7zip()
+{
+    # install 7zip in any case (can be used)
+    if is_command 7z || is_command 7za || is_command 7zr || is_command 7zz ; then
+        :
+    else
+        epm install 7-zip || epm install p7zip
+    fi
+}
+
+# will replaced within disabled_erc in packaged version
+erc()
+{
+
+    __epm_assure_7zip
+
+    # use internal eget only if exists
+    if [ -s $SHAREDIR/tools_erc ] ; then
+        $CMDSHELL $SHAREDIR/tools_erc "$@"
+        return
+    fi
+    fatal "Internal error: missed tools_erc"
+
+    # FIXME: we need disable output here, ercat can be used for get output
+    assure_exists_erc >/dev/null
+    # run external command, not the function
+    local ERC
+    ERC=$(print_command_path erc) || fatal "Missed command erc from installed package erc"
+    $ERC "$@"
+}
+
+# will replaced within disabled_ercat in packaged version
+ercat()
+{
+    local ERCAT
+    # use internal eget only if exists
+    if [ -s $SHAREDIR/tools_ercat ] ; then
+        $CMDSHELL $SHAREDIR/tools_ercat "$@"
+        return
+    fi
+    fatal "Internal error: missed tools_ercat"
+
+    # FIXME: we need disable output here, ercat can be used for get output
+    assure_exists_erc >/dev/null
+    # run external command, not the function
+    ERCAT=$(print_command_path ercat) || fatal "Missed command ercat from installed package erc"
+    $ERCAT "$@"
+}
+
+estrlist()
+{
+    if [ -s $SHAREDIR/tools_estrlist ] ; then
+        $CMDSHELL $SHAREDIR/tools_estrlist "$@"
+        return
+    fi
+    fatal "missed tools_estrlist"
+}
+
+onefile_estrlist()
+{
+    internal_tools_estrlist "$@"
+}
+
+# will replaced within eget() in packed version
+onefile_eget()
+{
+    # check for both
+    # we really need that cross here,
+    is_command curl || assure_exists wget
+    is_command wget || assure_exists curl
+    internal_tools_eget "$@"
+}
+
+# TODO: improve and drop!
+get_package_type()
+{
+    local i
+    case $1 in
+        *.deb)
+            echo "deb"
+            return
+            ;;
+        *.rpm)
+            echo "rpm"
+            return
+            ;;
+        *.txz)
+            echo "txz"
+            return
+            ;;
+        *.tbz)
+            echo "tbz"
+            return
+            ;;
+        *.exe)
+            echo "exe"
+            return
+            ;;
+        *.msi)
+            echo "msi"
+            return
+            ;;
+        *.AppImage)
+            echo "AppImage"
+            return
+            ;;
+        *)
+            if [ -r "$1" ] && file "$1" | grep -q " ELF " ; then
+                echo "ELF"
+                return
+            fi
+            # print extension by default
+            echo "$1" | sed -e 's|.*\.||'
+            return 1
+            ;;
+    esac
+}
+
+
+# print options description from HELPCMD/HELPOPT lines in the code
+# args: section_name, [file with code]
+get_help()
+{
+    if [ "$0" = "/dev/stdin" ] || [ "$0" = "sh" ] ; then
+        return
+    fi
+    local F="$0"
+    if [ -n "$2" ] ; then
+        is_dirpath "$2" && F="$2" || F="$(dirname $0)/$2"
+    fi
+
+    cat "$F" | grep -- "# $1" | while read -r n ; do
+        if echo "$n" | grep -q "# $1: PART: " ; then
+            echo
+            echo "$n" | sed -e "s|# $1: PART: ||"
+            continue
+        fi
+        echo "$n" | grep -q "^ *#" && continue
+        opt=`echo $n | sed -e "s|) # $1:.*||g" -e 's|"||g' -e 's@^|@@'`
+        desc=`echo $n | sed -e "s|.*) # $1:||g"`
+        printf "    %-20s %s\n" "$opt" "$desc"
+    done
+}
+
+set_bigtmpdir()
+{
+    # TODO: improve BIGTMPDIR conception
+    # https://bugzilla.mozilla.org/show_bug.cgi?id=69938
+    # https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch05s15.html
+    # https://geekpeach.net/ru/%D0%BA%D0%B0%D0%BA-systemd-tmpfiles-%D0%BE%D1%87%D0%B8%D1%89%D0%B0%D0%B5%D1%82-tmp-%D0%B8%D0%BB%D0%B8-var-tmp-%D0%B7%D0%B0%D0%BC%D0%B5%D0%BD%D0%B0-tmpwatch-%D0%B2-centos-rhel-7
+    if [ -z "$BIGTMPDIR" ] ; then
+        BIGTMPDIR="/var/tmp"
+        [ -d "$BIGTMPDIR" ] || BIGTMPDIR="$TMPDIR"
+    fi
+    export BIGTMPDIR
+}
+
+assure_tmpdir()
+{
+    if [ -z "$TMPDIR" ] ; then
+        export TMPDIR="/tmp"
+        debug "Your have no TMPDIR defined. Using $TMPDIR as fallback."
+    fi
+
+    if [ ! -d "$TMPDIR" ] ; then
+        fatal "TMPDIR $TMPDIR does not exist."
+    fi
+
+    if [ ! -w "$TMPDIR" ] ; then
+        fatal "TMPDIR $TMPDIR is not writable."
+    fi
+}
+
+test_shell()
+{
+    local R
+    R="$($CMDSHELL /dev/null 2>&1)"
+    [ -n "$R" ] && fatal "$CMDSHELL is broken (bash wrongly printing out '$R'). Check ~/.bashrc and /etc/bashrc, run $CMDSHELL manually for test."
+}
+
+
+set_distro_info()
+{
+
+    test_shell
+
+    assure_tmpdir
+
+    set_bigtmpdir
+
+    # don't run again in subprocesses
+    [ -n "$DISTRVENDOR" ] && return 0
+
+    DISTRVENDOR=$PROGDIR/distr_info
+
+    # export pack of variables, see epm print info --print-eepm-env
+    [ -n "$verbose" ] && $DISTRVENDOR --print-eepm-env
+    eval $($DISTRVENDOR --print-eepm-env | grep -v '^ *#')
+}
+
+# FIXME: detect if not recognized
+set_pm_type()
+{
+    local CMD
+    set_distro_info
+
+# override package manager detection result
+if [ -n "$EPM_BACKEND" ] ; then
+    PMTYPE=$EPM_BACKEND
+    return
+fi
+# obsoleted
+if [ -n "$FORCEPM" ] ; then
+    PMTYPE=$FORCEPM
+    return
+fi
+
+}
+
+is_active_systemd()
+{
+    [ "$DISTRCONTROL" = "systemd" ]
+}
+
+assure_distr()
+{
+    local TEXT="this option"
+    [ -n "$2" ] && TEXT="$2"
+    [ "$DISTRNAME" = "$1" ] || fatal "$TEXT supported only for $1 distro"
+}
+
+# return delimiter sign in depend of package type
+get_pkg_name_delimiter()
+{
+   local pkgtype="$1"
+   [ -n "$pkgtype" ] || pkgtype="$PKGFORMAT"
+
+   [ "$pkgtype" = "deb" ] && echo "_" && return
+   echo "-"
+}
+
+# used via remove_on_exit
+__epm_remove_tmp_files()
+{
+    trap "-" EXIT
+    [ -n "$DEBUG" ] && return 0
+
+    [ -n "$verbose" ] && info "Removing tmp files on exit ..."
+
+    if [ -n "$to_clean_tmp_dirs" ] ; then
+        echo "$to_clean_tmp_dirs" | while read p ; do
+            [ -n "$verbose" ] && echo "rm -rf '$p'"
+            rm -rf "$p" 2>/dev/null
+        done
+    fi
+
+    if [ -n "$to_clean_tmp_files" ] ; then
+        echo "$to_clean_tmp_files" | while read p ; do
+            rm $verbose -f "$p" 2>/dev/null
+        done
+    fi
+
+    return 0
+}
+
+
+remove_on_exit()
+{
+    if [ -z "$set_remove_on_exit" ] ; then
+        trap "__epm_remove_tmp_files" EXIT
+        set_remove_on_exit=1
+    fi
+    while [ -n "$1" ] ; do
+        if [ -d "$1" ] ; then
+            to_clean_tmp_dirs="$to_clean_tmp_dirs
+$1"
+        elif [ -f "$1" ] ; then
+            to_clean_tmp_files="$to_clean_tmp_files
+$1"
+        fi
+        shift
+    done
+}
+
+#has_space()
+#{
+#    estrlist -- has_space "$@"
+#}
+# use internal implementation for speed
+has_space()
+{
+        # not for dash:
+        [ "$1" != "${1/ //}" ]
+        # [ "$(echo "$*" | sed -e "s| ||")" != "$*" ]
+}
+
+
+is_url()
+{
+    echo "$1" | grep -q "^[filehtps]*:/"
+}
+
+# print a path to the command if exists in $PATH
+if a= type -a type 2>/dev/null >/dev/null ; then
+print_command_path()
+{
+    a= type -fpP -- "$1" 2>/dev/null
+}
+elif a= which which 2>/dev/null >/dev/null ; then
+    # the best case if we have which command (other ways needs checking)
+    # TODO: don't use which at all, it is a binary, not builtin shell command
+print_command_path()
+{
+    a= which -- "$1" 2>/dev/null
+}
+else
+print_command_path()
+{
+    a= type "$1" 2>/dev/null | sed -e 's|.* /|/|'
+}
+fi
+
+# check if <arg> is a real command
+is_command()
+{
+    print_command_path "$1" >/dev/null
+}
+
+# compatibility layer
+
+# add realpath if missed (with -s support)
+if ! is_command realpath ; then
+realpath()
+{
+    [ -n "$*" ] || return
+    if [ "$1" = "-s" ] ; then
+        shift
+        echo "$(cd "$(dirname "$1")" && pwd -P)/$(basename "$1")" #"
+        return
+    fi
+    readlink -f "$@"
+}
+fi
+
+
+# TODO: use perl if sed -i is not accessible
+# sed -i is only supported in GNU sed.
+#  sed -i "s/$find/$replace/g" "$@"
+#  perl -p -i -e "s/$find/$replace/g" "$@"
+
+# add subst if missed
+if ! is_command subst ; then
+subst()
+{
+    sed -i -e "$@"
+}
+fi
+
+check_core_commands()
+{
+    #which which >/dev/null || fatal "Can't find which command (which or debianutils package is missed?)"
+    is_command grep || fatal "Can't find grep command (coreutils package is missed?)"
+    is_command sed || fatal "Can't find sed command (sed package is missed?)"
+}
+

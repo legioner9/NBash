@@ -1,0 +1,40 @@
+name: testsuite
+
+on:
+  push:
+    branches: [ "*" ]
+#  pull_request:
+#    branches: [ "*" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: alt:sisyphus
+
+    env:
+      ALLOW_ROOT_USER: 1
+
+    steps:
+      - name: install packages
+        run: |
+            apt-get update && apt-get -y install eepm
+            epm update
+            epm --auto install etersoft-build-utils rpm-build-intro su sudo gear
+
+      - uses: actions/checkout@v2
+
+      - name: build
+        run: |
+            echo "%_allow_root_build 1" > ${HOME}/.rpmmacros
+            git config --global --add safe.directory /__w/eepm/eepm
+            rpmbb
+
+      - name: install
+        run: |
+            apt-get install -y /usr/src/RPM/RPMS/noarch/eepm-3*.rpm
+            epm update
+
+      - name: testsuite
+        run: |
+            tests/test_all.sh

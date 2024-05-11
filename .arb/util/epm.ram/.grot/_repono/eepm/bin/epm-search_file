@@ -1,0 +1,120 @@
+#!/bin/sh
+#
+# Copyright (C) 2012, 2016, 2017, 2019  Etersoft
+# Copyright (C) 2012, 2016, 2017, 2019  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+# TODO: see epm-search (colorify for all distro)
+
+# args: index_lists word grep_string
+__alt_search_file_output()
+{
+    # grep only on left part (filename), then revert order and grep with color
+    ercat $quiet $1 | grep -h -- ".*$2.*[[:space:]]" | sed -e "s|\(.*\)\t\(.*\)|\2: \1|g" $3
+}
+
+__alt_local_content_search()
+{
+    load_helper epm-sh-altlinux
+    load_helper epm-sh-altlinux-contents-index
+    load_helper epm-search
+
+    check_alt_contents_index || init_alt_contents_index
+    update_repo_if_needed
+
+    if [ ! -s "$ALT_CONTENTS_INDEX_LIST" ] ; then
+        fatal "Have no local contents index. Check epm repo --help."
+    fi
+
+    local CI="$(cat $ALT_CONTENTS_INDEX_LIST)"
+
+    info "Searching for $1 ... "
+
+    # FIXME: do it better
+    local MGS
+    MGS=$(eval __epm_search_make_grep $quoted_args)
+    showcmd "$ cat contents_index $MGS"
+    eval "__alt_search_file_output \"$CI\" \"$(eval get_firstarg $quoted_args)\" $MGS"
+}
+
+epm_search_file()
+{
+    local CMD
+    [ -n "$pkg_filenames" ] || fatal "Search file: file name is missed"
+
+case $BASEDISTRNAME in
+    "alt")
+        __alt_local_content_search $pkg_filenames
+        return ;;
+esac
+
+case $PMTYPE in
+    apt-dpkg|aptitude-dpkg)
+        if ! is_command apt-file ; then
+            assure_exists apt-file
+            sudocmd apt-file update
+        else
+            load_helper epm-check_updated_repo
+            update_repo_if_needed
+        fi
+        docmd apt-file search $pkg_filenames
+        return ;;
+    packagekit)
+        CMD="pkcon search file"
+        ;;
+    yum-rpm)
+        # TODO
+        info "Search by full packages list is not implemented yet"
+        CMD="yum provides"
+        ;;
+    dnf-rpm)
+        # TODO
+        info "Search by full packages list is not implemented yet"
+        CMD="dnf provides"
+        ;;
+    urpm-rpm)
+        CMD="urpmf"
+        ;;
+    zypper-rpm)
+        CMD="zypper search --file-list"
+        ;;
+    pacman)
+        CMD="pacman -Qo"
+        ;;
+    slackpkg)
+        CMD="/usr/sbin/slackpkg file-search"
+        ;;
+    opkg)
+        CMD="opkg -A search"
+        ;;
+    eopkg)
+        CMD="eopkg search-file"
+        ;;
+    xbps)
+        CMD="xbps-query -Ro"
+        ;;
+    aptcyg)
+        docmd apt-cyg searchall $(echo " $pkg_filenames" | sed -e "s| /| |g")
+        return
+        ;;
+    *)
+        fatal "Have no suitable search file command for $PMTYPE"
+        ;;
+esac
+
+docmd $CMD $pkg_filenames
+
+}

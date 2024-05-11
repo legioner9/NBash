@@ -1,0 +1,76 @@
+#!/bin/sh
+#
+# Copyright (C) 2022, 2023  Etersoft
+# Copyright (C) 2022, 2023  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+epm_tool_help()
+{
+    echo "Tools embedded in epm:"
+    get_help HELPCMD $SHAREDIR/epm-tool
+
+    cat <<EOF
+  Examples:
+    epm tool eget -U http://ya.ru
+    epm tool estrlist union a b a c
+    epm tool erc archive.zip
+EOF
+}
+
+epm_tool()
+{
+    local WHAT="$1"
+    shift
+
+    case "$WHAT" in
+        "")
+            fatal "Use epm tool --help to get help."
+            ;;
+        "-h"|"--help"|"help")
+            epm_tool_help
+            ;;
+        "eget")                      # HELPCMD: downloading tool (simular to wget or curl)
+            showcmd eget "$@"
+            eget "$@"
+            ;;
+        "erc")                       # HELPCMD: universal archive manager
+            showcmd erc "$@"
+            erc "$@"
+            ;;
+        "ercat")                     # HELPCMD: universal file uncompressor
+            showcmd ercat "$@"
+            ercat "$@"
+            ;;
+        "estrlist")                  # HELPCMD: string operations
+            showcmd estrlist "$@"
+            estrlist "$@"
+            ;;
+        "json")                      # HELPCMD: json operations
+            showcmd json "$@"
+            $CMDSHELL $SHAREDIR/tools_json "$@"
+            ;;
+        "yaml")                      # HELPCMD: parse yaml operations
+            showcmd yaml "$@"
+            $CMDSHELL $SHAREDIR/tools_yaml "$@"
+            ;;
+        "which")
+            print_command_path "$@"  # HELPCMD: which like command (no output to stderr, can works without which package)
+            ;;
+        *)
+            fatal "Unknown command $ epm tool $WHAT. Use epm print help for get help."
+            ;;
+    esac
+}

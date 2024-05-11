@@ -1,0 +1,155 @@
+#!/bin/sh
+#
+# Copyright (C) 2020, 2021  Etersoft
+# Copyright (C) 2020, 2021  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+load_helper epm-sh-altlinux
+
+
+# under root only
+SAVELISTDIR=$epm_vardir/eepm-etc-save
+__save_alt_repo_lists()
+{
+    assure_root
+    info "Creating copy of all sources lists to $SAVELISTDIR ..."
+    local i
+    rm -rf $verbose $SAVELISTDIR 2>/dev/null
+    mkdir -p $SAVELISTDIR/apt/ $SAVELISTDIR/apt/sources.list.d/
+    for i in /etc/apt/sources.list /etc/apt/sources.list.d/*.list ; do
+        [ -s "$i" ] || continue
+        local DD="$(echo "$i" | sed -e "s|/etc|$SAVELISTDIR|")"
+        cp -af $verbose "$i" "$DD" || fatal "Can't save apt source list files to $SAVELISTDIR"
+    done
+}
+
+# under root only
+__restore_alt_repo_lists()
+{
+    assure_root
+    info "Restoring copy of all sources lists from $SAVELISTDIR ..."
+    local i
+    [ -d "$SAVELISTDIR/apt" ] || return 0
+    mkdir -p $SAVELISTDIR/apt/ $SAVELISTDIR/apt/sources.list.d/
+    for i in /etc/apt/sources.list /etc/apt/sources.list.d/*.list ; do
+        [ -s "$i" ] || continue
+        local DD="$(echo "$i" | sed -e "s|/etc|$SAVELISTDIR|")"
+        # restore only if there are differences
+        if diff -q "$DD" "$i" >/dev/null ; then
+            rm -f $verbose "$DD"
+        else
+            mv $verbose "$DD" "$i" || warning "Can't restore $i file"
+        fi
+    done
+}
+
+# save and restore repo lists
+__on_error_restore_alt_repo_lists()
+{
+    warning "An error occurred..."
+    epm repo restore
+}
+
+try_change_alt_repo()
+{
+    epm repo save
+    trap __on_error_restore_alt_repo_lists EXIT
+}
+
+end_change_alt_repo()
+{
+    trap - EXIT
+}
+
+
+
+epm_reposave()
+{
+case $PMTYPE in
+    apt-*)
+        if ! is_root ; then
+            sudoepm repo save
+            return
+        fi
+        __save_alt_repo_lists
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+
+}
+
+epm_reporestore()
+{
+case $PMTYPE in
+    apt-*)
+        if ! is_root ; then
+            sudoepm repo restore
+            return
+        fi
+        __restore_alt_repo_lists
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+
+}
+
+epm_reporeset()
+{
+case $BASEDISTRNAME in
+    alt)
+        sudoepm repo set $DISTRVERSION
+        return
+        ;;
+esac
+
+case $PMTYPE in
+    winget)
+        sudocmd winget source reset
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+
+}
+
+
+epm_repostatus()
+{
+case $PMTYPE in
+    apt-*)
+        load_helper epm-check_updated_repo
+        if [ -n "$short" ] ; then
+            local days
+            days="$(__epm_check_apt_db_days)" && return 0
+            echo "$days"
+            return 1
+        else
+            local days
+            days="$(__epm_check_apt_db_days)" && info "APT database is actual." && return 0
+            info "APT database is $days."
+            return 1
+        fi
+        ;;
+    *)
+        fatal "Have no suitable command for $PMTYPE"
+        ;;
+esac
+}
