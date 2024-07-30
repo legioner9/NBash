@@ -59,20 +59,19 @@ ${NORMAL}"
 
     cd ${HOME}/v
 
-    local arr_do_not=(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 24 26 44)
-    local num=
+    local item=
 
-    llocal str_0="https://youtu.be/"
+    local str_0="https://youtu.be/"
 
-    for ((num = 1; num <= 193; num++)); do
-        [[ " ${arr_do_not[*]} " =~ $num ]] && continue
+    for item in $(_f2e vdo_pf_v2.lst); do
 
-        echo -e "${GREEN}\$num = $num${NORMAL}" #print variable
+        echo -e "${GREEN}\$item = $item${NORMAL}" #print variable
         # yt-dlp -c "https://www.youtube.com/watch?v=tJwDiAPqSw0&list=PL6TsfzLhXW-EZH0qfKIhbr6rsMkXTt5co&index=$num&pp=iAQB"
 
-        echo -e "${HLIGHT}--- yt-dlp -c https://www.youtube.com/watch?v=AQTHyG-KM7U&list=PL6TsfzLhXW-EZH0qfKIhbr6rsMkXTt5co&index=19 ---${NORMAL}" #start files
+        # echo -e "${HLIGHT}--- yt-dlp -c https://www.youtube.com/watch?v=AQTHyG-KM7U&list=PL6TsfzLhXW-EZH0qfKIhbr6rsMkXTt5co&index=19 ---${NORMAL}" #start files
+        # "wv*+wa/w"
 
-        until yt-dlp -c "https://www.youtube.com/watch?v=AQTHyG-KM7U&list=PL6TsfzLhXW-EZH0qfKIhbr6rsMkXTt5co&index=19"; do
+        until yt-dlp -c -f worstvideo ${str_0}/${item}; do
             :
         done
 
