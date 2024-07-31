@@ -71,7 +71,8 @@ ${NORMAL}"
         # echo -e "${HLIGHT}--- yt-dlp -c https://www.youtube.com/watch?v=AQTHyG-KM7U&list=PL6TsfzLhXW-EZH0qfKIhbr6rsMkXTt5co&index=19 ---${NORMAL}" #start files
         # "wv*+wa/w"
 
-        until yt-dlp -c -f worstvideo ${str_0}/${item}; do
+        # until yt-dlp -c -f worstvideo+worstaudio ${str_0}/${item}; do
+        until yt-dlp -c ${str_0}/${item}; do
             :
         done
 
