@@ -57,19 +57,26 @@ ${NORMAL}"
 
     mkdir ${HOME}/v
 
+    local path_list_curr=${path_dir}/vdo_pf_v3.lst
+    local path_list_work=${HOME}/v/vdo_pf_v3.lst
+
+    cp ${path_list_curr} ${HOME}/v
+
     cd ${HOME}/v
 
     local item=
 
     local str_0="https://youtu.be/"
 
-    for item in $(_f2e vdo_pf_v2.lst); do
+    for item in $(_f2e vdo_pf_v3.lst); do
 
         echo -e "${GREEN}\$item = $item${NORMAL}" #print variable
         # yt-dlp -c "https://www.youtube.com/watch?v=tJwDiAPqSw0&list=PL6TsfzLhXW-EZH0qfKIhbr6rsMkXTt5co&index=$num&pp=iAQB"
 
         # echo -e "${HLIGHT}--- yt-dlp -c https://www.youtube.com/watch?v=AQTHyG-KM7U&list=PL6TsfzLhXW-EZH0qfKIhbr6rsMkXTt5co&index=19 ---${NORMAL}" #start files
         # "wv*+wa/w"
+        # '(bv*[ext=mp4][height<=720]+ba*[ext=m4a])[protocol^=http]'
+        # 'worstvideo[vcodec^=avc1]+worstaudio[acodec^=mp4a]'
 
         # until yt-dlp -c -f worstvideo+worstaudio ${str_0}/${item}; do
         until yt-dlp -c ${str_0}/${item}; do
