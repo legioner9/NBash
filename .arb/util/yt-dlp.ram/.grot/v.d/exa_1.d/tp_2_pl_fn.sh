@@ -2,7 +2,7 @@
 
 echo -e "${CYAN}--- v_1_fn_rnd7_7dec84c() $* in file://${REPO_PATH}/NBash/.arb/util/yt-dlp.ram/.grot/v.d/exa_1.d/v_1_fn.sh---${NORMAL}" #started functions
 
-v_1_fn_rnd7_7dec84ch() {
+v_1_fn_rnd7_7dec84cx() {
 
     # gig from file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh
 
@@ -10,7 +10,7 @@ v_1_fn_rnd7_7dec84ch() {
     local ARGS=("$@")
     local NARGS=$#
     local PPWD=$PWD
-    local path_file="${REPO_PATH}/NBash/.arb/util/yt-dlp.ram/.grot/v.d/exa_1.d/v_2_fn.sh"
+    local path_file="${REPO_PATH}/NBash/.arb/util/yt-dlp.ram/.grot/v.d/exa_1.d/tp_2_pl_fn.sh"
     local path_dir="$(dirname "$path_file")"
 
     # echo -e "${CYAN}--- $FNN() $* in file://${path_file}---${NORMAL}" #started functions
@@ -55,22 +55,20 @@ ${NORMAL}"
 
     echo "START BODY FN : ${FNN}() $*"
 
-    mkdir ${HOME}/v_2
+    mkdir ${HOME}/tp_2_pl
 
-    local path_list_curr=${path_dir}/vdo_pf_v3.lst
-    local path_list_work=${HOME}/v/vdo_pf_v3.lst
+    # local path_list_curr=${path_dir}/vdo_pf_v3.lst
+    # local path_list_work=${HOME}/v/vdo_pf_v3.lst
 
-    cp ${path_list_curr} ${HOME}/v_2
+    cp ${path_list_curr} ${HOME}/tp_2_pl
 
-    cd ${HOME}/v_2
+    cd ${HOME}/tp_2_pl
 
-    local item=
 
-    local str_0="https://youtu.be/"
+    local str_0="https://www.youtube.com/playlist?list=PLfnvyWr5sdi2tJO4Fb5YLMMSluMKZsq_4"
 
-    for item in $(_f2e vdo_pf_v3.lst); do
 
-        echo -e "${GREEN}\$item = $item${NORMAL}" #print variable
+
         # yt-dlp -c "https://www.youtube.com/watch?v=tJwDiAPqSw0&list=PL6TsfzLhXW-EZH0qfKIhbr6rsMkXTt5co&index=$num&pp=iAQB"
 
         # echo -e "${HLIGHT}--- yt-dlp -c https://www.youtube.com/watch?v=AQTHyG-KM7U&list=PL6TsfzLhXW-EZH0qfKIhbr6rsMkXTt5co&index=19 ---${NORMAL}" #start files
@@ -79,11 +77,11 @@ ${NORMAL}"
         # 'worstvideo[vcodec^=avc1]+worstaudio[acodec^=mp4a]'
 
         # until yt-dlp -c -f worstvideo+worstaudio ${str_0}/${item}; do
-        until yt-dlp -c -f '(bv*[ext=mp4][height<=320]+ba*[ext=m4a])[protocol^=http]' ${str_0}/${item}; do
+        until yt-dlp -c -f '(bv*[ext=mp4][height<=720]+ba*[ext=m4a])[protocol^=http]' -o '%(title)s.%(ext)s' --yes-playlist ${str_0}; do
             :
         done
 
-    done
+
 
     # until yt-dlp https://www.youtube.com/playlist?list=PL6TsfzLhXW-EZH0qfKIhbr6rsMkXTt5co; do
     #     :
@@ -95,6 +93,6 @@ ${NORMAL}"
 
     return 0
 
-}0 
+}
 
-v_1_fn_rnd7_7dec84ch "$@"
+v_1_fn_rnd7_7dec84cx "$@"

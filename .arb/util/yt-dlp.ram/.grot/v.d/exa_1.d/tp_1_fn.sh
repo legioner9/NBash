@@ -2,7 +2,7 @@
 
 echo -e "${CYAN}--- v_1_fn_rnd7_7dec84c() $* in file://${REPO_PATH}/NBash/.arb/util/yt-dlp.ram/.grot/v.d/exa_1.d/v_1_fn.sh---${NORMAL}" #started functions
 
-v_1_fn_rnd7_7dec84ch() {
+v_1_fn_rnd7_7dec84cd() {
 
     # gig from file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh
 
@@ -10,7 +10,7 @@ v_1_fn_rnd7_7dec84ch() {
     local ARGS=("$@")
     local NARGS=$#
     local PPWD=$PWD
-    local path_file="${REPO_PATH}/NBash/.arb/util/yt-dlp.ram/.grot/v.d/exa_1.d/v_2_fn.sh"
+    local path_file="${REPO_PATH}/NBash/.arb/util/yt-dlp.ram/.grot/v.d/exa_1.d/tp_1_fn.sh"
     local path_dir="$(dirname "$path_file")"
 
     # echo -e "${CYAN}--- $FNN() $* in file://${path_file}---${NORMAL}" #started functions
