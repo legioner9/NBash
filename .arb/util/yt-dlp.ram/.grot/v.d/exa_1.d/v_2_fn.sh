@@ -95,6 +95,6 @@ ${NORMAL}"
 
     return 0
 
-}0 
+} 
 
 v_1_fn_rnd7_7dec84ch "$@"
