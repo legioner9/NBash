@@ -66,7 +66,7 @@ ${NORMAL}"
 
     local item=
 
-    local str_0="https://youtu.be/"
+    local str_0="https://www.youtube.com/watch?v="
 
     for item in $(_f2e vdo_pf_v3.lst); do
 
@@ -79,7 +79,8 @@ ${NORMAL}"
         # 'worstvideo[vcodec^=avc1]+worstaudio[acodec^=mp4a]'
 
         # until yt-dlp -c -f worstvideo+worstaudio ${str_0}/${item}; do
-        until yt-dlp -c -f '(bv*[ext=mp4][height<=320]+ba*[ext=m4a])[protocol^=http]' ${str_0}/${item}; do
+        echo -e "${HLIGHT}--- yt-dlp -c -f '(bv*[ext=mp4][height<=320]+ba*[ext=m4a])[protocol^=http]' ${str_0}/${item} ---${NORMAL}" #start files
+        until yt-dlp -c -f '(bv*[ext=mp4][height<=320]+ba*[ext=m4a])[protocol^=http]' ${str_0}${item}; do
             :
         done
 
