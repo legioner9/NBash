@@ -7,7 +7,7 @@
 arrr=(d b a z x)
 
 # IFS=$'\n' sorted_arr=($(sort <<<"${arrr[*]}"))
-# IFS=$' \t\n'
+# unset IFS
 
 # echo -e "${sorted_arr[*]}" #print variable
 
