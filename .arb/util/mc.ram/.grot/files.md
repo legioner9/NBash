@@ -1,5 +1,9 @@
 # Files mc
 
+    1) ~/.config/mc/
+    2) /etc/mc/
+    3) /usr/share/mc/
+
 ## user
     ${HOME}/.local/share/mc 
     ${HOME}/.config/mc
