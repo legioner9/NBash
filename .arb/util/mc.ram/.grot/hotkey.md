@@ -9,7 +9,13 @@
     
     dr directory
     fl file
+    sd subdir
+    nm name
+    pth full path
+    dir_pth dirname
+    base_pth basename
     
+    bfr buffer
     cli command line
     spw select pont window
     ttw tiping text window
@@ -42,6 +48,7 @@
      
 ## in editor 
 
+    F3 start-end elect cur-arrow
     ^u undo
     %F3 bin_repr fl
     F12 ttw save fl as
@@ -52,9 +59,11 @@
     - select block  
     - ^f - select file in dial to save
     - cusor on ins place
-    - %f - select file in dial to insert
+    - %F5 - select file in dial to insert
 
 ## in cli
 
     *p prev hist cmnd
     *
+    
+## bfr
