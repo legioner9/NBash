@@ -6,11 +6,13 @@
     @ Alt
     * Esc
     Ins insert key
+    Tab Tabblate
     
     dr directory
     fl file
     sd subdir
     nm name
+    en entety
     pth full path
     dir_pth dirname
     base_pth basename
@@ -33,7 +35,11 @@
     
     freq_use freequently used
     bin_repr binary representation
-    sel_bl select block 
+    sel_bl select block
+    cat_fn quick view fn
+    
+    *<n>==F<n>
+    <n> (0|1|...)
     
 ## in fs
 
@@ -44,9 +50,23 @@
     ^m fl_nm to cli 
     *a^m pth to cli
     ^\ ted hotlist freq_use dr
-    @x-h add cur dr to hotlist freq_use 
+    ^x-h add cur dr to hotlist freq_use 
     @i double acpn 
-    ^l 
+    ^r update fs
+    ^l update scren mc
+    ^x-c spw chmod fl
+    ^x-o spw chown fl
+    ^x-l ln fl
+    ^x-s ln -s fl
+    ^x-i info acpn in pspn
+    ^x-q cat_fl
+    @g first en
+    @j last en
+    
+    
+    
+    
+    
      
 ## in editor 
 
@@ -56,6 +76,7 @@
     F12 ttw save fl as
     %F4 ttw srch str with rpls and rgpx
     %Ins paste from clpb 
+    
     
 - cp pst block
     - select block  
