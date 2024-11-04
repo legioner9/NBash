@@ -43,8 +43,10 @@
     *a sd_nm to cli
     ^m fl_nm to cli 
     *a^m pth to cli
-    ^\ te hotlist freq_use dr
+    ^\ ted hotlist freq_use dr
+    @x-h add cur dr to hotlist freq_use 
     @i double acpn 
+    ^l 
      
 ## in editor 
 
