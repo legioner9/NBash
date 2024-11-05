@@ -6,7 +6,8 @@
     @ Alt
     * Esc
     Ins insert key
-    Tab Tabblate
+    Tab Tabulate
+    Ent
     
     dr directory
     fl file
@@ -45,28 +46,32 @@
 
     ^o collapse mc 
     ^s search fl 
+    F8 del act/hlight
     %F4 new fl
-    *a sd_nm to cli
-    ^m fl_nm to cli 
+    %F5 copy to self pn
+    %F6 rename/move to self pn
+    *a (@a) sd_nm to cli
+    ^m (*Ent) fl_nm to cli 
     *a^m pth to cli
     ^\ ted hotlist freq_use dr
     ^x-h add cur dr to hotlist freq_use 
     @i double acpn 
     ^r update fs
-    ^l update scren mc
     ^x-c spw chmod fl
     ^x-o spw chown fl
     ^x-l ln fl
     ^x-s ln -s fl
     ^x-i info acpn in pspn
     ^x-q cat_fl
-    @g first en
-    @j last en
+    ^x-g background task
+    ^x-a curr VFS (e.c. ftp)
+    ^x-d diff pn
+    ^s search fl
+    -^%? ext search fl
     
-    
-    
-    
-    
+    @g first en pn
+    @j last en pn   
+    *c tts go to dr
      
 ## in editor 
 
@@ -76,6 +81,7 @@
     F12 ttw save fl as
     %F4 ttw srch str with rpls and rgpx
     %Ins paste from clpb 
+    ^l redraw screen
     
     
 - cp pst block
