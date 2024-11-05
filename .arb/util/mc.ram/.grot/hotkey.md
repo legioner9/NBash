@@ -21,10 +21,21 @@
     bfr buffer
     cli command line
     spw select pont window
-    ttw tiping text window
-    tts tiping text string
-    ted tiping editor
+    ttw typing text window
+    tts typing text string
+    ted typing editor
     
+    fst first
+    nxt next
+    lst last
+    prv previous
+    wrd word
+    chr char
+    
+    rght right
+    lft left
+    up up
+    dwn down
     acpn active panel
     pspn passive panel
     clpb clipboard
@@ -42,9 +53,19 @@
     *<n>==F<n>
     <n> (0|1|...)
     
+## in pn    
+    
+    ^o collapse mc
+    @, vert/horiz 
+    @g first en
+    @j last en
+    ^u change num 
+    *c (^c) tts go to dr
+    ^t loop display mode
+    ^x-! command filter (panelizition)
+    
 ## in fs
-
-    ^o collapse mc 
+     
     ^s search fl 
     F8 del act/hlight
     %F4 new fl
@@ -68,22 +89,31 @@
     ^x-d diff pn
     ^s search fl
     -^%? ext search fl
-    
-    @g first en pn
-    @j last en pn   
-    *c tts go to dr
      
 ## in editor 
 
     F3 start-end elect cur-arrow
+    F4 ttw replace
+    F6 ttw search
     ^u undo
     %F3 bin_repr fl
     F12 ttw save fl as
     %F4 ttw srch str with rpls and rgpx
     %Ins paste from clpb 
     ^l redraw screen
-    
-    
+    @l ttw nom str for go
+    @t ttw param sort in dedicated block 
+    @u ttw command - insert in curs result
+    ^k del subs after curs
+    ^n new fl
+    ^s on/off syntax hlight
+    ^x go fst_chr nxt_wrd
+    ^a fst_chr str 
+    ^z go fst_chr prv_wrd    
+    ^y del str
+    @n on/off numerating str
+    %arw_rght/arw_lft horizin blocking
+    %arw_up/arw_dwn horizin blocking    
 - cp pst block
     - select block  
     - ^f - select file in dial to save
