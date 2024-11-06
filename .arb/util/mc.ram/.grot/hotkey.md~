@@ -63,6 +63,7 @@
     *c (^c) tts go to dr
     ^t loop display mode
     ^x-! command filter (panelizition)
+    @i double acpn
     
 ## in fs
      
@@ -76,7 +77,6 @@
     *a^m pth to cli
     ^\ ted hotlist freq_use dr
     ^x-h add cur dr to hotlist freq_use 
-    @i double acpn 
     ^r update fs
     ^x-c spw chmod fl
     ^x-o spw chown fl

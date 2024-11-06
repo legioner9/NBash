@@ -23,13 +23,12 @@ _lcu_is_z() {
     local tst_dir=${HOME}/.d/.rc.d/.st.rc.d/.st.tst.d/${FNN}.tst.d
     local tst_dir_file=${tst_dir}/${FNN}.tst.sh
     local flow_dir_file_1=${tst_dir}/${FNN}.tst.sh.deb1
+    local tst_lst_env=${tst_dir}/.lst/tst_env.lst
 
     local data_dir=${HOME}/.d/.rc.d/.st.rc.d/.st.sh.data.d/${FNN}.d
     local user_datd_dir=${ST_RC_D_DATA_PATH}/.d/.st.rc.data.d/${FNN}.d
 
     local hie_file=${HOME}/.d/.rc.d/.st.rc.d/.st.hie.d/${FNN}.hie
-    local tst_lst_env=${tst_dir}/.lst/tst_env.lst
-    local tst_lst_env=${tst_dir}/.lst/tst_env.lst
 
     # echo -e "${CYAN}--- start : ${FNN}() $@ ---${NORMAL}" #sistem info mesage
 
