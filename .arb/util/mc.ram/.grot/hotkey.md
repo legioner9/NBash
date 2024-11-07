@@ -35,7 +35,7 @@
     rght right
     lft left
     up up
-    dwn down
+    dwn down 
     acpn active panel
     pspn passive panel
     clpb clipboard

@@ -1,7 +1,6 @@
 # main chapt
 
 ## mean
-
     ^ Cntl
     % Shift
     @ Alt
@@ -63,6 +62,7 @@
     acpn active panel
     pspn passive panel
     clpb clipboard
+    blk block
     
     srch search
     rpls replace
@@ -128,7 +128,6 @@
     <wrd> word
 
 ## Navigaton 
-
     h j k l as arrow
     w fst_chr_nxt_wrd (go)
     e lst_chr_nxt_wrd (go)
@@ -140,7 +139,6 @@
     ^w-^w nxt_wnd
 
 ## Action Main Mode
-
     d del (mact)
     y cpy (mact)
     p pst (mact)
@@ -163,29 +161,56 @@
     <nnum>(mact)(go)
     <nnum>(dact)
     <nnum>%g 
+
+## Ins modes
+    a - ins bfr crs
+    A - ins in end wrd
+    i - ins in crs
+
 ## Info
     ^g - info fl
 
 ## %
-
     crs at bct - mark pair bct
 
-## :
+## o, O
+    o - j+i
+    O - k+i
 
+## %r
+    ins to str over char (put str to str
+
+## :
+    Tab - loop win_word at this position 
+    <wrd>^d - list vim_wrd start with <wrd>       
     w - wright
     q - quite (exit)
     set - options
 
-### rpl what to then
+### :set
+    no<wrd> - invret 
+    ic - ignor registr
+    hls - hlight srh
+    is - live srh
 
+### rpl what to then
     s/<what>/<then> fst_mch in str
     s/<what>/<then>/g all_mch in str
     <#1>,<#2>s/<what>/<then>/g all_mch in rng str from <#1> to <#2>
     %s/<what>/<then>/g all_mch in fl
     %s/<what>/<then>/gc _mch in fl with question
 
+### wright blk
+- in v_mod hlght blk
+- wrght blk to fl
+    '<,'>w <nm_fl>
+
 ### cmd in shell
     !<cmd>Ent
+
+### insert fl to dwn crs
+    r <nm_fl>
+
 ## / down srch, ? up srch
 
     <wrd>Ent
