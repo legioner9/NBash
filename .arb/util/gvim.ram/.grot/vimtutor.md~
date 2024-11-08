@@ -200,6 +200,10 @@
     A - ins in end wrd
     i - ins in crs
     I - ins bef fst chr str 
+## Visual modes
+    v - by chr
+    %v - by str
+    ^v - by blk
 
 ## Info
     ^g - info fl
