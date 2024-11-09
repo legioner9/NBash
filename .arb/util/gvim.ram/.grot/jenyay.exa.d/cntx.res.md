@@ -19,9 +19,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731130985_09112024124305
+DATE: 1731142368_09112024155248
 
-DATX: 1731130985
+DATX: 1731142368
 -->
 
 
@@ -30,6 +30,8 @@ DATX: 1731130985
 
 
 # Lesson 1
+
+
 
 
 [002.hello.code.vim](/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.ins.d/001.les/002.hello.code.vim)
@@ -42,6 +44,20 @@ echo "Hello, Vim"
 
 
 ```
+
+[001.txt.md](/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.ins.d/001.les/003.d/001.txt.md)
+
+
+
+## Специальные папки
+
+- Выполнение скриптов построчно через командную строку Vim.
+- Выполнение скриптов, сохраненных в отдельных файлах с помощью команды source.
+- Выполнение текущего открытого скрипта с помощью команды source %.
+- Выполнение скрипта из файла .vimrc/_vimrc.
+- Выполнение скриптов из папки plugin при каждом запуске Vim.
+- Выполнение скриптов из папки ftplugin при открытии файлов определенного типа.
+
 
 [001.txt.md](/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.ins.d/002.les/001.txt.md)
 
