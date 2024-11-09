@@ -1,0 +1,84 @@
+<!--
+CMND: ufl_stl0 4 cntx.ins.d cntx.res.md
+
+PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d
+
+FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
+
+DATE: 1731129767_09112024122247
+
+DATX: 1731129767
+-->
+
+
+[001.hello.code.vim](/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.ins.d/001.les/001.hello.code.vim)
+
+
+```vim
+
+echo "Hello, Vim"
+ 
+
+
+```
+
+[001.var.code.vim](/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.ins.d/002.les/001.var.code.vim)
+
+
+```vim
+
+" int
+let a = 1
+" float 
+let b = a + 0.1
+" string
+let str = "csetrty"
+" list
+let lst = [1 , "w" , 3]
+" dict
+let dct = {"a": 1 , "b": 2 , "rrr": [1 , 2 , "t"]}
+let f = {"foo": 1 , "bar": 2, "qqq": [1, 2, 3]}
+
+
+echo "a = " string (a) "type =" type (a)
+echo "b = " string (b) "type =" type (b)
+echo "str = " string (str) "type =" type (str)
+echo "lst = " string (lst) "type =" type (lst)
+echo "dct = " string (dct) "type =" type (dct)
+
+unlet a b str lst dct
+ 
+
+
+```
+
+[002.local.code.vim](/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.ins.d/002.les/002.local.code.vim)
+
+
+```vim
+
+" int
+let a = 1
+" float 
+let b = a + 0.1
+" string
+let str = "csetrty"
+" list
+let lst = [1, "w", 3]
+" dict
+let dct = {"a": 1, "b": 2, "rrr": [1, 2, "t"]}
+
+echo "a = " string (a) "type =" type (a)
+echo "b = " string (b) "type =" type (b)
+echo "str = " string (str) "type =" type (str)
+echo "lst = " string (lst) "type =" type (lst)
+echo "dct = " string (dct) "type =" type (dct)
+
+unlet a b str lst dct
+ 
+
+
+```
+
+
+
