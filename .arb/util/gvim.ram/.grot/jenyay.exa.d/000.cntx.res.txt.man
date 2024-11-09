@@ -1,17 +1,24 @@
 <!--
-CMND: ufl_stl0 4 cntx.ins.d cntx.res.md
+CMND: ufl_stl0 4 /home/st/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.ins.d /home/st/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.res.md
 
 PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731129767_09112024122247
+DATE: 1731130985_09112024124305
 
-DATX: 1731129767
+DATX: 1731130985
 -->
 
 
-[001.hello.code.vim](/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.ins.d/001.les/001.hello.code.vim)
+[001.txt.md](/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.ins.d/001.les/001.txt.md)
+
+
+
+# Lesson 1
+
+
+[002.hello.code.vim](/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.ins.d/001.les/002.hello.code.vim)
 
 
 ```vim
@@ -22,7 +29,14 @@ echo "Hello, Vim"
 
 ```
 
-[001.var.code.vim](/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.ins.d/002.les/001.var.code.vim)
+[001.txt.md](/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.ins.d/002.les/001.txt.md)
+
+
+
+# Lesson 1
+
+
+[002.var.code.vim](/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.ins.d/002.les/002.var.code.vim)
 
 
 ```vim
@@ -52,7 +66,7 @@ unlet a b str lst dct
 
 ```
 
-[002.local.code.vim](/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.ins.d/002.les/002.local.code.vim)
+[003.local.code.vim](/REPOBARE/_repo/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.ins.d/002.les/003.local.code.vim)
 
 
 ```vim

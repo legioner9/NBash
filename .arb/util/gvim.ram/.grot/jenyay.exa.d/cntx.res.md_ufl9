@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo -e "${CYAN}--- cntx.res_rnd7_8c32ad3() $* in file://${REPO_PATH}/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.res.md_ufl9 ---${NORMAL}" #started functions
+echo -e "${CYAN}--- cntx.res_rnd7_ee43bf7() $* in file://${REPO_PATH}/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.res.md_ufl9 ---${NORMAL}" #started functions
 
-cntx.res_rnd7_8c32ad3() {
+cntx.res_rnd7_ee43bf7() {
 
     # gig from file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh
 
@@ -69,4 +69,4 @@ ufl_stl0 9 ${REPO_PATH}/NBash/.arb/util/gvim.ram/.grot/jenyay.exa.d/cntx.ins.d $
 
 }
 
-cntx.res_rnd7_8c32ad3 "$@"
+cntx.res_rnd7_ee43bf7 "$@"
