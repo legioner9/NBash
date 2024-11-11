@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo -e "${CYAN}--- rbld_res_md_rnd7_1306591() $* in file://${REPO_PATH}/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/rbld_res_md.sh ---${NORMAL}" #started functions
+echo -e "${CYAN}--- rbld_res_md_rnd7_a84e0fd() $* in file://${REPO_PATH}/NBash/.d/.opus/rbld_res_md.sh ---${NORMAL}" #started functions
 
-rbld_res_md_rnd7_1306591() {
+rbld_res_md_rnd7_a84e0fd() {
 
     # gig from file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh
 
@@ -10,7 +10,7 @@ rbld_res_md_rnd7_1306591() {
     local ARGS=("$@")
     local NARGS=$#
     local PPWD=$PWD
-    local path_file="${REPO_PATH}/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/rbld_res_md.sh"
+    local path_file="${REPO_PATH}/NBash/.d/.opus/rbld_res_md.sh"
     local path_dir="$(dirname "$path_file")"
 
     # echo -e "${CYAN}--- $FNN() $* in file://${path_file}---${NORMAL}" #started functions
@@ -58,10 +58,31 @@ ${NORMAL}"
     echo "START BODY FN : ${FNN}() $*"
 
     #{{body_fn}}
+    
+    #! обработка всех opus util
+
+    local util_d=${REPO_PATH}/NBash/.arb/util
+    local util_sd=
+    local md_ufl9=
+
+    for util_sd in $(_dd2e ${util_d}); do
+
+        md_ufl9=${util_d}/${util_sd}/.grot/opus.d/one.d/cntx.res.md_ufl9
+        md_ufl9_dirname=${util_d}/${util_sd}/.grot/opus.d/one.d
+
+        if [ -d "${md_ufl9_dirname}" ]; then
+            if [ -f "${md_ufl9}" ]; then
+                _source_w1_isf ${md_ufl9}
+            else
+                ufl_stl0 9 "${md_ufl9_dirname}"/cnx.d "${md_ufl9_dirname}"/res.md 2
+            fi
+        fi
+    done
 
     #! rebuild all in dir
+    local sd=
     local dot_ins_d=${path_dir}/.ins_dr
-    for sd in $(_dd2e ${dot_ins_d}) ; do
+    for sd in $(_dd2e ${dot_ins_d}); do
         if [ -f ${dot_ins_d}/${sd}/res.md_ufl9 ]; then
             _source_w1_isf ${dot_ins_d}/${sd}/res.md_ufl9
         else
@@ -77,13 +98,11 @@ ${NORMAL}"
 
     _edit $path_dir/cntx.res.md
 
-
-
     #! END BODY FN ---------------------------------------
-    
+
     cd $PPWD
     return 0
 
 }
 
-rbld_res_md_rnd7_1306591 "$@"
+rbld_res_md_rnd7_a84e0fd "$@"
