@@ -8,10 +8,6 @@ Start Contents Menu
 
 <!-- TOC tocDepth:1..6 chapterDepth:1..6 -->
 
-- [first head](#first-head)
-  - [001.rcm.d](#001rcmd)
-  - [sed](#sed)
-
 <!-- /TOC -->
 
 End Contents Menu
@@ -23,9 +19,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731399384_12112024151624
+DATE: 1731409278_12112024180118
 
-DATX: 1731399384
+DATX: 1731409278
 -->
 
 
