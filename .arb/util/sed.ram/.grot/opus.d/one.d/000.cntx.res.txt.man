@@ -1,13 +1,13 @@
 <!--
-CMND: ufl_stl0 4 /home/st/REPOBARE/_repo/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/cntx.ins.d /home/st/REPOBARE/_repo/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/cntx.res.md
+CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/cntx.ins.d /home/st/REPOBARE/_repo/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/cntx.res.md 2
 
 PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util/sed.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731353934_12112024023854
+DATE: 1731385609_12112024112649
 
-DATX: 1731353934
+DATX: 1731385609
 -->
 
 
