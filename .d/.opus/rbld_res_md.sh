@@ -58,27 +58,35 @@ ${NORMAL}"
     echo "START BODY FN : ${FNN}() $*"
 
     #{{body_fn}}
-    
+
     #! обработка всех opus util
 
     local util_d=${REPO_PATH}/NBash/.arb/util
     local util_sd=
     local md_ufl9=
+    local opus_d=
+    local sd_opus_d=
 
     for util_sd in $(_dd2e ${util_d}); do
 
-        md_ufl9=${util_d}/${util_sd}/.grot/opus.d/one.d/cntx.res.md_ufl9
-        md_ufl9_dirname=${util_d}/${util_sd}/.grot/opus.d/one.d
+        opus_d=${util_d}/${util_sd}/.grot/opus.d/
+        
+        if [ -d ${opus_d} ]; then
+            for sd_opus_d in $(_dd2e ${opus_d}); do
 
-        if [ -d "${md_ufl9_dirname}" ]; then
-            if [ -f "${md_ufl9}" ]; then
-                _source_w1_isf ${md_ufl9}
-            else
-                ufl_stl0 9 "${md_ufl9_dirname}"/cnx.d "${md_ufl9_dirname}"/res.md 2
-            fi
+                md_ufl9=${opus_d}/${sd_opus_d}/cntx.res.md_ufl9
+                md_ufl9_dirname=${opus_d}/${sd_opus_d}
+
+                if [ -d "${md_ufl9_dirname}" ]; then
+                    if [ -f "${md_ufl9}" ]; then
+                        _source_w1_isf ${md_ufl9}
+                    else
+                        echo | ufl_stl0 9 "${md_ufl9_dirname}"/cnx.d "${md_ufl9_dirname}"/res.md 2
+                    fi
+                fi
+            done
         fi
     done
-
     #! rebuild all in dir
     local sd=
     local dot_ins_d=${path_dir}/.ins_dr
@@ -86,14 +94,14 @@ ${NORMAL}"
         if [ -f ${dot_ins_d}/${sd}/res.md_ufl9 ]; then
             _source_w1_isf ${dot_ins_d}/${sd}/res.md_ufl9
         else
-            ufl_stl0 9 ${dot_ins_d}/${sd}/cnx.d ${dot_ins_d}/${sd}/res.md 2
+            echo | ufl_stl0 9 ${dot_ins_d}/${sd}/cnx.d ${dot_ins_d}/${sd}/res.md 2
         fi
     done
 
     if [ -f $path_dir/cntx.res.md_ufl9 ]; then
         _source_w1_isf $path_dir/cntx.res.md_ufl9
     else
-        ufl_stl0 9 $path_dir/cntx.ins.d $path_dir/cntx.res.md 2
+        echo | ufl_stl0 9 $path_dir/cntx.ins.d $path_dir/cntx.res.md 2
     fi
 
     _edit $path_dir/cntx.res.md

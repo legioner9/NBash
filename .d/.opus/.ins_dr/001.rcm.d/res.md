@@ -13,15 +13,15 @@ Start Contents Menu
 End Contents Menu
 
 <!--
-CMND: ufl_stl0 4 /home/st/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/cnx.d /home/st/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/res.md
+CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/cnx.d /home/st/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/res.md 2
 
-PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus
+PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731332113_11112024203513
+DATE: 1731388545_12112024121545
 
-DATX: 1731332113
+DATX: 1731388545
 -->
 
 

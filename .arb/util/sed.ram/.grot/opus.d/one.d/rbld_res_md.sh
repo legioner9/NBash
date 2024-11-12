@@ -61,26 +61,24 @@ ${NORMAL}"
 
     #! rebuild all in dir
     local dot_ins_d=${path_dir}/.ins_dr
-    for sd in $(_dd2e ${dot_ins_d}) ; do
+    for sd in $(_dd2e ${dot_ins_d}); do
         if [ -f ${dot_ins_d}/${sd}/res.md_ufl9 ]; then
             _source_w1_isf ${dot_ins_d}/${sd}/res.md_ufl9
         else
-            ufl_stl0 9 ${dot_ins_d}/${sd}/cnx.d ${dot_ins_d}/${sd}/res.md 2
+            echo | ufl_stl0 9 ${dot_ins_d}/${sd}/cnx.d ${dot_ins_d}/${sd}/res.md 2
         fi
     done
 
     if [ -f $path_dir/cntx.res.md_ufl9 ]; then
         _source_w1_isf $path_dir/cntx.res.md_ufl9
     else
-        ufl_stl0 9 $path_dir/cntx.ins.d $path_dir/cntx.res.md 2
+        echo | ufl_stl0 9 $path_dir/cntx.ins.d $path_dir/cntx.res.md 2
     fi
 
     _edit $path_dir/cntx.res.md
 
-
-
     #! END BODY FN ---------------------------------------
-    
+
     cd $PPWD
     return 0
 

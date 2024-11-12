@@ -59,11 +59,10 @@ ${NORMAL}"
 
     #{{body_fn}}
 
-ufl_stl0 9 ${REPO_PATH}/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d ${REPO_PATH}/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/res.md 1
-
+    echo | ufl_stl0 9 ${REPO_PATH}/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d ${REPO_PATH}/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/res.md 1
 
     #! END BODY FN ---------------------------------------
-    
+
     cd $PPWD
     return 0
 
