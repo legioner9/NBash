@@ -1,0 +1,53 @@
+# Стандартные дескрипторы файлов
+
+```
+0, STDIN — стандартный поток ввода.
+1, STDOUT — стандартный поток вывода.
+2, STDERR — стандартный поток ошибок.
+```
+
+## Перенаправление потоков ошибок и вывода
+
+     2> errorcontent 1> correctcontent
+
+## Все в одно
+
+    &>
+
+## Временное перенаправление вывода
+
+    >&2
+
+## Постоянное перенаправление вывода exec
+
+    exec 1>outfile
+    echo "That output"
+    cat outfile
+        That output
+
+## Постоянное перенаправление ввода в скриптах
+
+```bash
+#!/bin/bash
+# 6 дескр сохр ссылку на 0 
+exec 6<&0
+
+exec 0<${REPO_PATH}/NBash/.arb/man/stream.ram/.grot/exa.d/exa_1.d/testfile
+count=1
+while read -r line; do
+    echo "Line #$count: $line"
+    count=$(($count + 1))
+done
+
+# возвращаем ссылку 6 на 0
+exec 0<&6
+```
+## Создание собственного перенаправления вывода
+
+    exec 3>myfile
+    echo "This should display on the screen"
+    echo "and this should be stored in the file" >&3
+    echo "And this should be back on the screen"
+
+## Закрытие дескрипторов файлов
+

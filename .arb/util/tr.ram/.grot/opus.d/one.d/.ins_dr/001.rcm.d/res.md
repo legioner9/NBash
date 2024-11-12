@@ -8,9 +8,6 @@ Start Contents Menu
 
 <!-- TOC tocDepth:1..6 chapterDepth:1..6 -->
 
-- [Примеры Tr](#примеры-tr)
-  - [Замена символов через аргументы](#замена-символов-через-аргументы)
-
 <!-- /TOC -->
 
 End Contents Menu
@@ -22,9 +19,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731409051_12112024175731
+DATE: 1731411896_12112024184456
 
-DATX: 1731409051
+DATX: 1731411896
 -->
 
 
@@ -52,7 +49,45 @@ DATX: 1731409051
     tr x z
 
     Далее следует ввести строку и нажать Enter. Ниже будет выведен обработанный результат и представлена возможность повторного ввода.
+
 <!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man) -->
+[see pipe_input](/REPOBARE/_repo/NBash/.arb/man/pipe_input.ram/.grot/exam.man)
+
+[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/003.exa.d/001.pref.txt.md)
+
+
+
+## Удалить все буквы в нижнем регистре
+
+    
+
+[002.txt.md](/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/003.exa.d/002.txt.md)
+
+
+
+    tr -d [:lower:]
+
+<!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man) -->
+[see pipe_input](/REPOBARE/_repo/NBash/.arb/man/pipe_input.ram/.grot/exam.man)
+
+[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/004.exa.d/001.pref.txt.md)
+
+
+
+## Уплотнить повторяющиеся буквы большого и малого регистров
+
+    
+
+[002.txt.md](/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/004.exa.d/002.txt.md)
+
+
+
+    tr -s [:upper:][:lower:]
+
+    echo "AAcdscggooo" | tr -s [:upper:][:lower:] # Acdscgo
+
+<!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man) -->
+<!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/man/pipe_input.ram/.grot/exam.man) -->
 
 
 

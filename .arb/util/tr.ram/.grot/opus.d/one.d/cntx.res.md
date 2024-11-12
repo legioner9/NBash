@@ -8,9 +8,6 @@ Start Contents Menu
 
 <!-- TOC tocDepth:1..6 chapterDepth:1..6 -->
 
-- [Синтаксис команды tr](#синтаксис-команды-tr)
-  - [see exa\_tr](#see-exa_tr)
-
 <!-- /TOC -->
 
 End Contents Menu
@@ -22,9 +19,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731409272_12112024180112
+DATE: 1731420707_12112024211147
 
-DATX: 1731409272
+DATX: 1731420707
 -->
 
 

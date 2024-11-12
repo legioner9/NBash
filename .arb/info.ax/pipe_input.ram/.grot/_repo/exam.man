@@ -1,0 +1,26 @@
+# pipe input
+
+```
+# Передача данных через конвейер
+echo "Text fragment" | sed 'p'
+
+# Передача данных через STDIN (первый вариант)
+sed 'p' <<EOF
+Text fragment
+EOF
+
+# Передача данных через STDIN (второй вариант)
+sed 'p' <<< "Text fragment"
+
+# Передача данных через дескриптор (первый вариант)
+sed 'p' < file.txt
+# аналогично
+sed 'p' file.txt
+
+# Передача данных через дескриптор, используя Process Substitution в Bash (второй вариант)
+sed 'p' < <( printf "Text fragment" )
+
+# Однако, так делать НЕЛЬЗЯ
+echo "Text fragment" | sed 'p' <<< "Text fragment 1" # Вызов пройдет, однако данные из конвейера будут проигнорированы
+```
+
