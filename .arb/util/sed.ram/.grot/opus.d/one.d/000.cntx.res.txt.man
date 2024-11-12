@@ -5,9 +5,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util/sed.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731391527_12112024130527
+DATE: 1731399376_12112024151616
 
-DATX: 1731391527
+DATX: 1731399376
 -->
 
 
@@ -88,6 +88,7 @@ sed 'p' < <( printf "Text fragment" )
 echo "Text fragment" | sed 'p' <<< "Text fragment 1" # Вызов пройдет, однако данные из конвейера будут проигнорированы
 ```
 
+[see pipe_input](/REPOBARE/_repo/NBash/.arb/man/pipe_input.ram/.grot/exam.man)
 
 [001.txt.md](/REPOBARE/_repo/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/002.d/003.d/001.txt.md)
 

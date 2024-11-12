@@ -1,3 +1,5 @@
+# pipe input
+
 ```
 # Передача данных через конвейер
 echo "Text fragment" | sed 'p'
@@ -22,4 +24,3 @@ sed 'p' < <( printf "Text fragment" )
 echo "Text fragment" | sed 'p' <<< "Text fragment 1" # Вызов пройдет, однако данные из конвейера будут проигнорированы
 ```
 
-[see pipe_input](/REPOBARE/_repo/NBash/.arb/man/pipe_input.ram/.grot/exam.man)
