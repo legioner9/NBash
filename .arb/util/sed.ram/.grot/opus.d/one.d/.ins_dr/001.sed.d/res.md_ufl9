@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo -e "${CYAN}--- res_rnd7_a19c020() $* in file://${REPO_PATH}/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/res.md_ufl9 ---${NORMAL}" #started functions
+echo -e "${CYAN}--- res_rnd7_0539d0c() $* in file://${REPO_PATH}/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/res.md_ufl9 ---${NORMAL}" #started functions
 
-res_rnd7_a19c020() {
+res_rnd7_0539d0c() {
 
     # gig from file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh
 
@@ -59,13 +59,14 @@ ${NORMAL}"
 
     #{{body_fn}}
 
-    echo | ufl_stl0 9 ${REPO_PATH}/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d ${REPO_PATH}/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/res.md 1
+echo | ufl_stl0 9 ${REPO_PATH}/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d ${REPO_PATH}/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/res.md 1
+
 
     #! END BODY FN ---------------------------------------
-
+    
     cd $PPWD
     return 0
 
 }
 
-res_rnd7_a19c020 "$@"
+res_rnd7_0539d0c "$@"
