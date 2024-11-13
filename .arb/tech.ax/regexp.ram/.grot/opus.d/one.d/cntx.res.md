@@ -8,11 +8,6 @@ Start Contents Menu
 
 <!-- TOC tocDepth:1..6 chapterDepth:1..6 -->
 
-- [first head](#first-head)
-  - [see examp](#see-examp)
-  - [Синтаксис](#синтаксис)
-  - [Опции](#опции)
-
 <!-- /TOC -->
 
 End Contents Menu
@@ -24,9 +19,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731493674_13112024172754
+DATE: 1731519189_14112024003309
 
-DATX: 1731493674
+DATX: 1731519189
 -->
 
 

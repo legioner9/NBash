@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo -e "${CYAN}--- res_rnd7_2b696da() $* in file://${REPO_PATH}/NBash/.d/.opus/.ins_dr/001.rcm.d/res.md_ufl9 ---${NORMAL}" #started functions
+echo -e "${CYAN}--- res_rnd7_fb3eb93() $* in file://${REPO_PATH}/NBash/.d/.opus/.ins_dr/001.rcm.d/res.md_ufl9 ---${NORMAL}" #started functions
 
-res_rnd7_2b696da() {
+res_rnd7_fb3eb93() {
 
     # gig from file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh
 
@@ -69,4 +69,4 @@ echo | ufl_stl0 9 ${REPO_PATH}/NBash/.d/.opus/.ins_dr/001.rcm.d/cnx.d ${REPO_PAT
 
 }
 
-res_rnd7_2b696da "$@"
+res_rnd7_fb3eb93 "$@"

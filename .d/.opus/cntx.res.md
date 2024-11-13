@@ -8,6 +8,22 @@ Start Contents Menu
 
 <!-- TOC tocDepth:1..6 chapterDepth:1..6 -->
 
+- [Opus NBash](#opus-nbash)
+- [.ins_dr](#ins_dr)
+        - [[001.rcm.d](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/res.md)](#001rcmdrepobare_reponbashdopusins_dr001rcmdresmd)
+    - [info.ax](#infoax)
+        - [[simbol_class](/REPOBARE/_repo/NBash/.arb/info.ax/symbol_class.ram/.grot/exam.man)](#simbol_classrepobare_reponbasharbinfoaxsymbol_classramgrotexamman)
+        - [[pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man)](#pipe_inputrepobare_reponbasharbinfoaxpipe_inputramgrotexamman)
+        - [[stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man)](#streamrepobare_reponbasharbinfoaxstreamramgrotexamman)
+        - [[expansion](/REPOBARE/_repo/NBash/.arb/info.ax/expansion.ram/.grot/exam.man)](#expansionrepobare_reponbasharbinfoaxexpansionramgrotexamman)
+    - [util](#util)
+        - [[sed](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.res.md)](#sedrepobare_reponbasharbutilaxsedramgrotopusdonedcntxresmd)
+        - [[tr](/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d/cntx.res.md)](#trrepobare_reponbasharbutilaxtrramgrotopusdonedcntxresmd)
+        - [[exec](/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/cntx.res.md)](#execrepobare_reponbasharbutilaxexecramgrotopusdonedcntxresmd)
+        - [[find](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/cntx.res.md)](#findrepobare_reponbasharbutilaxfindramgrotopusdonedcntxresmd)
+    - [tech.ax](#techax)
+        - [[regexp](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/cntx.res.md)](#regexprepobare_reponbasharbtechaxregexpramgrotopusdonedcntxresmd)
+
 <!-- /TOC -->
 
 End Contents Menu
@@ -19,9 +35,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731469158_13112024103918
+DATE: 1731519196_14112024003316
 
-DATX: 1731469158
+DATX: 1731519196
 -->
 
 
@@ -31,20 +47,48 @@ DATX: 1731469158
 
 <!-- TOC tocDepth:2..3 chapterDepth:2..6 -->
 
-- [[inner info](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/res.md)](#inner-inforepobare_reponbashdopusins_dr001rcmdresmd)
-- [[sed](/REPOBARE/_repo/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/cntx.res.md)](#sedrepobare_reponbasharbutilsedramgrotopusdonedcntxresmd)
-- [[tr](/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d/cntx.res.md)](#trrepobare_reponbasharbutiltrramgrotopusdonedcntxresmd)
+- [[inner opus](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/res.md)](#inner-opusrepobare_reponbashdopusins_dr001rcmdresmd)
+- [Info.ax](#infoax)
+    - [[simbol_class](/REPOBARE/_repo/NBash/.arb/info.ax/symbol_class.ram/.grot/exam.man)](#simbol_classrepobare_reponbasharbinfoaxsymbol_classramgrotexamman)
+    - [[pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man)](#pipe_inputrepobare_reponbasharbinfoaxpipe_inputramgrotexamman)
+    - [[stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man)](#streamrepobare_reponbasharbinfoaxstreamramgrotexamman)
+    - [[expansion](/REPOBARE/_repo/NBash/.arb/info.ax/expansion.ram/.grot/exam.man)](#expansionrepobare_reponbasharbinfoaxexpansionramgrotexamman)
+- [Utyls](#utyls)
+    - [[sed](/REPOBARE/_repo/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/cntx.res.md)](#sedrepobare_reponbasharbutilsedramgrotopusdonedcntxresmd)
+    - [[tr](/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d/cntx.res.md)](#trrepobare_reponbasharbutiltrramgrotopusdonedcntxresmd)
+    - [[exec](/REPOBARE/_repo/NBash/.arb/util/exec.ram/.grot/opus.d/one.d/cntx.res.md)](#execrepobare_reponbasharbutilexecramgrotopusdonedcntxresmd)
+    - [[find](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/cntx.res.md)](#findrepobare_reponbasharbutilfindramgrotopusdonedcntxresmd)
+- [Tech.ax](#techax)
 
 <!-- /TOC -->
 
- # Opus NBash
+# Opus NBash
 
-## [inner info](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/res.md)
+# .ins_dr
 
-## [sed](/REPOBARE/_repo/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/cntx.res.md)
-## [tr](/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d/cntx.res.md)
-## [exec](/REPOBARE/_repo/NBash/.arb/util/exec.ram/.grot/opus.d/one.d/cntx.res.md)
+### [001.rcm.d](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/res.md)
 
+## info.ax
+
+### [simbol_class](/REPOBARE/_repo/NBash/.arb/info.ax/symbol_class.ram/.grot/exam.man)
+### [pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man)
+### [stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man)
+### [expansion](/REPOBARE/_repo/NBash/.arb/info.ax/expansion.ram/.grot/exam.man)
+
+## util
+
+### [sed](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.res.md)
+### [tr](/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d/cntx.res.md)
+### [exec](/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/cntx.res.md)
+### [find](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/cntx.res.md)
+
+## tech.ax
+
+### [regexp](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/cntx.res.md)
+
+
+
+ 
 
 
 
