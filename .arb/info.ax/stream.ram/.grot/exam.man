@@ -9,6 +9,10 @@
   - [Создание собственного перенаправления вывода](#создание-собственного-перенаправления-вывода)
   - [Закрытие дескрипторов файлов](#закрытие-дескрипторов-файлов)
   - [Получение сведений об открытых дескрипторах](#получение-сведений-об-открытых-дескрипторах)
+  - [input + cat](#input--cat)
+  - [input + read](#input--read)
+  - [save stdin](#save-stdin)
+  - [save stdout](#save-stdout)
 
 <!-- TOC tocDepth:2..3 chapterDepth:2..6 -->
 
@@ -43,6 +47,8 @@ echo "This is normal output"
 
 ## Постоянное перенаправление ввода в скриптах
 
+in file: ${REPO_PATH}/NBash/.arb/info.ax/stream.ram/.grot/exa.d/save_input.d/exa_1.sh
+
 ```bash
 #!/bin/bash
 # 6 дескр сохр ссылку на 0 
@@ -57,6 +63,8 @@ done
 
 # возвращаем ссылку 6 на 0
 exec 0<&6
+exec 6>&-
+
 ```
 ## Создание собственного перенаправления вывода
 
@@ -105,7 +113,7 @@ bash    13507   st    2u   CHR  136,0      0t0    3 /dev/pts/0
 
 Посмотрим на вызов команды `lsof` из скрипта, в котором открыты, в дополнение к стандартным, другие дескрипторы:
 
-    ${REPO_PATH}/NBash/.arb/info.ax/stream.ram/.grot/exa.d/exa_2.d/exa_1.sh:
+in file: ${REPO_PATH}/NBash/.arb/info.ax/stream.ram/.grot/exa.d/exa_2.d/exa_1.sh:
 
 ```sh
 #!/bin/bash
@@ -125,4 +133,45 @@ bash    13507   st    3w   REG   0,37        0 9966761 /home/st/REPOBARE/_repo/N
 bash    13507   st    6w   REG   0,37        0 9966798 /home/st/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exa.d/exa_2.d/myfile2
 bash    13507   st    7r   REG   0,37       18 9966797 /home/st/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exa.d/exa_2.d/myfile3
 
+```
+
+## input + cat
+
+```
+# Redirect stdin to read from a file
+exec <"$INPUT_FILE"
+
+# Read the entire file as a single input
+content=$(cat)
+```
+
+## input + read
+
+```
+exec 0<testfile
+count=1
+while read -r line; do
+    echo "Line #$count: $line"
+    count=$(($count + 1))
+done
+```
+
+## save stdin
+
+```
+exec 6<&0
+exec 0<testfile
+...
+exec 0<&6
+```
+
+## save stdout
+
+in file ${REPO_PATH}/NBash/.arb/info.ax/stream.ram/.grot/exa.d/save_output.d/exa_1.sh
+```
+exec 5<&1
+ecec 1>testfile
+...
+exec 1<&5
+exec 5>&-
 ```

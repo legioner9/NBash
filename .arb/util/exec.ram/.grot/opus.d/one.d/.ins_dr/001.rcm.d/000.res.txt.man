@@ -5,9 +5,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util/exec.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731463898_13112024091138
+DATE: 1731469126_13112024103846
 
-DATX: 1731463898
+DATX: 1731469126
 -->
 
 
@@ -87,6 +87,42 @@ $ echo $$
 <!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/info.ax/symbol_class.ram/.grot/exam.man) -->
 <!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man) -->
 <!-- [see stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man) -->
+
+[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util/exec.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/004.exa.d/001.pref.txt.md)
+
+
+
+## Измените стандартный ввод для чтения файлов с помощью exec
+
+    
+
+[002.txt.md](/REPOBARE/_repo/NBash/.arb/util/exec.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/004.exa.d/002.txt.md)
+
+
+
+```
+#!/bin/bash
+
+INPUT_FILE="Hello.txt"
+
+exec 6<&0
+
+# Redirect stdin to read from a file
+exec < "$INPUT_FILE"
+
+# Read the entire file as a single input
+content=$(cat)
+
+# Process the input
+echo "Read: $content"
+
+exec 0<&6
+
+```
+
+<!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/info.ax/symbol_class.ram/.grot/exam.man) -->
+<!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man) -->
+[see stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man)
 
 
 

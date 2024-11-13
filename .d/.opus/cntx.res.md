@@ -19,15 +19,25 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731463924_13112024091204
+DATE: 1731469158_13112024103918
 
-DATX: 1731463924
+DATX: 1731469158
 -->
 
 
 [001.txt.md](/REPOBARE/_repo/NBash/.d/.opus/cntx.ins.d/001.txt.md)
 
-# Opus NBash
+
+
+<!-- TOC tocDepth:2..3 chapterDepth:2..6 -->
+
+- [[inner info](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/res.md)](#inner-inforepobare_reponbashdopusins_dr001rcmdresmd)
+- [[sed](/REPOBARE/_repo/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/cntx.res.md)](#sedrepobare_reponbasharbutilsedramgrotopusdonedcntxresmd)
+- [[tr](/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d/cntx.res.md)](#trrepobare_reponbasharbutiltrramgrotopusdonedcntxresmd)
+
+<!-- /TOC -->
+
+ # Opus NBash
 
 ## [inner info](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/res.md)
 
