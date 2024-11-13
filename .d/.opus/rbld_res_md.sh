@@ -58,31 +58,37 @@ ${NORMAL}"
     echo "START BODY FN : ${FNN}() $*"
 
     #{{body_fn}}
+    local dot_dr=${path_dir}/.d
+    local lst_dr=${dot_dr}/.lst
+    local out_opus_lst_arb=${lst_dr}/out_opus_lst_arb.lst
 
     #! обработка всех opus util
+    # /home/st/REPOBARE/_repo/NBash/.arb/tech.ax
+    # local util_d=${REPO_PATH}/NBash/.arb/util
 
-    local util_d=${REPO_PATH}/NBash/.arb/util
-    local util_sd=
     local md_ufl9=
     local opus_d=
     local sd_opus_d=
 
-    for util_sd in $(_dd2e ${util_d}); do
+    for util_d in $(_f2e ${out_opus_lst_arb}); do
 
-        opus_d=${util_d}/${util_sd}/.grot/opus.d
+        for util_sd in $(_dd2e ${util_d}); do
 
-        if [ -d ${opus_d} ]; then
-            for sd_opus_d in $(_dd2e ${opus_d}); do
+            opus_d=${util_d}/${util_sd}/.grot/opus.d
 
-                md_ufl9=${opus_d}/${sd_opus_d}/cntx.res.md_ufl9
-                md_ufl9_dirname=${opus_d}/${sd_opus_d}
+            if [ -d ${opus_d} ]; then
+                for sd_opus_d in $(_dd2e ${opus_d}); do
 
-                if [ -f ${md_ufl9_dirname}/rbld_res_md.sh ]; then
-                    _source_w1_isf ${md_ufl9_dirname}/rbld_res_md.sh
-                fi
+                    md_ufl9=${opus_d}/${sd_opus_d}/cntx.res.md_ufl9
+                    md_ufl9_dirname=${opus_d}/${sd_opus_d}
 
-            done
-        fi
+                    if [ -f ${md_ufl9_dirname}/rbld_res_md.sh ]; then
+                        _source_w1_isf ${md_ufl9_dirname}/rbld_res_md.sh
+                    fi
+
+                done
+            fi
+        done
     done
     #! rebuild all in dir
     local sd=
