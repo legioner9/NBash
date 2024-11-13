@@ -8,6 +8,13 @@ Start Contents Menu
 
 <!-- TOC tocDepth:1..6 chapterDepth:1..6 -->
 
+- [Примеры Find](#примеры-find)
+  - [файлы по имени в текущей папке](#файлы-по-имени-в-текущей-папке)
+  - [все файлы в указанной директории](#все-файлы-в-указанной-директории)
+  - [ограничение глубины поиска](#ограничение-глубины-поиска)
+  - [инвертирование шаблона](#инвертирование-шаблона)
+  - [только каталоги](#только-каталоги)
+
 <!-- /TOC -->
 
 End Contents Menu
@@ -19,9 +26,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731470995_13112024110955
+DATE: 1731480377_13112024134617
 
-DATX: 1731470995
+DATX: 1731480377
 -->
 
 
@@ -29,83 +36,98 @@ DATX: 1731470995
 
 
 
-# Chapt
+# Примеры Find
     
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/001.pref.txt.md)
+[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.exa.d/001.pref.txt.md)
 
 
 
-# Рекомендации RCM
+## файлы по имени в текущей папке
 
     
 
-[002.rcm_1.txt.md](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/002.rcm_1.txt.md)
+[002.txt.md](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.exa.d/002.txt.md)
 
 
 
-## RCM_1 (изменения в оригинал)
+    find . -name "*.png"
 
-в оригинал вносим изменения - копия для истории изменений
+<!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/info.ax/symbol_class.ram/.grot/exam.man) -->
+<!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man) -->
+<!-- [see stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man) -->
+
+[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/003.exa.d/001.pref.txt.md)
+
+
+
+## все файлы в указанной директории
+
     
 
-[003.rcm_2.txt.md](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/003.rcm_2.txt.md)
+[002.txt.md](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/003.exa.d/002.txt.md)
 
 
 
-## RCM_2 (служебные файлы)
+    find ./Изображения
 
-при работе утилиты формировать следующие файлы рядом с результатами работы
-  - лог
-    - отдельно лог ошибок
-  - ридми 
-    - readme.stnd.md
-    - readme.flow.md
-  - сорс файлы для запуска в командной строке
+<!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/info.ax/symbol_class.ram/.grot/exam.man) -->
+<!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man) -->
+<!-- [see stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man) -->
+
+[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/004.exa.d/001.pref.txt.md)
+
+
+
+## ограничение глубины поиска
+
     
 
-[004.rcm_3.txt.md](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/004.rcm_3.txt.md)
+[002.txt.md](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/004.exa.d/002.txt.md)
 
 
 
-## RCM_3 (cокращения)
+    find . -maxdepth 1 -name "*.php"
 
-    dr - dir
-    fl - file
-    et - entety - file|dir
-    nm - name
-    et_lk - entety ссылка в ее имени содержится способ ее обработки
-    sdr - subdir
-    pth - path
-    rcv_dr - rcv dir
-    ins_dr - ins dir
-    prx - prefix
-    ptx - postfix
-    prx_et - prefix for entety (e.c. recommendationSTL for dr @|for fl &)
-    ptx_fn - postfix фиксирует принадлежность служебных файлов сфрмированых работой fn
-    lext - последнее расширение имени справа 
-    cnx - context 
-    res - результат вставки context
+<!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/info.ax/symbol_class.ram/.grot/exam.man) -->
+<!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man) -->
+<!-- [see stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man) -->
+
+[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/005.exa.d/001.pref.txt.md)
+
+
+
+## инвертирование шаблона
+
     
 
-[005.rcm_4.txt.md](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/005.rcm_4.txt.md)
+[002.txt.md](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/005.exa.d/002.txt.md)
 
 
 
-## RCM_4 (notmast_butlast)
+    find . -not -name "test*"
 
-- наличие последнего аргумента для отладки функции 
+<!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/info.ax/symbol_class.ram/.grot/exam.man) -->
+<!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man) -->
+<!-- [see stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man) -->
+
+[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/006.exa.d/001.pref.txt.md)
 
 
-[006.rcm_5.txt.md](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/006.rcm_5.txt.md)
+
+## только каталоги
+
+    
+
+[002.txt.md](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/006.exa.d/002.txt.md)
 
 
 
-## RCM_5 (mast_def_args)
+    find . -type d -name "Загрузки"
 
-- используемые аргументы в функции не могут быть пустыми при вызове
-  - допускается замена на константу e.c. @ 
-
+<!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/info.ax/symbol_class.ram/.grot/exam.man) -->
+<!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man) -->
+<!-- [see stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man) -->
 
 
 
