@@ -35,13 +35,13 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731519196_14112024003316
+DATE: 1731521407_14112024011007
 
-DATX: 1731519196
+DATX: 1731521407
 -->
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.d/.opus/cntx.ins.d/001.txt.md)
+[001.01.head.txt.md](/REPOBARE/_repo/NBash/.d/.opus/cntx.ins.d/001.01.head.txt.md)
 
 
 
@@ -89,6 +89,18 @@ DATX: 1731519196
 
 
  
+
+[001.02.opus_sd.txt.md](/REPOBARE/_repo/NBash/.d/.opus/cntx.ins.d/001.02.opus_sd.txt.md)
+
+
+
+
+
+[001.03.opus_arb.txt.md](/REPOBARE/_repo/NBash/.d/.opus/cntx.ins.d/001.03.opus_arb.txt.md)
+
+
+
+
 
 
 

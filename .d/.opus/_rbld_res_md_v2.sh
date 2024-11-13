@@ -57,43 +57,15 @@ ${NORMAL}"
 
     echo "START BODY FN : ${FNN}() $*"
 
-    local file_opus_arb=${path_dir}/cntx.ins.d/001.02.opus_arb.txt.md
-    local file_opus_sd=${path_dir}/cntx.ins.d/001.02.opus_sd.txt.md
-
-    : >${file_opus_arb}
-    : >${file_opus_sd}
-
     #{{body_fn}}
     local dot_dr=${path_dir}/.d
     local lst_dr=${dot_dr}/.lst
     local out_opus_lst_arb=${lst_dr}/out_opus_lst_arb.lst
-    local out_opus_lst_sd=${lst_dr}/out_opus_lst_sd.lst
 
-    local opus_sd=
-    local opus_sd_pth=
-    local opus_sd_pth_sd_pth=
+    #! обработка всех opus util
+    # /home/st/REPOBARE/_repo/NBash/.arb/tech.ax
+    # local util_d=${REPO_PATH}/NBash/.arb/util
 
-    #! получаем путь из списка
-    for opus_sd_pth in $(_f2e ${out_opus_lst_sd}); do
-
-        #! записываем заголовок как название dr
-        echo "## $(basename ${opus_sd_pth})" >>${file_opus_sd}
-
-        #! создаем подзаголовки из ссылок [nm](pth),где nm имя sd, pth ее путь
-        for opus_sd_pth_sd in $(_d2e ${opus_sd_pth}); do
-            opus_sd_pth_sd_pth=${opus_sd_pth}/${opus_sd_pth_sd}
-
-            echo "### [$(_prs_f -n ${opus_sd_pth_sd})](${opus_sd_pth_sd_pth})" >>${file_opus_sd}
-        done
-
-    done
-
-    #! убираем домашнюю директорию из путей в файле
-    _s2f "${HOME}/" "/" ${file_opus_sd}
-
-    read -p "enter"
-
-    #! rbld всех из списка out_opus_lst_arb.lst
     local md_ufl9=
     local opus_d=
     local sd_opus_d=
