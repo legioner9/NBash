@@ -67,12 +67,9 @@ ${NORMAL}"
     local opus_d=
     local sd_opus_d=
 
-    echo -e "${GREEN}\$util_d = ' file://$util_d '${NORMAL}"
-    read -p "enter"
-
     for util_sd in $(_dd2e ${util_d}); do
 
-        opus_d=${util_d}/${util_sd}/.grot/opus.d/
+        opus_d=${util_d}/${util_sd}/.grot/opus.d
 
         if [ -d ${opus_d} ]; then
             for sd_opus_d in $(_dd2e ${opus_d}); do
@@ -80,7 +77,7 @@ ${NORMAL}"
                 md_ufl9=${opus_d}/${sd_opus_d}/cntx.res.md_ufl9
                 md_ufl9_dirname=${opus_d}/${sd_opus_d}
 
-                echo -e "${GREEN}\$md_ufl9_dirname = ' file://$md_ufl9_dirname '${NORMAL}"
+                echo -e "${GREEN}\${md_ufl9_dirname}/rbld_res_md.sh = ' file://${md_ufl9_dirname}/rbld_res_md.sh '${NORMAL}"
                 read -p "enter"
 
                 if [ -f ${md_ufl9_dirname}/rbld_res_md.sh ]; then

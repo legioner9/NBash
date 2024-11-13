@@ -19,9 +19,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731411896_12112024184456
+DATE: 1731424830_12112024222030
 
-DATX: 1731411896
+DATX: 1731424830
 -->
 
 
@@ -85,6 +85,40 @@ DATX: 1731411896
     tr -s [:upper:][:lower:]
 
     echo "AAcdscggooo" | tr -s [:upper:][:lower:] # Acdscgo
+
+<!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man) -->
+<!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/man/pipe_input.ram/.grot/exam.man) -->
+
+[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/005.exa.d/001.pref.txt.md)
+
+
+
+## Вывести первые три строки файла /etc/passwd, заменив двоеточия на пробелы
+
+    
+
+[002.txt.md](/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/005.exa.d/002.txt.md)
+
+
+
+    head -n3 /etc/passwd | tr ':' ' '
+
+<!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man) -->
+<!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/man/pipe_input.ram/.grot/exam.man) -->
+
+[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/006.exa.d/001.pref.txt.md)
+
+
+
+## Заменить цифры IP-адреса файла addresses2 на буквы a, и результат записать в файл addresses3
+
+    
+
+[002.txt.md](/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/006.exa.d/002.txt.md)
+
+
+
+    tr [0-9] a < addresses2 > addresses3
 
 <!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man) -->
 <!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/man/pipe_input.ram/.grot/exam.man) -->
