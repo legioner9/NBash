@@ -77,9 +77,6 @@ ${NORMAL}"
                 md_ufl9=${opus_d}/${sd_opus_d}/cntx.res.md_ufl9
                 md_ufl9_dirname=${opus_d}/${sd_opus_d}
 
-                echo -e "${GREEN}\${md_ufl9_dirname}/rbld_res_md.sh = ' file://${md_ufl9_dirname}/rbld_res_md.sh '${NORMAL}"
-                read -p "enter"
-
                 if [ -f ${md_ufl9_dirname}/rbld_res_md.sh ]; then
                     _source_w1_isf ${md_ufl9_dirname}/rbld_res_md.sh
                 fi
