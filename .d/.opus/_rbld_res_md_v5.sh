@@ -81,7 +81,7 @@ ${NORMAL}"
 
     local anc_to=
     local anc_from=
-
+    
     #! создаем file_opus_in
 
     echo "## in_dr" >>${file_opus_in}
@@ -91,14 +91,7 @@ ${NORMAL}"
         in_dr_sd_pth=${in_dr}/${in_dr_sd_nm}
         #! создаем подзаголовки из ссылок [nm](pth)
 
-        anc_to=${in_dr_sd_pth}/res.md
-        # anc_from=${file_opus_sd}
-        #! файл file_opus_sd будет копирован в path_file а значит и относительный путь нужно считать от path_file
-        anc_from=${path_file}
-        rel_path=$(_ee2rpth ${anc_from} ${anc_to})
-        echo "### [${in_dr_sd_nm}](${rel_path})" >>${file_opus_in}
-
-        # echo "### [${in_dr_sd_nm}](${in_dr_sd_pth}/res.md)" >>${file_opus_in}
+        echo "### [${in_dr_sd_nm}](${in_dr_sd_pth}/res.md)" >>${file_opus_in}
     done
 
     #! убираем домашнюю директорию из путей в файле
@@ -146,23 +139,15 @@ ${NORMAL}"
                 opus_arb_pth_pth_pth=${opus_arb_pth_pth}/.grot/opus.d/${opus_arb_pth_pth_nm}
 
                 # echo -e "${GREEN}\$opus_arb_pth_pth_pth = ' file://$opus_arb_pth_pth_pth '${NORMAL}"
-
-                anc_to=${opus_arb_pth_pth_pth}/cntx.res.md
-                # anc_from=${file_opus_sd}
-                #! файл file_opus_sd будет копирован в path_file а значит и относительный путь нужно считать от path_file
-                anc_from=${path_file}
-                rel_path=$(_ee2rpth ${anc_from} ${anc_to})
-                echo "### [$(_prs_f -n $(basename ${opus_arb_pth_nm}))](${rel_path})" >>${file_opus_arb}
-
-                # echo "### [$(_prs_f -n $(basename ${opus_arb_pth_nm})) $(_prs_f -n ${opus_arb_pth_pth_nm})](${opus_arb_pth_pth_pth}/cntx.res.md)" >>${file_opus_arb}
+                echo "### [$(_prs_f -n $(basename ${opus_arb_pth_nm})) $(_prs_f -n ${opus_arb_pth_pth_nm})](${opus_arb_pth_pth_pth}/cntx.res.md)" >>${file_opus_arb}
 
             done
         done
 
     done
 
-    # #! убираем домашнюю директорию из путей в файле
-    # _s2f "${HOME}/" "/" ${file_opus_arb}
+    #! убираем домашнюю директорию из путей в файле
+    _s2f "${HOME}/" "/" ${file_opus_arb}
 
     read -p "enter"
 

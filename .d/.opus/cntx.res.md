@@ -19,9 +19,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731607826_15112024011026
+DATE: 1731608722_15112024012522
 
-DATX: 1731607826
+DATX: 1731608722
 -->
 
 
@@ -38,7 +38,7 @@ DATX: 1731607826
 
 
 ## in_dr
-### [part_1](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/part_1/res.md)
+### [part_1](.ins_dr/part_1/res.md)
 
 
 [001.003.opus_sd.txt.md](/REPOBARE/_repo/NBash/.d/.opus/cntx.ins.d/001.003.opus_sd.txt.md)
@@ -59,12 +59,12 @@ DATX: 1731607826
 
 
 ## util.ax
-### [exec one](/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/cntx.res.md)
-### [find one](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/cntx.res.md)
-### [sed one](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.res.md)
-### [tr one](/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d/cntx.res.md)
+### [exec](../../.arb/util.ax/exec.ram/.grot/opus.d/one.d/cntx.res.md)
+### [find](../../.arb/util.ax/find.ram/.grot/opus.d/one.d/cntx.res.md)
+### [sed](../../.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.res.md)
+### [tr](../../.arb/util.ax/tr.ram/.grot/opus.d/one.d/cntx.res.md)
 ## tech.ax
-### [regexp one](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/cntx.res.md)
+### [regexp](../../.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/cntx.res.md)
 
 
 
