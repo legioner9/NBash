@@ -1,4 +1,4 @@
-
+ 
 <!-- [[__TOC_]] -->
 
 <a name=top></a>
@@ -15,13 +15,13 @@ End Contents Menu
 <!--
 CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d /home/st/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/res.md 2
 
-PPWD: /home/st/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d
+PPWD: /home/st/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731568579_14112024141619
+DATE: 1731570896_14112024145456
 
-DATX: 1731568579
+DATX: 1731570896
 -->
 
 
@@ -30,14 +30,14 @@ DATX: 1731568579
 
 
 # Chapt
-    
+     
 
 [001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/001.pref.txt.md)
 
 
 
 # Рекомендации RCM
-
+ 
     
 
 [002.rcm_1.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/002.rcm_1.txt.md)

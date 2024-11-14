@@ -1,32 +1,46 @@
-<!--
-CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d /home/st/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/res.md 2
 
-PPWD: /home/st/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d
+<!-- [[__TOC_]] -->
+
+<a name=top></a>
+<a class=top-link hide href=#top>↑</a>
+
+Start Contents Menu
+
+<!-- TOC tocDepth:1..6 chapterDepth:1..6 -->
+
+<!-- /TOC -->
+
+End Contents Menu
+
+<!--
+CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/tech.ax/syntax_bash.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d /home/st/REPOBARE/_repo/NBash/.arb/tech.ax/syntax_bash.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/res.md 2
+
+PPWD: /home/st/REPOBARE/_repo/NBash/.arb/tech.ax/syntax_bash.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731570896_14112024145456
+DATE: 1731582697_14112024181137
 
-DATX: 1731570896
+DATX: 1731582697
 -->
 
 
-[001.chapt.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/001.chapt.txt.md)
+[001.chapt.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/syntax_bash.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/001.chapt.txt.md)
 
 
 
-# Chapt
-     
+# Chapt 
+    
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/001.pref.txt.md)
+[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/syntax_bash.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/001.pref.txt.md)
 
 
 
 # Рекомендации RCM
- 
+
     
 
-[002.rcm_1.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/002.rcm_1.txt.md)
+[002.rcm_1.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/syntax_bash.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/002.rcm_1.txt.md)
 
 
 
@@ -35,7 +49,7 @@ DATX: 1731570896
 в оригинал вносим изменения - копия для истории изменений
     
 
-[003.rcm_2.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/003.rcm_2.txt.md)
+[003.rcm_2.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/syntax_bash.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/003.rcm_2.txt.md)
 
 
 
@@ -50,7 +64,7 @@ DATX: 1731570896
   - сорс файлы для запуска в командной строке
     
 
-[004.rcm_3.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/004.rcm_3.txt.md)
+[004.rcm_3.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/syntax_bash.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/004.rcm_3.txt.md)
 
 
 
@@ -74,7 +88,7 @@ DATX: 1731570896
     res - результат вставки context
     
 
-[005.rcm_4.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/005.rcm_4.txt.md)
+[005.rcm_4.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/syntax_bash.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/005.rcm_4.txt.md)
 
 
 
@@ -83,7 +97,7 @@ DATX: 1731570896
 - наличие последнего аргумента для отладки функции 
 
 
-[006.rcm_5.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/006.rcm_5.txt.md)
+[006.rcm_5.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/syntax_bash.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/006.rcm_5.txt.md)
 
 
 

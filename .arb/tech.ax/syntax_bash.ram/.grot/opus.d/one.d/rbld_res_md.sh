@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo -e "${CYAN}--- res_rnd7_105a22f() $* in file://${REPO_PATH}/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/res.md_ufl9 ---${NORMAL}" #started functions
+echo -e "${CYAN}--- rbld_res_md_rnd7_7bebe7a() $* in file://${REPO_PATH}/NBash/.arb/tech.ax/syntax_bash.ram/.grot/opus.d/one.d/rbld_res_md.sh ---${NORMAL}" #started functions
 
-res_rnd7_105a22f() {
+rbld_res_md_rnd7_7bebe7a() {
 
     # gig from file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh
 
@@ -10,7 +10,7 @@ res_rnd7_105a22f() {
     local ARGS=("$@")
     local NARGS=$#
     local PPWD=$PWD
-    local path_file="${REPO_PATH}/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/res.md_ufl9"
+    local path_file="${REPO_PATH}/NBash/.arb/tech.ax/syntax_bash.ram/.grot/opus.d/one.d/rbld_res_md.sh"
     local path_dir="$(dirname "$path_file")"
 
     # echo -e "${CYAN}--- $FNN() $* in file://${path_file}---${NORMAL}" #started functions
@@ -59,7 +59,21 @@ ${NORMAL}"
 
     #{{body_fn}}
 
-echo | ufl_stl0 9 ${REPO_PATH}/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d ${REPO_PATH}/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/res.md 2
+    #! rebuild all in dir
+    local sd=
+    local dot_ins_d=${path_dir}/.ins_dr
+    for sd in $(_dd2e ${dot_ins_d}); do
+        if [ -d ${dot_ins_d}/${sd}/cnx.d ] && [ -f ${dot_ins_d}/${sd}/res.md ]; then
+            echo | ufl_stl0 9 ${dot_ins_d}/${sd}/cnx.d ${dot_ins_d}/${sd}/res.md 2
+        fi
+    done
+
+    if [ -d $path_dir/cntx.ins.d ] && [ -f $path_dir/cntx.res.md ]; then
+        echo | ufl_stl0 9 $path_dir/cntx.ins.d $path_dir/cntx.res.md 2
+    fi
+
+    _edit $path_dir/cntx.res.md
+
 
 
     #! END BODY FN ---------------------------------------
@@ -69,4 +83,4 @@ echo | ufl_stl0 9 ${REPO_PATH}/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/
 
 }
 
-res_rnd7_105a22f "$@"
+rbld_res_md_rnd7_7bebe7a "$@"
