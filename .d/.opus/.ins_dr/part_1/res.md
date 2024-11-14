@@ -13,19 +13,19 @@ Start Contents Menu
 End Contents Menu
 
 <!--
-CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/cnx.d /home/st/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/res.md 2
+CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/part_1/cnx.d /home/st/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/part_1/res.md 2
 
-PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d
+PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731555468_14112024103748
+DATE: 1731568586_14112024141626
 
-DATX: 1731555468
+DATX: 1731568586
 -->
 
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/cnx.d/002.d/001.pref.txt.md)
+[001.pref.txt.md](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/part_1/cnx.d/002.d/001.pref.txt.md)
 
 
 
@@ -33,7 +33,7 @@ DATX: 1731555468
 
     
 
-[002.rcm_1.txt.md](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/cnx.d/002.d/002.rcm_1.txt.md)
+[002.rcm_1.txt.md](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/part_1/cnx.d/002.d/002.rcm_1.txt.md)
 
 
 
@@ -42,7 +42,7 @@ DATX: 1731555468
 в оригинал вносим изменения - копия для истории изменений
     
 
-[003.rcm_2.txt.md](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/cnx.d/002.d/003.rcm_2.txt.md)
+[003.rcm_2.txt.md](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/part_1/cnx.d/002.d/003.rcm_2.txt.md)
 
 
 
@@ -57,7 +57,7 @@ DATX: 1731555468
   - сорс файлы для запуска в командной строке
     
 
-[004.rcm_3.txt.md](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/cnx.d/002.d/004.rcm_3.txt.md)
+[004.rcm_3.txt.md](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/part_1/cnx.d/002.d/004.rcm_3.txt.md)
 
 
 
@@ -81,7 +81,7 @@ DATX: 1731555468
     res - результат вставки context
     
 
-[005.rcm_4.txt.md](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/cnx.d/002.d/005.rcm_4.txt.md)
+[005.rcm_4.txt.md](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/part_1/cnx.d/002.d/005.rcm_4.txt.md)
 
 
 
@@ -90,7 +90,7 @@ DATX: 1731555468
 - наличие последнего аргумента для отладки функции 
 
 
-[006.rcm_5.txt.md](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/001.rcm.d/cnx.d/002.d/006.rcm_5.txt.md)
+[006.rcm_5.txt.md](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/part_1/cnx.d/002.d/006.rcm_5.txt.md)
 
 
 

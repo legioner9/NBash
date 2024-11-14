@@ -68,12 +68,30 @@ ${NORMAL}"
     #{{body_fn}}
     local dot_dr=${path_dir}/.d
     local lst_dr=${dot_dr}/.lst
+    local in_dr=${path_dir}/.ins_dr
+
+    echo -e "${GREEN}\$in_dr = '$in_dr'${NORMAL}"
+
     local out_opus_lst_arb=${lst_dr}/out_opus_lst_arb.lst
     local out_opus_lst_sd=${lst_dr}/out_opus_lst_sd.lst
 
     local opus_sd=
     local opus_sd_pth=
     local opus_sd_pth_sd_pth=
+
+    #! создаем file_opus_in
+
+    echo "## in_dr" >>${file_opus_in}
+    #! in_dr перебор по in_dr_sd_nm
+
+    for in_dr_sd_nm in $(_dd2e ${in_dr}); do
+        in_dr_sd_pth=${in_dr}/${in_dr_sd_nm}
+        #! создаем подзаголовки из ссылок [nm](pth)
+        echo "### [${in_dr_sd_nm}](${in_dr_sd_pth}/res.md)" >>${file_opus_in}
+    done
+
+    #! убираем домашнюю директорию из путей в файле
+    _s2f "${HOME}/" "/" ${file_opus_in}
 
     #! получаем путь из списка out_opus_lst_sd.lst создаем file_opus_sd
     for opus_sd_pth in $(_f2e ${out_opus_lst_sd}); do
@@ -83,9 +101,10 @@ ${NORMAL}"
 
         #! создаем подзаголовки из ссылок [nm](pth),где nm имя sd, pth ее путь
         for opus_sd_pth_sd in $(_dd2e ${opus_sd_pth}); do
-            opus_sd_pth_sd_pth=${opus_sd_pth}/${opus_sd_pth_sd}
 
-            echo "### [$(_prs_f -n ${opus_sd_pth_sd})](${opus_sd_pth_sd_pth})" >>${file_opus_sd}
+            opus_sd_pth_sd_pth=${opus_sd_pth}/${opus_sd_pth_sd}
+            echo "### [$(_prs_f -n ${opus_sd_pth_sd})](${opus_sd_pth_sd_pth}/.grot/exam.man)" >>${file_opus_sd}
+
         done
 
     done
@@ -105,10 +124,12 @@ ${NORMAL}"
             # echo -e "${GREEN}\$opus_arb_pth_pth = ' file://$opus_arb_pth_pth '${NORMAL}"
             #! создаем подзаголовки из ссылок [nm](pth),где nm имя sd, pth ее путь
             for opus_arb_pth_pth_nm in $(_dd2e ${opus_arb_pth_pth}/.grot/opus.d); do
-                # echo -e "${GREEN}\$opus_arb_pth_pth_nm = '$opus_arb_pth_pth_nm'${NORMAL}"
-                opus_arb_pth_pth_pth=${opus_arb_pth_pth}/${opus_arb_pth_pth_nm}
+                echo -e "${GREEN}\$opus_arb_pth_pth_nm = '$opus_arb_pth_pth_nm'${NORMAL}"
+   
+                opus_arb_pth_pth_pth=${opus_arb_pth_pth}/.grot/opus.d/${opus_arb_pth_pth_nm}
 
-                echo "### [$(_prs_f -n $(basename ${opus_arb_pth_nm})) - $(_prs_f -n ${opus_arb_pth_pth_nm})](${opus_arb_pth_pth_pth}/cntx.res.md)" >>${file_opus_arb}
+                # echo -e "${GREEN}\$opus_arb_pth_pth_pth = ' file://$opus_arb_pth_pth_pth '${NORMAL}"
+                echo "### [$(_prs_f -n $(basename ${opus_arb_pth_nm})) $(_prs_f -n ${opus_arb_pth_pth_nm})](${opus_arb_pth_pth_pth}/cntx.res.md)" >>${file_opus_arb}
 
             done
         done
@@ -149,16 +170,12 @@ ${NORMAL}"
     local sd=
     local dot_ins_d=${path_dir}/.ins_dr
     for sd in $(_dd2e ${dot_ins_d}); do
-        if [ -f ${dot_ins_d}/${sd}/res.md_ufl9 ]; then
-            _source_w1_isf ${dot_ins_d}/${sd}/res.md_ufl9
-        else
+        if [ -d ${dot_ins_d}/${sd}/cnx.d ] && [ -f ${dot_ins_d}/${sd}/res.md ]; then
             echo | ufl_stl0 9 ${dot_ins_d}/${sd}/cnx.d ${dot_ins_d}/${sd}/res.md 2
         fi
     done
 
-    if [ -f $path_dir/cntx.res.md_ufl9 ]; then
-        _source_w1_isf $path_dir/cntx.res.md_ufl9
-    else
+    if [ -d $path_dir/cntx.ins.d ] && [ -f $path_dir/cntx.res.md ]; then
         echo | ufl_stl0 9 $path_dir/cntx.ins.d $path_dir/cntx.res.md 2
     fi
 
