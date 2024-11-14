@@ -5,9 +5,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731591666_14112024204106
+DATE: 1731607826_15112024011026
 
-DATX: 1731591666
+DATX: 1731607826
 -->
 
 
@@ -32,12 +32,12 @@ DATX: 1731591666
 
 
 ## info.ax
-### [expansion](/REPOBARE/_repo/NBash/.arb/info.ax/expansion.ram/.grot/exam.man)
-### [pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man)
-### [stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man)
-### [substr](/REPOBARE/_repo/NBash/.arb/info.ax/substr.ram/.grot/exam.man)
-### [symbol_class](/REPOBARE/_repo/NBash/.arb/info.ax/symbol_class.ram/.grot/exam.man)
-### [variable](/REPOBARE/_repo/NBash/.arb/info.ax/variable.ram/.grot/exam.man)
+### [expansion](../../.arb/info.ax/expansion.ram/.grot/exam.man)
+### [pipe_input](../../.arb/info.ax/pipe_input.ram/.grot/exam.man)
+### [stream](../../.arb/info.ax/stream.ram/.grot/exam.man)
+### [substr](../../.arb/info.ax/substr.ram/.grot/exam.man)
+### [symbol_class](../../.arb/info.ax/symbol_class.ram/.grot/exam.man)
+### [variable](../../.arb/info.ax/variable.ram/.grot/exam.man)
 
 
 [001.004.opus_arb.txt.md](/REPOBARE/_repo/NBash/.d/.opus/cntx.ins.d/001.004.opus_arb.txt.md)

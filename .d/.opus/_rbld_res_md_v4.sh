@@ -103,12 +103,7 @@ ${NORMAL}"
         for opus_sd_pth_sd in $(_dd2e ${opus_sd_pth}); do
 
             opus_sd_pth_sd_pth=${opus_sd_pth}/${opus_sd_pth_sd}
-
-            anc_to=${opus_sd_pth_sd_pth}/.grot/exam.man
-            # anc_from=${file_opus_sd}
-            anc_from=${path_file}
-            rel_path=$(_ee2rpth ${anc_from} ${anc_to})
-            echo "### [$(_prs_f -n ${opus_sd_pth_sd})](${rel_path})" >>${file_opus_sd}
+            echo "### [$(_prs_f -n ${opus_sd_pth_sd})](${opus_sd_pth_sd_pth}/.grot/exam.man)" >>${file_opus_sd}
 
         done
 
@@ -130,7 +125,7 @@ ${NORMAL}"
             #! создаем подзаголовки из ссылок [nm](pth),где nm имя sd, pth ее путь
             for opus_arb_pth_pth_nm in $(_dd2e ${opus_arb_pth_pth}/.grot/opus.d); do
                 echo -e "${GREEN}\$opus_arb_pth_pth_nm = '$opus_arb_pth_pth_nm'${NORMAL}"
-
+   
                 opus_arb_pth_pth_pth=${opus_arb_pth_pth}/.grot/opus.d/${opus_arb_pth_pth_nm}
 
                 # echo -e "${GREEN}\$opus_arb_pth_pth_pth = ' file://$opus_arb_pth_pth_pth '${NORMAL}"
