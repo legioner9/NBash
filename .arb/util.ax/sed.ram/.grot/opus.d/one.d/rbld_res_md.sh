@@ -57,7 +57,104 @@ ${NORMAL}"
 
     echo "START BODY FN : ${FNN}() $*"
 
+    local file_opus_in=${path_dir}/cntx.ins.d/001.002.opus_in.txt.md
+    local file_opus_sd=${path_dir}/cntx.ins.d/001.003.opus_sd.txt.md
+    local file_opus_arb=${path_dir}/cntx.ins.d/001.004.opus_arb.txt.md
+
+    : >${file_opus_in}
+    : >${file_opus_sd}
+    : >${file_opus_arb}
+
     #{{body_fn}}
+
+    local dot_dr=${path_dir}/.d
+    local lst_dr=${dot_dr}/.lst
+    local in_dr=${path_dir}/.ins_dr
+
+    echo -e "${GREEN}\$in_dr = '$in_dr'${NORMAL}"
+
+    local out_opus_lst_arb=${lst_dr}/out_opus_lst_arb.lst
+    local out_opus_lst_sd=${lst_dr}/out_opus_lst_sd.lst
+
+    local opus_sd=
+    local opus_sd_pth=
+    local opus_sd_pth_sd_pth=
+
+    local anc_to=
+    local anc_from=
+
+    #! создаем file_opus_in
+
+    echo "## in_dr" >>${file_opus_in}
+    #! in_dr перебор по in_dr_sd_nm
+
+    for in_dr_sd_nm in $(_dd2e ${in_dr}); do
+        in_dr_sd_pth=${in_dr}/${in_dr_sd_nm}
+        #! создаем подзаголовки из ссылок [nm](pth)
+
+        anc_to=${in_dr_sd_pth}/res.md
+        # anc_from=${file_opus_sd}
+        #! файл file_opus_sd будет копирован в path_file а значит и относительный путь нужно считать от path_file
+        anc_from=${path_file}
+        rel_path=$(_ee2rpth ${anc_from} ${anc_to})
+        echo "### [${in_dr_sd_nm}](${rel_path})" >>${file_opus_in}
+
+        # echo "### [${in_dr_sd_nm}](${in_dr_sd_pth}/res.md)" >>${file_opus_in}
+    done
+
+    # #! получаем путь из списка out_opus_lst_sd.lst создаем file_opus_sd
+    # for opus_sd_pth in $(_f2e ${out_opus_lst_sd}); do
+
+    #     #! записываем заголовок как название dr
+    #     echo "## $(basename ${opus_sd_pth})" >>${file_opus_sd}
+
+    #     #! создаем подзаголовки из ссылок [nm](pth),где nm имя sd, pth ее путь
+    #     for opus_sd_pth_sd in $(_dd2e ${opus_sd_pth}); do
+
+    #         opus_sd_pth_sd_pth=${opus_sd_pth}/${opus_sd_pth_sd}
+
+    #         anc_to=${opus_sd_pth_sd_pth}/.grot/exam.man
+    #         # anc_from=${file_opus_sd}
+    #         #! файл file_opus_sd будет копирован в path_file а значит и относительный путь нужно считать от path_file
+    #         anc_from=${path_file}
+    #         rel_path=$(_ee2rpth ${anc_from} ${anc_to})
+    #         echo "### [$(_prs_f -n ${opus_sd_pth_sd})](${rel_path})" >>${file_opus_sd}
+
+    #     done
+
+    # done
+
+    #! получаем путь из списка out_opus_lst_arb.lst создаем file_opus_arb
+    for opus_arb_pth in $(_f2e ${out_opus_lst_arb}); do
+
+        #! записываем заголовок как название dr
+        echo "## $(basename ${opus_arb_pth})" >>${file_opus_arb}
+
+        for opus_arb_pth_nm in $(_d2e ${opus_arb_pth}); do
+
+            opus_arb_pth_pth=${opus_arb_pth}/${opus_arb_pth_nm}
+            # echo -e "${GREEN}\$opus_arb_pth_pth = ' file://$opus_arb_pth_pth '${NORMAL}"
+            #! создаем подзаголовки из ссылок [nm](pth),где nm имя sd, pth ее путь
+            for opus_arb_pth_pth_nm in $(_dd2e ${opus_arb_pth_pth}/.grot/opus.d); do
+                echo -e "${GREEN}\$opus_arb_pth_pth_nm = '$opus_arb_pth_pth_nm'${NORMAL}"
+
+                opus_arb_pth_pth_pth=${opus_arb_pth_pth}/.grot/opus.d/${opus_arb_pth_pth_nm}
+
+                # echo -e "${GREEN}\$opus_arb_pth_pth_pth = ' file://$opus_arb_pth_pth_pth '${NORMAL}"
+
+                anc_to=${opus_arb_pth_pth_pth}/cntx.res.md
+                # anc_from=${file_opus_sd}
+                #! файл file_opus_sd будет копирован в path_file а значит и относительный путь нужно считать от path_file
+                anc_from=${path_file}
+                rel_path=$(_ee2rpth ${anc_from} ${anc_to})
+                echo "### [$(_prs_f -n $(basename ${opus_arb_pth_nm}))](${rel_path})" >>${file_opus_arb}
+
+                # echo "### [$(_prs_f -n $(basename ${opus_arb_pth_nm})) $(_prs_f -n ${opus_arb_pth_pth_nm})](${opus_arb_pth_pth_pth}/cntx.res.md)" >>${file_opus_arb}
+
+            done
+        done
+
+    done
 
     #! rebuild all in dir
     local sd=
@@ -74,10 +171,8 @@ ${NORMAL}"
 
     _edit $path_dir/cntx.res.md
 
-
-
     #! END BODY FN ---------------------------------------
-    
+
     cd $PPWD
     return 0
 

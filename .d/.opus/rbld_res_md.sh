@@ -101,9 +101,6 @@ ${NORMAL}"
         # echo "### [${in_dr_sd_nm}](${in_dr_sd_pth}/res.md)" >>${file_opus_in}
     done
 
-    #! убираем домашнюю директорию из путей в файле
-    _s2f "${HOME}/" "/" ${file_opus_in}
-
     #! получаем путь из списка out_opus_lst_sd.lst создаем file_opus_sd
     for opus_sd_pth in $(_f2e ${out_opus_lst_sd}); do
 
@@ -125,9 +122,6 @@ ${NORMAL}"
         done
 
     done
-
-    # #! убираем домашнюю директорию из путей в файле
-    # _s2f "${HOME}/" "/" ${file_opus_sd}
 
     #! получаем путь из списка out_opus_lst_arb.lst создаем file_opus_arb
     for opus_arb_pth in $(_f2e ${out_opus_lst_arb}); do
@@ -161,11 +155,6 @@ ${NORMAL}"
 
     done
 
-    # #! убираем домашнюю директорию из путей в файле
-    # _s2f "${HOME}/" "/" ${file_opus_arb}
-
-    read -p "enter"
-
     #! rbld всех из списка out_opus_lst_arb.lst
     local md_ufl9=
     local opus_d=
@@ -191,6 +180,7 @@ ${NORMAL}"
             fi
         done
     done
+
     #! rebuild all in dir
     local sd=
     local dot_ins_d=${path_dir}/.ins_dr
