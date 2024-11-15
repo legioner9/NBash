@@ -19,20 +19,20 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731583909_14112024183149
+DATE: 1731643698_15112024110818
 
-DATX: 1731583909
+DATX: 1731643698
 -->
 
 
-[001.chapt.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/001.chapt.txt.md)
+[001.chapt.txt.md](cnx.d/001.chapt.txt.md)
 
 
 
 # Примеры Find
     
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.exa.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/002.exa.d/001.pref.txt.md)
 
 
 
@@ -40,7 +40,7 @@ DATX: 1731583909
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.exa.d/002.txt.md)
+[002.txt.md](cnx.d/002.exa.d/002.txt.md)
 
 
 
@@ -50,7 +50,7 @@ DATX: 1731583909
 <!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man) -->
 <!-- [see stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man) -->
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/003.exa.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/003.exa.d/001.pref.txt.md)
 
 
 
@@ -58,7 +58,7 @@ DATX: 1731583909
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/003.exa.d/002.txt.md)
+[002.txt.md](cnx.d/003.exa.d/002.txt.md)
 
 
 
@@ -68,7 +68,7 @@ DATX: 1731583909
 <!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man) -->
 <!-- [see stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man) -->
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/004.exa.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/004.exa.d/001.pref.txt.md)
 
 
 
@@ -76,7 +76,7 @@ DATX: 1731583909
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/004.exa.d/002.txt.md)
+[002.txt.md](cnx.d/004.exa.d/002.txt.md)
 
 
 
@@ -86,7 +86,7 @@ DATX: 1731583909
 <!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man) -->
 <!-- [see stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man) -->
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/005.exa.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/005.exa.d/001.pref.txt.md)
 
 
 
@@ -94,7 +94,7 @@ DATX: 1731583909
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/005.exa.d/002.txt.md)
+[002.txt.md](cnx.d/005.exa.d/002.txt.md)
 
 
 
@@ -104,7 +104,7 @@ DATX: 1731583909
 <!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man) -->
 <!-- [see stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man) -->
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/006.exa.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/006.exa.d/001.pref.txt.md)
 
 
 
@@ -112,7 +112,7 @@ DATX: 1731583909
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/006.exa.d/002.txt.md)
+[002.txt.md](cnx.d/006.exa.d/002.txt.md)
 
 
 
@@ -122,7 +122,7 @@ DATX: 1731583909
 <!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man) -->
 <!-- [see stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man) -->
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/007.exa.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/007.exa.d/001.pref.txt.md)
 
 
 
@@ -130,7 +130,7 @@ DATX: 1731583909
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/007.exa.d/002.txt.md)
+[002.txt.md](cnx.d/007.exa.d/002.txt.md)
 
 
 
@@ -140,7 +140,7 @@ DATX: 1731583909
 <!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man) -->
 <!-- [see stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man) -->
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/008.exa.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/008.exa.d/001.pref.txt.md)
 
 
 
@@ -148,7 +148,7 @@ DATX: 1731583909
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/008.exa.d/002.txt.md)
+[002.txt.md](cnx.d/008.exa.d/002.txt.md)
 
 
 

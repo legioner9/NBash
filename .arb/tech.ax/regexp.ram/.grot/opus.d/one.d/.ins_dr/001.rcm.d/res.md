@@ -19,20 +19,20 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731583934_14112024183214
+DATE: 1731643722_15112024110842
 
-DATX: 1731583934
+DATX: 1731643722
 -->
 
 
-[001.chapt.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/001.chapt.txt.md)
+[001.chapt.txt.md](cnx.d/001.chapt.txt.md)
 
 
 
 # Chapt
      
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/002.for_tst.d/001.pref.txt.md)
 
 
 
@@ -40,7 +40,7 @@ DATX: 1731583934
  
     
 
-[002.rcm_1.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/002.rcm_1.txt.md)
+[002.rcm_1.txt.md](cnx.d/002.for_tst.d/002.rcm_1.txt.md)
 
 
 
@@ -49,7 +49,7 @@ DATX: 1731583934
 в оригинал вносим изменения - копия для истории изменений
     
 
-[003.rcm_2.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/003.rcm_2.txt.md)
+[003.rcm_2.txt.md](cnx.d/002.for_tst.d/003.rcm_2.txt.md)
 
 
 
@@ -64,7 +64,7 @@ DATX: 1731583934
   - сорс файлы для запуска в командной строке
     
 
-[004.rcm_3.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/004.rcm_3.txt.md)
+[004.rcm_3.txt.md](cnx.d/002.for_tst.d/004.rcm_3.txt.md)
 
 
 
@@ -88,7 +88,7 @@ DATX: 1731583934
     res - результат вставки context
     
 
-[005.rcm_4.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/005.rcm_4.txt.md)
+[005.rcm_4.txt.md](cnx.d/002.for_tst.d/005.rcm_4.txt.md)
 
 
 
@@ -97,7 +97,7 @@ DATX: 1731583934
 - наличие последнего аргумента для отладки функции 
 
 
-[006.rcm_5.txt.md](/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.for_tst.d/006.rcm_5.txt.md)
+[006.rcm_5.txt.md](cnx.d/002.for_tst.d/006.rcm_5.txt.md)
 
 
 

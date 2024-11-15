@@ -19,13 +19,13 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731583931_14112024183211
+DATE: 1731643719_15112024110839
 
-DATX: 1731583931
+DATX: 1731643719
 -->
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d/cntx.ins.d/001.txt.md)
+[001.txt.md](cntx.ins.d/001.txt.md)
 
 
 

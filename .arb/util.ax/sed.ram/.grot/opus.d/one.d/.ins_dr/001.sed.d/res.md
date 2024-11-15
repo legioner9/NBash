@@ -19,20 +19,20 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731583918_14112024183158
+DATE: 1731643706_15112024110826
 
-DATX: 1731583918
+DATX: 1731643706
 -->
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/001.txt.md)
+[001.txt.md](cnx.d/001.txt.md)
 
 
 
 # Примеры Sed 
 
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/002.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/002.d/001.pref.txt.md)
 
 
 
@@ -40,7 +40,7 @@ DATX: 1731583918
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/002.d/002.txt.md)
+[002.txt.md](cnx.d/002.d/002.txt.md)
 
 
 
@@ -49,7 +49,7 @@ DATX: 1731583918
 [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man)
     
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/003.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/003.d/001.pref.txt.md)
 
 
 
@@ -57,7 +57,7 @@ DATX: 1731583918
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/003.d/002.txt.md)
+[002.txt.md](cnx.d/003.d/002.txt.md)
 
 
 
@@ -65,7 +65,7 @@ DATX: 1731583918
 
 [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man)
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/004.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/004.d/001.pref.txt.md)
 
 
 
@@ -73,7 +73,7 @@ DATX: 1731583918
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/004.d/002.txt.md)
+[002.txt.md](cnx.d/004.d/002.txt.md)
 
 
 
@@ -81,7 +81,7 @@ DATX: 1731583918
 
 [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man)
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/005.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/005.d/001.pref.txt.md)
 
 
 
@@ -89,7 +89,7 @@ DATX: 1731583918
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/005.d/002.txt.md)
+[002.txt.md](cnx.d/005.d/002.txt.md)
 
 
 
@@ -97,7 +97,7 @@ DATX: 1731583918
 
 <!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man) -->
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/006.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/006.d/001.pref.txt.md)
 
 
 
@@ -105,7 +105,7 @@ DATX: 1731583918
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/006.d/002.txt.md)
+[002.txt.md](cnx.d/006.d/002.txt.md)
 
 
 
@@ -122,7 +122,7 @@ DATX: 1731583918
 
 [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man)
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/007.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/007.d/001.pref.txt.md)
 
 
 
@@ -130,7 +130,7 @@ DATX: 1731583918
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/007.d/002.txt.md)
+[002.txt.md](cnx.d/007.d/002.txt.md)
 
 
 
@@ -149,7 +149,7 @@ DATX: 1731583918
 
 <!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man) -->
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/008.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/008.d/001.pref.txt.md)
 
 
 
@@ -157,7 +157,7 @@ DATX: 1731583918
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/008.d/002.txt.md)
+[002.txt.md](cnx.d/008.d/002.txt.md)
 
 
 
@@ -185,7 +185,7 @@ DATX: 1731583918
 
 <!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man) -->
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/009.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/009.d/001.pref.txt.md)
 
 
 
@@ -193,7 +193,7 @@ DATX: 1731583918
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/009.d/002.txt.md)
+[002.txt.md](cnx.d/009.d/002.txt.md)
 
 
 
@@ -212,7 +212,7 @@ DATX: 1731583918
 
 <!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man) -->
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/010.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/010.d/001.pref.txt.md)
 
 
 
@@ -220,7 +220,7 @@ DATX: 1731583918
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/010.d/002.txt.md)
+[002.txt.md](cnx.d/010.d/002.txt.md)
 
 
 
@@ -278,7 +278,7 @@ Tracy Presley  1L02   555-0102
 
 <!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man) -->
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/011.exa.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/011.exa.d/001.pref.txt.md)
 
 
 
@@ -286,7 +286,7 @@ Tracy Presley  1L02   555-0102
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d/011.exa.d/002.txt.md)
+[002.txt.md](cnx.d/011.exa.d/002.txt.md)
 
 
 

@@ -19,20 +19,20 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731583899_14112024183139
+DATE: 1731643691_15112024110811
 
-DATX: 1731583899
+DATX: 1731643691
 -->
 
 
-[001.chapt.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/001.chapt.txt.md)
+[001.chapt.txt.md](cnx.d/001.chapt.txt.md)
 
 
 
 # Chapt
     
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.exa.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/002.exa.d/001.pref.txt.md)
 
 
 
@@ -40,7 +40,7 @@ DATX: 1731583899
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/002.exa.d/002.txt.md)
+[002.txt.md](cnx.d/002.exa.d/002.txt.md)
 
 
 
@@ -82,7 +82,7 @@ $ echo $$
 <!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man) -->
 <!-- [see stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man) -->
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/003.exa.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/003.exa.d/001.pref.txt.md)
 
 
 
@@ -90,7 +90,7 @@ $ echo $$
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/003.exa.d/002.txt.md)
+[002.txt.md](cnx.d/003.exa.d/002.txt.md)
 
 
 
@@ -102,7 +102,7 @@ $ echo $$
 <!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/info.ax/pipe_input.ram/.grot/exam.man) -->
 <!-- [see stream](/REPOBARE/_repo/NBash/.arb/info.ax/stream.ram/.grot/exam.man) -->
 
-[001.pref.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/004.exa.d/001.pref.txt.md)
+[001.pref.txt.md](cnx.d/004.exa.d/001.pref.txt.md)
 
 
 
@@ -110,7 +110,7 @@ $ echo $$
 
     
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d/004.exa.d/002.txt.md)
+[002.txt.md](cnx.d/004.exa.d/002.txt.md)
 
 
 

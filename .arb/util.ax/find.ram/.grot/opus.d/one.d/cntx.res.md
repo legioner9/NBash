@@ -19,13 +19,13 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731583914_14112024183154
+DATE: 1731643702_15112024110822
 
-DATX: 1731583914
+DATX: 1731643702
 -->
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/cntx.ins.d/001.txt.md)
+[001.txt.md](cntx.ins.d/001.txt.md)
 
 
 
@@ -35,7 +35,7 @@ DATX: 1731583914
 
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/001.txt.md)
 
 
 
@@ -58,7 +58,7 @@ DATX: 1731583914
     Шаблон - непосредственно значение по которому будем отбирать файлы.
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/cntx.ins.d/003.d/001.txt.md)
+[001.txt.md](cntx.ins.d/003.d/001.txt.md)
 
 
 
@@ -83,7 +83,7 @@ DATX: 1731583914
 `-type d` - поиск папки в Linux.
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/cntx.ins.d/004.d/001.txt.md)
+[001.txt.md](cntx.ins.d/004.d/001.txt.md)
 
 
 

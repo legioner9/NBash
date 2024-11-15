@@ -19,13 +19,13 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731591663_14112024204103
+DATE: 1731643729_15112024110849
 
-DATX: 1731591663
+DATX: 1731643729
 -->
 
 
-[001.head.txt.md](/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/part_1/cnx.d/001.head.txt.md)
+[001.head.txt.md](cnx.d/001.head.txt.md)
 
 
 

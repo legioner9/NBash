@@ -19,13 +19,13 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731583922_14112024183202
+DATE: 1731643710_15112024110830
 
-DATX: 1731583922
+DATX: 1731643710
 -->
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/001.txt.md)
+[001.txt.md](cntx.ins.d/001.txt.md)
 
 
 
@@ -33,7 +33,7 @@ DATX: 1731583922
 
 ## [Примеры Sed](/REPOBARE/_repo/NBash/.arb/util/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/res.md)
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/001.txt.md)
 
 
 
@@ -51,7 +51,7 @@ DATX: 1731583922
 Более мощной альтернативой Sed является консольная утилита Awk, смысл которой такой же, но язык написания микропрограммы обработки сложнее и богаче. Однако, практика показывает, что сначала нужно попробовать решить задачу с помощью Sed, вместо того, чтобы «стрелять по воробьям из базуки».
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/002.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/002.d/001.txt.md)
 
 
 
@@ -67,14 +67,14 @@ DATX: 1731583922
 
     
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/002.d/002.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/002.d/002.d/001.txt.md)
 
 
 
 ### дескрипторы
 
 
-[002.descript.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/002.d/002.d/002.descript.txt.md)
+[002.descript.txt.md](cntx.ins.d/002.d/002.d/002.d/002.descript.txt.md)
 
 
 
@@ -104,7 +104,7 @@ echo "Text fragment" | sed 'p' <<< "Text fragment 1" # Вызов пройдет
 
 [see pipe_input](/REPOBARE/_repo/NBash/.arb/man/pipe_input.ram/.grot/exam.man)
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/002.d/003.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/002.d/003.d/001.txt.md)
 
 
 
@@ -115,14 +115,14 @@ echo "Text fragment" | sed 'p' <<< "Text fragment 1" # Вызов пройдет
 При разделении потока на фрагменты Sed по умолчанию использует символ перевода строки LF (другими словами, файл обрабатывается в текстовом режиме). В текстах, которые сохранялись в Windows, это может приводить к неправильной обработке, потому что там окончания строк кодируются парой символов CRLF, поэтому такие тексты нужно обрабатывать в бинарном режиме с помощью опции -b или --binary.
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/002.d/004.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/002.d/004.d/001.txt.md)
 
 
 
 ### Sed обрабатывает каждую строку в три шага
 
 
-[002.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/002.d/004.d/002.txt.md)
+[002.txt.md](cntx.ins.d/002.d/002.d/004.d/002.txt.md)
 
 
 
@@ -164,7 +164,7 @@ $ cat test.txt
 param=new_value
 ```
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/003.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/003.d/001.txt.md)
 
 
 
@@ -172,14 +172,14 @@ param=new_value
 
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/003.d/002.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/003.d/002.d/001.txt.md)
 
 
 
 ### - n
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/003.d/002.d/002.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/003.d/002.d/002.d/001.txt.md)
 
 
 
@@ -195,7 +195,7 @@ Today is "Mon Sep  5 11:33:41 MSK 2022"
 ```
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/003.d/003.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/003.d/003.d/001.txt.md)
 
 
 
@@ -214,7 +214,7 @@ $ cat test.txt
 param=new_value
 ```
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/003.d/003.d/002.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/003.d/003.d/002.d/001.txt.md)
 
 
 
@@ -232,7 +232,7 @@ test.txt  test.txt.backup
 ```
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/003.d/004.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/003.d/004.d/001.txt.md)
 
 
 
@@ -274,7 +274,7 @@ sed '
 ```
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/003.d/005.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/003.d/005.d/001.txt.md)
 
 
 
@@ -313,7 +313,7 @@ ABC
 
 ```
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/004.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/004.d/001.txt.md)
 
 
 
@@ -368,7 +368,7 @@ sed '
 ```
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/004.d/002.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/004.d/002.d/001.txt.md)
 
 
 
@@ -421,7 +421,7 @@ sed -n '1,3 { p ; p } ; 1,2 { p ; p } ; {p ; p}' test.txt
 Пробелы в общем случае между отдельными частями микропрограммы не нужны, так как все команды и синтаксические якоря состоят из одного символа, однако пробелы повышают удобочитаемость кода.
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/004.d/003.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/004.d/003.d/001.txt.md)
 
 
 
@@ -520,7 +520,7 @@ sed -n '/строка [[:digit:]]*/p' text.txt
 строка 6
 ```
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/005.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/005.d/001.txt.md)
 
 
 
@@ -560,7 +560,7 @@ sed -n '/строка [[:digit:]]*/p' text.txt
 ```
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/006.01.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/006.01.d/001.txt.md)
 
 
 
@@ -659,7 +659,7 @@ $ sed 's/.*/[&]/' <<< "WORD"
 ```
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/007.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/007.d/001.txt.md)
 
 
 
@@ -752,7 +752,7 @@ stop
 
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/008.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/008.d/001.txt.md)
 
 
 
@@ -818,7 +818,7 @@ end
 ```
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/009.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/009.d/001.txt.md)
 
 
 
@@ -851,7 +851,7 @@ $ sed -n '2,4 !p' <<EOF
 В предыдущем примере мы передаем утилите 7 строк. Микропрограмма записана с помощью инвертированной группы, которая говорит «печатай всё, кроме строк со второй по четвертую».
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/010.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/010.d/001.txt.md)
 
 
 
@@ -1042,14 +1042,14 @@ This file was generated on 2022-09-07 at 14:26:05
 
 Обратите внимание, что не все части в нашем сценарии переносятся между клонами Sed. Так, следующая конструкция поддерживается только в GNU Sed `s/h\.0\.\(.*\)/ \U\1/`.
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/011.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/011.d/001.txt.md)
 
 
 
 ## Продвинутые приёмы
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/011.d/002.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/011.d/002.d/001.txt.md)
 
 
 
@@ -1124,7 +1124,7 @@ START-->
 
 
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/011.d/003.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/011.d/003.d/001.txt.md)
 
 
 
@@ -1176,7 +1176,7 @@ $ seq 8 | sed -n '1,~3p'
 3
 ```
 
-[001.txt.md](/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cntx.ins.d/002.d/011.d/004.d/001.txt.md)
+[001.txt.md](cntx.ins.d/002.d/011.d/004.d/001.txt.md)
 
 
 

@@ -19,13 +19,13 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731608722_15112024012522
+DATE: 1731643732_15112024110852
 
-DATX: 1731608722
+DATX: 1731643732
 -->
 
 
-[001.001.head.txt.md](/REPOBARE/_repo/NBash/.d/.opus/cntx.ins.d/001.001.head.txt.md)
+[001.001.head.txt.md](cntx.ins.d/001.001.head.txt.md)
 
 
 
@@ -33,7 +33,7 @@ DATX: 1731608722
 # Opus NBash
  
 
-[001.002.opus_in.txt.md](/REPOBARE/_repo/NBash/.d/.opus/cntx.ins.d/001.002.opus_in.txt.md)
+[001.002.opus_in.txt.md](cntx.ins.d/001.002.opus_in.txt.md)
 
 
 
@@ -41,7 +41,7 @@ DATX: 1731608722
 ### [part_1](.ins_dr/part_1/res.md)
 
 
-[001.003.opus_sd.txt.md](/REPOBARE/_repo/NBash/.d/.opus/cntx.ins.d/001.003.opus_sd.txt.md)
+[001.003.opus_sd.txt.md](cntx.ins.d/001.003.opus_sd.txt.md)
 
 
 
@@ -54,7 +54,7 @@ DATX: 1731608722
 ### [variable](../../.arb/info.ax/variable.ram/.grot/exam.man)
 
 
-[001.004.opus_arb.txt.md](/REPOBARE/_repo/NBash/.d/.opus/cntx.ins.d/001.004.opus_arb.txt.md)
+[001.004.opus_arb.txt.md](cntx.ins.d/001.004.opus_arb.txt.md)
 
 
 
