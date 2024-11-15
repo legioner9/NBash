@@ -13,115 +13,82 @@ Start Contents Menu
 End Contents Menu
 
 <!--
-CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/cnx.d /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/res.md 2
+CMND: ufl_stl0 4 /home/st/REPOBARE/_repo/st_rc_d/.d/.mul/rbld_readme.mul/.ins_dr/001.rcm.d/cnx.d /home/st/REPOBARE/_repo/st_rc_d/.d/.mul/rbld_readme.mul/.ins_dr/001.rcm.d/res.md
 
-PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d
+PPWD: /home/st/REPOBARE/_repo/st_rc_d/.d/.mul/rbld_readme.mul/.ins_dr/001.rcm.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731643715_15112024110835
+DATE: 1731214263_10112024115103
 
-DATX: 1731643715
+DATX: 1731214263
 -->
 
 
-[001.chapt.txt.md](cnx.d/001.chapt.txt.md)
+[001.pref.txt.md](/REPOBARE/_repo/st_rc_d/.d/.mul/rbld_readme.mul/.ins_dr/001.rcm.d/cnx.d/002.d/001.pref.txt.md)
 
 
 
-# Примеры Tr
-
-
-    
-
-[001.pref.txt.md](cnx.d/002.exa.d/001.pref.txt.md)
-
-
-
-## Замена символов через аргументы
+# Рекомендации RCM
 
     
 
-[002.txt.md](cnx.d/002.exa.d/002.txt.md)
+[002.rcm_1.txt.md](/REPOBARE/_repo/st_rc_d/.d/.mul/rbld_readme.mul/.ins_dr/001.rcm.d/cnx.d/002.d/002.rcm_1.txt.md)
 
 
 
-    tr x z
+## RCM_1 (изменения в оригинал)
 
-    Далее следует ввести строку и нажать Enter. Ниже будет выведен обработанный результат и представлена возможность повторного ввода.
-
-<!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man) -->
-[see pipe_input](/REPOBARE/_repo/NBash/.arb/man/pipe_input.ram/.grot/exam.man)
-
-[001.pref.txt.md](cnx.d/003.exa.d/001.pref.txt.md)
-
-
-
-## Удалить все буквы в нижнем регистре
-
+в оригинал вносим изменения - копия для истории изменений
     
 
-[002.txt.md](cnx.d/003.exa.d/002.txt.md)
+[003.rcm_2.txt.md](/REPOBARE/_repo/st_rc_d/.d/.mul/rbld_readme.mul/.ins_dr/001.rcm.d/cnx.d/002.d/003.rcm_2.txt.md)
 
 
 
-    tr -d [:lower:]
+## RCM_2 (служебные файлы)
 
-<!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man) -->
-[see pipe_input](/REPOBARE/_repo/NBash/.arb/man/pipe_input.ram/.grot/exam.man)
-
-[001.pref.txt.md](cnx.d/004.exa.d/001.pref.txt.md)
-
-
-
-## Уплотнить повторяющиеся буквы большого и малого регистров
-
+при работе утилиты формировать следующие файлы рядом с результатами работы
+  - лог
+    - отдельно лог ошибок
+  - ридми 
+    - readme.stnd.md
+    - readme.flow.md
+  - сорс файлы для запуска в командной строке
     
 
-[002.txt.md](cnx.d/004.exa.d/002.txt.md)
+[004.rcm_3.txt.md](/REPOBARE/_repo/st_rc_d/.d/.mul/rbld_readme.mul/.ins_dr/001.rcm.d/cnx.d/002.d/004.rcm_3.txt.md)
 
 
 
-    tr -s [:upper:][:lower:]
+## RCM_3 (cокращения)
 
-    echo "AAcdscggooo" | tr -s [:upper:][:lower:] # Acdscgo
-
-<!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man) -->
-<!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/man/pipe_input.ram/.grot/exam.man) -->
-
-[001.pref.txt.md](cnx.d/005.exa.d/001.pref.txt.md)
-
-
-
-## Вывести первые три строки файла /etc/passwd, заменив двоеточия на пробелы
-
+    dr - dir
+    fl - file
+    et - entety - file|dir
+    nm - name
+    et_lk - entety ссылка в ее имени содержится способ ее обработки
+    sdr - subdir
+    pth - path
+    rcv_dr - rcv dir
+    ins_dr - ins dir
+    prx - prefix
+    ptx - postfix
+    prx_et - prefix for entety (e.c. recommendationSTL for dr @|for fl &)
+    ptx_fn - postfix фиксирует принадлежность служебных файлов сфрмированых работой fn
+    lext - последнее расширение имени справа 
+    cnx - context 
+    res - результат вставки context
     
 
-[002.txt.md](cnx.d/005.exa.d/002.txt.md)
+[005.rcm_4.txt.md](/REPOBARE/_repo/st_rc_d/.d/.mul/rbld_readme.mul/.ins_dr/001.rcm.d/cnx.d/002.d/005.rcm_4.txt.md)
 
 
 
-    head -n3 /etc/passwd | tr ':' ' '
+## RCM_4 (notmast_butlast)
 
-<!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man) -->
-<!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/man/pipe_input.ram/.grot/exam.man) -->
+- наличие последнего аргумента для отладки функции 
 
-[001.pref.txt.md](cnx.d/006.exa.d/001.pref.txt.md)
-
-
-
-## Заменить цифры IP-адреса файла addresses2 на буквы a, и результат записать в файл addresses3
-
-    
-
-[002.txt.md](cnx.d/006.exa.d/002.txt.md)
-
-
-
-    tr [0-9] a < addresses2 > addresses3
-
-<!-- [see simbol_class](/REPOBARE/_repo/NBash/.arb/man/symbol_class.ram/.grot/exam.man) -->
-<!-- [see pipe_input](/REPOBARE/_repo/NBash/.arb/man/pipe_input.ram/.grot/exam.man) -->
 
 
 

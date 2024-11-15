@@ -19,19 +19,38 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731643702_15112024110822
+DATE: 1731689971_15112024235931
 
-DATX: 1731643702
+DATX: 1731689971
 -->
 
 
-[001.txt.md](cntx.ins.d/001.txt.md)
+[001.001.first_head.txt.md](cntx.ins.d/001.001.first_head.txt.md)
 
 
 
-# util Find
+# First Head
 
-## [see examp](/REPOBARE/_repo/NBash/.arb/util/find.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/res.md)
+
+    
+
+[001.002.opus_in.txt.md](cntx.ins.d/001.002.opus_in.txt.md)
+
+
+
+## in_dr
+### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
+
+
+[001.003.opus_sd.txt.md](cntx.ins.d/001.003.opus_sd.txt.md)
+
+
+
+
+
+[001.004.opus_arb.txt.md](cntx.ins.d/001.004.opus_arb.txt.md)
+
+
 
 
 
