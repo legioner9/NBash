@@ -1,4 +1,4 @@
-#!/bin/bash
+ #!/bin/bash
 
 echo -e "${CYAN}--- rbld_res_md_rnd7_4108983() $* in file://${REPO_PATH}/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/rbld_res_md.sh ---${NORMAL}" #started functions
 
@@ -194,7 +194,29 @@ ${NORMAL}"
         echo | ufl_stl0 9 $path_dir/cntx.ins.d $path_dir/cntx.res.md 2
     fi
 
-    _edit $path_dir/cntx.res.md
+    _edit $path_dir/cntx.res.md 
+
+    #! cr copy
+    local copy_md=${REPO_PATH}/NBash/.arb/util.ax/__arh/copy_sed.opus/copy_sed.md
+
+
+
+        if [ -d $path_dir/cntx.ins.d ] && [ -f $copy_md ] ; then
+        echo | ufl_stl0 9 $path_dir/cntx.ins.d $copy_md 2
+
+    fi
+
+        echo -e " 
+       This file create as copy: file://${path_file} 
+cmd (with pth) : 'echo | ufl_stl0 9 file://$path_dir/cntx.ins.d file://$copy_md 2 '
+cmd : 'echo | ufl_stl0 9 $path_dir/cntx.ins.d $copy_md 2'
+ATTANSION work anc only to $path_dir/cntx.ins.d without :
+
+001.002.opus_in.txt.md
+001.003.opus_sd.txt.md
+001.004.opus_arb.txt.md
+
+"
     #! END BODY FN ---------------------------------------
     
     cd $PPWD

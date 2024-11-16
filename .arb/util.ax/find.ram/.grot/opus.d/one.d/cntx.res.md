@@ -19,9 +19,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731689971_15112024235931
+DATE: 1731729369_16112024105609
 
-DATX: 1731689971
+DATX: 1731729369
 -->
 
 

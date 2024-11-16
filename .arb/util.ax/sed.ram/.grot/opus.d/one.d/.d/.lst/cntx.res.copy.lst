@@ -1,0 +1,2 @@
+# cp cntx.res.md ONLY with files from cntx.ins.d to :
+${REPO_PATH}/NBash/.arb/util.ax/__arh/copy_sed.opus/copy_sed.md
