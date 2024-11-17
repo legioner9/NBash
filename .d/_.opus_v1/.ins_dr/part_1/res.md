@@ -1,0 +1,59 @@
+
+<!-- [[__TOC_]] -->
+
+<a name="top"></a>
+<a class=top-link hide href="#top">↑</a>
+
+<style type="text/css">
+   .top-link {
+    transition: all .25s ease-in-out;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    display: inline-flex;
+    color: #000000;
+
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    margin: 0 2em 2em 0;
+    border-radius: 50%;
+    padding: .25em;
+    width: 1em;
+    height: 1em;
+    background-color: #F8F8F8;
+}
+</style>
+
+Start Contents Menu
+
+<!-- TOC toc2f_stl0 --> 
+ - <a href=#bc831bd805bc493d9005394e97b13483> Head</a>
+
+<!-- /TOC toc2f_stl0 -->
+
+End Contents Menu
+
+<!--
+CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/part_1/cnx.d /home/st/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/part_1/res.md 2
+
+PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus
+
+FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
+
+DATE: 1731835241_17112024162041
+
+DATX: 1731835241
+-->
+
+
+[001.head.txt.md](cnx.d/001.head.txt.md)
+
+
+
+ <a id="bc831bd805bc493d9005394e97b13483"></a>
+# Head
+
+
+
+

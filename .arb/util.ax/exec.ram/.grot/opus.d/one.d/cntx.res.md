@@ -28,9 +28,9 @@
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#df683dcff8ea4a0baac126d0dbf90d4c> Util Exec</a>
-   - <a href=#9fd9a541a87d41c4a358b0f5a105e515> in_dr</a>
-     - <a href=#760c3c35709d49ac93008dbbe72dc651> [001.rcm.d]</a>
+ - <a href=#436a21ccae204f4593b4d7dca8f5ccd5> Команда exec</a>
+   - <a href=#03d8785ef71b444bbd9bda41720b5f56> in_dr</a>
+     - <a href=#26d0fe9fcaf84713a32bec1ff492b118> [001.rcm.d]</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -43,9 +43,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731835195_17112024161955
+DATE: 1731870206_18112024020326
 
-DATX: 1731835195
+DATX: 1731870206
 -->
 
 
@@ -53,8 +53,8 @@ DATX: 1731835195
 
 
 
- <a id="df683dcff8ea4a0baac126d0dbf90d4c"></a>
-# Util Exec
+ <a id="436a21ccae204f4593b4d7dca8f5ccd5"></a>
+# Команда exec
 
 Синтаксис
 
@@ -71,13 +71,16 @@ DATX: 1731835195
 
 Команда exec не создает новый процесс. Когда мы запускаем утилиту из терминала, текущий терминальный процесс заменяется командой, которая предоставляется в качестве аргумента.
 
+
+    
+
 [001.002.opus_in.txt.md](cntx.ins.d/001.002.opus_in.txt.md)
 
 
 
- <a id="9fd9a541a87d41c4a358b0f5a105e515"></a>
+ <a id="03d8785ef71b444bbd9bda41720b5f56"></a>
 ## in_dr
- <a id="760c3c35709d49ac93008dbbe72dc651"></a>
+ <a id="26d0fe9fcaf84713a32bec1ff492b118"></a>
 ### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
 
 

@@ -1,0 +1,53 @@
+<!--
+CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.d/.opus/cntx.ins.d /home/st/REPOBARE/_repo/NBash/.d/.opus/cntx.res.md 2
+
+PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus
+
+FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
+
+DATE: 1731869506_18112024015146
+
+DATX: 1731869506
+-->
+
+
+[001.001.first_head.txt.md](cntx.ins.d/001.001.first_head.txt.md)
+
+
+
+# First Head
+
+
+    
+
+[001.001.head.txt.md](cntx.ins.d/001.001.head.txt.md)
+
+
+
+
+# Opus NBash
+ 
+
+[001.002.opus_in.txt.md](cntx.ins.d/001.002.opus_in.txt.md)
+
+
+
+## in_dr
+### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
+### [part_1](.ins_dr/part_1/res.md)
+
+
+[001.003.opus_sd.txt.md](cntx.ins.d/001.003.opus_sd.txt.md)
+
+
+
+
+
+[001.004.opus_arb.txt.md](cntx.ins.d/001.004.opus_arb.txt.md)
+
+
+
+
+
+
+

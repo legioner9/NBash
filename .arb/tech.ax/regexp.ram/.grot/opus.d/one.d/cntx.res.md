@@ -28,9 +28,11 @@
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#e47164785eea48dca09a17321f4ef55b> first head</a>
-   - <a href=#8609094bf0b742f69218609bca5ad605> Синтаксис</a>
-   - <a href=#c0798c2f32fe415997b875ae73b9af6c> Опции</a>
+   - <a href=#dcf05d07977f40f09595daf85813c9ee> in_dr</a>
+     - <a href=#1309a399b64c4950a29e78f8c21bfffc> [001.rcm.d]</a>
+ - <a href=#b6ac5e2348d74266a1e4891ef175d4bd> first head</a>
+   - <a href=#b8cf15f0b6654c8ab70d20074663e88f> Синтаксис</a>
+   - <a href=#6a0f2e7a36c14ace8d3462ff829b4aee> Опции</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -43,25 +45,47 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731835237_17112024162037
+DATE: 1731871603_18112024022643
 
-DATX: 1731835237
+DATX: 1731871603
 -->
+
+
+[001.002.opus_in.txt.md](cntx.ins.d/001.002.opus_in.txt.md)
+
+
+
+ <a id="dcf05d07977f40f09595daf85813c9ee"></a>
+## in_dr
+ <a id="1309a399b64c4950a29e78f8c21bfffc"></a>
+### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
+
+
+[001.003.opus_sd.txt.md](cntx.ins.d/001.003.opus_sd.txt.md)
+
+
+
+
+
+[001.004.opus_arb.txt.md](cntx.ins.d/001.004.opus_arb.txt.md)
+
+
+
 
 
 [001.txt.md](cntx.ins.d/001.txt.md)
 
 
 
- <a id="e47164785eea48dca09a17321f4ef55b"></a>
+ <a id="b6ac5e2348d74266a1e4891ef175d4bd"></a>
 # first head
 
- <a id="8609094bf0b742f69218609bca5ad605"></a>
+ <a id="b8cf15f0b6654c8ab70d20074663e88f"></a>
 ## Синтаксис
 
     exec [опции] [команда [аргументы]] [перенаправление]
 
- <a id="c0798c2f32fe415997b875ae73b9af6c"></a>
+ <a id="6a0f2e7a36c14ace8d3462ff829b4aee"></a>
 ## Опции
     -c
     Выполнение команды в чистой среде
