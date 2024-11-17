@@ -28,19 +28,6 @@
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#b72fb17dec0d457aac195633b00c7ee8> Chapt</a>
-   - <a href=#a62ec915c296495dad3f597ef8e12fc4> Базовое использование (замена процесса)</a>
- - <a href=#41f3b2928dab4a258644755f605ed213> Рекомендации RCM</a>
-   - <a href=#f6826db1d8494b4d9674b6c088ce3789> RCM_1 (изменения в оригинал)</a>
-   - <a href=#e142d98f3a184e1eaceec5249c5f519d> RCM_2 (служебные файлы)</a>
-   - <a href=#47a7111fda4341848d5a6559918d851e> RCM_3 (cокращения)</a>
-   - <a href=#ad414ed47cad43d89aefdccc39a5fcd2> RCM_4 (notmast_butlast)</a>
-   - <a href=#e01e608df0104d40a113e878876307a2> RCM_5 (mast_def_args)</a>
-   - <a href=#ab19a84faf954591a084743e712b6e58> Запуск скриптов в чистой среде</a>
-   - <a href=#9bb4c1f86e5b42c497824dbf60dc26a1> Измените стандартный ввод для чтения файлов с помощью exec</a>
- - <a href=#037a0ad7b66049b08906a2f76be63f58> Redirect stdin to read from a file</a>
- - <a href=#25b0930d79124fd7864d93cc1f282068> Read the entire file as a single input</a>
- - <a href=#5286801688fb4c3fb25fe854509773d8> Process the input</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -63,7 +50,6 @@ DATX: 1731835191
 
 
 
- <a id="b72fb17dec0d457aac195633b00c7ee8"></a>
 # Chapt
     
 
@@ -71,7 +57,6 @@ DATX: 1731835191
 
 
 
- <a id="a62ec915c296495dad3f597ef8e12fc4"></a>
 ## Базовое использование (замена процесса)
 
     
@@ -122,7 +107,6 @@ $ echo $$
 
 
 
- <a id="41f3b2928dab4a258644755f605ed213"></a>
 # Рекомендации RCM
 
     
@@ -131,7 +115,6 @@ $ echo $$
 
 
 
- <a id="f6826db1d8494b4d9674b6c088ce3789"></a>
 ## RCM_1 (изменения в оригинал)
 
 в оригинал вносим изменения - копия для истории изменений
@@ -141,7 +124,6 @@ $ echo $$
 
 
 
- <a id="e142d98f3a184e1eaceec5249c5f519d"></a>
 ## RCM_2 (служебные файлы)
 
 при работе утилиты формировать следующие файлы рядом с результатами работы
@@ -157,7 +139,6 @@ $ echo $$
 
 
 
- <a id="47a7111fda4341848d5a6559918d851e"></a>
 ## RCM_3 (cокращения)
 
     dr - dir
@@ -182,7 +163,6 @@ $ echo $$
 
 
 
- <a id="ad414ed47cad43d89aefdccc39a5fcd2"></a>
 ## RCM_4 (notmast_butlast)
 
 - наличие последнего аргумента для отладки функции 
@@ -192,7 +172,6 @@ $ echo $$
 
 
 
- <a id="e01e608df0104d40a113e878876307a2"></a>
 ## RCM_5 (mast_def_args)
 
 - используемые аргументы в функции не могут быть пустыми при вызове
@@ -203,7 +182,6 @@ $ echo $$
 
 
 
- <a id="ab19a84faf954591a084743e712b6e58"></a>
 ## Запуск скриптов в чистой среде
 
     
@@ -224,7 +202,6 @@ $ echo $$
 
 
 
- <a id="9bb4c1f86e5b42c497824dbf60dc26a1"></a>
 ## Измените стандартный ввод для чтения файлов с помощью exec
 
     
@@ -240,15 +217,12 @@ INPUT_FILE="Hello.txt"
 
 exec 6<&0
 
- <a id="037a0ad7b66049b08906a2f76be63f58"></a>
 # Redirect stdin to read from a file
 exec < "$INPUT_FILE"
 
- <a id="25b0930d79124fd7864d93cc1f282068"></a>
 # Read the entire file as a single input
 content=$(cat)
 
- <a id="5286801688fb4c3fb25fe854509773d8"></a>
 # Process the input
 echo "Read: $content"
 

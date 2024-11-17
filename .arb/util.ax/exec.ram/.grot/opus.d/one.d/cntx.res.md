@@ -1,14 +1,38 @@
 
 <!-- [[__TOC_]] -->
 
-<a name=top></a>
-<a class=top-link hide href=#top>↑</a>
+<a name="top"></a>
+<a class=top-link hide href="#top">↑</a>
+
+<style type="text/css">
+   .top-link {
+    transition: all .25s ease-in-out;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    display: inline-flex;
+    color: #000000;
+
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    margin: 0 2em 2em 0;
+    border-radius: 50%;
+    padding: .25em;
+    width: 1em;
+    height: 1em;
+    background-color: #F8F8F8;
+}
+</style>
 
 Start Contents Menu
 
-<!-- TOC tocDepth:1..6 chapterDepth:1..6 -->
+<!-- TOC toc2f_stl0 --> 
+ - <a href=#df683dcff8ea4a0baac126d0dbf90d4c> Util Exec</a>
+   - <a href=#9fd9a541a87d41c4a358b0f5a105e515> in_dr</a>
+     - <a href=#760c3c35709d49ac93008dbbe72dc651> [001.rcm.d]</a>
 
-<!-- /TOC -->
+<!-- /TOC toc2f_stl0 -->
 
 End Contents Menu
 
@@ -19,9 +43,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731729298_16112024105458
+DATE: 1731835195_17112024161955
 
-DATX: 1731729298
+DATX: 1731835195
 -->
 
 
@@ -29,6 +53,7 @@ DATX: 1731729298
 
 
 
+ <a id="df683dcff8ea4a0baac126d0dbf90d4c"></a>
 # Util Exec
 
 Синтаксис
@@ -50,7 +75,9 @@ DATX: 1731729298
 
 
 
+ <a id="9fd9a541a87d41c4a358b0f5a105e515"></a>
 ## in_dr
+ <a id="760c3c35709d49ac93008dbbe72dc651"></a>
 ### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
 
 

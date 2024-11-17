@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo -e "${CYAN}--- copy_sed_rnd7_b73a1b7() $* in file://${REPO_PATH}/NBash/.arb/util.ax/__arh/copy_sed.opus/copy_sed.md_ufl9 ---${NORMAL}" #started functions
+echo -e "${CYAN}--- copy_sed_rnd7_6f53da8() $* in file://${REPO_PATH}/NBash/.arb/util.ax/__arh/copy_sed.opus/copy_sed.md_ufl9 ---${NORMAL}" #started functions
 
-copy_sed_rnd7_b73a1b7() {
+copy_sed_rnd7_6f53da8() {
 
     # gig from file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh
 
@@ -69,4 +69,4 @@ echo | ufl_stl0 9 ${REPO_PATH}/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/cnt
 
 }
 
-copy_sed_rnd7_b73a1b7 "$@"
+copy_sed_rnd7_6f53da8 "$@"

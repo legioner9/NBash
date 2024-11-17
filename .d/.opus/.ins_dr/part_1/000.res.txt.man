@@ -1,13 +1,10 @@
-<!--
-CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/part_1/cnx.d /home/st/REPOBARE/_repo/NBash/.d/.opus/.ins_dr/part_1/res.md 2
-
 PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731643729_15112024110849
+DATE: 1731835241_17112024162041
 
-DATX: 1731643729
+DATX: 1731835241
 -->
 
 

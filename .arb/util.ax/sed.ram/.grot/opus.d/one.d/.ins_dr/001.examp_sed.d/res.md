@@ -1,27 +1,59 @@
 
 <!-- [[__TOC_]] -->
 
-<a name=top></a>
-<a class=top-link hide href=#top>↑</a>
+<a name="top"></a>
+<a class=top-link hide href="#top">↑</a>
+
+<style type="text/css">
+   .top-link {
+    transition: all .25s ease-in-out;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    display: inline-flex;
+    color: #000000;
+
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    margin: 0 2em 2em 0;
+    border-radius: 50%;
+    padding: .25em;
+    width: 1em;
+    height: 1em;
+    background-color: #F8F8F8;
+}
+</style>
 
 Start Contents Menu
 
-<!-- TOC tocDepth:1..6 chapterDepth:1..6 -->
+<!-- TOC toc2f_stl0 --> 
+ - <a href=#d2dfe57e65ae4109a11ce92a090f4f4c> Примеры Sed </a>
+   - <a href=#51f9379cac05466b8b052a8572f77343> Печать первого слова каждой строки</a>
+   - <a href=#f0ef418ae6fb482280ebcf61c7dfd55a> Затереть каждое второе слово в каждой строке</a>
+   - <a href=#2019cd07b2c0431a9a0a32680974cd6f> Затереть второе слово в последней строке</a>
+   - <a href=#08d6e3430e75415a8556c188cffb7507> Помещает любой входящий фрагмент в квадратные скобки. & -  ссылка на раскрытый шаблон</a>
+   - <a href=#a5cc2106103f45d7b214637544a83a80> Зачистка от комментариев и пустых строк</a>
+   - <a href=#a6b05a62473843b7a80237f5957a9194> Добавить пробел после каждого абзаца</a>
+   - <a href=#27df4718def94884839188a3c66c0473> Выравнивание текста по левому краю</a>
+   - <a href=#26823b8181524875a05d87d4fe6ddace> Добавить пробел после строки</a>
+   - <a href=#eded3e459c8d4527961f9a90450803ae> Формирование новых списков через пересечения</a>
+   - <a href=#d693fe060f904d59ade73fa61f637f6c> вставить строку с номером </a>
 
-<!-- /TOC -->
+<!-- /TOC toc2f_stl0 -->
 
 End Contents Menu
 
 <!--
-CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/cnx.d /home/st/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.sed.d/res.md 2
+CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.examp_sed.d/cnx.d /home/st/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/.ins_dr/001.examp_sed.d/res.md 2
 
 PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731643706_15112024110826
+DATE: 1731835208_17112024162008
 
-DATX: 1731643706
+DATX: 1731835208
 -->
 
 
@@ -29,6 +61,7 @@ DATX: 1731643706
 
 
 
+ <a id="d2dfe57e65ae4109a11ce92a090f4f4c"></a>
 # Примеры Sed 
 
 
@@ -36,6 +69,7 @@ DATX: 1731643706
 
 
 
+ <a id="51f9379cac05466b8b052a8572f77343"></a>
 ## Печать первого слова каждой строки
 
     
@@ -53,6 +87,7 @@ DATX: 1731643706
 
 
 
+ <a id="f0ef418ae6fb482280ebcf61c7dfd55a"></a>
 ## Затереть каждое второе слово в каждой строке
 
     
@@ -69,6 +104,7 @@ DATX: 1731643706
 
 
 
+ <a id="2019cd07b2c0431a9a0a32680974cd6f"></a>
 ## Затереть второе слово в последней строке
 
     
@@ -85,6 +121,7 @@ DATX: 1731643706
 
 
 
+ <a id="08d6e3430e75415a8556c188cffb7507"></a>
 ## Помещает любой входящий фрагмент в квадратные скобки. & -  ссылка на раскрытый шаблон
 
     
@@ -101,6 +138,7 @@ DATX: 1731643706
 
 
 
+ <a id="a5cc2106103f45d7b214637544a83a80"></a>
 ## Зачистка от комментариев и пустых строк
 
     
@@ -126,6 +164,7 @@ DATX: 1731643706
 
 
 
+ <a id="a6b05a62473843b7a80237f5957a9194"></a>
 ## Добавить пробел после каждого абзаца
 
     
@@ -153,6 +192,7 @@ DATX: 1731643706
 
 
 
+ <a id="27df4718def94884839188a3c66c0473"></a>
 ## Выравнивание текста по левому краю
 
     
@@ -189,6 +229,7 @@ DATX: 1731643706
 
 
 
+ <a id="26823b8181524875a05d87d4fe6ddace"></a>
 ## Добавить пробел после строки
 
     
@@ -216,6 +257,7 @@ DATX: 1731643706
 
 
 
+ <a id="eded3e459c8d4527961f9a90450803ae"></a>
 ## Формирование новых списков через пересечения
 
     
@@ -282,6 +324,7 @@ Tracy Presley  1L02   555-0102
 
 
 
+ <a id="d693fe060f904d59ade73fa61f637f6c"></a>
 ## вставить строку с номером 
 
     
