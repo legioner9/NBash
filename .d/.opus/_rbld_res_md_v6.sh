@@ -1,8 +1,8 @@
- #!/bin/bash
+#!/bin/bash
 
-echo -e "${CYAN}--- rbld_res_md_rnd7_4108983() $* in file://${REPO_PATH}/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/rbld_res_md.sh ---${NORMAL}" #started functions
+echo -e "${CYAN}--- rbld_res_md_rnd7_a84e0fd() $* in file://${REPO_PATH}/NBash/.d/.opus/rbld_res_md.sh ---${NORMAL}" #started functions
 
-rbld_res_md_rnd7_4108983() {
+rbld_res_md_rnd7_a84e0fd() {
 
     # gig from file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh
 
@@ -10,7 +10,7 @@ rbld_res_md_rnd7_4108983() {
     local ARGS=("$@")
     local NARGS=$#
     local PPWD=$PWD
-    local path_file="${REPO_PATH}/NBash/.arb/util.ax/sed.ram/.grot/opus.d/one.d/rbld_res_md.sh"
+    local path_file="${REPO_PATH}/NBash/.d/.opus/rbld_res_md.sh"
     local path_dir="$(dirname "$path_file")"
 
     # echo -e "${CYAN}--- $FNN() $* in file://${path_file}---${NORMAL}" #started functions
@@ -57,7 +57,6 @@ ${NORMAL}"
 
     echo "START BODY FN : ${FNN}() $*"
 
-    #{{body_fn}}
     local file_opus_in=${path_dir}/cntx.ins.d/001.002.opus_in.txt.md
     local file_opus_sd=${path_dir}/cntx.ins.d/001.003.opus_sd.txt.md
     local file_opus_arb=${path_dir}/cntx.ins.d/001.004.opus_arb.txt.md
@@ -66,6 +65,7 @@ ${NORMAL}"
     : >${file_opus_sd}
     : >${file_opus_arb}
 
+    #{{body_fn}}
     local dot_dr=${path_dir}/.d
     local lst_dr=${dot_dr}/.lst
     local in_dr=${path_dir}/.ins_dr
@@ -194,23 +194,13 @@ ${NORMAL}"
         echo | ufl_stl0 9 $path_dir/cntx.ins.d $path_dir/cntx.res.md 2
     fi
 
-    _edit $path_dir/cntx.res.md 
-
-    #! cr copy
-    local copy_md=${REPO_PATH}/NBash/.arb/util.ax/__arh/copy_sed.opus/copy_sed.md
-
-
-
-        if [ -d $path_dir/cntx.ins.d ] && [ -f $copy_md ] ; then
-        echo | ufl_stl0 9 $path_dir/cntx.ins.d $copy_md 2
-
-    fi
+    _edit $path_dir/cntx.res.md
 
     #! END BODY FN ---------------------------------------
-    
+
     cd $PPWD
     return 0
 
 }
 
-rbld_res_md_rnd7_4108983 "$@"
+rbld_res_md_rnd7_a84e0fd "$@"
