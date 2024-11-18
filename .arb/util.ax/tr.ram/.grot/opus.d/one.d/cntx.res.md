@@ -28,11 +28,11 @@
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#d3df7960cddc4403a2d4fcdbfdc33c57> First Head</a>
-   - <a href=#14db2faabb9a4a7ba8d528b5de7b4960> in_dr</a>
-     - <a href=#7c470b839c0f41ff881f23ba6d083fd5> [001.rcm.d]</a>
- - <a href=#44fa2602157f4e63a71da497f9110c87> Синтаксис команды tr</a>
-   - <a href=#dc4f033a4d434b2d96b42da8e230a018> [see exa_tr]</a>
+ - <a href=#761582c2d6b649d7b8308b18f2bd1c8f> First Head</a>
+   - <a href=#8d1dc335a6074bc3b69887d8a340afb1> in_dr</a>
+     - <a href=#9a695974c2d3451181655b14b81dfc5b> [001.rcm.d]</a>
+ - <a href=#59a833ab79e1425fab569aae15ff2a9e> Синтаксис команды tr</a>
+   - <a href=#7011590ba85c40f4901835cbef5d3364> [see exa_tr]</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -45,9 +45,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731903174_18112024111254
+DATE: 1731928843_18112024182043
 
-DATX: 1731903174
+DATX: 1731928843
 -->
 
 
@@ -55,7 +55,7 @@ DATX: 1731903174
 
 
 
- <a id="d3df7960cddc4403a2d4fcdbfdc33c57"></a>
+ <a id="761582c2d6b649d7b8308b18f2bd1c8f"></a>
 # First Head
 
 
@@ -65,9 +65,9 @@ DATX: 1731903174
 
 
 
- <a id="14db2faabb9a4a7ba8d528b5de7b4960"></a>
+ <a id="8d1dc335a6074bc3b69887d8a340afb1"></a>
 ## in_dr
- <a id="7c470b839c0f41ff881f23ba6d083fd5"></a>
+ <a id="9a695974c2d3451181655b14b81dfc5b"></a>
 ### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
 
 
@@ -87,10 +87,10 @@ DATX: 1731903174
 
 
 
- <a id="44fa2602157f4e63a71da497f9110c87"></a>
+ <a id="59a833ab79e1425fab569aae15ff2a9e"></a>
 # Синтаксис команды tr
 
- <a id="dc4f033a4d434b2d96b42da8e230a018"></a>
+ <a id="7011590ba85c40f4901835cbef5d3364"></a>
 ## [see exa_tr](/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/res.md)
 
 Программа обрабатывает текст посимвольно. По умолчанию у её синтаксиса следующий вид (квадратные скобки указывают, что аргумент не обязателен):

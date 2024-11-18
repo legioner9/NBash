@@ -5,9 +5,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731903178_18112024111258
+DATE: 1731928847_18112024182047
 
-DATX: 1731903179
+DATX: 1731928847
 -->
 
 
