@@ -28,13 +28,6 @@
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#d3d1348b1e404c10aa9e022b73f0cb55> Chapt</a>
-   - <a href=#85a8265bc729456cbec57eb16212dd4e> Базовое использование (замена процесса)</a>
-   - <a href=#ddbe96d9544141779f04415d9bedb98f> Запуск скриптов в чистой среде</a>
-   - <a href=#bf8b9879b1aa4a59b6cb4babb6503977> Измените стандартный ввод для чтения файлов с помощью exec</a>
- - <a href=#0a4eff7acc5b409ea178991536648f88> Redirect stdin to read from a file</a>
- - <a href=#15924822643f4e1f98d0382c846ee6e1> Read the entire file as a single input</a>
- - <a href=#28b0cf176d48435183be495b9dcd083f> Process the input</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -57,7 +50,6 @@ DATX: 1731903158
 
 
 
- <a id="d3d1348b1e404c10aa9e022b73f0cb55"></a>
 # Chapt
     
 
@@ -65,7 +57,6 @@ DATX: 1731903158
 
 
 
- <a id="85a8265bc729456cbec57eb16212dd4e"></a>
 ## Базовое использование (замена процесса)
 
     
@@ -116,7 +107,6 @@ $ echo $$
 
 
 
- <a id="ddbe96d9544141779f04415d9bedb98f"></a>
 ## Запуск скриптов в чистой среде
 
     
@@ -137,7 +127,6 @@ $ echo $$
 
 
 
- <a id="bf8b9879b1aa4a59b6cb4babb6503977"></a>
 ## Измените стандартный ввод для чтения файлов с помощью exec
 
     
@@ -153,15 +142,12 @@ INPUT_FILE="Hello.txt"
 
 exec 6<&0
 
- <a id="0a4eff7acc5b409ea178991536648f88"></a>
 # Redirect stdin to read from a file
 exec < "$INPUT_FILE"
 
- <a id="15924822643f4e1f98d0382c846ee6e1"></a>
 # Read the entire file as a single input
 content=$(cat)
 
- <a id="28b0cf176d48435183be495b9dcd083f"></a>
 # Process the input
 echo "Read: $content"
 

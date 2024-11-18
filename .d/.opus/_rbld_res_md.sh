@@ -127,12 +127,13 @@ ${NORMAL}"
     for opus_arb_pth in $(_f2e ${out_opus_lst_arb}); do
 
         #! записываем заголовок как название dr
+        echo -e "${GREEN}\$opus_arb_pth = ' file://$opus_arb_pth'${NORMAL}"
         echo "## $(basename ${opus_arb_pth})" >>${file_opus_arb}
 
         for opus_arb_pth_nm in $(_d2e ${opus_arb_pth}); do
 
             opus_arb_pth_pth=${opus_arb_pth}/${opus_arb_pth_nm}
-            # echo -e "${GREEN}\$opus_arb_pth_pth = ' file://$opus_arb_pth_pth '${NORMAL}"
+            echo -e "${GREEN}\$opus_arb_pth_pth = ' file://$opus_arb_pth_pth '${NORMAL}"
             #! создаем подзаголовки из ссылок [nm](pth),где nm имя sd, pth ее путь
             for opus_arb_pth_pth_nm in $(_dd2e ${opus_arb_pth_pth}/.grot/opus.d); do
                 echo -e "${GREEN}\$opus_arb_pth_pth_nm = '$opus_arb_pth_pth_nm'${NORMAL}"
