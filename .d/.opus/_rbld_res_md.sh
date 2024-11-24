@@ -195,9 +195,20 @@ ${NORMAL}"
         echo | ufl_stl0 9 $path_dir/cntx.ins.d $path_dir/cntx.res.md 2
     fi
 
+    #! rebuild all in .d/.lst/cntx.res.copy.lst
+    local cpy_pth=
+    for cpy_pth in $(_f2e ${path_dir}/.d/.lst/cntx.res.copy.lst); do
+        echo -e "${GREEN}\$cpy_pth = ' file://$cpy_pth'${NORMAL}"
+
+        if [ -d $path_dir/cntx.ins.d ] && [ -f $cpy_pth ]; then
+            echo | ufl_stl0 9 $path_dir/cntx.ins.d $cpy_pth 2
+        fi
+
+    done
+
     _edit $path_dir/cntx.res.md
     #! END BODY FN ---------------------------------------
-    
+
     cd $PPWD
     return 0
 

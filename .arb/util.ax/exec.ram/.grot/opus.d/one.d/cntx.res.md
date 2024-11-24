@@ -23,14 +23,47 @@
     height: 1em;
     background-color: #F8F8F8;
 }
+
+h1{
+    color: rgb(155, 0, 218);
+    font-weight: normal;
+    font-style: italic;
+    font-weight:bold;
+
+}
+h2{
+    color: rgb(155, 40, 238);
+    font-style: italic;
+    font-weight:bold;
+}
+h3{
+    color: rgb(155, 80, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h4{
+    color: rgb(155, 120, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h5{
+    color: rgb(155, 160, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h6 {
+    color: rgb(155, 200, 230);
+    font-style: italic;
+    font-weight:bold;
+}
 </style>
 
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#60bc429baaf2405492d9e5e9937a5fe7> Команда exec</a>
-   - <a href=#bae9a90d66624da89588a4ad42705496> in_dr</a>
-     - <a href=#941364c7a17b4047a52a2be6fd808360> [001.rcm.d]</a>
+ - <a href=#919477fc04db42ce819f881db04d7132> Команда exec</a>
+   - <a href=#ef02c57e21b741cab95e40d95fc70135> in_dr</a>
+     - <a href=#e14c6c5387c84c959a2f2d436c270ae3> [001.rcm.d]</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -43,9 +76,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731928828_18112024182028
+DATE: 1732464422_24112024230702
 
-DATX: 1731928828
+DATX: 1732464422
 -->
 
 
@@ -53,7 +86,7 @@ DATX: 1731928828
 
 
 
- <a id="60bc429baaf2405492d9e5e9937a5fe7"></a>
+ <a id="919477fc04db42ce819f881db04d7132"></a>
 # Команда exec
 
 Синтаксис
@@ -78,9 +111,9 @@ DATX: 1731928828
 
 
 
- <a id="bae9a90d66624da89588a4ad42705496"></a>
+ <a id="ef02c57e21b741cab95e40d95fc70135"></a>
 ## in_dr
- <a id="941364c7a17b4047a52a2be6fd808360"></a>
+ <a id="e14c6c5387c84c959a2f2d436c270ae3"></a>
 ### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
 
 

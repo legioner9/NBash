@@ -73,9 +73,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/ln.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1732431570_24112024135930
+DATE: 1732464427_24112024230707
 
-DATX: 1732431570
+DATX: 1732464427
 -->
 
 
@@ -119,7 +119,7 @@ DATX: 1732431570
 
 
 
-### First: ln [ОПЦИЯ]… [-T] TARGET LINK_NAME 
+### First: `ln src.file link.dist.file`   
 
 Эта форма используется для создания ссылки с указанным именем (' LINK_NAME' ) на целевой файл (' TARGET' ). По сути, вы указываете исходный файл и желаемое имя целевой ссылки
 
@@ -127,7 +127,7 @@ DATX: 1732431570
 
 
 
-### Second: ln [ВАРИАНТ]… ЦЕЛЬ… КАТАЛОГ
+### Second: ln src.fl dst.dr/
 
 В этой форме вы предоставляете один или несколько исходных файлов (' TARGET…' ) и каталог (' DIRECTORY' ), где будут созданы ссылки. Каждый исходный файл связан с указанным каталогом.
 

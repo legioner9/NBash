@@ -23,16 +23,49 @@
     height: 1em;
     background-color: #F8F8F8;
 }
+
+h1{
+    color: rgb(155, 0, 218);
+    font-weight: normal;
+    font-style: italic;
+    font-weight:bold;
+
+}
+h2{
+    color: rgb(155, 40, 238);
+    font-style: italic;
+    font-weight:bold;
+}
+h3{
+    color: rgb(155, 80, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h4{
+    color: rgb(155, 120, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h5{
+    color: rgb(155, 160, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h6 {
+    color: rgb(155, 200, 230);
+    font-style: italic;
+    font-weight:bold;
+}
 </style>
 
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
-   - <a href=#7bd740a41288478fb5a069ae154463d3> in_dr</a>
-     - <a href=#65f77766fae04d8d97d3a1efa33de7f1> [001.rcm.d]</a>
- - <a href=#f844d26449b5427a9d2158f1d60beb72> first head</a>
-   - <a href=#beeb8f69b6c34f34a2a0088a56402962> Синтаксис</a>
-   - <a href=#d60184e1355d4f3e9d2d2b0027527ff1> Опции</a>
+   - <a href=#44356cc31a7e49a7b6126921bd94718d> in_dr</a>
+     - <a href=#6d7ea5bbf41b466991e90cc52797f46c> [001.rcm.d]</a>
+ - <a href=#6304415a40fe4515829bc27635a5d9f4> first head</a>
+   - <a href=#51f1f84e1f224373b39ae060c53b003d> Синтаксис</a>
+   - <a href=#11989141356a4d868018b46de39069d0> Опции</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -45,9 +78,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731928847_18112024182047
+DATE: 1732464438_24112024230718
 
-DATX: 1731928847
+DATX: 1732464438
 -->
 
 
@@ -55,9 +88,9 @@ DATX: 1731928847
 
 
 
- <a id="7bd740a41288478fb5a069ae154463d3"></a>
+ <a id="44356cc31a7e49a7b6126921bd94718d"></a>
 ## in_dr
- <a id="65f77766fae04d8d97d3a1efa33de7f1"></a>
+ <a id="6d7ea5bbf41b466991e90cc52797f46c"></a>
 ### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
 
 
@@ -77,15 +110,15 @@ DATX: 1731928847
 
 
 
- <a id="f844d26449b5427a9d2158f1d60beb72"></a>
+ <a id="6304415a40fe4515829bc27635a5d9f4"></a>
 # first head
 
- <a id="beeb8f69b6c34f34a2a0088a56402962"></a>
+ <a id="51f1f84e1f224373b39ae060c53b003d"></a>
 ## Синтаксис
 
     exec [опции] [команда [аргументы]] [перенаправление]
 
- <a id="d60184e1355d4f3e9d2d2b0027527ff1"></a>
+ <a id="11989141356a4d868018b46de39069d0"></a>
 ## Опции
     -c
     Выполнение команды в чистой среде

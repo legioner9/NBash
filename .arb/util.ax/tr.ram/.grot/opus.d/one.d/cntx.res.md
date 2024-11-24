@@ -23,16 +23,49 @@
     height: 1em;
     background-color: #F8F8F8;
 }
+
+h1{
+    color: rgb(155, 0, 218);
+    font-weight: normal;
+    font-style: italic;
+    font-weight:bold;
+
+}
+h2{
+    color: rgb(155, 40, 238);
+    font-style: italic;
+    font-weight:bold;
+}
+h3{
+    color: rgb(155, 80, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h4{
+    color: rgb(155, 120, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h5{
+    color: rgb(155, 160, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h6 {
+    color: rgb(155, 200, 230);
+    font-style: italic;
+    font-weight:bold;
+}
 </style>
 
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#761582c2d6b649d7b8308b18f2bd1c8f> First Head</a>
-   - <a href=#8d1dc335a6074bc3b69887d8a340afb1> in_dr</a>
-     - <a href=#9a695974c2d3451181655b14b81dfc5b> [001.rcm.d]</a>
- - <a href=#59a833ab79e1425fab569aae15ff2a9e> Синтаксис команды tr</a>
-   - <a href=#7011590ba85c40f4901835cbef5d3364> [see exa_tr]</a>
+ - <a href=#345c73b497644c4694c0d2c10ad1ae1a> First Head</a>
+   - <a href=#bcefee8037314bf58c670edb91f13c19> in_dr</a>
+     - <a href=#e7fddd075e1c4f97b285228f88635243> [001.rcm.d]</a>
+ - <a href=#d639698ed95a4197b5dbf81de1e3a081> Синтаксис команды tr</a>
+   - <a href=#028da6050c974e90a0a99a66f3f794b4> [see exa_tr]</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -45,9 +78,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731928843_18112024182043
+DATE: 1732464435_24112024230715
 
-DATX: 1731928843
+DATX: 1732464435
 -->
 
 
@@ -55,7 +88,7 @@ DATX: 1731928843
 
 
 
- <a id="761582c2d6b649d7b8308b18f2bd1c8f"></a>
+ <a id="345c73b497644c4694c0d2c10ad1ae1a"></a>
 # First Head
 
 
@@ -65,9 +98,9 @@ DATX: 1731928843
 
 
 
- <a id="8d1dc335a6074bc3b69887d8a340afb1"></a>
+ <a id="bcefee8037314bf58c670edb91f13c19"></a>
 ## in_dr
- <a id="9a695974c2d3451181655b14b81dfc5b"></a>
+ <a id="e7fddd075e1c4f97b285228f88635243"></a>
 ### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
 
 
@@ -87,10 +120,10 @@ DATX: 1731928843
 
 
 
- <a id="59a833ab79e1425fab569aae15ff2a9e"></a>
+ <a id="d639698ed95a4197b5dbf81de1e3a081"></a>
 # Синтаксис команды tr
 
- <a id="7011590ba85c40f4901835cbef5d3364"></a>
+ <a id="028da6050c974e90a0a99a66f3f794b4"></a>
 ## [see exa_tr](/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/res.md)
 
 Программа обрабатывает текст посимвольно. По умолчанию у её синтаксиса следующий вид (квадратные скобки указывают, что аргумент не обязателен):

@@ -61,13 +61,13 @@ h6 {
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#40dc4439e2e04aad8c4af0a730347820> Utyl Ln</a>
-   - <a href=#a336430343c9469284d410d047712bed> in_dr</a>
-     - <a href=#7b67956a6fe84a9fb99e6663f817d4bc> [001.examp.d]</a>
-   - <a href=#2700c853048b48a2a799a49e3f33682d> 3 forms using</a>
-     - <a href=#6a80820e740a4f7193d22c03c5cf3c5e> First: ln [ОПЦИЯ]… [-T] TARGET LINK_NAME </a>
-     - <a href=#b9cb207c2df6435285157dfa8a2c668f> Second: ln [ВАРИАНТ]… ЦЕЛЬ… КАТАЛОГ</a>
-     - <a href=#8b9a9b4166874618be7ccdf50452cccd> Third: ln [ПАРАМЕТР]… -t ЦЕЛЬ КАТАЛОГА… </a>
+ - <a href=#759872b630794dbc96fc6b067dd0cdef> Utyl Ln</a>
+   - <a href=#2bede8c4073643be8bece7ebd058e47f> in_dr</a>
+     - <a href=#8248c45653dc40e6825fdb247b54e5c9> [001.examp.d]</a>
+   - <a href=#19690ac1aa01454e820ef45d90545210> 3 forms using</a>
+     - <a href=#da311a4504114595bd5ef9b14df5a865> First: `ln src.file link.dist.file`   </a>
+     - <a href=#f192fdf126ed42669c2444ea344b9985> Second: ln src.fl dst.dr/</a>
+     - <a href=#470b7400f7734c648f85b2cdb3e98503> Third: ln [ПАРАМЕТР]… -t ЦЕЛЬ КАТАЛОГА… </a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -80,9 +80,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/ln.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1732431570_24112024135930
+DATE: 1732464427_24112024230707
 
-DATX: 1732431570
+DATX: 1732464427
 -->
 
 
@@ -90,7 +90,7 @@ DATX: 1732431570
 
 
 
- <a id="40dc4439e2e04aad8c4af0a730347820"></a>
+ <a id="759872b630794dbc96fc6b067dd0cdef"></a>
 # Utyl Ln
 
 
@@ -100,9 +100,9 @@ DATX: 1732431570
 
 
 
- <a id="a336430343c9469284d410d047712bed"></a>
+ <a id="2bede8c4073643be8bece7ebd058e47f"></a>
 ## in_dr
- <a id="7b67956a6fe84a9fb99e6663f817d4bc"></a>
+ <a id="8248c45653dc40e6825fdb247b54e5c9"></a>
 ### [001.examp.d](.ins_dr/001.examp.d/res.md)
 
 
@@ -122,7 +122,7 @@ DATX: 1732431570
 
 
 
- <a id="2700c853048b48a2a799a49e3f33682d"></a>
+ <a id="19690ac1aa01454e820ef45d90545210"></a>
 ## 3 forms using
 
 
@@ -130,8 +130,8 @@ DATX: 1732431570
 
 
 
- <a id="6a80820e740a4f7193d22c03c5cf3c5e"></a>
-### First: ln [ОПЦИЯ]… [-T] TARGET LINK_NAME 
+ <a id="da311a4504114595bd5ef9b14df5a865"></a>
+### First: `ln src.file link.dist.file`   
 
 Эта форма используется для создания ссылки с указанным именем (' LINK_NAME' ) на целевой файл (' TARGET' ). По сути, вы указываете исходный файл и желаемое имя целевой ссылки
 
@@ -139,8 +139,8 @@ DATX: 1732431570
 
 
 
- <a id="b9cb207c2df6435285157dfa8a2c668f"></a>
-### Second: ln [ВАРИАНТ]… ЦЕЛЬ… КАТАЛОГ
+ <a id="f192fdf126ed42669c2444ea344b9985"></a>
+### Second: ln src.fl dst.dr/
 
 В этой форме вы предоставляете один или несколько исходных файлов (' TARGET…' ) и каталог (' DIRECTORY' ), где будут созданы ссылки. Каждый исходный файл связан с указанным каталогом.
 
@@ -149,7 +149,7 @@ DATX: 1732431570
 
 
 
- <a id="8b9a9b4166874618be7ccdf50452cccd"></a>
+ <a id="470b7400f7734c648f85b2cdb3e98503"></a>
 ### Third: ln [ПАРАМЕТР]… -t ЦЕЛЬ КАТАЛОГА… 
 
 Похоже на вторую форму, но здесь вы сначала указываете каталог (' -t DIRECTORY' ), а затем целевые файлы. Это более гибкий способ обработки нескольких файлов.

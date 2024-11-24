@@ -23,18 +23,51 @@
     height: 1em;
     background-color: #F8F8F8;
 }
+
+h1{
+    color: rgb(155, 0, 218);
+    font-weight: normal;
+    font-style: italic;
+    font-weight:bold;
+
+}
+h2{
+    color: rgb(155, 40, 238);
+    font-style: italic;
+    font-weight:bold;
+}
+h3{
+    color: rgb(155, 80, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h4{
+    color: rgb(155, 120, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h5{
+    color: rgb(155, 160, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h6 {
+    color: rgb(155, 200, 230);
+    font-style: italic;
+    font-weight:bold;
+}
 </style>
 
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#dd2d6ecfe34a4d3b8295adc748aef638> First Head</a>
-   - <a href=#9457ce5e37c54c028523bf6ce48c4d31> in_dr</a>
-     - <a href=#cc2c02657d2e43c6a9c70caf1a77842a> [001.rcm.d]</a>
-   - <a href=#2447659b8f6a4f92be72a3bacf30d5f4> Основная информация о Find</a>
-   - <a href=#03cb945a495a4db4860e0253974370e0> Синтаксис</a>
-   - <a href=#403a1fa352c64e5da47e2a3514a7230f> Основные параметры команды find</a>
-   - <a href=#3bfa3eaa402d4fb3bbb6d49fa823e7e1> Критерии</a>
+ - <a href=#38e33889e6a54b78a90513229d303fdc> First Head</a>
+   - <a href=#a361cc79b89942fea055680344b15f50> in_dr</a>
+     - <a href=#2b2df7342bb54be3a9c3d64599063511> [001.rcm.d]</a>
+   - <a href=#da025495187b4c39aefbc9bbab4e3808> Основная информация о Find</a>
+   - <a href=#58db2df4ee754397a749e2eb512e5540> Синтаксис</a>
+   - <a href=#dff6505c6742417ea9c27cf1fbdf0f76> Основные параметры команды find</a>
+   - <a href=#460fcc95a0614bc9a78614db0199e3db> Критерии</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -47,9 +80,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731928832_18112024182032
+DATE: 1732464425_24112024230705
 
-DATX: 1731928832
+DATX: 1732464425
 -->
 
 
@@ -57,7 +90,7 @@ DATX: 1731928832
 
 
 
- <a id="dd2d6ecfe34a4d3b8295adc748aef638"></a>
+ <a id="38e33889e6a54b78a90513229d303fdc"></a>
 # First Head
 
 
@@ -67,9 +100,9 @@ DATX: 1731928832
 
 
 
- <a id="9457ce5e37c54c028523bf6ce48c4d31"></a>
+ <a id="a361cc79b89942fea055680344b15f50"></a>
 ## in_dr
- <a id="cc2c02657d2e43c6a9c70caf1a77842a"></a>
+ <a id="2b2df7342bb54be3a9c3d64599063511"></a>
 ### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
 
 
@@ -89,14 +122,14 @@ DATX: 1731928832
 
 
 
- <a id="2447659b8f6a4f92be72a3bacf30d5f4"></a>
+ <a id="da025495187b4c39aefbc9bbab4e3808"></a>
 ## Основная информация о Find
 
 Команда find - это одна из наиболее важных и часто используемых утилит системы Linux. Это команда для поиска файлов и каталогов на основе специальных условий. Ее можно использовать в различных обстоятельствах, например, для поиска файлов по разрешениям, владельцам, группам, типу, размеру и другим подобным критериям.
 
 Утилита find предустановлена по умолчанию во всех Linux дистрибутивах, поэтому вам не нужно будет устанавливать никаких дополнительных пакетов. Это очень важная находка для тех, кто хочет использовать командную строку наиболее эффективно.
 
- <a id="03cb945a495a4db4860e0253974370e0"></a>
+ <a id="58db2df4ee754397a749e2eb512e5540"></a>
 ## Синтаксис
 
     find [папка] [параметры] критерий шаблон [действие]
@@ -114,7 +147,7 @@ DATX: 1731928832
 
 
 
- <a id="403a1fa352c64e5da47e2a3514a7230f"></a>
+ <a id="dff6505c6742417ea9c27cf1fbdf0f76"></a>
 ## Основные параметры команды find
 
 `-P` - никогда не открывать символические ссылки.
@@ -140,7 +173,7 @@ DATX: 1731928832
 
 
 
- <a id="3bfa3eaa402d4fb3bbb6d49fa823e7e1"></a>
+ <a id="460fcc95a0614bc9a78614db0199e3db"></a>
 ## Критерии
 
 `-not` <критерий> - invert критерий
