@@ -61,24 +61,24 @@ h6 {
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#0646f53921d447bba109ca89fd94ac38> Opus NBash</a>
-   - <a href=#3f3503289d4448dfbeedb2f22bcdf529> in_dr</a>
-     - <a href=#8b8ff86b93e54ee4b562f4f0ad51ba31> [part_1]</a>
-   - <a href=#83213b18182c497ab8d85162bfce8308> info.ax</a>
-     - <a href=#28bfc84a17eb459092efc9a47f6e6983> [expansion]</a>
-     - <a href=#19ebf0f446db4a798f05ec8d6161cfc1> [pipe_input]</a>
-     - <a href=#71dcd4137f8f44b0a0b0ae1197dcb3ad> [stream]</a>
-     - <a href=#6825c1966a394aef8a6a5ebabdf03f9c> [substr]</a>
-     - <a href=#a0e6559812db4559899cf6fcb73092c5> [symbol_class]</a>
-     - <a href=#ac2a031ccee94f5b9afcf314f05be189> [variable]</a>
-   - <a href=#08ca81505310452fac18a1c5b3545c49> util.ax</a>
-     - <a href=#2f6f671382724dfbbfe040c84061ab5a> [exec]</a>
-     - <a href=#42123907c5704d8b9262b3afb8e472d3> [find]</a>
-     - <a href=#ecbd77b0f3bf4180a14b2e84f0c74e95> [ln]</a>
-     - <a href=#edd7988089e14d5f80e92a6aff45d75f> [sed]</a>
-     - <a href=#2a57f15816724aaa9d9f08a4c76aa8bf> [tr]</a>
-   - <a href=#9c895736d441472c9acbe726e84234fc> tech.ax</a>
-     - <a href=#0da6b6d7b3a440d5a86d9dcc0c19e3b8> [regexp]</a>
+ - <a href=#c6aad72a807b4330bda495c9d61b6a3c> Opus NBash</a>
+   - <a href=#7e6aa74add734feab2919ad40562c2ee> in_dr</a>
+     - <a href=#a412f72655a04cefb3bb58385386006b> [part_1]</a>
+   - <a href=#0ed365267afc40ebb8beb8abd84bbbf7> info.ax</a>
+     - <a href=#ac36f4ec97da4828bd181476333c9954> [expansion]</a>
+     - <a href=#d90f28f645654195b674abe3db415330> [pipe_input]</a>
+     - <a href=#7824fcf8b3b9438d841950b25703867c> [stream]</a>
+     - <a href=#eaa67d6eeb5244eb828affc29978bab5> [substr]</a>
+     - <a href=#2fdf8ee7ba134a8690d68ec4600efa93> [symbol_class]</a>
+     - <a href=#6017aa6e4da34835ba9e19a33a874ad6> [variable]</a>
+   - <a href=#a5c3b52a41f44b3298a5fb0586756930> util.ax</a>
+     - <a href=#5efdb68a55b54d50aa6cb7ae7daa7661> [exec]</a>
+     - <a href=#b93339500b8c4942a6a37b2cc6ace897> [find]</a>
+     - <a href=#76396d38de3546c3a847017ae88f92b1> [ln]</a>
+     - <a href=#54d475ae19d94183b30a5fc368caa8da> [sed]</a>
+     - <a href=#4c3eb7eb3af549c7bbd0fbd98d30bd6f> [tr]</a>
+   - <a href=#f89ecd1218184cc0982bbcca4571110b> tech.ax</a>
+     - <a href=#9022e65ae8dc482d9a36876d4d676067> [regexp]</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -91,9 +91,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1732608231_26112024150351
+DATE: 1732621864_26112024185104
 
-DATX: 1732608231
+DATX: 1732621864
 -->
 
 
@@ -101,7 +101,7 @@ DATX: 1732608231
 
 
 
- <a id="0646f53921d447bba109ca89fd94ac38"></a>
+ <a id="c6aad72a807b4330bda495c9d61b6a3c"></a>
 # Opus NBash
  
 
@@ -109,9 +109,9 @@ DATX: 1732608231
 
 
 
- <a id="3f3503289d4448dfbeedb2f22bcdf529"></a>
+ <a id="7e6aa74add734feab2919ad40562c2ee"></a>
 ## in_dr
- <a id="8b8ff86b93e54ee4b562f4f0ad51ba31"></a>
+ <a id="a412f72655a04cefb3bb58385386006b"></a>
 ### [part_1](.ins_dr/part_1/res.md)
 
 
@@ -119,19 +119,19 @@ DATX: 1732608231
 
 
 
- <a id="83213b18182c497ab8d85162bfce8308"></a>
+ <a id="0ed365267afc40ebb8beb8abd84bbbf7"></a>
 ## info.ax
- <a id="28bfc84a17eb459092efc9a47f6e6983"></a>
+ <a id="ac36f4ec97da4828bd181476333c9954"></a>
 ### [expansion](../../.arb/info.ax/expansion.ram/.grot/exam.man)
- <a id="19ebf0f446db4a798f05ec8d6161cfc1"></a>
+ <a id="d90f28f645654195b674abe3db415330"></a>
 ### [pipe_input](../../.arb/info.ax/pipe_input.ram/.grot/exam.man)
- <a id="71dcd4137f8f44b0a0b0ae1197dcb3ad"></a>
+ <a id="7824fcf8b3b9438d841950b25703867c"></a>
 ### [stream](../../.arb/info.ax/stream.ram/.grot/exam.man)
- <a id="6825c1966a394aef8a6a5ebabdf03f9c"></a>
+ <a id="eaa67d6eeb5244eb828affc29978bab5"></a>
 ### [substr](../../.arb/info.ax/substr.ram/.grot/exam.man)
- <a id="a0e6559812db4559899cf6fcb73092c5"></a>
+ <a id="2fdf8ee7ba134a8690d68ec4600efa93"></a>
 ### [symbol_class](../../.arb/info.ax/symbol_class.ram/.grot/exam.man)
- <a id="ac2a031ccee94f5b9afcf314f05be189"></a>
+ <a id="6017aa6e4da34835ba9e19a33a874ad6"></a>
 ### [variable](../../.arb/info.ax/variable.ram/.grot/exam.man)
 
 
@@ -139,21 +139,21 @@ DATX: 1732608231
 
 
 
- <a id="08ca81505310452fac18a1c5b3545c49"></a>
+ <a id="a5c3b52a41f44b3298a5fb0586756930"></a>
 ## util.ax
- <a id="2f6f671382724dfbbfe040c84061ab5a"></a>
+ <a id="5efdb68a55b54d50aa6cb7ae7daa7661"></a>
 ### [exec](../../.arb/util.ax/exec.ram/.grot/opus.d/one.d/_cntx.res.md)
- <a id="42123907c5704d8b9262b3afb8e472d3"></a>
+ <a id="b93339500b8c4942a6a37b2cc6ace897"></a>
 ### [find](../../.arb/util.ax/find.ram/.grot/opus.d/one.d/_cntx.res.md)
- <a id="ecbd77b0f3bf4180a14b2e84f0c74e95"></a>
+ <a id="76396d38de3546c3a847017ae88f92b1"></a>
 ### [ln](../../.arb/util.ax/ln.ram/.grot/opus.d/one.d/_cntx.res.md)
- <a id="edd7988089e14d5f80e92a6aff45d75f"></a>
+ <a id="54d475ae19d94183b30a5fc368caa8da"></a>
 ### [sed](../../.arb/util.ax/sed.ram/.grot/opus.d/one.d/_cntx.res.md)
- <a id="2a57f15816724aaa9d9f08a4c76aa8bf"></a>
+ <a id="4c3eb7eb3af549c7bbd0fbd98d30bd6f"></a>
 ### [tr](../../.arb/util.ax/tr.ram/.grot/opus.d/one.d/_cntx.res.md)
- <a id="9c895736d441472c9acbe726e84234fc"></a>
+ <a id="f89ecd1218184cc0982bbcca4571110b"></a>
 ## tech.ax
- <a id="0da6b6d7b3a440d5a86d9dcc0c19e3b8"></a>
+ <a id="9022e65ae8dc482d9a36876d4d676067"></a>
 ### [regexp](../../.arb/tech.ax/regexp.ram/.grot/opus.d/one.d/_cntx.res.md)
 
 

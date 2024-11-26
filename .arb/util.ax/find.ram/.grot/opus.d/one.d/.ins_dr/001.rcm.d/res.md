@@ -23,25 +23,58 @@
     height: 1em;
     background-color: #F8F8F8;
 }
+
+h1{
+    color: rgb(155, 0, 218);
+    font-weight: normal;
+    font-style: italic;
+    font-weight:bold;
+
+}
+h2{
+    color: rgb(155, 40, 238);
+    font-style: italic;
+    font-weight:bold;
+}
+h3{
+    color: rgb(155, 80, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h4{
+    color: rgb(155, 120, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h5{
+    color: rgb(155, 160, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h6 {
+    color: rgb(155, 200, 230);
+    font-style: italic;
+    font-weight:bold;
+}
 </style>
 
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#93826a251eb945bbab222f9970eb5fc7> Chapt</a>
-   - <a href=#cfeab9ae259b440cb6669fd5eb0c623b> файлы по имени в текущей папке</a>
- - <a href=#d4b0fc35c4c848188e9c8d369e99dae1> Рекомендации RCM</a>
-   - <a href=#2a99d2e00ede4aed9366ca361f7dbb9f> RCM_1 (изменения в оригинал)</a>
-   - <a href=#663b73502ffc4a6d90f60c01009cff73> RCM_2 (служебные файлы)</a>
-   - <a href=#0ef1ec47966b4cae93c85b69712b003f> RCM_3 (cокращения)</a>
-   - <a href=#7c407041fc5f4374a9441891a4c0837f> RCM_4 (notmast_butlast)</a>
-   - <a href=#fdac45afce12469e8036edca16e74841> RCM_5 (mast_def_args)</a>
-   - <a href=#40519342d1944c3381ba988df883d024> все файлы в указанной директории</a>
-   - <a href=#5ceda27cc6964084859f0ff73abd7fc2> ограничение глубины поиска</a>
-   - <a href=#d9adea4d835242cdac0c89030e42ab34> инвертирование шаблона</a>
-   - <a href=#5a819dd59c1441d296a68ec5a859c21e> только каталоги</a>
-   - <a href=#45379ad37daf4a9ca6bf50b55414337b> в двух каталогах одновременно</a>
-   - <a href=#b9ca31aa35684db0af5cb8b85919cf1d> поиск скрытых файлов</a>
+ - <a href=#5b23207d235e4449891133a1ab31d914> Chapt</a>
+   - <a href=#7674c657acae43f8a47cfe441a101b65> файлы по имени в текущей папке</a>
+ - <a href=#2ccc5ea9f2944845ad8b4d4f941b892b> Рекомендации RCM</a>
+   - <a href=#57039df6e58a412f8692832d463e6b26> RCM_1 (изменения в оригинал)</a>
+   - <a href=#5d13c2b4835743fcb7a70f775c3619d9> RCM_2 (служебные файлы)</a>
+   - <a href=#3202fbb175f2403a9cce742f7fefea58> RCM_3 (cокращения)</a>
+   - <a href=#efb4e7189dab4012b4769b2ea815edec> RCM_4 (notmast_butlast)</a>
+   - <a href=#7dd6593d432d41c795edc9e59eae3f26> RCM_5 (mast_def_args)</a>
+   - <a href=#05176cde6b60477ca6c9827cad737225> все файлы в указанной директории</a>
+   - <a href=#03d7c98ac3ab4ac88693da91e02e180e> ограничение глубины поиска</a>
+   - <a href=#8021c09e89fd4878a025b957ec8fe47e> инвертирование шаблона</a>
+   - <a href=#3cc3fee8c481412d9724a6bd2c97d822> только каталоги</a>
+   - <a href=#65e66ee4f0374d418ed6f6fcb42bd321> в двух каталогах одновременно</a>
+   - <a href=#3ac9dc2571124eb08754597c147a6a7f> поиск скрытых файлов</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -54,9 +87,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731835199_17112024161959
+DATE: 1732621461_26112024184421
 
-DATX: 1731835199
+DATX: 1732621461
 -->
 
 
@@ -64,7 +97,7 @@ DATX: 1731835199
 
 
 
- <a id="93826a251eb945bbab222f9970eb5fc7"></a>
+ <a id="5b23207d235e4449891133a1ab31d914"></a>
 # Chapt
     
 
@@ -72,7 +105,7 @@ DATX: 1731835199
 
 
 
- <a id="cfeab9ae259b440cb6669fd5eb0c623b"></a>
+ <a id="7674c657acae43f8a47cfe441a101b65"></a>
 ## файлы по имени в текущей папке
 
     
@@ -91,7 +124,7 @@ DATX: 1731835199
 
 
 
- <a id="d4b0fc35c4c848188e9c8d369e99dae1"></a>
+ <a id="2ccc5ea9f2944845ad8b4d4f941b892b"></a>
 # Рекомендации RCM
 
     
@@ -100,7 +133,7 @@ DATX: 1731835199
 
 
 
- <a id="2a99d2e00ede4aed9366ca361f7dbb9f"></a>
+ <a id="57039df6e58a412f8692832d463e6b26"></a>
 ## RCM_1 (изменения в оригинал)
 
 в оригинал вносим изменения - копия для истории изменений
@@ -110,7 +143,7 @@ DATX: 1731835199
 
 
 
- <a id="663b73502ffc4a6d90f60c01009cff73"></a>
+ <a id="5d13c2b4835743fcb7a70f775c3619d9"></a>
 ## RCM_2 (служебные файлы)
 
 при работе утилиты формировать следующие файлы рядом с результатами работы
@@ -126,7 +159,7 @@ DATX: 1731835199
 
 
 
- <a id="0ef1ec47966b4cae93c85b69712b003f"></a>
+ <a id="3202fbb175f2403a9cce742f7fefea58"></a>
 ## RCM_3 (cокращения)
 
     dr - dir
@@ -151,7 +184,7 @@ DATX: 1731835199
 
 
 
- <a id="7c407041fc5f4374a9441891a4c0837f"></a>
+ <a id="efb4e7189dab4012b4769b2ea815edec"></a>
 ## RCM_4 (notmast_butlast)
 
 - наличие последнего аргумента для отладки функции 
@@ -161,7 +194,7 @@ DATX: 1731835199
 
 
 
- <a id="fdac45afce12469e8036edca16e74841"></a>
+ <a id="7dd6593d432d41c795edc9e59eae3f26"></a>
 ## RCM_5 (mast_def_args)
 
 - используемые аргументы в функции не могут быть пустыми при вызове
@@ -172,7 +205,7 @@ DATX: 1731835199
 
 
 
- <a id="40519342d1944c3381ba988df883d024"></a>
+ <a id="05176cde6b60477ca6c9827cad737225"></a>
 ## все файлы в указанной директории
 
     
@@ -191,7 +224,7 @@ DATX: 1731835199
 
 
 
- <a id="5ceda27cc6964084859f0ff73abd7fc2"></a>
+ <a id="03d7c98ac3ab4ac88693da91e02e180e"></a>
 ## ограничение глубины поиска
 
     
@@ -210,7 +243,7 @@ DATX: 1731835199
 
 
 
- <a id="d9adea4d835242cdac0c89030e42ab34"></a>
+ <a id="8021c09e89fd4878a025b957ec8fe47e"></a>
 ## инвертирование шаблона
 
     
@@ -229,7 +262,7 @@ DATX: 1731835199
 
 
 
- <a id="5a819dd59c1441d296a68ec5a859c21e"></a>
+ <a id="3cc3fee8c481412d9724a6bd2c97d822"></a>
 ## только каталоги
 
     
@@ -248,7 +281,7 @@ DATX: 1731835199
 
 
 
- <a id="45379ad37daf4a9ca6bf50b55414337b"></a>
+ <a id="65e66ee4f0374d418ed6f6fcb42bd321"></a>
 ## в двух каталогах одновременно
 
     
@@ -267,7 +300,7 @@ DATX: 1731835199
 
 
 
- <a id="b9ca31aa35684db0af5cb8b85919cf1d"></a>
+ <a id="3ac9dc2571124eb08754597c147a6a7f"></a>
 ## поиск скрытых файлов
 
     

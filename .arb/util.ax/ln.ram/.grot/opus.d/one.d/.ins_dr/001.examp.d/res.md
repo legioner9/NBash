@@ -61,7 +61,7 @@ h6 {
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#005949b8e7d14cac8d18243ef92d8f7a> Example Ln</a>
+ - <a href=#38a6c56952ae4a8c89ff21fb0ca547e4> Example Ln</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -74,9 +74,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/ln.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1732429277_24112024132117
+DATE: 1732621467_26112024184427
 
-DATX: 1732429277
+DATX: 1732621467
 -->
 
 
@@ -84,7 +84,7 @@ DATX: 1732429277
 
 
 
- <a id="005949b8e7d14cac8d18243ef92d8f7a"></a>
+ <a id="38a6c56952ae4a8c89ff21fb0ca547e4"></a>
 # Example Ln
     
 

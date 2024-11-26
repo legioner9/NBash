@@ -61,9 +61,9 @@ h6 {
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#1757b729f1844fb89e9922d8ad6ffdc3> Команда exec</a>
-   - <a href=#1fcec22505c44fa1bd00e24967e26c7f> in_dr</a>
-     - <a href=#3ed892e52dad4d3cb1d856d7c756c78c> [001.rcm.d]</a>
+ - <a href=#33cb5ad13f9340a19beb9e092ad0c4b8> Команда exec</a>
+   - <a href=#f71346088b08464b9a4977c767348cc1> in_dr</a>
+     - <a href=#54f399b1545d417980456ab0783677f9> [001.rcm.d]</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -76,9 +76,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1732608210_26112024150330
+DATE: 1732621847_26112024185047
 
-DATX: 1732608210
+DATX: 1732621847
 -->
 
 
@@ -86,7 +86,7 @@ DATX: 1732608210
 
 
 
- <a id="1757b729f1844fb89e9922d8ad6ffdc3"></a>
+ <a id="33cb5ad13f9340a19beb9e092ad0c4b8"></a>
 # Команда exec
 
 Синтаксис
@@ -111,9 +111,9 @@ DATX: 1732608210
 
 
 
- <a id="1fcec22505c44fa1bd00e24967e26c7f"></a>
+ <a id="f71346088b08464b9a4977c767348cc1"></a>
 ## in_dr
- <a id="3ed892e52dad4d3cb1d856d7c756c78c"></a>
+ <a id="54f399b1545d417980456ab0783677f9"></a>
 ### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
 
 

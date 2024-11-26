@@ -61,11 +61,11 @@ h6 {
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
-   - <a href=#c5ddf5e605f443298ed35c496b2a74ef> in_dr</a>
-     - <a href=#a09198fcb86d4541a74a8276186fdc19> [001.rcm.d]</a>
- - <a href=#409f5b97037343deac5d90efcb270fde> first head</a>
-   - <a href=#b254e781677a4fe4a2146f91f133c238> Синтаксис</a>
-   - <a href=#246221c4453543ffb4a7ae105553057e> Опции</a>
+   - <a href=#0ebab68c8aa0428ebd3df43dfc679478> in_dr</a>
+     - <a href=#73f591f5f1c04f068a9361fdb24113f0> [001.rcm.d]</a>
+ - <a href=#a2538dd364104d3ba2a4f6a97ef6885e> first head</a>
+   - <a href=#516bab69f7d644aba175e9f6bd0fd7b8> Синтаксис</a>
+   - <a href=#d1820b446c084af4aa97699899ccfe7d> Опции</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -78,9 +78,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/tech.ax/regexp.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1732608229_26112024150349
+DATE: 1732621862_26112024185102
 
-DATX: 1732608229
+DATX: 1732621862
 -->
 
 
@@ -88,9 +88,9 @@ DATX: 1732608229
 
 
 
- <a id="c5ddf5e605f443298ed35c496b2a74ef"></a>
+ <a id="0ebab68c8aa0428ebd3df43dfc679478"></a>
 ## in_dr
- <a id="a09198fcb86d4541a74a8276186fdc19"></a>
+ <a id="73f591f5f1c04f068a9361fdb24113f0"></a>
 ### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
 
 
@@ -110,15 +110,15 @@ DATX: 1732608229
 
 
 
- <a id="409f5b97037343deac5d90efcb270fde"></a>
+ <a id="a2538dd364104d3ba2a4f6a97ef6885e"></a>
 # first head
 
- <a id="b254e781677a4fe4a2146f91f133c238"></a>
+ <a id="516bab69f7d644aba175e9f6bd0fd7b8"></a>
 ## Синтаксис
 
     exec [опции] [команда [аргументы]] [перенаправление]
 
- <a id="246221c4453543ffb4a7ae105553057e"></a>
+ <a id="d1820b446c084af4aa97699899ccfe7d"></a>
 ## Опции
     -c
     Выполнение команды в чистой среде

@@ -23,12 +23,45 @@
     height: 1em;
     background-color: #F8F8F8;
 }
+
+h1{
+    color: rgb(155, 0, 218);
+    font-weight: normal;
+    font-style: italic;
+    font-weight:bold;
+
+}
+h2{
+    color: rgb(155, 40, 238);
+    font-style: italic;
+    font-weight:bold;
+}
+h3{
+    color: rgb(155, 80, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h4{
+    color: rgb(155, 120, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h5{
+    color: rgb(155, 160, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h6 {
+    color: rgb(155, 200, 230);
+    font-style: italic;
+    font-weight:bold;
+}
 </style>
 
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#bc831bd805bc493d9005394e97b13483> Head</a>
+ - <a href=#739f5dee847147dc8192cd21cb489744> Head</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -41,9 +74,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.d/.opus
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731835241_17112024162041
+DATE: 1732621490_26112024184450
 
-DATX: 1731835241
+DATX: 1732621490
 -->
 
 
@@ -51,7 +84,7 @@ DATX: 1731835241
 
 
 
- <a id="bc831bd805bc493d9005394e97b13483"></a>
+ <a id="739f5dee847147dc8192cd21cb489744"></a>
 # Head
 
 

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo -e "${CYAN}--- _res_rnd7_e88d5ba() $* in file://${REPO_PATH}/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/_res.md_ufl9 ---${NORMAL}" #started functions
+echo -e "${CYAN}--- _res_rnd7_2925b30() $* in file://${REPO_PATH}/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/_res.md_ufl9 ---${NORMAL}" #started functions
 
-_res_rnd7_e88d5ba() {
+_res_rnd7_2925b30() {
 
     # gig from file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh
 
@@ -69,4 +69,4 @@ echo | ufl_stl0 9 ${REPO_PATH}/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/.i
 
 }
 
-_res_rnd7_e88d5ba "$@"
+_res_rnd7_2925b30 "$@"

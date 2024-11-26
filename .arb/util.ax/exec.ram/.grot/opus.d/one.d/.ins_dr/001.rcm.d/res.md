@@ -23,18 +23,51 @@
     height: 1em;
     background-color: #F8F8F8;
 }
+
+h1{
+    color: rgb(155, 0, 218);
+    font-weight: normal;
+    font-style: italic;
+    font-weight:bold;
+
+}
+h2{
+    color: rgb(155, 40, 238);
+    font-style: italic;
+    font-weight:bold;
+}
+h3{
+    color: rgb(155, 80, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h4{
+    color: rgb(155, 120, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h5{
+    color: rgb(155, 160, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h6 {
+    color: rgb(155, 200, 230);
+    font-style: italic;
+    font-weight:bold;
+}
 </style>
 
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#d3d1348b1e404c10aa9e022b73f0cb55> Chapt</a>
-   - <a href=#85a8265bc729456cbec57eb16212dd4e> Базовое использование (замена процесса)</a>
-   - <a href=#ddbe96d9544141779f04415d9bedb98f> Запуск скриптов в чистой среде</a>
-   - <a href=#bf8b9879b1aa4a59b6cb4babb6503977> Измените стандартный ввод для чтения файлов с помощью exec</a>
- - <a href=#0a4eff7acc5b409ea178991536648f88> Redirect stdin to read from a file</a>
- - <a href=#15924822643f4e1f98d0382c846ee6e1> Read the entire file as a single input</a>
- - <a href=#28b0cf176d48435183be495b9dcd083f> Process the input</a>
+ - <a href=#805b147840a541a285f9ec46b72afd5c> Chapt</a>
+   - <a href=#530042792bd741239b78d270816242a4> Базовое использование (замена процесса)</a>
+   - <a href=#73519a3d7ffc4fee9c80c76ebcbb8a07> Запуск скриптов в чистой среде</a>
+   - <a href=#325ba9a042e64f44a728799a23e61d73> Измените стандартный ввод для чтения файлов с помощью exec</a>
+ - <a href=#5eb14d502e3a4a75864b1caf6908199d> Redirect stdin to read from a file</a>
+ - <a href=#9d14861341bf4d05a06fb17b9157af3f> Read the entire file as a single input</a>
+ - <a href=#479e5cc58b8c48ec8782f9a13f26eca4> Process the input</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -47,9 +80,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1731903158_18112024111238
+DATE: 1732621456_26112024184416
 
-DATX: 1731903158
+DATX: 1732621456
 -->
 
 
@@ -57,7 +90,7 @@ DATX: 1731903158
 
 
 
- <a id="d3d1348b1e404c10aa9e022b73f0cb55"></a>
+ <a id="805b147840a541a285f9ec46b72afd5c"></a>
 # Chapt
     
 
@@ -65,7 +98,7 @@ DATX: 1731903158
 
 
 
- <a id="85a8265bc729456cbec57eb16212dd4e"></a>
+ <a id="530042792bd741239b78d270816242a4"></a>
 ## Базовое использование (замена процесса)
 
     
@@ -116,7 +149,7 @@ $ echo $$
 
 
 
- <a id="ddbe96d9544141779f04415d9bedb98f"></a>
+ <a id="73519a3d7ffc4fee9c80c76ebcbb8a07"></a>
 ## Запуск скриптов в чистой среде
 
     
@@ -137,7 +170,7 @@ $ echo $$
 
 
 
- <a id="bf8b9879b1aa4a59b6cb4babb6503977"></a>
+ <a id="325ba9a042e64f44a728799a23e61d73"></a>
 ## Измените стандартный ввод для чтения файлов с помощью exec
 
     
@@ -153,15 +186,15 @@ INPUT_FILE="Hello.txt"
 
 exec 6<&0
 
- <a id="0a4eff7acc5b409ea178991536648f88"></a>
+ <a id="5eb14d502e3a4a75864b1caf6908199d"></a>
 # Redirect stdin to read from a file
 exec < "$INPUT_FILE"
 
- <a id="15924822643f4e1f98d0382c846ee6e1"></a>
+ <a id="9d14861341bf4d05a06fb17b9157af3f"></a>
 # Read the entire file as a single input
 content=$(cat)
 
- <a id="28b0cf176d48435183be495b9dcd083f"></a>
+ <a id="479e5cc58b8c48ec8782f9a13f26eca4"></a>
 # Process the input
 echo "Read: $content"
 
