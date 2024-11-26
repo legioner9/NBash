@@ -61,75 +61,75 @@ h6 {
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#54990a5c7c1747eb8526275cca65da65> First Head</a>
-   - <a href=#42a0959ab03c4d5bb1d6d40c60cd240a> in_dr</a>
-     - <a href=#d09c099e54f249908c32712f4ef05839> [001.rcm.d]</a>
-   - <a href=#ac747de25d8148abaf5661ed55d2ee25> Основная информация о Find</a>
-   - <a href=#8ea012175cc44c0fa3807277a5c11e49> Синтаксис</a>
-   - <a href=#365a377fad2a49ab9a68a03910418549> Основные параметры команды find</a>
-   - <a href=#0e5c0f825eac4167b6eb2456c7c3df2c> Критерии</a>
+ - <a href=#5f128c90909e443cbd9310b6b2879592> First Head</a>
+   - <a href=#371aeabdf4124be083f6b9e80f5c8bf0> in_dr</a>
+     - <a href=#3bfe211612b34e05a9f60c9b8a0e0df3> [001.rcm.d]</a>
+   - <a href=#358ef908b3294ee9805444efae1e40ee> Основная информация о Find</a>
+   - <a href=#738f15c188964b6495005d7fd4fada49> Синтаксис</a>
+   - <a href=#d056b92af7c64c55ac3c947abb126a50> Основные параметры команды find</a>
+   - <a href=#422b454e05694cf08caf6e935e9d28e7> Критерии</a>
 
 <!-- /TOC toc2f_stl0 -->
 
 End Contents Menu
 
 <!--
-CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/cntx.ins.d /home/st/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/cntx.res.md 2
+CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/_cntx.ins.d /home/st/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d/_cntx.res.md 2
 
 PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/find.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1732598146_26112024121546
+DATE: 1732608214_26112024150333
 
-DATX: 1732598146
+DATX: 1732608214
 -->
 
 
-[001.001.first_head.txt.md](cntx.ins.d/001.001.first_head.txt.md)
+[001.001.first_head.txt.md](_cntx.ins.d/001.001.first_head.txt.md)
 
 
 
- <a id="54990a5c7c1747eb8526275cca65da65"></a>
+ <a id="5f128c90909e443cbd9310b6b2879592"></a>
 # First Head
 
 
     
 
-[001.002.opus_in.txt.md](cntx.ins.d/001.002.opus_in.txt.md)
+[001.002.opus_in.txt.md](_cntx.ins.d/001.002.opus_in.txt.md)
 
 
 
- <a id="42a0959ab03c4d5bb1d6d40c60cd240a"></a>
+ <a id="371aeabdf4124be083f6b9e80f5c8bf0"></a>
 ## in_dr
- <a id="d09c099e54f249908c32712f4ef05839"></a>
+ <a id="3bfe211612b34e05a9f60c9b8a0e0df3"></a>
 ### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
 
 
-[001.003.opus_sd.txt.md](cntx.ins.d/001.003.opus_sd.txt.md)
+[001.003.opus_sd.txt.md](_cntx.ins.d/001.003.opus_sd.txt.md)
 
 
 
 
 
-[001.004.opus_arb.txt.md](cntx.ins.d/001.004.opus_arb.txt.md)
+[001.004.opus_arb.txt.md](_cntx.ins.d/001.004.opus_arb.txt.md)
 
 
 
 
 
-[001.txt.md](cntx.ins.d/002.d/001.txt.md)
+[001.txt.md](_cntx.ins.d/002.d/001.txt.md)
 
 
 
- <a id="ac747de25d8148abaf5661ed55d2ee25"></a>
+ <a id="358ef908b3294ee9805444efae1e40ee"></a>
 ## Основная информация о Find
 
 Команда find - это одна из наиболее важных и часто используемых утилит системы Linux. Это команда для поиска файлов и каталогов на основе специальных условий. Ее можно использовать в различных обстоятельствах, например, для поиска файлов по разрешениям, владельцам, группам, типу, размеру и другим подобным критериям.
 
 Утилита find предустановлена по умолчанию во всех Linux дистрибутивах, поэтому вам не нужно будет устанавливать никаких дополнительных пакетов. Это очень важная находка для тех, кто хочет использовать командную строку наиболее эффективно.
 
- <a id="8ea012175cc44c0fa3807277a5c11e49"></a>
+ <a id="738f15c188964b6495005d7fd4fada49"></a>
 ## Синтаксис
 
     find [папка] [параметры] критерий шаблон [действие]
@@ -143,11 +143,11 @@ DATX: 1732598146
     Шаблон - непосредственно значение по которому будем отбирать файлы.
 
 
-[001.txt.md](cntx.ins.d/003.d/001.txt.md)
+[001.txt.md](_cntx.ins.d/003.d/001.txt.md)
 
 
 
- <a id="365a377fad2a49ab9a68a03910418549"></a>
+ <a id="d056b92af7c64c55ac3c947abb126a50"></a>
 ## Основные параметры команды find
 
 `-P` - никогда не открывать символические ссылки.
@@ -169,11 +169,11 @@ DATX: 1732598146
 `-type d` - поиск папки в Linux.
 
 
-[001.txt.md](cntx.ins.d/004.d/001.txt.md)
+[001.txt.md](_cntx.ins.d/004.d/001.txt.md)
 
 
 
- <a id="0e5c0f825eac4167b6eb2456c7c3df2c"></a>
+ <a id="422b454e05694cf08caf6e935e9d28e7"></a>
 ## Критерии
 
 `-not` <критерий> - invert критерий

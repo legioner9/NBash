@@ -61,11 +61,11 @@ h6 {
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#7250db885cd5424cac8a568484351fa2> First Head</a>
-   - <a href=#7d1501e4b07146598c1037795f6ab8ad> in_dr</a>
-     - <a href=#5c62f14a904d443290c1062e2195504e> [001.rcm.d]</a>
- - <a href=#7e5f3413bc4e449fb80afa1a6fcf1970> Синтаксис команды tr</a>
-   - <a href=#934d25e5c74d4ed183abf285af1cccfb> [see exa_tr]</a>
+ - <a href=#62b8c51e40e848da84b7d0786308e1cd> First Head</a>
+   - <a href=#a930f5e689424f4aaab506d8bc7cb23c> in_dr</a>
+     - <a href=#6094d259ecc64502997ed7371bc4eea8> [001.rcm.d]</a>
+ - <a href=#35209c081d6a49efb02b00d80a4bc2f2> Синтаксис команды tr</a>
+   - <a href=#17bc589bc9b54fa7879e94bb3771fd3a> [see exa_tr]</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -78,9 +78,9 @@ PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1732606716_26112024143836
+DATE: 1732608226_26112024150346
 
-DATX: 1732606716
+DATX: 1732608226
 -->
 
 
@@ -88,7 +88,7 @@ DATX: 1732606716
 
 
 
- <a id="7250db885cd5424cac8a568484351fa2"></a>
+ <a id="62b8c51e40e848da84b7d0786308e1cd"></a>
 # First Head
 
 
@@ -98,9 +98,9 @@ DATX: 1732606716
 
 
 
- <a id="7d1501e4b07146598c1037795f6ab8ad"></a>
+ <a id="a930f5e689424f4aaab506d8bc7cb23c"></a>
 ## in_dr
- <a id="5c62f14a904d443290c1062e2195504e"></a>
+ <a id="6094d259ecc64502997ed7371bc4eea8"></a>
 ### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
 
 
@@ -120,10 +120,10 @@ DATX: 1732606716
 
 
 
- <a id="7e5f3413bc4e449fb80afa1a6fcf1970"></a>
+ <a id="35209c081d6a49efb02b00d80a4bc2f2"></a>
 # Синтаксис команды tr
 
- <a id="934d25e5c74d4ed183abf285af1cccfb"></a>
+ <a id="17bc589bc9b54fa7879e94bb3771fd3a"></a>
 ## [see exa_tr](/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/res.md)
 
 Программа обрабатывает текст посимвольно. По умолчанию у её синтаксиса следующий вид (квадратные скобки указывают, что аргумент не обязателен):

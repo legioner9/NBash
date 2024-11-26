@@ -61,32 +61,28 @@ h6 {
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#79d60ed33eb142b1939e740c3f20e266> Команда exec</a>
-   - <a href=#86490ef56f3e4d68a1c71a4c917b69bf> in_dr</a>
-     - <a href=#d83a188d9c874bc691c67c0579ec0a8a> [001.rcm.d]</a>
 
 <!-- /TOC toc2f_stl0 -->
 
 End Contents Menu
 
 <!--
-CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/cntx.ins.d /home/st/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/cntx.res.md 2
+CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/_cntx.ins.d /home/st/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d/_cntx.res.md 2
 
 PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/exec.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1732598144_26112024121544
+DATE: 1732608210_26112024150330
 
-DATX: 1732598144
+DATX: 1732608210
 -->
 
 
-[001.001.first_head.txt.md](cntx.ins.d/001.001.first_head.txt.md)
+[001.001.first_head.txt.md](_cntx.ins.d/001.001.first_head.txt.md)
 
 
 
- <a id="79d60ed33eb142b1939e740c3f20e266"></a>
 # Команда exec
 
 Синтаксис
@@ -107,23 +103,21 @@ DATX: 1732598144
 
     
 
-[001.002.opus_in.txt.md](cntx.ins.d/001.002.opus_in.txt.md)
+[001.002.opus_in.txt.md](_cntx.ins.d/001.002.opus_in.txt.md)
 
 
 
- <a id="86490ef56f3e4d68a1c71a4c917b69bf"></a>
 ## in_dr
- <a id="d83a188d9c874bc691c67c0579ec0a8a"></a>
 ### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
 
 
-[001.003.opus_sd.txt.md](cntx.ins.d/001.003.opus_sd.txt.md)
+[001.003.opus_sd.txt.md](_cntx.ins.d/001.003.opus_sd.txt.md)
 
 
 
 
 
-[001.004.opus_arb.txt.md](cntx.ins.d/001.004.opus_arb.txt.md)
+[001.004.opus_arb.txt.md](_cntx.ins.d/001.004.opus_arb.txt.md)
 
 
 
