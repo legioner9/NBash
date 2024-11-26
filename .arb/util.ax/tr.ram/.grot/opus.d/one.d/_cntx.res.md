@@ -61,69 +61,69 @@ h6 {
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#44fd8e68c6224cfb8feabbb8d72ef770> First Head</a>
-   - <a href=#1e41652d856142dcaa8c7831b94df799> in_dr</a>
-     - <a href=#55aca9857cfc4cf48733089911a5616d> [001.rcm.d]</a>
- - <a href=#dc163c97b090495e9401c72b2a406469> Синтаксис команды tr</a>
-   - <a href=#218a302e3ae449188f289b6965393882> [see exa_tr]</a>
+ - <a href=#7250db885cd5424cac8a568484351fa2> First Head</a>
+   - <a href=#7d1501e4b07146598c1037795f6ab8ad> in_dr</a>
+     - <a href=#5c62f14a904d443290c1062e2195504e> [001.rcm.d]</a>
+ - <a href=#7e5f3413bc4e449fb80afa1a6fcf1970> Синтаксис команды tr</a>
+   - <a href=#934d25e5c74d4ed183abf285af1cccfb> [see exa_tr]</a>
 
 <!-- /TOC toc2f_stl0 -->
 
 End Contents Menu
 
 <!--
-CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d/cntx.ins.d /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d/cntx.res.md 2
+CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d/_cntx.ins.d /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d/_cntx.res.md 2
 
 PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1732598156_26112024121556
+DATE: 1732606716_26112024143836
 
-DATX: 1732598156
+DATX: 1732606716
 -->
 
 
-[001.001.first_head.txt.md](cntx.ins.d/001.001.first_head.txt.md)
+[001.001.first_head.txt.md](_cntx.ins.d/001.001.first_head.txt.md)
 
 
 
- <a id="44fd8e68c6224cfb8feabbb8d72ef770"></a>
+ <a id="7250db885cd5424cac8a568484351fa2"></a>
 # First Head
 
 
     
 
-[001.002.opus_in.txt.md](cntx.ins.d/001.002.opus_in.txt.md)
+[001.002.opus_in.txt.md](_cntx.ins.d/001.002.opus_in.txt.md)
 
 
 
- <a id="1e41652d856142dcaa8c7831b94df799"></a>
+ <a id="7d1501e4b07146598c1037795f6ab8ad"></a>
 ## in_dr
- <a id="55aca9857cfc4cf48733089911a5616d"></a>
+ <a id="5c62f14a904d443290c1062e2195504e"></a>
 ### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
 
 
-[001.003.opus_sd.txt.md](cntx.ins.d/001.003.opus_sd.txt.md)
+[001.003.opus_sd.txt.md](_cntx.ins.d/001.003.opus_sd.txt.md)
 
 
 
 
 
-[001.004.opus_arb.txt.md](cntx.ins.d/001.004.opus_arb.txt.md)
+[001.004.opus_arb.txt.md](_cntx.ins.d/001.004.opus_arb.txt.md)
 
 
 
 
 
-[001.txt.md](cntx.ins.d/001.txt.md)
+[001.txt.md](_cntx.ins.d/001.txt.md)
 
 
 
- <a id="dc163c97b090495e9401c72b2a406469"></a>
+ <a id="7e5f3413bc4e449fb80afa1a6fcf1970"></a>
 # Синтаксис команды tr
 
- <a id="218a302e3ae449188f289b6965393882"></a>
+ <a id="934d25e5c74d4ed183abf285af1cccfb"></a>
 ## [see exa_tr](/REPOBARE/_repo/NBash/.arb/util/tr.ram/.grot/opus.d/one.d/.ins_dr/001.rcm.d/res.md)
 
 Программа обрабатывает текст посимвольно. По умолчанию у её синтаксиса следующий вид (квадратные скобки указывают, что аргумент не обязателен):

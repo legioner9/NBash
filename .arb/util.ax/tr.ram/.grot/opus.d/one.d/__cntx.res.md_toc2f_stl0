@@ -67,19 +67,19 @@ Start Contents Menu
 End Contents Menu
 
 <!--
-CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d/cntx.ins.d /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d/cntx.res.md 2
+CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d/_cntx.ins.d /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d/_cntx.res.md 2
 
 PPWD: /home/st/REPOBARE/_repo/NBash/.arb/util.ax/tr.ram/.grot/opus.d/one.d
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1732598156_26112024121556
+DATE: 1732606716_26112024143836
 
-DATX: 1732598156
+DATX: 1732606716
 -->
 
 
-[001.001.first_head.txt.md](cntx.ins.d/001.001.first_head.txt.md)
+[001.001.first_head.txt.md](_cntx.ins.d/001.001.first_head.txt.md)
 
 
 
@@ -88,7 +88,7 @@ DATX: 1732598156
 
     
 
-[001.002.opus_in.txt.md](cntx.ins.d/001.002.opus_in.txt.md)
+[001.002.opus_in.txt.md](_cntx.ins.d/001.002.opus_in.txt.md)
 
 
 
@@ -96,19 +96,19 @@ DATX: 1732598156
 ### [001.rcm.d](.ins_dr/001.rcm.d/res.md)
 
 
-[001.003.opus_sd.txt.md](cntx.ins.d/001.003.opus_sd.txt.md)
+[001.003.opus_sd.txt.md](_cntx.ins.d/001.003.opus_sd.txt.md)
 
 
 
 
 
-[001.004.opus_arb.txt.md](cntx.ins.d/001.004.opus_arb.txt.md)
+[001.004.opus_arb.txt.md](_cntx.ins.d/001.004.opus_arb.txt.md)
 
 
 
 
 
-[001.txt.md](cntx.ins.d/001.txt.md)
+[001.txt.md](_cntx.ins.d/001.txt.md)
 
 
 
