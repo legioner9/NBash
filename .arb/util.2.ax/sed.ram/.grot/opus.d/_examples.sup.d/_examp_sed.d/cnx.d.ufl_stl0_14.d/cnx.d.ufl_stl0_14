@@ -1,0 +1,137 @@
+#!/bin/bash
+
+echo -e "${CYAN}--- cnx.d_rnd7_b91025f() $* in file://${REPO_PATH}/NBash/.arb/util.2.ax/sed.ram/.grot/opus.d/_examples.sup.d/_examp_sed.d/cnx.d.ufl_stl0_14.d/cnx.d.ufl_stl0_14 ---${NORMAL}" #started functions
+
+cnx.d_rnd7_b91025f() {
+
+    # HST :: gig command :: [ufl_stl0 1 1 ${REPO_PATH}/NBash/.arb/util.2.ax/sed.ram/.grot/opus.d/_examples.sup.d/_examp_sed.d/cnx.d.ufl_stl0_14.d/cnx.d.ufl_stl0_14 in file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh] in file://${REPO_PATH}/NBash/.arb/util.2.ax/sed.ram/.grot/opus.d/_examples.sup.d/_examp_sed.d/cnx.d.ufl_stl0_14.d
+
+    local FNN=${FUNCNAME[0]}
+    local ARGS=("$@")
+    local NARGS=$#
+    local PPWD=$PWD
+    local path_file="${REPO_PATH}/NBash/.arb/util.2.ax/sed.ram/.grot/opus.d/_examples.sup.d/_examp_sed.d/cnx.d.ufl_stl0_14.d/cnx.d.ufl_stl0_14"
+    local path_dir="$(dirname "$path_file")"
+
+    # echo -e "${CYAN}--- $FNN() $* in file://${path_file}---${NORMAL}" #started functions
+
+    cd ${path_dir} || {
+        # hint="\$1: \$2: "
+        _st_exit "in fs= file://$path_file , line=${LINENO}, ${FNN}() : NOT_DIR : 'file://${path_dir}' : ${hint} : return 1"
+        return 1
+    }
+
+    if [ "-h" == "$1" ]; then
+        echo -e "${CYAN} ${FNN}() help: 
+MAIN: 
+TAGS: @
+ARGS: \$1
+EXAM: 
+EXEC: 
+CNTL: 
+    _go  : _edit ${path_file}
+RETURN: ( result>stdout, return 0 | data | change to ptr |  fs_structure | ...)
+ERROR: ( return 1 | ... )
+    ${FNN} 
+${NORMAL}"
+    fi
+
+    if [[ "_go" == "$1" ]]; then
+        _edit "${path_file}"
+
+        cd $PPWD
+        return 0
+    fi
+
+    # local api_dr=
+    #{{api_arg}}
+
+    #* check _isn_from
+    # hint="\$1: \$2: "
+    # if _isn_from ${NARGS} LESS LESS+1 "in fs= file://${path_file}, line=${LINENO}, ${FNN}() : DEMAND 'LESS LESS+1' ERR_AMOUNT_ARGS entered :'${NARGS}' args : ${hint} : return 1"; then
+    #     cd $PPWD
+    #     return 1
+    # fi
+
+    #* path -> u@path
+    #! ptr_path
+    # local ptr_path_1="$1"
+    # ptr_path_1="$(_abs_path "${PPWD}" "ptr_path_1")"
+
+    #* check arg from arg_arr
+    # [[ "${arg_arr[*]}" == *$arg* ]]
+
+    #* errno
+    # cmd arg
+    # errno=$?
+    # return ${errno}
+
+    #* rename args
+
+    #* define local variables
+
+    #! START BODY FN ---------------------------------------
+
+    echo "START BODY FN : ${FNN}() $*"
+
+    #{{body_fn}}
+    local prc_in_fn_dr=${REPO_PATH}/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/014_gig_dr2m/.prc/.in_fn
+
+    local res_mm=
+
+    local arg_1="$1"
+    local arg_2="$2"
+
+    _d2mm ${prc_in_fn_dr} res_mm "$arg_1"
+
+    echo -e "${GREEN}\$res_mm = ' file://$res_mm '${NORMAL}"
+
+    #! clousure vars for ins fn
+    local sh_fl=${path_file}
+    local sh_dr=${path_dir}
+
+    local org_dr=$(dirname "${sh_dr}")/$(_prs_f -n2 "${sh_dr}")
+    local cpy_lst_fl=${sh_dr}/.d/.lst/cpy.lst
+    local org_prc_dr=${sh_dr}/.d/.prc
+
+    #! define ENV_1 as clousure const = org_prc_dr for child processes
+    local ENV_1=${org_prc_dr}
+
+    #! before exec all prc /bfr.d from ${org_prc_dr}
+    local org_prc_fl=
+    for org_prc_fl in $(_df2e ${org_prc_dr}/bfr.d); do
+        echo -e "${GREEN}\$org_prc_fl = '$org_prc_fl'${NORMAL}"
+        _source_w1_isf ${org_prc_dr}/bfr.d/${org_prc_fl} || {
+            _st_exit "in fs= file://${path_file} , line=${LINENO}, EXEC: ${FNN} $* : : EXEC_FAIL : '_source_w1_isf file://${org_prc_dr}/bfr.d/${org_prc_fl} ' : ${hint} : return 1"
+            cd "$PPWD" || echo "EXEC_FAIL : 'cd $PPWD' :: return 0|1" >&2
+            return 1
+        }
+
+    done
+
+    #! exec .in_fn prc accoding $arg_1 [num_flow]
+    _source_w1_isf $res_mm || {
+        _st_exit "in fs= file://${path_file} , line=${LINENO}, EXEC: ${FNN} $* : : EXEC_FAIL : '_source_w1_isf file://$res_mm ' : ${hint} : return 1"
+        cd "$PPWD" || echo "EXEC_FAIL : 'cd $PPWD' :: return 0|1" >&2
+        return 1
+    }
+
+    #! after exec all prc /aft.d from ${org_prc_dr}
+    org_prc_fl=
+    for org_prc_fl in $(_df2e ${org_prc_dr}/aft.d); do
+        echo -e "${GREEN}\$org_prc_fl = '$org_prc_fl'${NORMAL}"
+        _source_w1_isf ${org_prc_dr}/aft.d/${org_prc_fl} || {
+            _st_exit "in fs= file://${path_file} , line=${LINENO}, EXEC: ${FNN} $* : : EXEC_FAIL : '_source_w1_isf file://${org_prc_dr}/aft.d/${org_prc_fl} ' : ${hint} : return 1"
+            cd "$PPWD" || echo "EXEC_FAIL : 'cd $PPWD' :: return 0|1" >&2
+            return 1
+        }
+
+    done
+    #! END BODY FN ---------------------------------------
+
+    cd $PPWD
+    return 0
+
+}
+
+cnx.d_rnd7_b91025f "$@"

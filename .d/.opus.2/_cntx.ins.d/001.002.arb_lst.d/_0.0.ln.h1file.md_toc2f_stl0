@@ -1,0 +1,144 @@
+
+<!-- [[__TOC_]] -->
+
+<a name="top"></a>
+<a class=top-link hide href="#top">↑</a>
+
+<style type="text/css">
+   .top-link {
+    transition: all .25s ease-in-out;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    display: inline-flex;
+    color: #000000;
+
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    margin: 0 2em 2em 0;
+    border-radius: 50%;
+    padding: .25em;
+    width: 1em;
+    height: 1em;
+    background-color: #F8F8F8;
+}
+
+h1{
+    color: rgb(155, 0, 218);
+    font-weight: normal;
+    font-style: italic;
+    font-weight:bold;
+
+}
+h2{
+    color: rgb(155, 40, 238);
+    font-style: italic;
+    font-weight:bold;
+}
+h3{
+    color: rgb(155, 80, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h4{
+    color: rgb(155, 120, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h5{
+    color: rgb(155, 160, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h6 {
+    color: rgb(155, 200, 230);
+    font-style: italic;
+    font-weight:bold;
+}
+</style>
+
+Start Contents Menu
+
+<!-- TOC toc2f_stl0 --> 
+
+<!-- /TOC toc2f_stl0 -->
+
+End Contents Menu
+
+<!--
+CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/util.2.ax/ln.ram/.grot/opus.d/_cntx.ins.d /home/st/REPOBARE/_repo/NBash/.d/.opus.2/_cntx.ins.d/001.002.arb_lst.d/0.0.ln.h1file.md 2
+
+PPWD: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/014_gig_dr2m/.prc/.in_fn
+
+FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
+
+DATE: 1733084476_02122024032116
+
+DATX: 1733084476
+-->
+
+
+[001.001.first_head.txt.md](../../../../.arb/util.2.ax/ln.ram/.grot/opus.d/_cntx.ins.d/001.001.first_head.txt.md)
+
+
+
+# Utyl Ln
+
+
+    
+
+[001.002.opus_in.txt.md](../../../../.arb/util.2.ax/ln.ram/.grot/opus.d/_cntx.ins.d/001.002.opus_in.txt.md)
+
+
+
+## in_dr
+### [001.examp.d](.ins_dr/001.examp.d/res.md)
+
+
+[001.003.opus_sd.txt.md](../../../../.arb/util.2.ax/ln.ram/.grot/opus.d/_cntx.ins.d/001.003.opus_sd.txt.md)
+
+
+
+
+
+[001.004.opus_arb.txt.md](../../../../.arb/util.2.ax/ln.ram/.grot/opus.d/_cntx.ins.d/001.004.opus_arb.txt.md)
+
+
+
+
+
+[001.L1.txt.md](../../../../.arb/util.2.ax/ln.ram/.grot/opus.d/_cntx.ins.d/002.3_form.d/001.L1.txt.md)
+
+
+
+## 3 forms using
+
+
+[001.txt.md](../../../../.arb/util.2.ax/ln.ram/.grot/opus.d/_cntx.ins.d/002.3_form.d/002.first.d/001.txt.md)
+
+
+
+### First: `ln src.file link.dist.file`   
+
+Эта форма используется для создания ссылки с указанным именем (' LINK_NAME' ) на целевой файл (' TARGET' ). По сути, вы указываете исходный файл и желаемое имя целевой ссылки
+
+[001.txt.md](../../../../.arb/util.2.ax/ln.ram/.grot/opus.d/_cntx.ins.d/002.3_form.d/003.second.d/001.txt.md)
+
+
+
+### Second: ln src.fl dst.dr/
+
+В этой форме вы предоставляете один или несколько исходных файлов (' TARGET…' ) и каталог (' DIRECTORY' ), где будут созданы ссылки. Каждый исходный файл связан с указанным каталогом.
+
+
+[001.txt.md](../../../../.arb/util.2.ax/ln.ram/.grot/opus.d/_cntx.ins.d/002.3_form.d/004.third.d/001.txt.md)
+
+
+
+### Third: ln [ПАРАМЕТР]… -t ЦЕЛЬ КАТАЛОГА… 
+
+Похоже на вторую форму, но здесь вы сначала указываете каталог (' -t DIRECTORY' ), а затем целевые файлы. Это более гибкий способ обработки нескольких файлов.
+
+
+

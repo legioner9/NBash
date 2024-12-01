@@ -1,0 +1,185 @@
+
+<!-- [[__TOC_]] -->
+
+<a name="top"></a>
+<a class=top-link hide href="#top">↑</a>
+
+<style type="text/css">
+   .top-link {
+    transition: all .25s ease-in-out;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    display: inline-flex;
+    color: #000000;
+
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    margin: 0 2em 2em 0;
+    border-radius: 50%;
+    padding: .25em;
+    width: 1em;
+    height: 1em;
+    background-color: #F8F8F8;
+}
+
+h1{
+    color: rgb(155, 0, 218);
+    font-weight: normal;
+    font-style: italic;
+    font-weight:bold;
+
+}
+h2{
+    color: rgb(155, 40, 238);
+    font-style: italic;
+    font-weight:bold;
+}
+h3{
+    color: rgb(155, 80, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h4{
+    color: rgb(155, 120, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h5{
+    color: rgb(155, 160, 218);
+    font-style: italic;
+    font-weight:bold;
+}
+h6 {
+    color: rgb(155, 200, 230);
+    font-style: italic;
+    font-weight:bold;
+}
+</style>
+
+Start Contents Menu
+
+<!-- TOC toc2f_stl0 --> 
+ - <a href=#bf49ac5f0ed74faab1b01fc3f6528cc1> First Head</a>
+   - <a href=#7860031ad6794d07b9b3da93f36c89f6> Основная информация о Find</a>
+   - <a href=#fb931fbf8fe8406d91bcd5641362e977> Синтаксис</a>
+   - <a href=#7002d58f117742b7ace568adc8f4cf6e> Основные параметры команды find</a>
+   - <a href=#ff407eb0a0a2470599abfb5f46204647> Критерии</a>
+
+<!-- /TOC toc2f_stl0 -->
+
+End Contents Menu
+
+<!--
+CMND: ufl_stl0 9 /home/st/REPOBARE/_repo/NBash/.arb/util.2.ax/find.ram/.grot/opus.d/_cntx.ins.d /home/st/REPOBARE/_repo/NBash/.arb/util.2.ax/find.ram/.grot/opus.d/_cntx.ins.d.img.md 2
+
+PPWD: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/014_gig_dr2m/.prc/.in_fn
+
+FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
+
+DATE: 1733071576_01122024234616
+
+DATX: 1733071576
+-->
+
+
+[001.001.first_head.txt.md](_cntx.ins.d/001.001.first_head.txt.md)
+
+
+
+ <a id="bf49ac5f0ed74faab1b01fc3f6528cc1"></a>
+# First Head
+
+
+    
+
+[001.txt.md](_cntx.ins.d/002.d/001.txt.md)
+
+
+
+ <a id="7860031ad6794d07b9b3da93f36c89f6"></a>
+## Основная информация о Find
+
+Команда find - это одна из наиболее важных и часто используемых утилит системы Linux. Это команда для поиска файлов и каталогов на основе специальных условий. Ее можно использовать в различных обстоятельствах, например, для поиска файлов по разрешениям, владельцам, группам, типу, размеру и другим подобным критериям.
+
+Утилита find предустановлена по умолчанию во всех Linux дистрибутивах, поэтому вам не нужно будет устанавливать никаких дополнительных пакетов. Это очень важная находка для тех, кто хочет использовать командную строку наиболее эффективно.
+
+ <a id="fb931fbf8fe8406d91bcd5641362e977"></a>
+## Синтаксис
+
+    find [папка] [параметры] критерий шаблон [действие]
+
+    Папка - каталог в котором будем искать
+    
+    Параметры - дополнительные параметры, например, глубина поиска, и т д
+    
+    Критерий - по какому критерию будем искать: имя, дата создания, права, владелец и т д.
+    
+    Шаблон - непосредственно значение по которому будем отбирать файлы.
+
+
+[001.txt.md](_cntx.ins.d/003.d/001.txt.md)
+
+
+
+ <a id="7002d58f117742b7ace568adc8f4cf6e"></a>
+## Основные параметры команды find
+
+`-P` - никогда не открывать символические ссылки.
+
+`-L` - получает информацию о файлах по символическим ссылкам. Важно для дальнейшей обработки, чтобы обрабатывалась не ссылка, а сам файл.
+
+`-maxdepth` - максимальная глубина поиска по подкаталогам, для поиска только в текущем каталоге установите 1.
+
+`-depth` - искать сначала в текущем каталоге, а потом в подкаталогах.
+
+`-mount` - искать файлы только в этой файловой системе.
+
+`-version` - показать версию утилиты find.
+
+`-print` - выводить полные имена файлов.
+
+`-type f` - искать только файлы.
+
+`-type d` - поиск папки в Linux.
+
+
+[001.txt.md](_cntx.ins.d/004.d/001.txt.md)
+
+
+
+ <a id="ff407eb0a0a2470599abfb5f46204647"></a>
+## Критерии
+
+`-not` <критерий> - invert критерий
+
+<критерий1> `-not` <критерий2> - оператор исключения
+
+<критерий1> `-o` <критерий2> - оператор ИЛИ
+
+`-name` - поиск файлов по имени.
+
+`-iname` - поиск файлов по имени not use register
+
+`-perm` - поиск файлов в Linux по режиму доступа.
+
+`-user` - поиск файлов по владельцу.
+
+`-group` - поиск по группе.
+
+`-mtime` - поиск по времени модификации файла.
+
+`-atime` - поиск файлов по дате последнего чтения.
+
+`-nogroup` - поиск файлов, не принадлежащих ни одной группе.
+
+`-nouser` - поиск файлов без владельцев.
+
+`-newer` - найти файлы новее чем указанный.
+
+`-size` - поиск файлов в Linux по их размеру.
+
+
+
+
