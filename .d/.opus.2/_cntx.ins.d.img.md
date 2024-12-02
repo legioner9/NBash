@@ -61,11 +61,9 @@ h6 {
 Start Contents Menu
 
 <!-- TOC toc2f_stl0 --> 
- - <a href=#032d4cff10a94892b266f9b0c1c7339b> Opus NBash</a>
- - <a href=#eccca8fdc4ee41bca8ae48ad702cd5ff> [find]</a>
- - <a href=#8e54634beb374c2f8e08822ccb5c0075> [ln]</a>
- - <a href=#44f4303553494d25b278c3032db7a637> [sed]</a>
- - <a href=#52e5436956dd4c02b23e8a0820bff0ee> [tr]</a>
+ - <a href=#75e654bb94d54ec898abc1dc6e6c123a> Opus NBash</a>
+ - <a href=#3c5c4b5dffa247abb99ada79a6f44735> [tech.2.ax]</a>
+ - <a href=#6047c965b06b49fb9915618aaad29687> [util.2.ax]</a>
 
 <!-- /TOC toc2f_stl0 -->
 
@@ -78,9 +76,9 @@ PPWD: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/014_gig_dr
 
 FLOW: /home/st/REPOBARE/_repo/sta/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m
 
-DATE: 1733084491_02122024032131
+DATE: 1733158452_02122024235412
 
-DATX: 1733084491
+DATX: 1733158452
 -->
 
 
@@ -88,24 +86,16 @@ DATX: 1733084491
 
 
 
- <a id="032d4cff10a94892b266f9b0c1c7339b"></a>
+ <a id="75e654bb94d54ec898abc1dc6e6c123a"></a>
 # Opus NBash
  
 
- <a id="eccca8fdc4ee41bca8ae48ad702cd5ff"></a>
-# [find](_cntx.ins.d/001.002.arb_lst.d/0.0.find.h1file.md)
+ <a id="3c5c4b5dffa247abb99ada79a6f44735"></a>
+# [tech.2.ax](_cntx.ins.d/001.003.tech.2.ax.h1file.md)
 
 
- <a id="8e54634beb374c2f8e08822ccb5c0075"></a>
-# [ln](_cntx.ins.d/001.002.arb_lst.d/0.0.ln.h1file.md)
-
-
- <a id="44f4303553494d25b278c3032db7a637"></a>
-# [sed](_cntx.ins.d/001.002.arb_lst.d/0.0.sed.h1file.md)
-
-
- <a id="52e5436956dd4c02b23e8a0820bff0ee"></a>
-# [tr](_cntx.ins.d/001.002.arb_lst.d/0.0.tr.h1file.md)
+ <a id="6047c965b06b49fb9915618aaad29687"></a>
+# [util.2.ax](_cntx.ins.d/001.003.util.2.ax.h1file.md)
 
 
 

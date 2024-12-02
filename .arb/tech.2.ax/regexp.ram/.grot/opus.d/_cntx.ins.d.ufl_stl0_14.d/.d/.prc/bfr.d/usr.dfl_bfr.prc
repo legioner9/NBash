@@ -1,16 +1,19 @@
 #!/bin/bash
 
-echo -e "${CYAN}--- __cntx.ins.d.img_rnd7_c1f33d2() $* in file://${REPO_PATH}/NBash/.d/.opus.2/__cntx.ins.d.img.md_ufl9 ---${NORMAL}" #started functions
+#! tml for ufl_stl0 14 .d/.prc/usr.dfl.prc
+#! define ENV_1 as clousure const = org_prc_dr from parent processes
+echo -e "${CYAN}--- usr.dfl_bfr_rnd7_12eeb8b() $* in file://{{file_name}} ---${NORMAL}" #started functions
 
-__cntx.ins.d.img_rnd7_c1f33d2() {
+usr.dfl_bfr_rnd7_12eeb8b() {
 
-    # HST :: gig command :: [ufl_stl0 1 1 ${REPO_PATH}/NBash/.d/.opus.2/__cntx.ins.d.img.md_ufl9 in file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh] in file://${ST_RC_D_DATA_PATH}/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/014_gig_dr2m/.prc/.in_fn
+    # HST :: gig command :: [ufl_stl0 1 2 ${REPO_PATH}/NBash/.arb/tech.2.ax/regexp.ram/.grot/opus.d/_cntx.ins.d.ufl_stl0_14.d/.d/.prc/bfr.d/usr.dfl_bfr.prc in file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh] in file://${REPO_PATH}/NBash/.arb/tech.2.ax/regexp.ram/.grot/opus.d/_cntx.ins.d.ufl_stl0_14.d
 
     local FNN=${FUNCNAME[0]}
     local ARGS=("$@")
     local NARGS=$#
     local PPWD=$PWD
-    local path_file="${REPO_PATH}/NBash/.d/.opus.2/__cntx.ins.d.img.md_ufl9"
+    #! define ENV_1 as clousure const = org_prc_dr from parent processes
+    local path_file="{{file_name}}"
     local path_dir="$(dirname "$path_file")"
 
     # echo -e "${CYAN}--- $FNN() $* in file://${path_file}---${NORMAL}" #started functions
@@ -75,10 +78,7 @@ ${NORMAL}"
     echo "START BODY FN : ${FNN}() $*"
 
     #{{body_fn}}
-
-echo | ufl_stl0 9 ${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d ${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d.img.md 2
-
-
+    echo "from usr.dfl_bfr.prc.ins" 
     #! END BODY FN ---------------------------------------
 
     cd $PPWD
@@ -86,4 +86,4 @@ echo | ufl_stl0 9 ${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d ${REPO_PATH}/NBash/.
 
 }
 
-__cntx.ins.d.img_rnd7_c1f33d2 "$@"
+usr.dfl_bfr_rnd7_12eeb8b "$@"

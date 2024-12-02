@@ -1,16 +1,16 @@
 #!/bin/bash
 
-echo -e "${CYAN}--- __cntx.ins.d.img_rnd7_c1f33d2() $* in file://${REPO_PATH}/NBash/.d/.opus.2/__cntx.ins.d.img.md_ufl9 ---${NORMAL}" #started functions
+echo -e "${CYAN}--- afile_rnd7_17fb726() $* in file://${ST_RC_D_DATA_PATH}/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m/.prc/nod2md.d/h1file.prc ---${NORMAL}" #started functions
 
-__cntx.ins.d.img_rnd7_c1f33d2() {
+afile_rnd7_17fb726() {
 
-    # HST :: gig command :: [ufl_stl0 1 1 ${REPO_PATH}/NBash/.d/.opus.2/__cntx.ins.d.img.md_ufl9 in file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh] in file://${ST_RC_D_DATA_PATH}/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/014_gig_dr2m/.prc/.in_fn
+    # HST :: gig command :: [ufl_stl0 1 1 ${ST_RC_D_DATA_PATH}/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m/.prc/nod2md.d/h1file.prc in file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh] in file://${HOME}/.d/.rc.d/.st.rc.d/.st.tst.d/_dfr2aewd.tst.d
 
     local FNN=${FUNCNAME[0]}
     local ARGS=("$@")
     local NARGS=$#
     local PPWD=$PWD
-    local path_file="${REPO_PATH}/NBash/.d/.opus.2/__cntx.ins.d.img.md_ufl9"
+    local path_file="${ST_RC_D_DATA_PATH}/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/009_dr2m/.prc/nod2md.d/h1file.prc"
     local path_dir="$(dirname "$path_file")"
 
     # echo -e "${CYAN}--- $FNN() $* in file://${path_file}---${NORMAL}" #started functions
@@ -74,10 +74,24 @@ ${NORMAL}"
 
     echo "START BODY FN : ${FNN}() $*"
 
+    echo "in afile.prc"
+
+    # _lnv2e ${dir_cntx}/nod2md.d.cntx
+
+    # local short_item=$(_s2se ${HOME} @ ${_item_})
+    local relpath=$(_ee2rpth ${file_md} ${_item_})
+    # ${str/#sbstr/rplc} Замещает самое короткое с начала вхождение sbstr строкой rplc.
+
+    local name_n="$(_prs_f -n2 ${name_ext})"
+    name_n=$(_prs_f -ax ${name_n})
+    name_n=$(_prs_f -ax ${name_n})
+    name_n=${name_n//_/ }
+
+    echo -e "
+# [${name_n}](${relpath})
+" >>${file_md}
+
     #{{body_fn}}
-
-echo | ufl_stl0 9 ${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d ${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d.img.md 2
-
 
     #! END BODY FN ---------------------------------------
 
@@ -86,4 +100,4 @@ echo | ufl_stl0 9 ${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d ${REPO_PATH}/NBash/.
 
 }
 
-__cntx.ins.d.img_rnd7_c1f33d2 "$@"
+afile_rnd7_17fb726 "$@"

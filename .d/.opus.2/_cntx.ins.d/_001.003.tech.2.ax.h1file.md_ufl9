@@ -1,16 +1,16 @@
 #!/bin/bash
 
-echo -e "${CYAN}--- __cntx.ins.d.img_rnd7_c1f33d2() $* in file://${REPO_PATH}/NBash/.d/.opus.2/__cntx.ins.d.img.md_ufl9 ---${NORMAL}" #started functions
+echo -e "${CYAN}--- _001.003.tech.2.ax.h1file_rnd7_45c1288() $* in file://${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d/_001.003.tech.2.ax.h1file.md_ufl9 ---${NORMAL}" #started functions
 
-__cntx.ins.d.img_rnd7_c1f33d2() {
+_001.003.tech.2.ax.h1file_rnd7_45c1288() {
 
-    # HST :: gig command :: [ufl_stl0 1 1 ${REPO_PATH}/NBash/.d/.opus.2/__cntx.ins.d.img.md_ufl9 in file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh] in file://${ST_RC_D_DATA_PATH}/.d/.st_rc_d.data.d/ufl_stl0/.flow.d/014_gig_dr2m/.prc/.in_fn
+    # HST :: gig command :: [ufl_stl0 1 1 ${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d/_001.003.tech.2.ax.h1file.md_ufl9 in file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh] in file://${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d.ufl_stl0_14.d
 
     local FNN=${FUNCNAME[0]}
     local ARGS=("$@")
     local NARGS=$#
     local PPWD=$PWD
-    local path_file="${REPO_PATH}/NBash/.d/.opus.2/__cntx.ins.d.img.md_ufl9"
+    local path_file="${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d/_001.003.tech.2.ax.h1file.md_ufl9"
     local path_dir="$(dirname "$path_file")"
 
     # echo -e "${CYAN}--- $FNN() $* in file://${path_file}---${NORMAL}" #started functions
@@ -76,7 +76,7 @@ ${NORMAL}"
 
     #{{body_fn}}
 
-echo | ufl_stl0 9 ${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d ${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d.img.md 2
+echo | ufl_stl0 9 ${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d/_001.003.arb_lst.d ${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d/001.003.tech.2.ax.h1file.md 1
 
 
     #! END BODY FN ---------------------------------------
@@ -86,4 +86,4 @@ echo | ufl_stl0 9 ${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d ${REPO_PATH}/NBash/.
 
 }
 
-__cntx.ins.d.img_rnd7_c1f33d2 "$@"
+_001.003.tech.2.ax.h1file_rnd7_45c1288 "$@"
