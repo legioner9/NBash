@@ -131,10 +131,8 @@ ${NORMAL}"
             ram_nm=$(_prs_f -n $(basename $(dirname $(dirname $(dirname $(dirname $ufl_stl0_14_fl))))))
             echo -e "${GREEN}\$ram_nm = '$ram_nm'${NORMAL}"
 
-            read -p 0
-
             mkdir ${org_dr}/001.003.arb_lst.d
-            . ${ufl_stl0_14_fl} 2 ${org_dr}/001.003.arb_lst.d/0.0.$ram_nm.h2file.md
+            . ${ufl_stl0_14_fl} 2 ${org_dr}/001.003.arb_lst.d/_0.0.$ram_nm.h2file.md
 
         done
     done
