@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo -e "${CYAN}--- _001.003.tech.2.ax.h1file_rnd7_45c1288() $* in file://${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d/_001.003.tech.2.ax.h1file.md_ufl9 ---${NORMAL}" #started functions
+echo -e "${CYAN}--- _001.003.tech.2.ax.h1file_rnd7_7000fd8() $* in file://${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d/_001.003.tech.2.ax.h1file.md_ufl9 ---${NORMAL}" #started functions
 
-_001.003.tech.2.ax.h1file_rnd7_45c1288() {
+_001.003.tech.2.ax.h1file_rnd7_7000fd8() {
 
     # HST :: gig command :: [ufl_stl0 1 1 ${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d/_001.003.tech.2.ax.h1file.md_ufl9 in file://${ST_RC_D_PATH}/.d/.arb/stl0.arb/ufl_stl0.ram/.grot/ufl_stl0.sh] in file://${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d.ufl_stl0_14.d
 
@@ -86,4 +86,4 @@ echo | ufl_stl0 9 ${REPO_PATH}/NBash/.d/.opus.2/_cntx.ins.d/_001.003.arb_lst.d $
 
 }
 
-_001.003.tech.2.ax.h1file_rnd7_45c1288 "$@"
+_001.003.tech.2.ax.h1file_rnd7_7000fd8 "$@"
