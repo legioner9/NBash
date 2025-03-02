@@ -1,0 +1,82 @@
+#!/bin/sh
+#
+# alteratord          Start/Stop the system configurator
+#
+# chkconfig: - 95 05
+#
+# processname: alteratord
+# config: /etc/alterator
+# description: system configurator
+# pidfile: /run/alteratord.pid
+
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+PIDFILE=/run/alteratord.pid
+LOCKFILE=/run/lock/subsys/alteratord
+RETVAL=0
+
+start()
+{
+	start_daemon --make-pidfile --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root --name alteratord --displayname alteratord -- alteratord "$@"
+	RETVAL=$?
+	return $RETVAL
+}
+
+start_nolock()
+{
+	start_daemon --make-pidfile --pidfile "$PIDFILE"  --expect-user root --name alteratord --displayname alteratord -- alteratord "$@"
+	RETVAL=$?
+	return $RETVAL
+}
+
+stop()
+{
+	stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root --name alteratord --displayname alteratord -- alteratord
+	RETVAL=$?
+	return $RETVAL
+}
+
+restart()
+{
+	stop
+	start "$@"
+}
+
+# See how we were called.
+action="$1";shift
+case "$action" in
+	start-nolock)
+		start_nolock "$@"
+		;;
+	start)
+		start "$@"
+		;;
+	stop)
+		stop
+		;;
+	reload|restart)
+		restart "$@"
+		;;
+	condstop)
+		if [ -e "$LOCKFILE" ]; then
+			stop
+		fi
+		;;
+	condreload|condrestart)
+		if [ -e "$LOCKFILE" ]; then
+			restart
+		fi
+		;;
+	status)
+		status --pidfile "$PIDFILE" --expect-user root --name alteratord --displayname alteratord -- alteratord
+		RETVAL=$?
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart|condreload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

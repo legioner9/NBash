@@ -1,0 +1,281 @@
+#!/bin/sh
+# $Id: installkernel,v 1.7 2004/08/17 02:08:27 at Exp $
+#--------------------------------------------------------------------
+# Copyright (C) 2000, 2002 by MandrakeSoft,
+# Chmouel Boudjnah <chmouel@mandrakesoft.com>,
+# Redistribution of this file is permitted under the terms of the GNU
+# Public License (GPL)
+#--------------------------------------------------------------------
+# Copyright (C) 2003, 2004 by ALT Linux Team,
+# Alexey Tourbin <at@altlinux.org>.
+#--------------------------------------------------------------------
+# description: Install a kernel to /boot and add an entry for grub and lilo
+
+# This file is called from /usr/lib/rpm/boot_kernel.filetrigger,
+# but also from $KSRC/*/boot/install.sh on `make install'.
+
+NOLAUNCH=
+REMOVE=
+MEMTEST=
+LABEL=
+NODEFAULT=
+NOFLAVOUR=
+KEEPINITRD=
+UBOOT=
+
+: ${INSTALLKERNEL_CONFIG:=/etc/sysconfig/installkernel}
+if [ -f "$INSTALLKERNEL_CONFIG" ]; then
+	. "$INSTALLKERNEL_CONFIG"
+fi
+
+usage()
+{
+	cat <<EOF >&2
+Usage: $0 [options] KERNEL_VERSION [IMAGE_FILE MAP_FILE INSTALL_PATH]
+
+  -r, -R, --remove	remove bootloader entry and prepare to remove kernel;
+  -m, --memtest		it's all about memtest86, not Linux kernel;
+      --label <label>	use <label> if it is not already used;
+  -n, --nolaunch	don't launch lilo;
+      --nodefault	do not change default kernel (/boot/vmlinuz) link;
+      --noflavour	do not change flavour kernel (/boot/vmlinuz-flavour) link;
+      --keep-initrd	do not overwrite existing initrd;
+  -u, --uboot		assume u-boot bootloader, optionally create packed images for it;
+  -h, --help		this help.
+EOF
+	[ -n "$1" ] && exit "$1" || exit 2
+}
+
+LEGACY=algyNdsSCiLc
+ARGV=`getopt -n "$0" -o nrRmuh$LEGACY -l nolaunch,remove,memtest,help,nodefault,noflavour,keep-initrd,label:,uboot -- "$@"` || usage
+eval set -- "$ARGV"
+
+while :; do
+	case "$1" in
+		-n|--nolaunch) NOLAUNCH=$1; shift
+			;;
+		-r|-R|--remove) REMOVE=$1; shift
+			;;
+		-m|--memtest) MEMTEST=$1; shift
+			;;
+		--label) LABEL="$1 $2"; shift 2
+			;;
+		--nodefault) NODEFAULT=$1; shift
+			;;
+		--noflavour) NOFLAVOUR=$1; shift
+			;;
+		--keep-initrd) KEEPINITRD=$1; shift
+			;;
+		-u|--uboot) UBOOT=$1; shift
+			;;
+		-h|--help) shift; usage 0
+			;;
+		--) shift; break
+			;;
+		-[$LEGACY]) echo "$0: legacy option $1 ignored (probably harmless)" >&2; shift
+			;;
+		*) echo "$0: unrecognized option: $1" >&2; exit 1
+			;;
+	esac
+done
+
+[ -z "${0##*memtest*}" ] && MEMTEST=--memtest
+
+VERSION="$1"
+[ -n "$VERSION" ] || usage
+
+if [ -n "$DURING_INSTALL" ]; then
+	echo "$0: DURING_INSTALL=$DURING_INSTALL; supposed to run later" >&2
+	exit 0
+fi
+
+if [ -n "$MEMTEST" -a -d /sys/firmware/efi ]; then
+	echo "$0: booted in EFI mode, skipping" >&2
+	exit 0
+fi
+
+# Handle call from install.sh
+if [ $# -ge 4 ]; then
+	KCFG=.config
+	KIMG=$2
+	KMAP=$3
+	BOOTDIR=${4:-/}
+	cp -S.old --preserve=timestamps "$KCFG" "$BOOTDIR/config-$VERSION"
+	cp -S.old --preserve=timestamps "$KIMG" "$BOOTDIR/vmlinuz-$VERSION"
+	cp -S.old --preserve=timestamps "$KMAP" "$BOOTDIR/System.map-$VERSION"
+	NOFLAVOUR=y
+	if [ "$BOOTDIR" != "/boot" ]; then
+		# The kernel image is being installed into staging directory, i.e.
+		# make install INSTALL_PATH=`pwd`/inst ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
+		# Don't generate initramfs, and don't touch boot loader.
+		exit 0
+	fi
+fi
+
+: ${INITRD_GENERATOR:=make-initrd}
+: ${BOOTDIR:=/boot}
+: ${MKINITRD:=/sbin/mkinitrd}
+: ${MAKE_INITRD:=/usr/sbin/make-initrd}
+: ${MKIMAGE:=/usr/bin/mkimage}
+
+: ${DTB_DIR:=/boot/devicetree}
+[ -d "$DTB_DIR"/"$VERSION" ] || DTB_DIR=/lib/devicetree
+[ -d "$DTB_DIR"/"$VERSION" ] || DTB_DIR=
+
+if ! [ -w "$BOOTDIR" ]; then
+  echo "$0: $BOOTDIR: Permission denied"
+  exit 1
+fi
+
+if OLD_KERNEL=`readlink -e -- "$BOOTDIR/vmlinuz"`; then
+	OLD_VERSION="${OLD_KERNEL##*/vmlinuz-}"
+fi
+
+cd "$BOOTDIR"
+if [ -z "$REMOVE" -a -z "$MEMTEST" ]; then
+	if [ -f "System.map-$VERSION" ]; then
+		/sbin/depmod -a -F "System.map-$VERSION" "$VERSION"
+	fi
+
+	if [ -z "$KEEPINITRD" ] || [ ! -f "$BOOTDIR/initrd-$VERSION.img" ]; then
+		case "$INITRD_GENERATOR" in
+			mkinitrd)
+				"$MKINITRD" $MKINITRD_OPTIONS -f "$BOOTDIR/initrd-$VERSION.img" "$VERSION" || exit 1
+				;;
+			make-initrd)
+				"$MAKE_INITRD" -b "$BOOTDIR" -k "$VERSION" || exit 1
+				;;
+			*)
+				echo "$0: $INITRD_GENERATOR: Unrecognized initrd generator"
+				exit 1
+				;;
+		esac
+		if [ -n "$UBOOT" -a -n "$UBOOT_DTB" -a -n "$DTB_DIR" -a -x "$MKIMAGE" ]; then
+			: ${UBOOT_ARCH:=arm}
+			: ${UBOOT_KERNEL_LOAD_ADDRESS:?}
+			: ${UBOOT_INITRD_LOAD_ADDRESS:=0}
+			: ${UBOOT_KERNEL_ENTRY_POINT:=$UBOOT_KERNEL_LOAD_ADDRESS}
+			: ${UBOOT_INITRD_ENTRY_POINT:=$UBOOT_INITRD_LOAD_ADDRESS}
+			: ${UBOOT_KERNEL_COMPRESSION:=none}
+			: ${UBOOT_INITRD_COMPRESSION:=none}
+			ls "$DTB_DIR/$VERSION/$UBOOT_DTB" > /dev/null || exit 1
+			trap 'rm -f -- "$kimage"; exit $?' EXIT
+			trap 'exit 143' HUP INT QUIT TERM
+			kimage="`mktemp --tmpdir intallkernel.XXXXXXXXXX`"
+			cat "vmlinuz-$VERSION" "$DTB_DIR/$VERSION/$UBOOT_DTB" > "$kimage" || exit 1
+			$MKIMAGE -A "$UBOOT_ARCH" -O linux -T kernel -C "$UBOOT_KERNEL_COMPRESSION" -a "$UBOOT_KERNEL_ENTRY_POINT" \
+				-e "$UBOOT_KERNEL_ENTRY_POINT" -n "linux-$VERSION" -d "$kimage" "uimage-$VERSION" || exit 1
+			$MKIMAGE -A "$UBOOT_ARCH" -O linux -T ramdisk -C "$UBOOT_INITRD_COMPRESSION" -a "$UBOOT_INITRD_ENTRY_POINT" \
+				-e "$UBOOT_INITRD_ENTRY_POINT" -n "initrd-$VERSION" -d "initrd-$VERSION.img" "uinitrd-$VERSION" || exit 1
+		fi
+	fi
+
+	if [ -z "${VERSION##*-xen-*}" ] && [ -z "$NOFLAVOUR" ]; then
+		ln -snf "vmlinuz-$VERSION" vmlinuz-xen
+		ln -snf "initrd-$VERSION.img" initrd-xen.img
+	else
+		if [ -z "$NODEFAULT" ]; then
+			ln -snf "vmlinuz-$VERSION" vmlinuz
+			ln -snf "initrd-$VERSION.img" initrd.img
+			if [ -n "$DTB_DIR" ]; then
+				if [ "$DTB_DIR" = /boot/devicetree ]; then
+					ln -snf devicetree/$VERSION dtb
+				else
+					ln -snf $DTB_DIR/$VERSION dtb
+				fi
+			fi
+			if [ -n "$UBOOT" ] && [ -n "$UBOOT_DTB" ]; then
+				ln -snf "uimage-$VERSION" uimage
+				ln -snf "uinitrd-$VERSION" uinitrd
+			fi
+		fi
+		if [ -z "$NOFLAVOUR" ]; then
+			KFLAVOUR=${VERSION#*-}; KFLAVOUR=${KFLAVOUR%-*}
+			ln -snf "vmlinuz-$VERSION" vmlinuz-$KFLAVOUR
+			ln -snf "initrd-$VERSION.img" initrd-$KFLAVOUR.img
+			if [ -n "$UBOOT_DTB" ]; then
+				ln -snf "uimage-$VERSION" uimage-$KFLAVOUR
+				ln -snf "uinitrd-$VERSION" uinitrd-$KFLAVOUR
+			fi
+		fi
+	fi
+elif [ -z "$MEMTEST" ]; then
+	rm -f "initrd-$VERSION.img"
+	rm -f /boot/initrd-"$VERSION".img
+	if [ -n "$UBOOT_DTB" ]; then
+		rm -f /boot/uimage-"$VERSION"
+		rm -f /boot/uinitrd-"$VERSION"
+	fi
+
+fi
+cd - > /dev/null
+
+: ${LILO_CONF:=/etc/lilo.conf}
+: ${GRUB_MENU_LST:=$BOOTDIR/grub/menu.lst}
+: ${GRUB_DEVICE_MAP:=$BOOTDIR/grub/device.map}
+: ${PERL:=/usr/bin/perl}
+: ${LILO:=/sbin/lilo}
+: ${DETECTLOADER:=/usr/sbin/detectloader.sh}
+: ${DETECTLILOBOOT:=/usr/sbin/detectliloboot.sh}
+: ${SHARFILE:=/usr/share/loader}
+: ${UBOOT_CONF:=$BOOTDIR/extlinux/extlinux.conf}
+
+if [ -w "$UBOOT_CONF" -a -z "$MEMTEST" ]; then
+	sed -Ei "/./{H;\$!d}; x; s/^\n(menu.+)\$/\1/; /label\s+$VERSION\s/d" $UBOOT_CONF
+	if [ -z "$REMOVE" ]; then
+		V=${VERSION}
+		if [ -n "$DTB_DIR" ]; then
+			if [ "$DTB_DIR" = /boot/devicetree ]; then
+				DTB_DIR_V="\n\tfdtdir ../devicetree/$V"
+			else
+				DTB_DIR_V="\n\tfdtdir $DTB_DIR/$V"
+			fi
+		else
+			DTB_DIR_V=
+		fi
+		A=$(sed -En '{/./{H;$!d}; x; s/^\nlabel\s+linux.+\sappend\s+([^\n]+)(\n.*|$)/\1/p}' < $UBOOT_CONF)
+		printf '\nlabel %s
+	kernel ../vmlinuz-%s
+	initrd ../initrd-%s.img%b
+	append %s\n' "$V" "$V" "$V" "$DTB_DIR_V" "$A" >> $UBOOT_CONF
+	fi
+fi
+
+# check perl
+if [ ! -x "$PERL" ] && ! type "$PERL" >/dev/null 2>&1; then
+	echo "$0: warning: PERL=$PERL not available; supposed to run manually..."
+	PERL="echo $PERL"
+fi
+
+# modify lilo config
+if [ -w "$LILO_CONF" -a -x "$SHARFILE/lilo" ]; then
+	cp -pf "$LILO_CONF" "$LILO_CONF.old"
+	if [ -z "$REMOVE" -a -z "$MEMTEST" -a -n "$OLD_VERSION" ]; then
+		$PERL "$SHARFILE/lilo" "$OLD_VERSION"
+	fi
+	$PERL "$SHARFILE/lilo" $LABEL $MEMTEST $REMOVE "$VERSION"
+fi
+
+# modify grub config
+if [ -w "$GRUB_MENU_LST" -a -f "$GRUB_DEVICE_MAP" -a -x "$SHARFILE/grub" ]; then
+	cp -pf "$GRUB_MENU_LST" "$GRUB_MENU_LST.old"
+	if [ -z "$REMOVE" -a -z "$MEMTEST" -a -n "$OLD_VERSION" ]; then
+		$PERL "$SHARFILE/grub" "$OLD_VERSION"
+	fi
+	$PERL "$SHARFILE/grub" $LABEL $MEMTEST $REMOVE "$VERSION"
+fi
+
+# launch lilo
+if [ -z "$NOLAUNCH" ]; then
+	if [ -z "$LOADER" -a -r "$LILO_CONF" -a\
+	     -x "$DETECTLOADER" -a -x "$DETECTLILOBOOT" ]; then
+		LILO_DEVICE="$($DETECTLILOBOOT "$LILO_CONF")"
+		[ -z "$LILO_DEVICE" ] ||
+			LOADER="$($DETECTLOADER "$LILO_DEVICE")"
+	fi
+	if [ "$LOADER" = "lilo" -o "$LOADER" = "LILO" ]; then
+		"$LILO" ||:
+	fi
+fi
+
+exit 0

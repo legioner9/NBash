@@ -1,0 +1,103 @@
+#! /bin/sh
+#
+# smartd         Start/Stop the smartd daemon.
+#
+# chkconfig: 2345 40 60 
+# description: Self Monitoring and Reporting Technology (S.M.A.R.T.) Daemon \
+#              monitors the reliability of ATA and SCSI hard drives.
+# processname: smartd
+# config: /etc/smartd.conf
+# pidfile: /var/run/smartd.pid
+
+# Do not load RH compatibility interface.
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+# Get config.
+EXTRAOPTIONS=
+SourceIfNotEmpty /etc/sysconfig/smartd
+
+PIDFILE=/var/run/smartd.pid
+LOCKFILE=/var/lock/subsys/smartd
+RETVAL=0
+
+start()
+{
+	start_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root -- smartd -p "$PIDFILE" $EXTRAOPTIONS
+	RETVAL=$?
+	return $RETVAL
+}
+
+stop()
+{
+	stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root -- smartd
+	RETVAL=$?
+	return $RETVAL
+}
+
+restart()
+{
+	stop
+	start
+}
+
+reload()
+{
+	msg_reloading smartd
+	stop_daemon --pidfile "$PIDFILE" --expect-user root -HUP -- smartd
+	RETVAL=$?
+	return $RETVAL
+} 
+
+recheck()
+{
+	printf "Signalling %s to do immediate check the status of the disks: " smartd
+	stop_daemon --pidfile "$PIDFILE" --expect-user root -USR1 -- smartd
+	RETVAL=$?
+	return $RETVAL
+} 
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart)
+		restart
+        	;;
+	reload)
+		reload
+        	;;
+	recheck)
+		recheck
+        	;;
+	condstop)
+		if [ -e "$LOCKFILE" ]; then
+			stop
+		fi
+		;;
+	condrestart)
+		if [ -e "$LOCKFILE" ]; then
+			restart
+		fi
+		;;
+	condreload)
+		if [ -e "$LOCKFILE" ]; then
+			reload
+		fi
+		;;
+	status)
+        	status --pidfile "$PIDFILE" --expect-user root smartd
+		RETVAL=$?
+	        ;;
+	*)
+		msg_usage "${0##*/} {start|stop|restart|reload|recheck|condstop|condrestart|condreload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

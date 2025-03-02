@@ -1,0 +1,161 @@
+#!/bin/sh
+#
+# NetworkManager:   NetworkManager daemon
+#
+# chkconfig: - 12 90
+# description:  This is a daemon for automatically switching network \
+#               connections to the best available connection.
+#
+# processname: NetworkManager
+# pidfile: /var/run/NetworkManager.pid
+#
+### BEGIN INIT INFO
+# Provides: network_manager
+# Required-Start: $local_fs messagebus
+# Required-Stop: $local_fs messagebus
+# Default-Start:  3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: start and stop NetworkManager
+# Description: NetworkManager is a tool for easily managing network connections
+### END INIT INFO
+
+# Do not load RH compatibility interface.
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+. shell-config
+
+# Source networking configuration.
+# Check that networking is up.
+SourceIfNotEmpty /etc/sysconfig/network || exit 1
+is_yes "$NETWORKING" || exit 0
+
+# Source config.
+SourceIfNotEmpty /etc/sysconfig/NetworkManager
+
+OLD_PIDFILE=/var/run/NetworkManager/NetworkManager.pid
+PIDFILE=/var/run/NetworkManager.pid
+LOCKFILE=/var/lock/subsys/NetworkManager
+DBUS_SEND=/usr/bin/dbus-send
+RETVAL=0
+
+nm_status()
+{
+	local pidfile="$PIDFILE"
+	[ -s "$OLD_PIDFILE" ] && pidfile="$OLD_PIDFILE"
+
+	status --pidfile "$pidfile" --expect-user root -- NetworkManager
+	RETVAL=$?
+}
+
+start()
+{
+	start_daemon --lockfile "$LOCKFILE" --pidfile "$PIDFILE" --expect-user root -- NetworkManager --pid-file=$PIDFILE
+	RETVAL=$?
+	if [ -n "$NM_CONNECTION_WAIT" ]; then
+	    action "Waiting for connection:" nm-online -s -q -t "$NM_CONNECTION_WAIT"
+	fi
+	return $RETVAL
+}
+
+stop()
+{
+	local in_restart="${1-}"
+	local pidfile="$PIDFILE"
+	[ -s "$OLD_PIDFILE" ] && pidfile="$OLD_PIDFILE"
+
+	if [ -z "$in_restart" ] && is_yes "$NM_STOP_ONEXIT"; then
+		for i in $(LANG=C nmcli --nocheck -t -f device,state dev status); do
+			local iface="${i%%:*}"
+			[ "${i##*:}" = "connected" ] &&
+				action "Disconnecting $iface:" nmcli --nocheck dev disconnect "$iface"
+		done
+	fi
+	stop_daemon --pidfile "$pidfile" --lockfile "$LOCKFILE" --expect-user root \
+	    --retry "${NM_STOP_TIMEOUT:-4}" -- NetworkManager
+	RETVAL=$?
+
+	# nm-system-settings may be present from NM 0.7.x while upgrading, so kill it.
+	killall nm-system-settings >/dev/null 2>&1
+
+	# nm-dispatcher.action was renamed to nm-dispatcher since NM-0.9.9.98-alt1
+	# Option --persist was dropped, so now no need to kill nm-dispatcher after NM
+	# exited. Just try to kill process that can be present after upgrade from
+	# NM < 0.9.9.98-alt1.
+	killall nm-dispatcher.action >/dev/null 2>&1
+
+	# workaround for updating from ModemManager < 1.2.0-alt2:
+	# if there is no pidfile and ModemManager is running then kill it
+	if [ ! -s /var/run/ModemManager.pid ]; then
+		# binary was renamed (modem-manager -> ModemManager)
+		# since ModemManager-0.7.991
+		killall modem-manager ModemManager >/dev/null 2>&1
+	fi
+
+	return $RETVAL
+}
+
+restart()
+{
+	stop restart
+	start
+}
+
+nm_sleep()
+{
+	[ -x "$DBUS_SEND" ] &&
+	action "Put NetworkManager to sleep" "$DBUS_SEND" --system --print-reply \
+						--dest=org.freedesktop.NetworkManager  \
+						/org/freedesktop/NetworkManager        \
+						org.freedesktop.NetworkManager.Sleep   \
+						boolean:true
+}
+
+nm_wake()
+{
+	[ -x "$DBUS_SEND" ] &&
+	action "To wake NetworkManager" "$DBUS_SEND" --system --print-reply \
+						--dest=org.freedesktop.NetworkManager  \
+						/org/freedesktop/NetworkManager        \
+						org.freedesktop.NetworkManager.Sleep   \
+						boolean:false
+}
+
+# See how we were called.
+case "$1" in
+	start)
+		/usr/sbin/NetworkManager-prestart ||:
+		start
+		;;
+	stop)
+		stop
+		;;
+	status)
+		nm_status
+		;;
+	reload|restart)
+		restart
+		;;
+	condstop)
+		if [ -e "$LOCKFILE" ]; then
+			stop
+		fi
+		;;
+	condreload|condrestart)
+		if [ -e "$LOCKFILE" ]; then
+			restart
+		fi
+		;;
+	sleep)
+		nm_sleep
+		;;
+	wake)
+		nm_wake
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart|condreload|status|sleep|wake}"
+		RETVAL=1
+esac
+
+exit $RETVAL

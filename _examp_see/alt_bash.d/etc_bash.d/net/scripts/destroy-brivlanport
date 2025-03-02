@@ -1,0 +1,15 @@
+#!/bin/bash
+
+pickup_defaults
+pickup_options
+
+: ${HOST:?HOST is missing for $NAME}
+: ${VID:?VID is missing for $NAME}
+
+[ -x "${BRIDGE:=$DEFAULT_BRIDGE}" ] || {
+	print_error "$BRIDGE does not exist or is not executable. Try installing iproute2 RPM."
+	exit 1
+}
+
+$IP link del link dev $NAME
+$BRIDGE vlan del vid $VID dev $HOST self

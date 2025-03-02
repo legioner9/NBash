@@ -1,0 +1,183 @@
+#!/bin/sh -e
+#
+# Copyright (C) 2000-2011  Dmitry V. Levin <ldv@altlinux.org>
+# Copyright (C) 2007  Alexey Tourbin <at@altlinux.ru>
+# Copyright (C) 2010  Michael Shigorin <mike@altlinux.org>
+#
+# Generates and adds/updates BuildRequires tag in specfiles.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+
+PROG=buildreq
+
+. shell-error
+. shell-quote
+. shell-args
+
+FILTER_SPEC=/usr/share/buildreqs/filter_spec
+ESSENTIAL=/etc/buildreqs/packages/essential
+IGNORE=/etc/buildreqs/packages/ignore.d
+FILEREQ=filereq
+PACKAGEREQ=packagereq
+export RPM=rpm
+DEFSTAGE=c
+STAGE=
+RPMARG="--nodeps --define '__buildreqs 1' --define '__nprocs 1'"
+NEWTERM=dumb
+PRUNED=1
+PRUNEDREQS=
+
+show_help()
+{
+	cat <<EOF
+buildreq - generates and adds/updates BuildRequires tag in specfiles.
+
+buildreq is free software, covered by the GNU General Public License.
+buildreq comes with ABSOLUTELY NO WARRANTY, see license for details.
+
+Usage: $PROG [options] <specfile> [ <specfile>]*
+
+Valid options are:
+-e ESSENTIAL, --essential=ESSENTIAL     filename where to get list of
+                                        essential packages;
+-i IGNORE, --ignore=IGNORE              filename where to get list of
+                                        packages to ignore;
+-f FILEREQ, --filereq=FILEREQ           FILEREQ executable;
+-p PACKAGEREQ, --packagereq=PACKAGEREQ  PACKAGEREQ executable;
+-r RPM, --rpm=RPM                       RPM executable;
+-b STAGE                                RPM build stage;
+--args=args                             additional arguments for RPM;
+--define='<name> <body>'                define macro <name> with value <body>;
+--reset-args                            reset arguments list for RPM;
+-t TERM, --term=TERM                    redefine TERM variable;
+--trace-file=FILE                       trace the usage of FILE;
+--trace-package=PACKAGE                 trace the usage of PACKAGE files;
+-u, --pruned                            add pruned requires as a comment;
+--no-pruned                             do not add pruned requires as a comment;
+-h, --help                              show this text.
+
+Configured file with list of essential packages is $ESSENTIAL.
+Configured file with list of packages to ignore is $IGNORE.
+Configured FILEREQ executable is $FILEREQ.
+Configured PACKAGEREQ executable is $PACKAGEREQ.
+Configured RPM executable is $RPM.
+Configured RPM build stage is: $DEFSTAGE.
+Configured arguments for RPM are: $RPMARG.
+Configured TERM value is $NEWTERM.
+
+EOF
+	exit
+}
+
+TEMP=`getopt -n $PROG -o b:e:f:i:p:r:t:uh -l essential:,filereq:,ignore:,packagereq:,rpm:,args:,define:,reset-args,term:,trace-file:,trace-package:,pruned,no-pruned,help -- "$@"` || show_usage
+eval set -- "$TEMP"
+
+TRACE_FILES=
+TRACE_PACKAGES=
+
+while :; do
+	case "$1" in
+		-b) shift; STAGE="$1"; shift
+			;;
+		-e|--essential) shift; ESSENTIAL="$1"; shift
+			;;
+		-f|--filereq) shift; FILEREQ="$1"; shift
+			;;
+		-i|--ignore) shift; IGNORE="$1"; shift
+			;;
+		-p|--packagereq) shift; PACKAGEREQ="$1"; shift
+			;;
+		-r|--rpm) shift; RPM="$1"; shift
+			;;
+		--args) shift; RPMARG="$RPMARG $1"; shift
+			;;
+		--define) shift; RPMARG="$RPMARG --define '$1'"; shift
+			;;
+		--reset-args) RPMARG=; shift
+			;;
+		-t|--term) shift; NEWTERM="$1"; shift
+			;;
+		--trace-file) shift
+			[ -z "$TRACE_FILES" ] && TRACE_FILES="$1" ||
+			TRACE_FILES="$(printf %s\\n%s\\n "$TRACE_FILES" "$1")"
+			export TRACE_FILES
+			shift
+			;;
+		--trace-package) shift
+			[ -z "$TRACE_PACKAGES" ] && TRACE_PACKAGES="$1" ||
+			TRACE_PACKAGES="$(printf %s\\n%s\\n "$TRACE_PACKAGES" "$1")"
+			export TRACE_PACKAGES
+			shift
+			;;
+		-u|--pruned) PRUNED=1; shift
+			;;
+		--no-pruned) PRUNED=; shift
+			;;
+		-h|--help) show_help
+			;;
+		--) shift; break
+			;;
+		*) echo "$PROG: unrecognized option: $1" >&2; exit 1
+			;;
+	esac
+done
+
+# At least one argument, please.
+[ "$#" -ge 1 ] || show_usage 'Insufficient arguments.'
+
+exit_handler()
+{
+	local rc=$1
+	rm -f -- "$REQFILE" "$PRUNEDFILE"
+	exit $rc
+}
+
+trap 'exit 143' HUP PIPE INT QUIT TERM
+REQFILE="$(mktemp -t "$PROG.XXXXXXXXXX")"
+PRUNEDFILE="$(mktemp -t "$PROG.XXXXXXXXXX")"
+trap 'exit_handler $?' EXIT
+
+quote_shell_args RPMARG "$RPMARG"
+
+for SPEC; do
+	if [ -z "$STAGE" ]; then
+		SPEC_STAGE=`sed -ne 's/^# Automatically added by buildreq on [^(]*(-b\([a-z]\))$/\1/p' -- "$SPEC" |tail -1`
+	else
+		SPEC_STAGE="$STAGE"
+	fi
+	if [ -z "$PRUNED" ] && grep -q '^# optimized out: ' -- "$SPEC"; then
+		PRUNED=1
+	fi
+	eval "TERM=\"$(quote_shell "$NEWTERM")\" \
+		\"$(quote_shell "$PACKAGEREQ")\" \
+		-o \"$(quote_shell "$REQFILE")\" \
+		-u \"$(quote_shell "$PRUNEDFILE")\" \
+		-e \"$(quote_shell "$ESSENTIAL")\" \
+		-i \"$(quote_shell "$IGNORE")\" \
+		-f \"$(quote_shell "$FILEREQ")\" \
+		-- \"$(quote_shell "$RPM")\" -b${SPEC_STAGE:-$DEFSTAGE} \
+		$RPMARG \"$(quote_shell "$SPEC")\""
+	TMPFILE="$(mktemp -t "$PROG.XXXXXXXXXX")"
+	: >"$TMPFILE"
+	REQS="$(tr '\n' ' ' < "$REQFILE")"
+	[ -z "$PRUNED" ] || PRUNEDREQS="$(tr '\n' ' ' < "$PRUNEDFILE")"
+	LC_ALL=C $FILTER_SPEC -v "reqs=${REQS%% }" "pruned=${PRUNEDREQS%% }" "stage=$SPEC_STAGE" \
+		< "$SPEC" >> "$TMPFILE"
+	if ! cmp -s -- "$SPEC" "$TMPFILE"; then
+		cat -- "$TMPFILE" > "$SPEC"
+	fi
+	rm -f -- "$TMPFILE"
+done

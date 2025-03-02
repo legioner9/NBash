@@ -1,0 +1,74 @@
+#!/bin/sh
+#
+# strongswan	This shell script takes care of starting and stopping
+#		strongswan (IPSEC service).
+#
+# chkconfig: 35 55 10
+# description: strongswan is an IPSEC implementation
+
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+# Source networking configuration.
+SourceIfNotEmpty /etc/sysconfig/network
+
+# Source service configuration.
+IPSEC=/usr/sbin/ipsec
+PIDFILE=/var/run/starter.pid
+RETVAL=0
+
+start()
+{
+	is_yes "$NETWORKING" || return 0
+
+	$IPSEC start
+	RETVAL=$?
+	return $RETVAL
+}
+
+stop()
+{
+	$IPSEC stop
+	RETVAL=$?
+	return $RETVAL
+}
+
+restart()
+{
+	stop
+	start
+}
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart|reload)
+		restart
+		;;
+	condstop)
+		if [ -e "$PIDFILE" ]; then
+			stop
+		fi
+		;;
+	condrestart)
+		if [ -e "$PIDFILE" ]; then
+			restart
+		fi
+		;;
+	status)
+		$IPSEC status 
+		RETVAL=$?
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|restart|condstop|condrestart|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

@@ -1,0 +1,21 @@
+#! /bin/sh
+
+. /etc/control.d/functions
+
+CONFIG=/etc/sysconfig/htcacheclean2
+
+new_summary 'htcacheclean daemon ro cron mode management'
+
+facility=yes
+
+for facility in daemon cron
+do
+	new_subst $facility \
+		"^[[:space:]]*HTCACHECLEAN_MODE=([\"']?)$facility\1([[:space:]]+(#.*)?)?$" \
+		"s,^\\([[:space:]]*HTCACHECLEAN_MODE=\\([\"']\\?\\)\\)[^#\"']*\\2\\([[:space:]]\\+\\(#.*\\)\\?\\)\\?$,\\1$facility\\2\\3,"
+done
+
+new_help daemon "Run htcacheclean in daemon mode"
+new_help cron "Run htcacheclean in cron mode"
+
+control_subst "$CONFIG" status || exit 1

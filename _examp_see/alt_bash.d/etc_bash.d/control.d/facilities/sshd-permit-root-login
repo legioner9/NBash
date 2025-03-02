@@ -1,0 +1,27 @@
+#!/bin/sh
+
+. /etc/control.d/functions
+
+CONFIG=/etc/openssh/sshd_config
+
+new_subst without_password \
+	'^PermitRootLogin[[:space:]]+without-password' \
+	's/^#\?\(PermitRootLogin\)[[:space:]]\+.*/\1 without-password/'
+new_subst enabled \
+	'^PermitRootLogin[[:space:]]+yes' \
+	's/^#\?\(PermitRootLogin\)[[:space:]]\+.*/\1 yes/'
+new_subst disabled \
+	'^PermitRootLogin[[:space:]]+no' \
+	's/^#\?\(PermitRootLogin\)[[:space:]]\+.*/\1 no/'
+new_subst default \
+	'^#PermitRootLogin without-password' \
+	's/^#\?\(PermitRootLogin\)[[:space:]]\+.*/#\1 without-password/'
+
+new_help enabled 'Enable root login'
+new_help disabled 'Disable root login'
+new_help without_password 'Enable only non password root login'
+new_help default 'Reset root login setting to the package default'
+
+new_summary 'OpenSSH server PermitRootLogin configuration'
+
+control_subst "$CONFIG" "$*"

@@ -1,0 +1,81 @@
+#!/bin/sh -efu
+
+trust_gpg_names="${trust_gpg_names:-security incominger}"
+no_gpgname_packagers="${no_gpgname_packagers-}"
+
+rpm_siggpg="${rpm_siggpg?RPM siggpg required}"
+rpm_packager="${rpm_packager?RPM packager required}"
+rpm_changelogname="${rpm_changelogname?RPM changelog name required}"
+rpm_signature=
+
+check_gpg()
+{
+	local f="$1" && shift || return 1
+	local bads=
+
+	if [ -z "$rpm_siggpg" ]; then
+		FileError 'signature not found' "$f"
+		return 1
+	fi
+
+	if ! rpm_signature="$(LC_ALL=C alt-rpmkeys-checksig "$f")"; then
+		FileError 'alt-rpmkeys-checksig failed' "$f"
+		return 1
+	fi
+
+	return 0
+}
+
+# check package changelogname and signature
+check_gpgname()
+{
+	[ -z "$skip_check_gpgname" ] || return 0
+
+	if [ -n "$no_gpgname_packagers" ]; then
+		local packager pname
+		packager="$(printf %s "$rpm_packager" |
+			sed -n 's/^[^<]*<\([^@]\+\(@\| at \)[^>]\+\)>.*/\1/p' |
+			tr -s '[:space:]' ' ')"
+		for pname in $no_gpgname_packagers; do
+			[ "$pname" != "$packager" ] || return 0
+		done
+	fi
+
+	local f="$1" && shift || return 1
+	local chlogname sed_gpg_name gpg_name
+
+	chlogname="$(printf %s "$rpm_changelogname" |
+		sed -n 's/^.*<\([^@]\+\)\(@\| at \).*$/\1/p' |
+		tr '[:upper:]' '[:lower:]')"
+	sed_gpg_name='s/^.*[[:space:]][^<]\+<\([^@>]\+\)@altlinux\.\(ru\|com\|net\|org\)>.*$/\1/p'
+
+	for sign in $(printf %s "$rpm_signature" |sed -n "$sed_gpg_name" |tr '[:upper:]' '[:lower:]' |sort -u); do
+		for gpg_name in $trust_gpg_names; do
+		    [ "$sign" != "$gpg_name" ] || return 0
+		done
+		[ "$sign" != "$chlogname" ] || return 0
+	done
+
+	chlogname="$(printf %s "$rpm_changelogname" |
+		sed -n 's/^[^<]*<\([^@]\+\(@\| at \)[^>]\+\)>.*/\1/p' |
+		tr -s '[:space:]' ' ')"
+	FileError "changelog name $chlogname not found in signature" "$f"
+	return 1
+}
+
+run_check() {
+	local rc=0 skip_check_gpgname=
+
+	if ! check_gpg "$1"; then
+		CheckError 'package signatures violation'
+		skip_check_gpgname=1
+		rc=1
+	fi
+
+	if ! check_gpgname "$1"; then
+		CheckError 'signature/changelog mismatch'
+		rc=1
+	fi
+
+	return $rc
+}

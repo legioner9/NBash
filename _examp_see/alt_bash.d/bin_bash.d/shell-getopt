@@ -1,0 +1,463 @@
+#!/bin/sh -efu
+### This file is covered by the GNU General Public License,
+### which should be included with libshell as the file LICENSE.
+### All copyright information are listed in the COPYING.
+
+if [ -z "${__included_shell_getopt-}" ]; then
+__included_shell_getopt=1
+
+. shell-error
+. shell-quote
+. shell-string
+
+### Ignore unknown options.
+GETOPT_ALLOW_UNKNOWN=
+
+### Long options may be abbreviated, as long as the abbreviation is not ambiguous.
+GETOPT_ALLOW_ABBREV=1
+
+### Allow long options to start with a single `-'. See (getopt -a).
+GETOPT_ALLOW_ALTERNATIVE=
+
+OPTERR=1
+OPTTYP=
+OPTUKN=
+OPTOPT=
+OPTARG=
+OPTIND=1
+OPTOFS=
+
+###*** Example ***
+### Usage: getopt2 -ab -d 10 -e20 --opt1 --opt4=100 text1 text2
+###
+### . shell-getopt
+### echo Using getoptex to parse arguments:
+### while getoptex "a; b; c; d: e. opt1 opt2 opt3 opt4: opt5." "$@"; do
+###	echo "Option <$OPTOPT> ${OPTARG:+has an arg <$OPTARG>}"
+### done
+### shift $(($OPTIND-1))
+### set -- $@ ${OPTUKN-}
+### for arg in "$@"; do
+###	echo "Non option argument <$arg>"
+### done
+###
+getoptex()
+{
+	[ "$#" -gt 0 ] ||
+		return 1
+
+	[ "${OPTIND-}" -gt 0 ] 2>/dev/null ||
+		OPTIND=1
+
+	[ "$OPTIND" -lt "$#" ] ||
+		return 1
+
+	getoptex_badarg()
+	{
+		[ -z "${OPTERR-}" ] ||
+			message "option requires an argument -- '$OPTOPT'"
+		OPTARG="$OPTOPT"
+		OPTOPT='?'
+	}
+	getoptex_argument()
+	{
+		[ "$OPTTYP" = ':' ] ||
+			return 0
+		OPTARG="$1"
+		### Added test on following argument being an option identified by '-' this way #
+		### the routine no longer takes options as an argument thus breaking error #
+		### detection. 2004-04-04 by raphael at oninet dot pt #
+
+		[ -n "$OPTARG" ] && [ -n "${OPTARG%%-*}" ] ||
+			{ getoptex_badarg; return 1; }
+
+		OPTARG="${1#[#]}"
+		OPTIND=$(($OPTIND+1)) ### skip option's argument
+	}
+	getoptex_option_long()
+	{
+		local p
+		for p in -- ${GETOPT_ALLOW_ALTERNATIVE:+-}; do
+			p="$p$OPTOPT"
+			case "$1" in
+				$p=*)
+					[ -n "$OPTTYP" ] ||
+						{ getoptex_badarg; return 3; }
+					OPTARG="${1#$p=}"
+					return 1
+					;;
+				"$p")
+					getoptex_argument "$2" ||
+						return 3
+					return 1
+					;;
+			esac
+		done
+	}
+	getoptex_option_short()
+	{
+		local o="-${1#-${OPTOFS-}}"
+		case "$o" in
+			"-$OPTOPT")
+				OPTOFS=
+				getoptex_argument "$2" ||
+					return 3
+				return 1
+				;;
+			-$OPTOPT*)
+				if [ -z "$OPTTYP" ]; then     ### an option with no argument is in a chain of options
+					OPTOFS="${OPTOFS-}?"  ### move to the next option in the chain
+					OPTIND=$(($OPTIND-1)) ### the chain still has other options
+				else
+					OPTOFS=
+					OPTARG="${o#-$OPTOPT}"
+				fi
+				return 1
+				;;
+		esac
+	}
+	getoptex_option_abbrev()
+	{
+		[ "$1" != '--' ] ||
+			return 0
+
+		local opt o i=0 variants='' l='' v='' n="${1%%=*}"
+
+		[ -n "${1##*=*}" ] || v="${1#*=}"
+		shift
+
+		for opt; do
+			opt="${opt%[;.:]}"
+			[ "${#opt}" -gt 1 ] ||
+				continue
+			for o in -- ${GETOPT_ALLOW_ALTERNATIVE:+-}; do
+				o="$o$opt"
+				[ -z "${o##$n*}" ] ||
+					continue
+				l="--$opt"
+				if [ "$o" = "$n" ]; then
+					# Full match was found, so all other variants should be ignored.
+					variants=
+					i=1
+					break 2
+				else
+					#local d='--'
+					#[ -z "${GETOPT_ALLOW_ALTERNATIVE-}" ] || d='-'
+					#variants="$variants '$d$opt'"
+					variants="$variants '--$opt'"
+					i=$(($i+1))
+				fi
+			done
+		done
+
+		if [ "$i" -eq 1 ]; then
+			param="$l${v:+=$v}"
+		elif [ "$i" -gt 1 ]; then
+			message "option '$n${v:+=$v}' is ambiguous; possibilities:$variants"
+			return 1
+		fi
+	}
+
+	local optlist="${1#;}" param='' value=''
+	shift $OPTIND
+
+	param="$1"
+
+	if [ -n "${GETOPT_ALLOW_ABBREV-}" ]; then
+		if ! getoptex_option_abbrev "$param" $optlist && [ -z "${GETOPT_ALLOW_UNKNOWN-}" ]; then
+			OPTIND=$(($OPTIND+1))
+			OPTOPT='?'
+			OPTARG=
+			return 2
+		fi
+	fi
+
+	[ "$#" -lt 2 ] ||
+		value="#$2"
+
+	OPTTYP=
+	### test whether $param is an option.
+	if [ "$param" = '--' ]; then
+		OPTTYP='--'
+		OPTIND=$(($OPTIND+1))
+	elif [ "$param" != '-' ] && [ "$param" != "${param#-}" ]; then
+		OPTIND=$(($OPTIND+1))
+
+		local cmd argtype
+		for opt in $optlist; do
+			OPTOPT="${opt%[;.:]}"
+			OPTARG=
+			OPTTYP=
+			[ "$OPTTYP" = ';' ] ||
+				OPTTYP="${opt#$OPTOPT}"
+
+			cmd=long
+			[ "${#OPTOPT}" -gt 1 ] ||
+				cmd=short
+
+			getoptex_option_$cmd "$param" "$value" ||
+				return $(($?-1))
+		done
+		OPTOPT='?'
+		OPTARG=
+
+		if [ -n "${GETOPT_ALLOW_UNKNOWN-}" ]; then
+			local q_arg
+			quote_shell_variable q_arg "$param"
+			OPTUKN="${OPTUKN-} \"$q_arg\""
+			return 0
+		fi
+		message "unrecognized option '$param'"
+		return 2
+	fi
+	OPTOPT='?'
+	OPTARG=
+	return 1
+}
+
+###*** Example ***
+### Usage: getopt1 -ab -d 10 -e20 text1 text2
+###
+### . shell-getopt
+### echo "Using getopt to parse arguments:"
+### while getopts "abcd:e." "$@"; do
+###	echo "Option <$OPTOPT> ${OPTARG:+has an arg <$OPTARG>}"
+### done
+### shift $(($OPTIND-1))
+### set -- $@ ${OPTUKN-}
+### for arg in "$@"; do
+###	echo "Non option argument <$arg>"
+### done
+###
+getopts()
+{
+	local l="$1"
+	local m=         ### mask
+	local r=         ### to store result
+	fill_mask m "$l" ### create a "???..." mask
+
+	while [ -n "$l" ]; do
+		r="${r:+"$r "}${l%$m}" ### append the first character of $l to $r
+		l="${l#?}"             ### cut the first charecter from $l
+		m="${m#?}"             ### cut one "?" sign from m
+
+		### a special character (";", ".", or ":") was found
+		if [ "${l#[:.;]}" != "$l" ]; then
+			r="$r${l%$m}" ### append it to $r
+			l="${l#?}"    ### cut the special character from l
+			m="${m#?}"    ### cut one more "?" sign
+		fi
+	done
+	shift
+	getoptex "$r" ${1:+"$@"} ||
+		return $?
+}
+
+
+###*** Example ***
+### . shell-getopt
+### while getsubopt 'rw mode: path: dev:' 'rw,mode=755,path="/zzz xxx",dev=/dev/zzz'; do
+###	echo "Option <$OPTOPT> ${OPTARG:+has an arg <$OPTARG>}"
+### done
+###
+__getsubopt_arguments=
+getsubopt()
+{
+	local l="$2"
+
+	if [ -z "$__getsubopt_arguments" ]; then
+		local ch m=
+		fill_mask m "$l"
+
+		__getsubopt_arguments='--'
+		while [ -n "$l" ]; do
+			ch="${l%$m}"
+			l="${l#?}"
+			m="${m#?}"
+
+			# shellcheck disable=SC2102
+			# Disable this `Ranges can only match single chars (mentioned due to duplicates)`
+			# because some shells treat escaped characters differently.
+			case "$ch" in
+				,) ch=' --' ;;
+				[\\\\\`\$\"\ ]) ch="\\$ch" ;;
+			esac
+
+			__getsubopt_arguments="$__getsubopt_arguments$ch"
+		done
+	fi
+
+	local GETOPT_ALLOW_ABBREV=
+	eval getoptex "\"$1\"" "$__getsubopt_arguments" ||
+		return $?
+}
+
+. shell-version
+
+GETOPT_POSIXLY_CORRECT=
+
+getopt()
+{
+	__getopt_version()
+	{
+		cat <<-EOF
+		$PROG version $libshell_version
+		Written by Alexey Gladkov <gladkov.alexey@gmail.com>
+
+		Copyright (C) 2008  Alexey Gladkov <gladkov.alexey@gmail.com>
+		This is free software; see the source for copying conditions.  There is NO
+		warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+		EOF
+	}
+	__getopt_usage()
+	{
+		cat <<-EOF
+		Try \`$PROG --help' for more information.
+		EOF
+	}
+	__getopt_help()
+	{
+		cat <<-EOF
+		Usage: $PROG optstring parameters
+		   or: $PROG [options] [--] optstring parameters
+		   or: $PROG [options] -o|--options optstring [options] [--] parameters
+
+		Options ignored:
+		  -s, --shell=shell            Set shell quoting conventions;
+		  -u, --unqote                 Do not quote the output;
+
+		Options:
+		  -a, --alternative            Allow long options starting with single -;
+		  -l, --longoptions=longopts   Long options to be recognized;
+		  -n, --name=progname          The name under which errors are reported;
+		  -o, --options=optstring      Short options to be recognized;
+		  -q, --quiet                  Disable error reporting;
+		  -Q, --quiet-output           No normal output;
+		  -T, --test                   Test for getopt version;
+		  -V, --version                Output version information;
+		  -h, --help                   This small usage guide.
+
+		Report bugs to http://bugzilla.altlinux.org/
+
+		EOF
+	}
+
+	local PROG='getopt' OPTIND=1 OPTERR=1 prg='' opts='' lopts='' quiet_output='' alt='' order='' rc
+	local GETOPT_POSIXLY_CORRECT
+
+	while getoptex 'a alternative h help l: longoptions: n: name: o: options: q quiet Q quiet-output s shell T test u unquoted V version' ${1:+"$@"} && rc=0 || rc=$?; do
+		case "$rc" in
+			2) __getopt_usage; return 2 ;;
+			1) break ;;
+		esac
+
+		case "$OPTOPT" in
+			a|alternative) alt=1 ;;
+			n|name) prg="$OPTARG" ;;
+			o|options) opts="$OPTARG " ;;
+			l|longoptions) lopts="$OPTARG" ;;
+			q|quiet) OPTERR= ;;
+			Q|quiet-output) quiet_output=1 ;;
+			T|test) return 4 ;;
+			V|version)
+				__getopt_version
+				return 0
+				;;
+			h|help)
+				__getopt_help
+				return 2
+				;;
+		esac
+	done
+
+	shift $(($OPTIND-1))
+	set -- ${1:+"$@"}
+
+	if [ -z "${opts##+*}" ]; then
+		opts="${opts#+}"
+		GETOPT_POSIXLY_CORRECT=1
+	elif [ -z "${opts##-*}" ]; then
+		opts="${opts#-}"
+		order=1
+	fi
+	if [ -z "$opts" ]; then
+		if [ "$#" -gt 1 ] && [ "${1#-}" = "$1" ] && [ "$1" != '--' ]; then
+			opts="$1"
+			shift
+		else
+			message "$PROG: missing optstring argument"
+			__getopt_usage
+			return 2
+		fi
+	fi
+	opts="${lopts:+$lopts,}$opts"
+	while :; do
+		case "$opts" in
+			*,*)  opts="${opts%%,*} ${opts#*,}"   ;;
+			*::*) opts="${opts%%::*}.${opts#*::}" ;;
+			*) break ;;
+		esac
+	done
+
+	local OPTIND=1 OPTOFS='' GETOPT_ALLOW_ALTERNATIVE="${alt:+1}"
+	local ret=0 out=' -- '
+
+	! printenv POSIXLY_CORRECT >/dev/null 2>&1 ||
+		GETOPT_POSIXLY_CORRECT=1
+
+	__getopt_out_arg()
+	{
+		local q_arg
+		shift $(($OPTIND-1))
+		quote_shell_variable q_arg "$1"
+		[ -z "$order" ] &&
+			out="${out%% -- *} -- ${out#* -- } \"$q_arg\"" ||
+			out="${out%% -- *} \"$q_arg\" -- ${out#* -- }"
+	}
+
+	PROG="$prg"
+	while getoptex "$opts" ${1:+"$@"} && rc=0 || rc=$?; do
+		case "$rc" in
+			1)
+				[ $# -ge $OPTIND ] && [ -z "${GETOPT_POSIXLY_CORRECT-}" ] ||
+					break
+				__getopt_out_arg ${1:+"$@"}
+				OPTIND=$(($OPTIND+1))
+				[ "$OPTTYP" != '--' ] ||
+					break
+				continue
+				;;
+			2)	ret=1
+				;;
+		esac
+		if [ "$OPTOPT" = '?' ]; then
+			if [ -n "$GETOPT_ALLOW_UNKNOWN" ]; then
+				out="${out%% -- *} -- ${out#* -- }$OPTUKN"
+				OPTUKN=
+			fi
+			continue
+		fi
+		pfx='-'
+		[ "${#OPTOPT}" -eq 1 ] ||
+			pfx='--'
+		# shellcheck disable=SC2027
+		# Disable `The surrounding quotes actually unquote this`
+		# because $OPTARG actually quoted.
+		out="${out%% -- *} $pfx$OPTOPT${OPTTYP:+ "'"$OPTARG"'"} -- ${out#* -- }"
+	done
+
+	local q_arg
+	shift $(($OPTIND-1))
+	set -- ${1:+"$@"}
+	while [ "$#" -gt 0 ]; do
+		quote_shell_variable q_arg "$1"
+		out="${out%% -- *} -- ${out#* -- } \"$q_arg\""
+		shift
+	done
+
+	[ -n "$quiet_output" ] ||
+		printf '%s\n' "$out${OPTUKN:+$OPTUKN}"
+	return $ret
+}
+
+fi #__included_shell_getopt

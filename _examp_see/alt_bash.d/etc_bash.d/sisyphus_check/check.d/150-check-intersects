@@ -1,0 +1,56 @@
+#!/bin/sh -efu
+
+rpm_name="${rpm_name?RPM name required}"
+rpm_filenames="${rpm_filenames?RPM file list required}"
+
+# check files intersections with filesystem
+check_intersects()
+{
+	local f="$1" && shift || return 1
+
+	# Do not check filesystem package.
+	[ "$rpm_name" != filesystem ] || return 0
+
+	local rc=0
+	local text
+
+	if ! text="$(printf %s\\n "$rpm_filenames" |LC_COLLATE=C comm -12 -- "$fs_list" -)"; then
+		FileError 'comm failed' "$f"
+		rc=1
+	fi
+
+	if [ -n "$text" ]; then
+		FileError "filesystem intersections: $(oneliner "$text")" "$f"
+		rc=1
+	fi
+
+	return $rc
+}
+
+# check files intersections with common-licenses
+check_intersects_common_licenses()
+{
+	local f="$1" && shift || return 1
+
+	# Do not check common-licenses package.
+	[ "$rpm_name" != 'common-licenses' ] || return 0
+
+	local rc=0
+	local text
+
+	text="$(printf %s\\n "$rpm_filenames" |LC_ALL=C grep -Ex '/usr/share/license(-ambiguous|-exception)?(/.*)?')" ||:
+
+	if [ -n "$text" ]; then
+		FileError "common-license intersections: $(oneliner "$text")" "$f"
+		rc=1
+	fi
+
+	return $rc
+}
+
+run_check() {
+	if ! check_intersects "$1" || ! check_intersects_common_licenses "$1"; then
+		CheckError 'intersections with system packages'
+		return 1
+	fi
+}

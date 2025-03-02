@@ -1,0 +1,514 @@
+#!/bin/sh
+
+if [ -z "${__included_alterator_service_functions:-}" ]; then
+__included_alterator_service_functions=1
+
+
+CHKCONFIG=/sbin/chkconfig
+SERVICE=/sbin/service
+SD_BOOTED=/sbin/sd_booted
+SYSTEMCTL=/sbin/systemctl
+RUNLEVEL=/sbin/runlevel
+SD_SYSV_INST=/lib/systemd/systemd-sysv-install
+INITDIR="${INITDIR:-/etc/init.d}"
+INITTAB="${INITTAB:-/etc/inittab}"
+UNITDIR="${UNITDIR:-/lib/systemd/system}"
+
+# SysV native support flag
+_sysv_avail=0
+if [ -x "$CHKCONFIG" -a -x "$SERVICE" ]; then
+    _sysv_avail=1
+fi
+
+# Systemd native support flag
+_sd_avail=0
+if [ -x "$SYSTEMCTL" ]; then
+    _sd_avail=1
+fi
+
+# Systemd-to-SysV bridge flag
+_sd_sysv_avail=0
+if [ -x "$SD_SYSV_INST" ]; then
+    _sd_sysv_avail=1
+fi
+
+##
+# $ALTERATOR_DESTDIR - exported by the installer.
+#
+
+DESTDIR="/"
+CHROOT_EXE=
+if [ -d "${ALTERATOR_DESTDIR:-}" ]; then
+    DESTDIR="$ALTERATOR_DESTDIR"
+    CHROOT_EXE="chroot $DESTDIR"
+    
+    if [ -x "${DESTDIR%/}$CHKCONFIG" -a -x "${DESTDIR%/}$SERVICE" ]; then
+        _sysv_avail=1
+    else
+        _sysv_avail=0
+    fi
+    CHKCONFIG="$CHROOT_EXE $CHKCONFIG"
+    SERVICE="$CHROOT_EXE $SERVICE"
+    RUNLEVEL="/bin/false"
+
+    if [ -x "${DESTDIR%/}$SYSTEMCTL" ]; then
+        _sd_avail=1
+    else
+        _sd_avail=0
+    fi
+    SYSTEMCTL="$CHROOT_EXE $SYSTEMCTL"
+
+    if [ -x "${DESTDIR%/}$SD_SYSV_INST" ]; then
+        _sd_sysv_avail=1
+    else
+        _sd_sysv_avail=0
+    fi
+    SD_SYSV_INST="$SD_SYSV_INST --root=$DESTDIR"
+fi
+
+# Checks if SysV is available natively
+sysv_avail() {
+    case "$_sysv_avail" in
+        0)
+            return 1
+            ;;
+        *)
+            return 0
+            ;;
+    esac
+}
+
+# Checks if systemd is available natively
+sd_avail() {
+    case "$_sd_avail" in
+        0)
+            return 1
+            ;;
+        *)
+            return 0
+            ;;
+    esac
+}
+
+# Checks if systemd-sysv-install is available
+sd_sysv_avail() {
+    case "$_sd_sysv_avail" in
+        0)
+            return 1
+            ;;
+        *)
+            return 0
+            ;;
+    esac
+}
+
+
+# SysVinit functions
+
+sysv_service_script_exists() {
+    [ -f "${DESTDIR%/}${INITDIR%/}/$1" ]
+}
+
+sysv_service_exists() {
+    # The service existence is reported only if
+    # it can be controlled.
+    #
+    # When SysV isn't available natively, the procedure still
+    # relies on systemctl with regard to its systemd-sysv-install
+    # script.
+    if sysv_avail || sd_avail && sd_sysv_avail; then
+        sysv_service_script_exists "$@"
+    else
+        return 1
+    fi
+}
+
+sysv_service_control()
+{
+    local srv="$1"; shift
+    local cmd="$1"; shift
+
+    case "$cmd" in
+        on|enable)
+            if sd_sysv_avail; then
+                $SD_SYSV_INST enable "$srv"
+            else
+                $CHKCONFIG --add "$srv" 2>/dev/null 1>&2 </dev/null && \
+                    $CHKCONFIG "$srv" 'on' 2>/dev/null 1>&2 </dev/null
+            fi
+            ;;
+        off|disable)
+            if sd_sysv_avail; then
+                $SD_SYSV_INST disable "$srv"
+            else
+                $CHKCONFIG "$srv" 'off' 2>/dev/null 1>&2 </dev/null
+            fi
+            ;;
+        is-enabled)
+            if sd_sysv_avail; then
+                $SD_SYSV_INST is-enabled "$srv"
+                return $?
+            fi
+            
+			local runlevel=
+            if [ -x "$RUNLEVEL" ]; then
+                runlevel="$($RUNLEVEL | cut -c3)"
+            fi
+			# Check runlevel
+			case "$runlevel" in
+				[1-6])
+				;;
+				*)
+                    if [ -e "${DESTDIR%/}$INITTAB" ]; then
+					# Use inittab if runlevel is not known
+					    runlevel="$(sed -nr '/:initdefault:$/ {s,^id:([^:]+):.*,\1,;p}' "${DESTDIR%/}$INITTAB")"
+                    else
+                        runlevel=3  # default runlevel
+                    fi
+					;;
+			esac
+			$CHKCONFIG --level "$runlevel" "$srv" 2>/dev/null 1>&2 </dev/null
+            ;;
+        is-indirect)
+            return 1
+            ;;
+        is-active|status)
+            $SERVICE "$srv" 'status' 2>/dev/null 1>&2 </dev/null
+			;;
+        *)
+            $SERVICE "$srv" "$cmd" 2>/dev/null 1>&2 </dev/null
+            ;;
+    esac
+}
+
+# Systemd functions
+
+_sd_service_exists() {
+    # The service existence is reported only if
+    # it can be controlled.
+    sd_avail && [ -f "${DESTDIR%/}${UNITDIR%/}/$1" ]
+}
+
+sd_service_name()
+{
+    case "$1" in
+        *.service|*.socket)
+            echo "$1"
+            ;;
+        *)
+            if _sd_service_exists "$1.service"; then
+                echo "$1.service"
+            elif _sd_service_exists "$1.socket"; then
+                echo "$1.socket"
+            else
+                echo "$1"
+            fi
+            ;;
+    esac
+}
+
+sd_service_exists() {
+    case "$1" in
+        *.service|*.socket)
+            _sd_service_exists "$1"
+            ;;
+        *)
+            _sd_service_exists "$(sd_service_name "$1")"
+            ;;
+    esac
+}
+
+sd_service_control()
+{
+    local srv="$(sd_service_name "$1")"; shift
+    local cmd="$1"; shift
+
+    case "$cmd" in
+        on|enable)
+            $SYSTEMCTL enable "$srv" 2>/dev/null 1>&2 </dev/null
+            ;;
+        off|disable)
+            $SYSTEMCTL disable "$srv" 2>/dev/null 1>&2 </dev/null
+            ;;
+        is-active|status)
+            $SYSTEMCTL is-active "$srv" 2>/dev/null 1>&2 </dev/null
+			;;
+        is-indirect)
+            case "$($SYSTEMCTL is-enabled "$srv" 2>/dev/null </dev/null)" in
+                indirect)
+                    return 0
+                    ;;
+                *)
+                    return 1
+                    ;;
+            esac
+            ;;
+        is-enabled)
+            case "$($SYSTEMCTL is-enabled "$srv" 2>/dev/null </dev/null)" in
+                enabled)
+                    return 0
+                    ;;
+                *)
+                    return 1
+                    ;;
+            esac
+            ;;
+        condrestart)
+            $SYSTEMCTL try-restart "$srv" 2>/dev/null 1>&2 </dev/null
+			;;
+        condreload)
+            ! $SYSTEMCTL --quiet is-active "$srv" ||
+				$SYSTEMCTL reload-or-try-restart "$srv" 2>/dev/null 1>&2 </dev/null
+			;;
+        condstop)
+			! $SYSTEMCTL --quiet is-active "$srv" ||
+				$SYSTEMCTL stop "$srv" 2>/dev/null 1>&2 </dev/null
+			;;
+        *)
+            $SYSTEMCTL "$cmd" "$srv" 2>/dev/null 1>&2 </dev/null
+            ;;
+    esac
+}
+
+####
+
+# Checks if a service is present in the system
+# args: service
+service_exists() {
+    sd_service_exists "$1" || sysv_service_exists "$1"
+}
+
+# Manages the service status (elementary status options).
+# args: service command
+_service_control()
+{
+    # Prefer systemctl over SysV if it is available relying
+    # on its systemd-sysv-install script for SysV services.
+    if sd_avail && sd_booted; then
+        sd_service_control "$1" "$2"
+	elif sysv_service_script_exists "$1"; then
+        sysv_service_control "$1" "$2"
+    else
+        return 1
+	fi
+}
+
+# Manages the service status (complex and elementary status options).
+# args: service command
+service_control()
+{
+    local name="$1"; shift
+    local cmd="$1"; shift
+    
+    case "$cmd" in
+	    charge|energize|energise|on/start|enable-start|start-enable)
+		    service_control "$name" enable "$@" &&
+                service_control "$name" start "$@"
+            ;;
+	    discharge|gronk|stop/off|stop-disable|disable-stop)
+		    service_control "$name" stop "$@" && \
+                service_control "$name" disable "$@"
+		    ;;
+        start|restart)
+            if ! $SD_BOOTED; then
+                sysv_service_control "$name" "$cmd"
+                return $?
+            fi
+            
+            case "$*" in
+                *:prefer-socket:*)
+                    # We are asked to (re)start the service with
+                    # socket activation only, if possible.
+                    if sd_service_exists "$name.service" && \
+                            sd_service_exists "$name.socket"
+                    then
+                        sd_service_control "$name.service" stop && \
+                            sd_service_control "$name.socket" "$cmd"
+                    else
+                        _service_control "$name" "$cmd"
+                    fi
+                    ;;
+                *:prefer-service:*|*:prefer-main:*)
+                    # We are asked to (re)start the main service
+                    # unit only, if possible.
+                    if sd_service_exists "$name.service" && \
+                            sd_service_exists "$name.socket"
+                    then
+                        sd_service_control "$name.socket" stop && \
+                            sd_service_control "$name.service" "$cmd"
+                    else
+                        _service_control "$name" "$cmd"
+                    fi
+                    ;;
+                *:all:*|*:also-socket:*)
+                    # We are asked to also (re)start the socket
+                    # unit, if exists.
+                    if sd_service_exists "$name.socket"; then
+                        sd_service_control "$name.socket" "$cmd" || return $?
+                    fi
+                    _service_control "$name" "$cmd"
+                    ;;
+                *)
+                    _service_control "$name" "$cmd"
+                    ;;
+            esac
+		    ;;
+        is-active)
+            if ! $SD_BOOTED; then
+                sysv_service_control "$name" is-active
+                return $?
+            fi            
+            _service_control "$name" is-active
+            ;;
+        stop)
+            if ! $SD_BOOTED; then
+                sysv_service_control "$name" stop
+                return $?
+            fi
+            
+            # Completely stop the service by terminating
+            # its socket unit along with the main service.
+            _service_control "$name" stop || return $?
+            if sd_service_exists "$name.socket"; then
+                sd_service_control "$name.socket" stop
+            fi
+		    ;;
+        enable)            
+            case "$*" in
+                *:prefer-socket:*)
+                    # We are asked to enable the service for
+                    # the socket activation only, if possible.
+                    if sd_service_exists "$name.service" && \
+                            sd_service_exists "$name.socket"
+                    then
+                        sd_service_control "$name.service" disable && \
+                            sd_service_control "$name.socket" enable || \
+                                return $?
+
+                        # However, always enable the SysV service.
+                        if sd_sysv_avail && \
+                                sysv_service_script_exists "$name"
+                        then
+                            sysv_service_control "$name" enable
+                        fi
+                    else
+                        _service_control "$name" enable
+                    fi
+                    ;;
+                *:prefer-service:*|*:prefer-main:*)
+                    # We are asked to enable the main service
+                    # unit only, if possible.
+                    if sd_service_exists "$name.service" && \
+                            sd_service_exists "$name.socket"
+                    then
+                        sd_service_control "$name.service" enable || \
+                            return $?
+                        if ! _service_control "$name.service" is-indirect; then
+                            # Disable the socket part only if the main
+                            # service isn't indirect. Otherwise
+                            # the main service would be completely
+                            # disabled with systemd.
+                            sd_service_control "$name.socket" disable
+                        fi
+                    else
+                        _service_control "$name" enable
+                    fi
+                    ;;
+                *:all:*|*:also-socket:*)
+                    # We are asked to also enable the socket
+                    # unit, if exists.
+                    _service_control "$name" enable || return $?
+                    if sd_service_exists "$name.socket"; then
+                        sd_service_control "$name.socket" enable
+                    fi
+                    ;;
+                *)
+                    _service_control "$name" enable
+                    ;;
+            esac
+            ;;
+        is-enabled)
+            # If the SysV native service exists and is disabled
+            # report false.
+            if sd_sysv_avail && \
+                    sysv_service_script_exists "$name"
+            then
+                sysv_service_control "$name" is-enabled || return $?
+            fi
+
+            # If the socket unit is enabled -- it's considered
+            # enough.
+            sd_service_exists "$name.socket" && \
+              sd_service_control "$name.socket" is-enabled && \
+                return 0
+
+            _service_control "$name" is-enabled
+            ;;
+        disable)
+            # Completely disable the service by turning off
+            # its socket unit along with the main service.
+            _service_control "$name" disable || return $?
+            if sd_service_exists "$name.socket"; then
+                sd_service_control "$name.socket" disable
+            fi
+            ;;
+	    *)
+		    _service_control "$name" "$cmd"
+		    ;;
+    esac
+}
+
+# Checks if a service is in transition.
+# args: service
+service_test_locked()
+{
+    # Locked state for a service only makes sense
+    # in an environment where systemd isn't natively
+    # available.
+    $SD_BOOTED && return 1
+    sysv_service_script_exists "$1" || return 1
+    
+    sysv_service_control "$1" status
+    [ $? -eq 2 ] && return 0 || return 1
+}
+
+# Waits for the service to change status
+# args: service [ timeout ]
+service_wait()
+{
+    local retries="${2:-5}"
+
+    # Same for the waiting. It only makes sense
+    # in an environment where systemd isn't natively
+    # available.
+    $SD_BOOTED && return 0
+    sysv_service_script_exists "$1" || return 0
+    
+    x=0;
+    while [ $x -lt "$retries" ] && service_test_locked "$1"; do
+        x=$(( x + 1 ))
+        sleep 1
+    done
+}
+
+# Start or restart a service with timeout
+# args: service command [ timeout ]
+service_start_wait()
+{
+    # Allow only start/restart/reload commands
+    case "$2" in
+        start|restart|reload) ;;
+        *) return 1 ;;
+    esac
+    service_control "$1" "$2" || return $?
+    service_wait "$1" "${3-}"
+    service_control "$1" is-active
+}
+
+# Checks if the program is executed in a chroot
+is_chrooted() {
+    [ "$(stat -L -c '%D:%i' /)" != "$(stat -L -c '%D:%i' /proc/1/root)" ]
+}
+
+
+fi # __included_alterator_service_functions

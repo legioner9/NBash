@@ -1,0 +1,99 @@
+# eepm(8) completion
+
+# This completes on a list of all available services for the
+# 'serv' command, followed by that script's available commands
+# 
+__eepm_list_commands()
+{
+    COMPREPLY=( $(echo "install remove play update full-upgrade") )
+    COMPREPLY=( $( compgen -W '${COMPREPLY[@]}' -- "$cur" ) )
+}
+
+__eepm_list_installed_packages()
+{
+    COMPREPLY=( $( epm list --installed --quiet --short --direct ) )
+    COMPREPLY=( $( compgen -W '${COMPREPLY[@]}' -- "$cur" ) )
+}
+
+__eepm_list_available_packages()
+{
+    COMPREPLY=( $( epm list --available --quiet --short --direct ) )
+    COMPREPLY=( $( compgen -W '${COMPREPLY[@]}' -- "$cur" ) )
+}
+
+__eepm_list_available_packages_play()
+{
+    COMPREPLY=( $( epm play --list-all --quiet --short ) )
+    COMPREPLY=( $( compgen -W '${COMPREPLY[@]%.sh}' -- "$cur" ) )
+}
+
+__eepm_complete_args(){
+    COMPREPLY=($(compgen -W '-h --help -v --version --verbose --debug
+        --skip-installed --skip-missed --show-command-only --quiet --silent --nodeps
+        --force --noremove --no-remove --no-stdin --inscript
+        --dry-run --simulate --just-print --no-act --short --direct --repack --norepack --install
+        --scripts --noscripts --save-only --put-to-repo= --download-only --url --sort -y --auto 
+        --assumeyes --non-interactive --disable-interactivity --interactive --force-yes' -- "$cur"))
+}
+
+__eepm_complete_commands() {
+    
+    local special i
+    for ((i = 1; i < ${#COMP_WORDS[@]} - 1; i++)); do
+        if [[ ${COMP_WORDS[i]} == @(install|remove|play) ]]; then
+            special=${COMP_WORDS[i]}
+            break
+        fi
+    done
+
+    if [[ -v special ]]; then
+        case $special in
+            install)
+                __eepm_list_available_packages
+                return 0 
+                ;;
+            remove)
+                __eepm_list_installed_packages
+                return 0 
+                ;;
+                
+            play)
+                __eepm_list_available_packages_play
+                return 0 
+                ;;
+        esac
+    else
+        __eepm_list_commands
+    fi
+}
+
+
+__eepm()
+{
+    local cur prev
+
+    COMPREPLY=()
+    _get_comp_words_by_ref cur prev
+
+  case "${COMP_WORDS[0]}" in
+    epm)
+        __eepm_complete_commands ;;
+    epmi)
+        __eepm_list_available_packages ;;
+    epme)
+        __eepm_list_installed_packages ;;
+    epmp)
+        __eepm_list_available_packages_play ;;
+    *)
+        return 0 ;;
+    esac
+
+    if [[ $cur == -* ]]; then
+        __eepm_complete_args
+        return 0
+    fi
+
+} &&
+
+# . "/usr/share/bash-completion/bash_completion"
+complete -F __eepm epm epmi epme epmp

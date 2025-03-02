@@ -1,0 +1,36 @@
+#!/bin/sh -efu
+
+: ${rpm_filenames?} ${rpm_sourcerpm?}
+
+check_browser()
+{
+	# Check for binary rpms only.
+	[ "$package_type" = bin ] || return 0
+
+	local f="$1" && shift || return 1
+
+	local srpm_name bad_dirs
+	srpm_name="${rpm_sourcerpm%-*}"
+	srpm_name="${srpm_name%-*}"
+
+	[ "$srpm_name" = 'mozilla-common' ] &&
+		bad_dirs='^/usr/lib(64)?/browser-plugins-npapi(/|$)' ||
+		bad_dirs='^/usr/lib(64)?/(browser-plugins-npapi(/|$)|mozilla$)'
+
+	local bad_files
+	if [ -n "$bad_dirs" ] &&
+	   bad_files=$(printf %s "$rpm_filenames" |grep -E "$bad_dirs"); then
+		FileError "invalid browser path: $(oneliner "$bad_files")" "$f"
+		return 1
+	fi
+
+	return 0
+}
+
+run_check()
+{
+	if ! check_browser "$1"; then
+		CheckError 'browser pathnames violation'
+		return 1
+	fi
+}

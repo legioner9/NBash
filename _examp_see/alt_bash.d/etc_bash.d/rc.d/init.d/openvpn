@@ -1,0 +1,497 @@
+#!/bin/sh
+#
+# openvpn 	OpenVPN daemon
+#
+# chkconfig: - 47 68
+# description:	OpenVPN is a full-featured SSL VPN solution which \
+#               can accomodate a wide range of configurations, \
+#               including road warrior access, home/office/campus \
+#               telecommuting, WiFi security, secure branch office \
+#               linking, and enterprise-scale remote access solutions \
+#               with load balancing, failover, and fine-grained \
+#               access-controls
+# processname: openvpn
+# config: /etc/openvpn/openvpn.conf
+# pidfile: /var/run/openvpn.pid
+#
+### BEGIN INIT INFO
+# Provides:          openvpn
+# Required-Start:    $network
+# Required-Stop:     $network
+# Should-Start:      $time $syslog
+# Should-Stop:       $syslog
+# Default-Start:
+# Default-Stop:      0 1 2 3 4 56
+# Short-Description: This shell script starts and stops OpenVPN daemons.
+# Description:       OpenVPN is a full-featured SSL VPN solution which
+#                    can accomodate a wide range of configurations,
+#                    including road warrior access, home/office/campus
+#                    telecommuting, WiFi security, secure branch office
+#                    linking, and enterprise-scale remote access solutions
+#                    with load balancing, failover, and fine-grained
+#                    access-controls
+### END INIT INFO
+
+# Writed by Nikolay A. Fetisov <naf@altlinux.ru>
+# 2006-04-06
+
+# Do not load RH compatibility interface.
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+
+# Default locations of files
+BASE=openvpn
+
+OPENVPNBIN="/usr/sbin/$BASE"
+
+PIDFILEDIR=/var/run
+PIDFILEBASE="$PIDFILEDIR/$BASE"
+
+LOCKFILEDIR=/var/lock/subsys
+LOCKFILEBASE="$LOCKFILEDIR/$BASE"
+
+CACHEDIR="/var/lib/$BASE/cache"
+CHROOTDIR="/var/lib/$BASE"
+CHROOTCACHEDIR="$CHROOTDIR/cache"
+
+CONFIGDIR="/etc/$BASE"
+SYSCONFIGFILE="/etc/sysconfig/$BASE"
+
+
+# Default parameters, could be overrided in /etc/sysconfig/openvpn
+OPENVPNUSER=openvpn
+OPENVPNGROUP=openvpn
+CHROOT=yes
+MANUAL=""
+
+###################################################################
+[ -x "$OPENVPNBIN" ] || exit
+
+# Source networking configuration.
+SourceIfNotEmpty /etc/sysconfig/network
+
+# OpenVPN configuration
+SourceIfNotEmpty $SYSCONFIGFILE
+
+
+###========= Functions =========
+#===== help message =====
+help()
+{
+    echo "
+Usage: ${0##*/} ACTION [CHANNEL]
+ACTION  - requested action of all or given OpenVPN channel
+CHANNEL - optional name of OpenVPN channel (with corresponding 
+          CHANNEL.* files in $CONFIGDIR)
+
+Usefull actions is:
+start       - start all configured channels except listed 
+              in MANUAL variable in $SYSCONFIGFILE
+stop        - stop all running channels
+restart     - restart running channels
+reload      - restart running channels
+reopen      - reopen running channels
+list        - print list of running channels
+status      - print status of running channels
+help        - print this message.
+"
+	RETVAL=1
+	return $RETVAL
+}
+
+#===== adjust chroot environment ======
+adjust()
+{
+    if is_yes "$CHROOT"; then
+        action "Adjusting environment for openvpn:" /etc/chroot.d/openvpn.all || exit
+    fi
+}
+
+#===== Put the list of configured channels to the $CHANNELS =====
+configured_channels()
+{
+	LIST=`/bin/ls $CONFIGDIR/*.conf 2>/dev/null`
+	CHANNELS=""
+	if [ -n "$LIST" ]; then
+		for foo in $LIST; do
+			bar=`echo $foo | sed -e "s?$CONFIGDIR/??" | sed -e 's?.conf??'`
+			[ -n "$CHANNELS" ] && CHANNELS="$CHANNELS "
+			CHANNELS="$CHANNELS$bar"
+		done
+	fi
+	return 0
+}
+
+#===== Put the list of running channels to the $CHANNELS =====
+running_channels()
+{
+	LIST=`/bin/ls $PIDFILEBASE*.pid 2>/dev/null`
+	CHANNELS=""
+	if [ -n "$LIST" ]; then
+		for foo in $LIST; do
+			bar=`echo $foo | sed -e 's?.pid??' | sed -e "s?$PIDFILEBASE-??"`
+			[ -n "$CHANNELS" ] && CHANNELS="$CHANNELS "
+			CHANNELS="$CHANNELS$bar"
+		done
+	fi
+	return 0
+}
+
+
+#===== Put the list of enabled channels to the $CHANNELS =====
+enabled_channels()
+{
+	LIST=`/bin/ls $CONFIGDIR/*.conf 2>/dev/null`
+	CHANNELS=""
+	if [ -n "$LIST" ]; then
+		for foo in $LIST; do
+			bar=`echo "$foo" | sed -e "s@$CONFIGDIR/@@" | sed -e 's@.conf@@'`
+			if [ -n "$MANUAL" ]; then 
+                		for foo1 in $MANUAL; do
+					if [ "$foo1" = "$bar" ]; then
+					    bar=""
+					fi
+				done
+			fi
+			if [ -n "$bar" ]; then
+				[ -n "$CHANNELS" ] && CHANNELS="$CHANNELS "
+				CHANNELS="$CHANNELS$bar"
+			fi
+		done
+	fi
+	return 0
+}
+
+
+#===== Test if some OpenVPN lock files exists =====
+is_locked()
+{
+	INSTANCES_LIST=`/bin/ls $LOCKFILEBASE* 2>/dev/null`
+	if [ -n "$INSTANCES_LIST" ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+
+
+
+#==================================
+#===== start openvpn channel ======
+start_channel() {
+	CHANNEL=$1
+	if [ -z "$CHANNEL" ]; then
+		echo "No channel name given!"
+		RETVAL=1;
+	else
+	CHANNEL=`basename $CHANNEL '.conf'`
+
+	SCRIPTFILE=
+	CONFFILE=
+	if   [ -f "$CONFIGDIR/$CHANNEL.conf" ]; then
+		CONFFILE=$CONFIGDIR/$CHANNEL.conf
+	elif [ -f "$CONFIGDIR/$CHANNEL" ]; then
+		CONFFILE=$CONFIGDIR/$CHANNEL
+	elif [ -f "$CHANNEL.conf" ]; then
+		CONFFILE=$CHANNEL.conf
+	elif [ -f "$CHANNEL" ]; then
+		CONFFILE=$CHANNEL
+	fi
+
+	if [ -f "$CONFFILE" ]; then
+		foo=`echo "$CONFFILE" | sed -e 's/\.[^\.\/\\]*$//'`
+		[ -x "$foo.sh" ] && SCRIPTFILE="$foo.sh"
+		[ -x "$foo-start.sh" ] && SCRIPTFILE="$foo-start.sh"
+
+		[ -x "$SCRIPTFILE" ] && "$SCRIPTFILE"
+
+		CURDIR=`pwd`
+		if is_yes $CHROOT; then 
+			RUN_CHROOT="--chroot \"$CHROOTDIR\""
+			cd "$CHROOTCACHEDIR"
+		else
+			RUN_CHROOT="--cd \"$CACHEDIR\""
+			cd "$CACHEDIR"
+		fi
+
+		start_daemon	--pidfile "$PIDFILEBASE-$CHANNEL.pid" \
+				--lockfile "$LOCKFILEBASE-$CHANNEL" -- \
+				$OPENVPNBIN --config "$CONFFILE"  \
+				--daemon --writepid "$PIDFILEBASE-$CHANNEL.pid" \
+				--user "$OPENVPNUSER" --group "$OPENVPNGROUP" \
+				--persist-tun --persist-key \
+				$RUN_CHROOT
+		RETVAL=$?
+		cd "$CURDIR"
+	else
+        	msg_starting openvpn
+		printf "Can't foung config file $CONFFILE !"
+		failure
+		echo
+		RETVAL=1
+	fi
+	fi
+	return $RETVAL
+}
+
+
+#===== start all openvpn channels =====
+start()
+{
+	RETVAL=0
+
+	if [ -z "$CHANNELS" ]; then # Starting all enabled channel
+		enabled_channels
+	elif [ "$CHANNELS" = "ALL" ]; then # Start all configured channels
+		configured_channels
+	fi
+	
+	if [ -z "$CHANNELS" ]; then
+		msg_starting $BASE
+		printf "No channels to start!"
+		failure "$BASE startup"
+		echo
+		echo "Configure one or more VPN's and place configuration files in $CONFIGDIR"
+		echo "Sample config could be obtained from /usr/share/doc/openvpn"
+		echo
+		RETVAL=1
+	else
+		adjust
+		# If no OpenVPN channels already running starts startup script
+		if ! is_locked; then
+        		if [ -x $CONFIGDIR/openvpn-startup ]; then
+			$CONFIGDIR/openvpn-startup
+			fi
+		fi
+
+		for CHANNEL in $CHANNELS; do
+			start_channel $CHANNEL
+			RETVAL=$(( $RETVAL + $? ))
+		done
+	fi
+
+	return $RETVAL
+}
+
+
+# Stop given channel
+stop_channel()
+{
+	CHANNEL=$1
+	if [ -z "$CHANNEL" ]; then
+		echo "No channel name given!"
+		RETVAL=1
+	else
+		CHANNEL=`basename $CHANNEL '.conf'`
+
+		stop_daemon 	--pidfile "$PIDFILEBASE-$CHANNEL.pid" \
+				--lockfile "$LOCKFILEBASE-$CHANNEL" -- \
+				$OPENVPNBIN
+		RETVAL=$?
+
+		if [ -x "$CONFIGDIR/$CHANNEL-stop.sh" ]; then
+			"$CONFIGDIR/$CHANNEL-stop.sh"
+		fi
+
+	fi
+	return $RETVAL
+}
+
+
+# Stop given or all running channels
+stop()
+{
+	RETVAL=0
+
+	if [ -z "$CHANNELS" ]; then # Starting every channel
+		running_channels
+	fi
+	
+	if [ -z "$CHANNELS" ]; then
+		msg_not_running $BASE
+		echo
+		RETVAL=1
+	else
+		
+		for CHANNEL in $CHANNELS; do 
+			stop_channel $CHANNEL
+			RETVAL=$(( $RETVAL + $? ))
+		done
+		# Run shotdown script, if defined
+		if ! is_locked; then
+        		if [ -x $CONFIGDIR/openvpn-shutdown ]; then
+				$CONFIGDIR/openvpn-shutdown
+			fi
+		fi
+	fi
+	return $RETVAL
+}
+
+
+# Reopen OpenVPN channel by sending SIGUSR1
+reopen_channel()
+{
+	RETVAL=0
+
+	CHANNEL=$1
+	if [ -z "$CHANNEL" ]; then
+		echo "No channel name given!"
+		RETVAL=1;
+	else
+		CHANNEL=`basename $CHANNEL '.conf'`
+		printf "Reopen $BASE channel $CHANNEL"
+		stop_daemon --pidfile "$PIDFILEBASE-$CHANNEL.pid" -USR1 -- $OPENVPNBIN
+		RETVAL=$?
+	fi
+	return $RETVAL
+}
+
+# Reopenrt running channels
+reopen()
+{
+	RETVAL=0
+
+	if [ -z "$CHANNELS" ]; then # Restart every runned channel
+		running_channels
+	fi
+
+	if [ -z "$CHANNELS" ]; then
+		msg_not_running $BASE
+		echo
+		RETVAL=1
+	else
+		for CHANNEL in $CHANNELS; do 
+			reopen_channel $CHANNEL
+			RETVAL= $(( $RETVAL + $? ))
+		done
+	fi
+	return $RETVAL
+} 
+
+
+# Restart running channels
+restart()
+{
+	RETVAL=0
+
+	if [ -z "$CHANNELS" ]; then # Restart every running channel
+		running_channels
+	fi
+
+	if [ -z "$CHANNELS" ]; then
+		msg_not_running $BASE
+		echo
+		RETVAL=1
+	else
+		stop  $CHANNELS
+		sleep 2s
+		start $CHANNELS
+	fi
+	return $RETVAL
+}
+
+
+# Print list of running channels
+list_channels()
+{
+	running_channels
+	if [ -z "$CHANNELS" ]; then
+		echo "No channels have running now, $BASE is stopped."
+	else
+		echo "Running channels:"
+		for CHANNEL in $CHANNELS; do
+			echo "    $CHANNEL"
+		done
+		echo
+	fi
+	return 0
+}
+
+
+# Pring status of running channels to syslog.
+show_status()
+{
+	RETVAL=0
+	if [ -z "$CHANNELS" ]; then # Show status of every running channel
+		running_channels
+	fi
+
+	if [ -z "$CHANNELS" ]; then
+		msg_not_running $BASE
+		echo
+		RETVAL=1
+	else
+		for CHANNEL in $CHANNELS; do 
+			CHANNEL=`basename $CHANNEL '.conf'`
+			# --lockfile parameter cause an error message on client side 
+			# when VPN chanel is down
+			status --pidfile "$PIDFILEBASE-$CHANNEL.pid" -- $OPENVPNBIN
+			st=$?
+			if [ $st -le 1 ]; then
+				kill -s SIGUSR2 `cat "$PIDFILEBASE-$CHANNEL.pid"` >/dev/null 2>&1
+				st=$?
+				if [ $st -eq 0 ]; then
+					echo "Status of VPN $CHANNEL written to /var/log/messages"
+				fi
+			fi	
+			RETVAL=$(( $RETVAL + $? ))
+		done
+	fi
+	return $RETVAL
+} 
+
+
+
+
+###====== Main body =====
+RETVAL=0
+
+OP=$1
+shift
+CHANNELS=$@
+
+is_yes "$NETWORKING" || return 0
+
+# See how we were called.
+case "$OP" in
+	start)
+		start 
+		;;
+	stop)
+		stop
+		;;
+# OpenVPN can reload it config, but only when runing as root...
+# Also it cann't access config files inside root jail
+	reload|restart)
+		restart
+		;;
+	reopen)
+		reopen
+		;;
+
+	condstop)
+		is_locked && stop
+		;;
+	condreload|condrestart)
+		is_locked && restart
+		;;
+	status)
+		show_status
+		;;
+	list)
+		list_channels
+		;;
+	help)
+		help
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|reload|restart|reopen|condstop|condrestart|condreload|status|list|help}"
+		RETVAL=1
+esac
+
+exit $RETVAL
+

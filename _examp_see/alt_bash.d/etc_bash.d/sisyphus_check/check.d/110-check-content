@@ -1,0 +1,37 @@
+#!/bin/sh -efu
+
+rpm_name="${rpm_name?RPM name required}"
+rpm_filenames="${rpm_filenames?RPM file list required}"
+
+# check files intersections with known packages
+check_content()
+{
+	local f="$1" && shift || return 1
+	local rc=0
+	local bad
+
+	if [ "$rpm_name" != rpm ] && bad="$(printf %s "$rpm_filenames" |grep -E '^/etc/rpm(/macros\.d)$')"; then
+		FileError "intersections with rpm: $(oneliner "$bad")" "$f"
+		rc=1
+	fi
+
+	if [ "$rpm_name" != control ] && bad="$(printf %s "$rpm_filenames" |grep -E '^/etc/control\.d(/facilities)?$')"; then
+		FileError "intersections with control: $(oneliner "$bad")" "$f"
+		rc=1
+	fi
+
+	# Do not check glibc-locales package.
+	if [ "$rpm_name" != glibc-locales ] && bad="$(printf %s "$rpm_filenames" |grep '^/usr/share/locale\(/[^/]\+\)\?$')"; then
+		FileError "intersections with glibc-locales: $(oneliner "$bad")" "$f"
+		rc=1
+	fi
+
+	return $rc
+}
+
+run_check() {
+	if ! check_content "$1"; then
+		CheckError 'package content violation'
+		return 1
+	fi
+}

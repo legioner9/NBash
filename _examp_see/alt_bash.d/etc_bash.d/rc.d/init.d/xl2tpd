@@ -1,0 +1,89 @@
+#!/bin/sh
+#
+# xl2tpd	xl2tpd daemon
+#
+# chkconfig: - 90 10
+# description:	A Layer 2 Tunneling Protocol \
+#		VPN client/daemon for Linux and \
+#		other POSIX-based OSs.
+# processname: xl2tpd
+# config: /etc/xl2tpd/xl2tpd.conf
+# pidfile: /var/run/xl2tpd.pid
+
+# Do not load RH compatibility interface.
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+PIDFILE=/var/run/xl2tpd.pid
+LOCKFILE=/var/lock/subsys/xl2tpd
+RETVAL=0
+
+start()
+{
+	start_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root -- xl2tpd
+	RETVAL=$?
+	return $RETVAL
+}
+
+stop()
+{
+	stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root -- xl2tpd
+	RETVAL=$?
+	return $RETVAL
+}
+
+restart()
+{
+	stop
+	start
+}
+
+reload()
+{
+	msg_reloading xl2tpd
+	stop_daemon --pidfile "$PIDFILE" --expect-user root -HUP -- xl2tpd
+	RETVAL=$?
+	return $RETVAL
+} 
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	reload)
+		restart
+		;;
+	restart)
+		restart
+		;;
+	condstop)
+		if [ -e "$LOCKFILE" ]; then
+			stop
+		fi
+		;;
+	condrestart)
+		if [ -e "$LOCKFILE" ]; then
+			restart
+		fi
+		;;
+	condreload)
+		if [ -e "$LOCKFILE" ]; then
+			reload
+		fi
+		;;
+	status)
+		status --pidfile "$PIDFILE" --expect-user root -- xl2tpd
+		RETVAL=$?
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart|condreload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

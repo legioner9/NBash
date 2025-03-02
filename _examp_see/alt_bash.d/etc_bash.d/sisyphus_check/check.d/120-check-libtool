@@ -1,0 +1,27 @@
+#!/bin/sh -efu
+
+rpm_filenames="${rpm_filenames?RPM file list required}"
+
+# check for forbidden libtool files
+check_libtool()
+{
+	local f="$1" && shift || return 1
+	local rc=0
+	local bad
+
+	if bad="$(printf %s "$rpm_filenames" |grep -E '^(/usr)?/lib(64)?/lib[^/]+\.la$')"; then
+		FileError "forbidden libtool files: $(oneliner "$bad")" "$f"
+		rc=1
+	fi
+
+	return $rc
+}
+
+run_check() {
+	return 0 # Check disabled for a while
+
+	if ! check_libtool "$1"; then
+		CheckError 'libtool files violation'
+		return 1
+	fi
+}

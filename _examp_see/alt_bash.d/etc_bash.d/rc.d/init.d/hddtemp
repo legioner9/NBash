@@ -1,0 +1,97 @@
+#!/bin/sh
+# hddtemp	Hard Drive Temperature Monitoring
+#
+# chkconfig: - 90 10
+# description: hddtemp polls SMART-capable HDDs
+# processname: hddtemp
+# pidfile: /var/run/hddtemp.pid
+
+# Do not load RH compatibility interface.
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+BINARY=/usr/sbin/hddtemp
+LOCKFILE=/var/lock/subsys/hddtemp
+DISKS="/dev/hd? /dev/sr? /dev/sg? /dev/sd?"
+OPTIONS=""
+INTERFACE="127.0.0.1"
+PORT="7634"
+SEPARATOR="|"
+RETVAL=0
+
+# if overriding these is needed
+SourceIfNotEmpty /etc/sysconfig/hddtemp
+
+start()
+{
+	for disk in $DISKS ; do
+		if $BINARY -n $OPTIONS $disk 2>/dev/null \
+		   | /bin/grep -q '^[0-9]\+$'; then
+			DISKS_LIST="$DISKS_LIST $disk"
+		fi
+	done
+	if [ -n "$DISKS_LIST" ] ; then
+		start_daemon --lockfile "$LOCKFILE" --expect-user root -- \
+			hddtemp $OPTIONS -d -l $INTERFACE -p $PORT -s $SEPARATOR \
+				$DISKS_LIST
+	else
+		echo " no disks with monitoring capability were found."
+	fi
+	RETVAL=$?
+	return $RETVAL
+}
+
+stop()
+{
+	stop_daemon --lockfile "$LOCKFILE" --expect-user root -- hddtemp
+	RETVAL=$?
+	return $RETVAL
+}
+
+restart()
+{
+	stop
+	start
+}
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	reload)
+		restart
+		;;
+	restart)
+		restart
+		;;
+	condstop)
+		if [ -e "$LOCKFILE" ]; then
+			stop
+		fi
+		;;
+	condrestart)
+		if [ -e "$LOCKFILE" ]; then
+			restart
+		fi
+		;;
+	condreload)
+		if [ -e "$LOCKFILE" ]; then
+			reload
+		fi
+		;;
+	status)
+		status --expect-user root -- hddtemp
+		RETVAL=$?
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart|condreload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

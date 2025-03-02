@@ -1,0 +1,35 @@
+#!/bin/bash
+
+pickup_defaults
+init_netprofile
+pickup_options
+
+if profiled_filename PROF_BRCTL "$MYIFACEDIR/brctl"; then
+	print_error "ignoring brctl-style options in $PROF_BRCTL"
+fi
+
+
+[ -x "${BRIDGE:=$DEFAULT_BRIDGE}" ] || {
+	print_error "$BRIDGE does not exist or is not executable. Try installing iproute2 RPM."
+	exit 1
+}
+
+$IP link add $NAME type bridge
+is_yes "$VLAN_AWARE" && BRIDGE_OPTIONS="${BRIDGE_OPTIONS:+"$BRIDGE_OPTIONS" }vlan_filtering 1"
+$IP link set $NAME type bridge $BRIDGE_OPTIONS
+
+for host in $HOST; do
+	$IP link set $host master $NAME && print_progress
+	is_yes "$VLAN_AWARE" && {
+		if [ -n "$VIDS" ]; then
+			for vid in $VIDS; do
+				$BRIDGE vlan add dev $host vid $vid && print_progress
+			done
+		fi
+	}
+done
+
+profiled_filename PROF_BRIDGE "$MYIFACEDIR/bridge" &&
+	xargise_file "$PROF_BRIDGE" "$BRIDGE"
+
+exit 0

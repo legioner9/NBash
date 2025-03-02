@@ -1,0 +1,71 @@
+#!/bin/sh
+
+PAM_CONFIG=/etc/pam.d/lightdm
+
+# Resolve the links because sed -i replaces the files
+PAM_CONFIG="$(realpath "$PAM_CONFIG")"
+
+pam_shells_get() {
+    sed -n -e 's/^auth[[:space:]]\+\([^[:space:]]\+\)[[:space:]]\+pam_shells\.so\([[:space:]]\+.*\)\?$/\1/p' "$PAM_CONFIG"
+}
+
+pam_shells_set() {
+    sed -i -e "s/^auth[[:space:]]\\+[^[:space:]]\\+[[:space:]]\\+pam_shells\\.so\\([[:space:]]\\+.*\\)\\?\$/auth\\t\\t$1\\tpam_shells.so\\1/" "$PAM_CONFIG"
+}
+
+pam_succeed_if_get() {
+    sed -n -e 's/^auth[[:space:]]\+\([^[:space:]]\+\)[[:space:]]\+pam_succeed_if\.so\([[:space:]]\+.*\)\?[[:space:]]\+uid[[:space:]]\+ne[[:space:]]\+0\([[:space:]]\+.*\)\?$/\1/p' "$PAM_CONFIG"
+}
+
+pam_succeed_if_set() {
+    sed -i -e "s/^auth[[:space:]]\\+[^[:space:]]\\+[[:space:]]\\+pam_succeed_if\\.so\\([[:space:]]\\+.*\\)\\?[[:space:]]\\+uid[[:space:]]\\+ne[[:space:]]\\+0\\([[:space:]]\\+.*\\)\\?\$/auth\\t\\t$1\\tpam_succeed_if.so\\1 uid ne 0\\2/" "$PAM_CONFIG"
+}
+
+test_pam_on() {
+    case "$(pam_shells_get) $(pam_succeed_if_get)" in
+        optional\ optional)
+            return 0
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+set_pam_on() {
+    pam_shells_set     'optional'
+    pam_succeed_if_set 'optional'
+}
+
+test_pam_off() {
+    case "$(pam_shells_get) $(pam_succeed_if_get)" in
+        required\ required)
+            return 0
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+set_pam_off() {
+    pam_shells_set     'required'
+    pam_succeed_if_set 'required'
+}
+
+SUMMARY="Login of unknown users through LightDM"
+
+ON_NAME='enabled'
+ON_HELP="Unknown users are allowed to login"
+ON_TEST='test_pam_on'
+ON_HOOK='set_pam_on'
+
+OFF_NAME='disabled'
+OFF_HELP="Unknown users are blocked from login"
+OFF_TEST='test_pam_off'
+OFF_HOOK='set_pam_off'
+
+SECTION='LightDM'
+VARNAME='login-unknown'
+
+"${0%/*}/lightdm-greeter-hide-users" "$@"

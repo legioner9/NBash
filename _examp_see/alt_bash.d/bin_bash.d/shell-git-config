@@ -1,0 +1,686 @@
+#!/bin/sh -efu
+### This file is covered by the GNU General Public License,
+### which should be included with libshell as the file LICENSE.
+### All copyright information are listed in the COPYING.
+
+if [ -z "${__included_shell_git_config-}" ]; then
+__included_shell_git_config=1
+
+. shell-error
+. shell-var
+. shell-string
+
+GIT_CONFIG_GET_RAW=
+GIT_CONFIG_INCLUDE=1
+
+__git_config_git_topdir()
+{
+	local __p="$2"
+	while [ -n "$__p" ]; do
+		[ ! -d "$__p/.git" ] ||
+			break
+		__p="${__p%/*}"
+	done
+	eval "$1=\"\$__p\""
+}
+
+__git_config_lc()
+{
+	local __lc="$2"
+	[ -n "${2##*[A-Z]*}" ] ||
+		__lc="$(printf '%s' "$2" |tr '[:upper:]' '[:lower:]')"
+	eval "$1=\"\$__lc\""
+}
+
+# Parse incoming argument into pieces
+__git_config_split()
+{
+	[ -z "${1##*.*}" ] ||
+		fatal " key does not contain a section: $1"
+
+	local sl nl
+
+	__git_config_section="${1%%.*}"
+	[ -n "${__git_config_section##*[!A-Za-z0-9-]*}" ] ||
+		fatal "bad section name: $__git_config_section"
+	__git_config_lc sl "$__git_config_section"
+
+	__git_config_name="${1##*.}"
+	[ -n "${__git_config_name##*[!A-Za-z0-9-]*}" ] ||
+		fatal "bad variable name: $__git_config_name"
+	__git_config_lc nl "$__git_config_name"
+
+	__git_config_subsection="${1#*.}"
+	[ "$__git_config_subsection" != "$__git_config_name" ] &&
+		__git_config_subsection="${__git_config_subsection%.*}" ||
+		__git_config_subsection=
+
+	__git_config_location="$sl${__git_config_subsection:+.$__git_config_subsection}"
+	__git_config_fullpath="$__git_config_location.$nl"
+}
+
+__git_config_fullpath()
+{
+	local __git_config_section __git_config_name __git_config_subsection
+	__git_config_split "$1"
+}
+
+__git_config_value()
+{
+	local dq='' bq='' c='' m='' l="$1"
+	fill_mask m "$l"
+
+	value=
+	while [ -n "$l" ]; do
+		c="${l%$m}"
+		l="${l#?}"
+		m="${m#?}"
+
+		case "$c" in
+			\\)
+				if [ -z "$bq" ]; then
+					bq=1
+					c=
+				else
+					bq=
+				fi
+				;;
+			\")
+				if [ -z "$bq" ]; then
+					[ -z "$dq" ] && dq=1 || dq=
+					c=
+				else
+					bq=
+				fi
+				;;
+			b|n|t)
+				if [ -n "$bq" ]; then
+					bq=
+					# shellcheck disable=SC2059
+					# Disable `Don't use variables in the printf format string`
+					# because we actually want to interpret data as a format string.
+					c="$(printf "\\$c#")"
+					c="${c%#}"
+				fi
+				;;
+			*)
+				bq=
+				;;
+		esac
+		value="$value$c"
+	done
+
+	[ -z "$dq" ] ||
+		fatal "bad config file line $nline in $fn"
+}
+
+git_config_handler() { :; }
+git_config_parse_file()
+{
+	local fn="$1" name value section='' subsection='' section_lower='' name_lower='' location='' line oline nline=0 eof=''
+
+	__git_config_parse_section()
+	{
+		local line="$1" invalid='[!A-Za-z0-9-.]'
+
+		if [ -n "$section" ]; then
+			location="$section_lower${subsection:+.$subsection}"
+			git_config_handler 'section-end'
+		fi
+
+		section="$line"
+		subsection=
+
+		if [ -z "${line##*[ 	]*}" ]; then
+			section="${line%%[ 	]*}"
+			subsection="${line#*[ 	]\"}"
+			subsection="${subsection%\"}"
+			invalid="[!A-Za-z0-9-]"
+		fi
+
+		[ -n "${section##*$invalid*}" ] ||
+			fatal "bad config file line $nline in $fn"
+
+		__git_config_lc section_lower "$section"
+
+		location="$section_lower${subsection:+.$subsection}"
+		git_config_handler 'section-start'
+	}
+	__git_config_parse_variable()
+	{
+		shell_var_trim name "${1%%=*}"
+
+		[ -z "${1##*=*}" ] &&
+			shell_var_trim value "${1#*=}" ||
+			value='true'
+
+		shell_var_unquote value "$value"
+
+		[ -n "${GIT_CONFIG_GET_RAW-}" ] ||
+			__git_config_value "$value"
+
+		__git_config_lc name_lower "$name"
+
+		location="$section_lower.${subsection:+$subsection.}$name_lower"
+		git_config_handler 'variable'
+	}
+	__git_config_expend_path()
+	{
+		local __i="$2"
+		[ -n "${__i##./*}" ] || [ "$fn" = "${fn%/*}" ] ||
+			__i="${fn%/*}/${__i#./}"
+
+		[ -n "${__i##\~/*}" ] ||
+			__i="$HOME/${__i#\~/}"
+
+		[ -n "${__i##\~*}" ] ||
+			fatal "expression isn't supported at line $nline in $fn"
+
+		eval "$1=\"\$__i\""
+	}
+	__git_config_parse_include_or_if()
+	{
+		local i='' gitdir='' pattern=''
+
+		[ -z "${2-}" ] ||
+			case "$2" in
+				'gitdir:'*)
+					gitdir="${GIT_DIR-}"
+
+					if [ -z "$gitdir" ]; then
+						__git_config_git_topdir gitdir "${fn%/*}"
+						[ -z "$gitdir" ] ||
+							gitdir="$gitdir/.git"
+					fi
+
+					__git_config_expend_path pattern "${2#gitdir:}"
+
+					[ -n "${pattern##*/}" ] && [ -n "${pattern##*/\*\*}" ] ||
+						pattern="${pattern%/*}/*"
+
+					[ -n "${pattern##\*\*/*}" ] ||
+						pattern="*/${pattern#*/}"
+
+					[ -z "${pattern##/*}" ] || [ -z "${pattern##\**}" ] ||
+						pattern="*/$pattern"
+
+					[ -z "${gitdir##$pattern}" ] ||
+						return 0
+					;;
+				*)
+					fatal "condition is not supported: $2"
+					;;
+			esac
+
+		__git_config_expend_path i "$1"
+
+		[ ! -e "$i" ] ||
+			git_config_parse_file "$i"
+	}
+	__git_config_parse_include()
+	{
+		[ "$location" != 'include.path' ] ||
+			__git_config_parse_include_or_if "$1"
+	}
+	__git_config_parse_includeif()
+	{
+		[ -n "${location##includeif.*.path}" ] || [ -z "$subsection" ] ||
+			__git_config_parse_include_or_if "$1" "$subsection"
+	}
+
+	oline=
+	while [ -z "$eof" ]; do
+		nline=$(($nline + 1))
+
+		IFS= read -r line || eof=1
+
+		line="$oline$line"
+		oline=
+
+		case "$line" in
+			'')
+				;;
+			*\\)
+				oline="$line"
+				;;
+			'#'*|';'*)
+				git_config_handler 'comment'
+				;;
+			'['*']'[' 	']*[!' 	']*)
+				fatal "expression isn't supported at line $nline in $fn"
+				;;
+			'['*']')
+				line="${line#\[}"
+				line="${line%\]}"
+				__git_config_parse_section "$line"
+				;;
+			*)
+				__git_config_parse_variable "$line"
+
+				if [ -n "$GIT_CONFIG_INCLUDE" ]; then
+					__git_config_parse_include "$value"
+					__git_config_parse_includeif "$value"
+				fi
+				;;
+		esac
+	done < "$fn"
+
+	[ -n "$section" ] ||
+		return 0
+	location="$section_lower${subsection:+.$subsection}"
+	git_config_handler 'section-end'
+}
+
+### Checks whether there is a specified variable in the configuration.
+### Usage: git_config_location_exists file name
+git_config_location_exists()
+{
+	local __git_config_location_exists=1 __git_config_fullpath __git_config_location
+	git_config_handler()
+	{
+		[ "$__git_config_fullpath" != "$location" ] ||
+			__git_config_location_exists=0
+	}
+	__git_config_fullpath "$2"
+	git_config_parse_file "$1"
+	return $__git_config_location_exists
+}
+
+### Gets variable from specified config file and store result into variable.
+### Usage: git_config_get retname file name
+git_config_get()
+{
+	local __git_config_v='' __git_config_fullpath __git_config_location
+	git_config_handler()
+	{
+		[ "$1" != 'variable' ] || [ "$__git_config_fullpath" != "$location" ] ||
+			__git_config_v="$value"
+	}
+	__git_config_fullpath "$3"
+	git_config_parse_file "$2"
+	eval "$1=\"\$__git_config_v\""
+}
+
+### Counts variable occurrences in specified config file and store result into variable.
+### Usage: git_config_count retname file name
+git_config_count()
+{
+	local __git_config_v=0 __git_config_fullpath __git_config_location
+	git_config_handler()
+	{
+		[ "$1" != 'variable' ] || [ "$__git_config_fullpath" != "$location" ] ||
+			__git_config_v=$(($__git_config_v + 1))
+	}
+	__git_config_fullpath "$3"
+	git_config_parse_file "$2"
+	eval "$1=\"\$__git_config_v\""
+}
+
+### Lists values of variable in specified config file.
+### Usage: git_config_list file [name]
+git_config_list()
+{
+	local __git_config_fullpath='' __git_config_location=''
+	git_config_handler()
+	{
+		[ "$1" = 'variable' ] ||
+			return 0
+		if [ -n "$__git_config_location" ]; then
+			[ "$__git_config_fullpath" != "$location" ] ||
+				printf '%s\n' "$value"
+		else
+			printf '%s=%s\n' "$location" "$value"
+		fi
+	}
+	[ -z "${2-}" ] ||
+		__git_config_fullpath "$2"
+	git_config_parse_file "$1"
+}
+
+### Lists all names and variables in tab separated form.
+### Usage: git_config_parse file
+git_config_parse()
+{
+	git_config_handler()
+	{
+		[ "$1" = 'variable' ] ||
+			return 0
+		printf '%s\t%s\n' "$location" "$value"
+	}
+	git_config_parse_file "$1"
+}
+
+### Append another value with same name into config file.
+### Usage: git_config_append file name value
+git_config_append()
+{
+	local GIT_CONFIG_INCLUDE='' GIT_CONFIG_GET_RAW=1
+	local __git_config_section __git_config_name __git_config_subsection __git_config_fullpath __git_config_location
+	local __git_config_nvalue="$3"
+	local __git_config_state=0 fn
+
+	[ -f "$1" ] || :> "$1"
+
+	__git_config_split "$2"
+
+	git_config_handler()
+	{
+		case "$1" in
+			comment)
+				printf '%s\n' "$line"
+				;;
+			variable)
+				printf '\t%s = %s\n' "$name" "$value"
+				if [ "$__git_config_fullpath" = "$location" ] && [ $__git_config_state != 1 ]; then
+					printf '\t%s = %s\n' "$__git_config_name" "$__git_config_nvalue"
+					__git_config_state=1
+				fi
+				;;
+			section-start)
+				printf '[%s]\n' "$section${subsection:+ \"$subsection\"}"
+				;;
+			section-end)
+				if [ "$__git_config_location" = "$location" ] && [ $__git_config_state != 1 ]; then
+					printf '\t%s = %s\n' "$__git_config_name" "$__git_config_nvalue"
+					__git_config_state=1
+				fi
+				;;
+		esac
+	}
+	fn="$(mktemp "$1.XXXXXX")"
+	git_config_parse_file "$1" > "$fn"
+
+	if [ $__git_config_state -eq 0 ]; then
+		printf '[%s]\n\t%s = %s\n' \
+			"$__git_config_section${__git_config_subsection:+ \"$__git_config_subsection\"}" \
+			"$__git_config_name" "$__git_config_nvalue" >> "$1"
+		rm -f -- "$fn"
+	else
+		mv -f -- "$fn" "$1"
+	fi
+}
+
+### Set or add value into config file.
+### Usage: git_config_set file name value
+git_config_set()
+{
+	local GIT_CONFIG_INCLUDE='' GIT_CONFIG_GET_RAW=1
+	local __git_config_section __git_config_name __git_config_subsection __git_config_fullpath __git_config_location
+	local __git_config_nvalue="$3" __git_config_ovalue=''
+	local __git_config_state=0 fn
+
+	[ -f "$1" ] || :> "$1"
+
+	__git_config_split "$2"
+	git_config_get __git_config_ovalue "$1" "$2"
+
+	git_config_handler()
+	{
+		case "$1" in
+			comment)
+				printf '%s\n' "$line"
+				;;
+			variable)
+				if [ "$__git_config_fullpath" = "$location" ] && [ -n "$__git_config_ovalue" ]; then
+					if [ "$__git_config_ovalue" = "$value" ]; then
+						printf '\t%s = %s\n' "$__git_config_name" "$__git_config_nvalue"
+						__git_config_state=1
+					fi
+				else
+					printf '\t%s = %s\n' "$name" "$value"
+				fi
+				;;
+			section-start)
+				printf '[%s]\n' "$section${subsection:+ \"$subsection\"}"
+				;;
+			section-end)
+				if [ "$__git_config_location" = "$location" ] && [ $__git_config_state != 1 ]; then
+					printf '\t%s = %s\n' "$__git_config_name" "$__git_config_nvalue"
+					__git_config_state=1
+				fi
+				;;
+		esac
+	}
+	fn="$(mktemp "$1.XXXXXX")"
+	git_config_parse_file "$1" > "$fn"
+
+	if [ $__git_config_state -eq 0 ]; then
+		printf '[%s]\n\t%s = %s\n' \
+			"$__git_config_section${__git_config_subsection:+ \"$__git_config_subsection\"}" \
+			"$__git_config_name" "$__git_config_nvalue" >> "$1"
+		rm -f -- "$fn"
+	else
+		mv -f -- "$fn" "$1"
+	fi
+}
+
+### Usage: git_config_unset file name [value]
+git_config_unset()
+{
+	local GIT_CONFIG_INCLUDE='' GIT_CONFIG_GET_RAW=1
+	local __git_config_section __git_config_name __git_config_subsection __git_config_fullpath __git_config_location
+	local __git_config_ovalue="${3-}"
+	local fn
+
+	[ -f "$1" ] || :> "$1"
+	__git_config_split "$2"
+
+	git_config_handler()
+	{
+		case "$1" in
+			comment)
+				printf '%s\n' "$line"
+				;;
+			variable)
+				if [ "$__git_config_fullpath" = "$location" ]; then
+					[ -z "$__git_config_ovalue" ] || [ "$__git_config_ovalue" = "$value" ] ||
+						printf '\t%s = %s\n' "$name" "$value"
+				else
+					printf '\t%s = %s\n' "$name" "$value"
+				fi
+				;;
+			section-start)
+				[ "$__git_config_fullpath" = "$location" ] ||
+					printf '[%s]\n' "$section${subsection:+ \"$subsection\"}"
+				;;
+		esac
+	}
+	fn="$(mktemp "$1.XXXXXX")"
+	git_config_parse_file "$1" > "$fn"
+	mv -f -- "$fn" "$1"
+}
+
+### Usage: __var_append arrname name value
+__var_append()
+{
+	local n
+	eval "n=\${$1:-0}"
+	eval "${1}_${n}_n=\"\$2\""
+	eval "${1}_${n}_v=\"\$3\""
+	eval "$1=$(($n+1))"
+}
+
+### Usage: __arr_append retindex arrname value
+__arr_append()
+{
+	local n
+	eval "n=\${$2:-0}"
+	eval "${2}_${n}=\"\$3\""
+	eval "$2=$(($n+1))"
+	eval "$1=$n"
+}
+
+### Usage: __arr_find retindex arrname value
+__arr_find()
+{
+	local i=0 n='' v=''
+	eval "$1="
+	eval "n=\${$2:-0}"
+	while [ "$i" -lt "$n" ]; do
+		eval "v=\"\${${2}_${i}}\""
+		if [ "$v" = "$3" ]; then
+			eval "$1=$i"
+			return
+		fi
+		i=$(($i+1))
+	done
+}
+
+### Parses git-config-like file and store the result in memory for future use.
+### Usage: git_config_env file
+git_config_env()
+{
+	s=0
+	local idx='' sidx=''
+	git_config_handler()
+	{
+		case "$1" in
+			section-start)
+				case "$section_lower" in
+					include|includeif) return ;;
+				esac
+				__arr_find idx s "$section_lower"
+				[ -n "$idx" ] ||
+					__arr_append idx s "$section_lower"
+
+				if [ -n "$subsection" ]; then
+					__arr_find sidx "ss_$idx" "$subsection"
+					[ -n "$sidx" ] ||
+						__arr_append sidx "ss_$idx" "$subsection"
+				else
+					eval "ss_$idx=\${ss_$idx:-0}"
+					sidx=
+				fi
+				;;
+			variable)
+				[ -n "$idx" ] ||
+					fatal "variable outside of section"
+				__var_append "v_${idx}${sidx:+_$sidx}_x" "$name_lower" "$value"
+				;;
+		esac
+	}
+	git_config_parse_file "$1"
+}
+
+### Stores git-config variable into variable 'ret'.
+### Usage: git_config_get_var ret section subsection name [{first|last|all=DELIM}]
+git_config_get_var()
+{
+	local __git_config_get_var_ret="$1" __git_config_get_var_v=''
+	__git_config_get_var()
+	{
+		local n='' v='' i=0 idx='' sidx=''
+
+		__arr_find idx s "$2"
+		[ "${#idx}" != 0 ] ||
+			return 0
+
+		if [ "${#3}" != 0 ]; then
+			eval "n=\"\$ss_$idx\""
+			[ "${#n}" != 0 ] && [ "$n" != 0 ] &&
+				__arr_find sidx "ss_$idx" "$3" ||
+				return 0
+		fi
+
+		eval "n=\"\${v_$idx${sidx:+_$sidx}_x:-0}\""
+
+		while [ "$i" -lt "$n" ]; do
+			eval "v=\"\$v_$idx${sidx:+_$sidx}_x_${i}_n\""
+			if [ "$v" = "$4" ]; then
+				eval "v=\"\$v_$idx${sidx:+_$sidx}_x_${i}_v\""
+				case "${5-}" in
+					first)
+						eval "__git_config_get_var_v=\"\$v\""
+						return
+						;;
+					all=*)
+						eval "__git_config_get_var_v=\"\${__git_config_get_var_v:+\${__git_config_get_var_v}${5#all=}}\$v\""
+						;;
+					''|last)
+						eval "__git_config_get_var_v=\"\$v\""
+						;;
+				esac
+			fi
+			i=$(($i+1))
+		done
+	}
+	__git_config_get_var "$@"
+	eval "$__git_config_get_var_ret=\"\$__git_config_get_var_v\""
+}
+
+### Usage: git_config_foreach [name] [custom_handler]
+git_config_foreach_handler()
+{
+	printf '%s=%s\n' "$1" "$2"
+}
+git_config_foreach()
+{
+	local __git_config_foreach_name="${1-}"
+	local __git_config_foreach_handler="${2:-git_config_foreach_handler}"
+
+	__arr_foreach()
+	{
+		local i=0 x=0 n='' v=''
+		eval "set -- \"\${$1:-0}\" \"\$@\""
+		while [ "$i" -lt "$1" ]; do
+			eval "n=\"\${${2}_${i}_n}\""
+			eval "v=\"\${${2}_${i}_v}\""
+			if [ -z "$__git_config_foreach_name" ] || [ "$__git_config_foreach_name" = "${3:+$3.}$n" ]; then
+				"$__git_config_foreach_handler" "${3:+$3.}$n" "$v"
+			fi
+			i=$(($i+1))
+		done
+	}
+
+	local i=0 j=0 ss section subsection
+
+	while [ "$i" -lt "${s:-0}" ]; do
+		eval "section=\"\$s_${i}\""
+		__arr_foreach "v_${i}_x" "$section"
+
+		eval "ss=\"\${ss_${i}:-0}\""
+
+		j=0
+		while [ "$j" -lt "$ss" ]; do
+			eval "subsection=\"\$ss_${i}_${j}\""
+			__arr_foreach "v_${i}_${j}_x" "$section.$subsection"
+			j=$(($j+1))
+		done
+
+		i=$(($i+1))
+	done
+}
+
+### Usage: git_config_get_subsections section
+git_config_get_subsections_handler() { :; }
+git_config_get_subsections()
+{
+	local __git_config_get_subsections_idx=
+	__git_config_get_subsections_idx()
+	{
+		local n='' v='' i=0
+
+		eval "n=\${s:-0}"
+		while [ "$i" -lt "$n" ]; do
+			eval "v=\"\${s_${i}}\""
+			if [ "$v" = "$1" ]; then
+				__git_config_get_subsections_idx=$i
+				return 0
+			fi
+			i=$(($i+1))
+		done
+		return 1
+	}
+	__git_config_get_subsections_idx "$1" || return 0
+	__git_config_get_subsections_idx()
+	{
+		__git_config_get_subsections_idx=0
+		while [ "$__git_config_get_subsections_idx" -lt "$2" ]; do
+			eval "git_config_get_subsections_handler \"\${ss_${1}_${__git_config_get_subsections_idx}}\""
+			__git_config_get_subsections_idx=$(($__git_config_get_subsections_idx+1))
+		done
+	}
+	eval "__git_config_get_subsections_idx \"$__git_config_get_subsections_idx\" \"\$ss_$__git_config_get_subsections_idx\""
+}
+
+fi # __included_shell_git_config

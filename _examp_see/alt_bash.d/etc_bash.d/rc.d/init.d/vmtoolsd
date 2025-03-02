@@ -1,0 +1,112 @@
+#!/bin/sh
+#
+# vmtoolsd	VMWare Tools Daemon
+#
+# chkconfig: - 80 20
+# description: Open VMware Tools daemon for virtual machines hosted on VMware.
+# processname: vmtoolsd
+# pidfile: /run/vmtoolsd.pid
+
+### BEGIN INIT INFO
+# Provides:          vmtoolsd
+# Required-Start:    $syslog $local_fs
+# Should-Start:
+# Required-Stop:     $syslog $local_fs
+# Should-Stop:
+# Default-Start:     3 4 5
+# Default-Stop:      0 1 2 6
+# Short-Description: Open VMware Tools daemon for virtual machines hosted on VMware.
+# Description: Open VMware Tools daemon is part of open-vm-tools project,
+#              an open source implementation of VMware Tools. It loads
+#              various open-vm-tools plugins and makes their services
+#              available to the guest OS for improved usability and to
+#              the VM management applications for easier administration.
+### END INIT INFO
+
+# Do not load RH compatibility interface.
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+PIDFILE=/run/vmtoolsd.pid
+LOCKFILE=/run/lock/subsys/vmtoolsd
+RETVAL=0
+
+check_vmware() {
+	if [ ! -x /usr/bin/vmware-checkvm ] || ! /usr/bin/vmware-checkvm > /dev/null 2>&1
+	then
+		echo "open-vm-tools: not starting as this is not a VMware VM"
+		exit 0
+	fi
+}
+
+
+start()
+{
+	check_vmware
+	start_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root -- vmtoolsd --background "$PIDFILE"
+	RETVAL=$?
+	return $RETVAL
+}
+
+stop()
+{
+	stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root -- vmtoolsd
+	RETVAL=$?
+	return $RETVAL
+}
+
+restart()
+{
+	stop
+	start
+}
+
+reload()
+{
+	msg_reloading vmtoolsd
+	stop_daemon --pidfile "$PIDFILE" --expect-user root -HUP -- vmtoolsd
+	RETVAL=$?
+	return $RETVAL
+} 
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	reload)
+		reload
+		;;
+	restart)
+		restart
+		;;
+	condstop)
+		if [ -e "$LOCKFILE" ]; then
+			stop
+		fi
+		;;
+	condrestart)
+		if [ -e "$LOCKFILE" ]; then
+			restart
+		fi
+		;;
+	condreload)
+		if [ -e "$LOCKFILE" ]; then
+			reload
+		fi
+		;;
+	status)
+		status --pidfile "$PIDFILE" --expect-user root -- vmtoolsd
+		RETVAL=$?
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart|condreload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

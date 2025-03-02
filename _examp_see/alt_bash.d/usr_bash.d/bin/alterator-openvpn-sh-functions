@@ -1,0 +1,50 @@
+#!/bin/sh
+
+. alterator-sh-functions
+
+list_openvpn_options()
+{
+    IFS=$'\n'
+    local ARGS="$1"
+    local CIPHERS=($(openvpn "$ARGS"))
+    local VALIDATE_REGEX="$2"
+
+    IFS=$' \t'
+    for line in "${CIPHERS[@]}"; do
+        if [[ "$line" =~ $VALIDATE_REGEX ]]; then
+            WORDS=($line)
+            echo "${WORDS[0]}"
+        fi
+    done
+}
+         
+list_ciphers()      
+{                   
+    local LIST=($(list_openvpn_options '--show-ciphers' '^[_a-zA-Z0-9-]+[ \t]+\([0-9]+[ \t]bit[ \t]key.+?\)$'))
+                    
+    write_enum_item '' 'default'
+    for cipher in "${LIST[@]}"; do
+        write_enum_item "$cipher"
+    done         
+}
+
+list_tls_ciphers()
+{
+    local LIST=($(list_openvpn_options '--show-tls' '^(TLS)|(GOST).*$'))
+
+    write_enum_item '' 'default'
+    for tls_cipher in "${LIST[@]}"; do
+        write_enum_item "$tls_cipher"
+    done
+}
+
+list_digests()
+{
+    local LIST=($(list_openvpn_options '--show-digests' '^[_a-zA-Z0-9-]+[ \t]+[0-9]+[ \t]bit[ \t]digest[ \t]size$'))
+
+    write_enum_item '' 'default'
+    for digest in "${LIST[@]}"; do
+        write_enum_item "$digest"
+    done
+}
+

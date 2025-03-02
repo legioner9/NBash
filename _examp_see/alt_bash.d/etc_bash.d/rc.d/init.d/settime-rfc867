@@ -1,0 +1,59 @@
+#!/bin/sh
+# settime-rfc867: set time via RFC 867 from hardcoded server	
+#
+# chkconfig: 2345 60 90
+# description:	set time via RFC 867 from hardcoded server 
+
+# Do not load RH compatibility interface.
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+. /etc/sysconfig/settime-rfc867
+
+start()
+{
+	RETVAL=1
+	[ -n "$SERVER" ] || return 0
+	for n in $(seq 1 5); do
+		date=$(nc $SERVER 13) && break
+		sleep $n
+	done
+	if  [ -n "$date" ] ; then
+		action "Activating setting datetime from $SERVER" date -s "'$date'" 
+		RETVAL=0
+	fi
+	return $RETVAL
+}
+
+stop()
+{
+	return 0 
+}
+
+restart()
+{
+	stop
+	start
+}
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	reload|restart)
+		restart
+		;;
+	condreload|condrestart|condstop)
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|reload|restart|condreload|condrestart|condstop}"
+		RETVAL=1
+esac
+
+exit $RETVAL

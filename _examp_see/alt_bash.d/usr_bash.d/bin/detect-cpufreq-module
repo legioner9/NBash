@@ -1,0 +1,128 @@
+#!/bin/sh -efu
+# Try to detect cpufreq module,
+# Heavy based on code from Debian's loadcpufreq init script.
+
+CPUINFO=/proc/cpuinfo
+IOPORTS=/proc/ioports
+CPU_MODALIAS=/sys/devices/system/cpu/modalias
+
+# If exists cpu modalias then just use modprobe for
+# detecting cpufreq module.
+if [ -f "$CPU_MODALIAS" ]; then
+	module=
+	for module in $(/sbin/modprobe -R "$(cat "$CPU_MODALIAS")"); do
+		case "$module" in
+			acpi[-_]cpufreq|powernow[-_]*|speedstep[-_]*|longhaul)
+				echo "$module"
+				exit 0
+				;;
+		esac
+	done
+fi
+
+if [ ! -f $CPUINFO ] ; then
+	echo "$CPUINFO not detected..." >&2
+	return 1
+fi
+
+MODEL_NAME=$(grep '^model name' "$CPUINFO" | head -1 | sed -e 's/^.*: //;')
+MODEL_ID=$(grep -E '^model[[:space:]]+:' "$CPUINFO" | head -1 | sed -e 's/^.*: //;')
+CPU=$(grep -E '^cpud[^:]+:' "$CPUINFO" | head -1 | sed -e 's/^.*: //;')
+VENDOR_ID=$(grep -E '^vendor_id[^:]+:' "$CPUINFO" | head -1 | sed -e 's/^.*: //;')
+CPU_FAMILY=$(sed -e '/^cpu family/ {s/.*: //;p;Q};d' $CPUINFO)
+
+MODULE=
+
+case "$VENDOR_ID" in
+	GenuineIntel*)
+		# If the CPU has the est flag, it supports enhanced
+		# speedstep and should use the acpi-cpufreq driver
+		if [ "$(grep est $CPUINFO)" ]; then
+			MODULE=acpi-cpufreq
+		elif [ $CPU_FAMILY = 15 ]; then
+			# Right. Check if it's a P4 without est.
+			case "$MODEL_NAME" in
+				Mobile\ Intel\(R\)\ Pentium\(R\)*)
+				MODULE=speedstep-ich
+				;;
+			esac
+			# no use of p4-clockmod at all
+		else
+			# Two modules for PIII-M depending the chipset.
+			# modprobe speedstep-ich || modprobe speestep-smi
+			# would be another way
+			if [ -f $IOPORTS ] && grep -q 'Intel .*ICH' $IOPORTS ; then
+				PIII_MODULE=speedstep-ich
+			else
+				PIII_MODULE=speedstep-smi
+			fi
+
+			# So it doesn't have Enhanced Speedstep, and it's not a
+			# P4. It could be a Speedstep PIII, or it may be
+			# unsupported. There's no terribly good programmatic way
+			# of telling.
+			case "$MODEL_NAME" in
+				Intel\(R\)\ Pentium\(R\)\ III\ Mobile\ CPU*)
+					MODULE=$PIII_MODULE
+					;;
+
+					# JD: says this works with cpufreq_userspace
+
+					Mobile\ Intel\(R\)\ Pentium\(R\)\ III\ CPU\ -\ M*)
+					MODULE=$PIII_MODULE
+					;;
+
+					# https://bugzilla.ubuntu.com/show_bug.cgi?id=4262
+					# UNCONFIRMED
+					Pentium\ III\ \(Coppermine\)*)
+					MODULE=$PIII_MODULE
+					;;
+			esac
+		fi
+		;;
+	AuthenticAMD*)
+		# Hurrah. This is nice and easy.
+		case $CPU_FAMILY in
+			5)
+				# K6
+				MODULE=powernow-k6
+				;;
+			6)
+				# K7
+				MODULE=powernow-k7
+				;;
+			15|16|17|18|20|21)
+				# K8
+				MODULE=powernow-k8
+				;;
+		esac
+		;;
+	CentaurHauls*)
+		# VIA
+		if [ $CPU_FAMILY = 6 ]; then
+			case $MODEL_ID in
+				10) # VIA C7 VIA Esther
+					# try acpi_cpufreq as
+					# suggested in the kernel
+					# configuration help
+					MODULE=acpi_cpufreq
+					;;
+				*)
+					MODULE=longhaul
+					;;
+			esac
+		fi
+		;;
+	GenuineTMx86*)
+		# Transmeta
+		if [ "$(grep longrun $CPUINFO)" ]; then
+			MODULE=longrun
+		fi
+		;;
+esac
+
+if [ -n "$MODULE" ]; then
+	echo "$MODULE"
+else
+	exit 1
+fi

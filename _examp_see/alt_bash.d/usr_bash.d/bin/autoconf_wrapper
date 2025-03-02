@@ -1,0 +1,3 @@
+#!/bin/sh -efu
+
+exec "$0-${AUTOCONF_VERSION:-default}" "$@"

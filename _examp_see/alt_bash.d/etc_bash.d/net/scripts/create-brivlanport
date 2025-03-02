@@ -1,0 +1,28 @@
+#!/bin/bash
+
+pickup_defaults
+pickup_options
+
+: ${HOST:?HOST is missing for $NAME}
+: ${VID:?VID is missing for $NAME}
+
+[ -x "${BRIDGE:=$DEFAULT_BRIDGE}" ] || {
+	print_error "$BRIDGE does not exist or is not executable. Try installing iproute2 RPM."
+	exit 1
+}
+
+$MODPROBE 8021q || {
+	print_error "8021q kernel module not found"
+	exit 2
+}
+
+# obsolete now?
+if iface_is_up $HOST; then
+	$IP link add link $HOST name $NAME type vlan id $VID
+	$BRIDGE vlan add vid $VID dev $HOST self
+else
+	print_error "host interface '$HOST' for '$NAME' is down"
+	exit 1
+fi
+
+exit 0

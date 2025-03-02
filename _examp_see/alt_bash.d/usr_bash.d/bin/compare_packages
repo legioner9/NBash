@@ -1,0 +1,221 @@
+#!/bin/sh -e
+#
+# Copyright (C) 2000-2005  Dmitry V. Levin <ldv@altlinux.org>
+#
+# Generates lists of package sets and compares them.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+
+trap '' PIPE
+
+PROG=compare_packages
+
+RPM=/bin/rpm
+DIFF=/usr/bin/diff
+DIFFARG=-u
+PATTERN=
+INSTALLED=
+DIRECTORY=
+RPMARG=
+
+USAGE()
+{
+	[ "$1" = 0 ] || exec >&2
+	cat <<EOF
+compare_packages - generates lists of package sets and compares them.
+
+compare_packages is free software, covered by the GNU General Public License.
+compare_packages comes with ABSOLUTELY NO WARRANTY, see license for details.
+
+Usage: $PROG [options] -- <packagefile> [ <packagefile>]* -- <packagefile> [ <packagefile>]*
+
+Valid options are:
+--rpm=RPM                               path to RPM;
+--diff=DIFF                             path to DIFF;
+--diffargs=ARGS                         arguments for DIFF;
+-i, --installed                         compare with installed packages;
+-a ARGS, --args=ARGS                    compare using custom rpm query format;
+-d DIRECTORY, --directory=DIRECTORY     compare files with DIRECTORY;
+-p PATTERN, --pattern=PATTERN           replace PATTERN;
+-h, --help                              show this text.
+
+Default path to RPM is $RPM.
+Default path to DIFF is $DIFF.
+Default DIFF arguments are '$DIFFARG'.
+Default replace PATTERN is '$PATTERN'.
+EOF
+	[ -n "$1" ] && exit "$1" || exit
+}
+
+Error()
+{
+	echo "$PROG: $*" >&2
+	exit 1
+}
+
+TEMP=`getopt -n $PROG -o a:,d:,i,p:,h -l args:,diff:,diffargs:,directory:,installed,pattern:,rpm:,help -- "$@"` || USAGE
+eval set -- "$TEMP"
+
+while :; do
+	case "$1" in
+		--rpm) shift; RPM="$1"; shift
+			;;
+		--diff) shift; DIFF="$1"; shift
+			;;
+		--diffargs) shift; DIFFARG="$1"; shift
+			;;
+		-a|--args) shift; RPMARG="$RPMARG $1"; shift
+			;;
+		-d|--directory) shift; DIRECTORY="$1"; shift
+			;;
+		-i|--installed) INSTALLED=1; shift
+			;;
+		-p|--pattern) shift; PATTERN="$1"; shift
+			;;
+		-h|--help) USAGE 0
+			;;
+		--) shift; break
+			;;
+		*) echo "$PROG: unrecognized option: $1" >&2; exit 1
+			;;
+	esac
+done
+
+[ -z "$DIRECTORY" -o -z "$INSTALLED" ] || Error "--directory and --installed are mutually exclusive options"
+[ -z "$DIRECTORY" -o -z "$RPMARG" ] || Error "--directory and --args are mutually exclusive options"
+if [ -n "$DIRECTORY" ]; then
+	[ -d "$DIRECTORY" ] || Error "$DIRECTORY: directory unavailable"
+fi
+
+[ -n "$*" ] || USAGE
+
+list1=
+list2=
+
+while :; do
+	if [ -n "$1" ]; then
+		[ "$1" != '--' ] || break
+		[ -r "$1" ] || Error "$1: file unavailable"
+		list1="$list1 $1"
+	fi
+	shift || { [ -n "$INSTALLED" -o -n "$DIRECTORY" ] && break || Error Missing second list; }
+done
+[ -n "$list1" ] || Error Missing first list
+
+shift || [ -n "$INSTALLED" -o -n "$DIRECTORY" ] || Error Missing second list
+
+if [ -n "$INSTALLED" ]; then
+	list2="$(LC_MESSAGES=C "$RPM" -qp --qf '%{NAME}\n' $list1)"
+elif [ -z "$DIRECTORY" ]; then
+	while :; do
+		if [ -n "$1" ]; then
+			[ "$1" != '--' ] || Error Unexpected sequence "$1"
+			[ -r "$1" ] || Error "$1: file unavailable"
+			list2="$list2 $1"
+		fi
+		shift || break
+	done
+	[ -n "$list2" ] || Error Missing second list
+fi
+
+WORKDIR=
+
+exit_handler()
+{
+	local rc=$1
+	[ -z "$WORKDIR" ] || rm -rf -- "$WORKDIR"
+	exit $rc
+}
+
+trap 'exit 143' HUP INT QUIT TERM
+WORKDIR="$(mktemp -d -t "$PROG.XXXXXXXXXX")"
+trap 'exit_handler $?' EXIT
+
+if [ -n "$INSTALLED" ]; then
+	UNINSTALLED=
+	TMP1="$WORKDIR/2"
+	TMP2="$WORKDIR/1"
+else
+	UNINSTALLED=-p
+	TMP1="$WORKDIR/1"
+	TMP2="$WORKDIR/2"
+fi
+
+if [ -z "$RPMARG" ]; then
+	if [ -z "$DIRECTORY" ]; then
+		LC_MESSAGES=C "$RPM" -qlvp $list1 |
+			awk '
+{
+	if ($5 ~ "[^,]*,$")
+	{
+		$5=$5$6
+		$6=""
+		$2=$7=$8=$9=""
+	} else
+	{
+		$5=","
+		$2=$6=$7=$8=""
+	}
+	print
+}
+' |
+			sed -- "$PATTERN" |
+			LC_COLLATE=C sort -k 5 >>"$TMP1"
+		LC_MESSAGES=C "$RPM" -qlv $UNINSTALLED $list2 |
+			awk '
+{
+	if ($5 ~ "[^,]*,$")
+	{
+		$5=$5$6
+		$6=""
+		$2=$7=$8=$9=""
+	} else
+	{
+		$5=","
+		$2=$6=$7=$8=""
+	}
+	print
+}
+' |
+			sed -- "$PATTERN" |
+			LC_COLLATE=C sort -k 5 >>"$TMP2"
+	else
+		LC_MESSAGES=C "$RPM" -qlvp $list1 |
+			awk '{printf("%s\t%s\n", $1, $9)}' |
+			sed -- "$PATTERN" |
+			LC_COLLATE=C sort -k 2 >>"$TMP1"
+		find "$DIRECTORY" -mindepth 1 -print0 |
+			LC_TIME=C xargs -r0 /bin/ls -lad |
+			sed -e "s|$DIRECTORY||g" |
+			awk '{printf("%s\t%s\n", $1, $9)}' |
+			sed -- "$PATTERN" |
+			LC_COLLATE=C sort -k 2 >>"$TMP2"
+	fi
+else
+	LC_MESSAGES=C "$RPM" -qp $RPMARG $list1 |
+		sed -- "$PATTERN" |
+		LC_COLLATE=C sort -u >>"$TMP1"
+	LC_MESSAGES=C "$RPM" -q $UNINSTALLED $RPMARG $list2 |
+		sed -- "$PATTERN" |
+		LC_COLLATE=C sort -u >>"$TMP2"
+fi
+
+: ${LESS_PROGRAM:=/usr/bin/less}
+if [ -x "$LESS_PROGRAM" ]; then
+	"$DIFF" $DIFFARG "$WORKDIR/1" "$WORKDIR/2" 2>/dev/null |LESSOPEN= "$LESS_PROGRAM"
+else
+	"$DIFF" $DIFFARG "$WORKDIR/1" "$WORKDIR/2" 2>/dev/null
+fi

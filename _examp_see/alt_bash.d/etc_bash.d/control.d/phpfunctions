@@ -1,0 +1,297 @@
+#!/bin/sh -euf
+
+phpver="${PHP_VERSION:?}"
+if [ -z "${phpver##4*}" ]; then
+	# Backward compatibility
+	readonly PHP_BIN="/usr/bin/php-${PHP_VERSION:?}"
+else
+	readonly PHP_BIN="/usr/bin/phpinfo-${PHP_VERSION:?}"
+fi
+
+# backward compatibility for php versions prior to 5.3.0:
+# if PHP_MAJOR is not specified, PHP_VERSION used instead
+: ${PHP_MAJOR:=$PHP_VERSION}
+
+readonly PHP_ETCDIR="/etc/php"
+readonly PHP_INI="$PHP_ETCDIR/$PHP_MAJOR/${PHP_SAPI:?}/php.ini"
+
+readonly php_on='On'
+readonly php_off='Off'
+readonly php_enable='enabled'
+readonly php_disable='disabled'
+
+php_error() {
+    printf %s\\n "${0##*/}: Error: $*"
+}
+
+php_fatal() {
+    php_error "$*"
+    exit 1
+}
+
+[ -x "$PHP_BIN" ] || php_fatal "Cannot execute $PHP_BIN"
+[ -r "$PHP_INI" ] || php_fatal "Cannot read from $PHP_INI"
+
+php_modes=
+php_rule() {
+	[ "$#" -ge 2 ] || php_fatal "more arguments required: MODE DIRECTIVE [VALUE] [INTRERNAL_VALUE]"
+
+	# VALUE is not specified, ignore this rule
+	[ "$#" -ge 3 ] || return 0;
+
+	php_modes="$(printf %s\\n "$php_modes"|grep -v -G -e "^$1	$2	")
+$1	$2	$3"
+
+	local ivalue=""
+	[ "$#" -ne 4 ] || ivalue="$4"
+	php_modes="$php_modes	$ivalue
+"
+}
+
+php_show_modes() {
+  printf %s "$php_modes" |cut -f1 |uniq |tr \\n \ #
+  printf \\n
+}
+
+php_descriptions=
+php_description() {
+	[ "$#" -eq 2 ] || php_fatal "exactly 2 arguments required: MODE DESCRIPTION"
+	php_descriptions="$php_descriptions$1	$2
+"
+}
+
+php_show_description() {
+	echo "$php_descriptions" | grep -e "^$1[[:space:]]" | sed -e "s|^$1[[:space:]]*||"
+}
+
+php_info() {
+    local d v i
+    IFS="	"
+    while read d v i; do
+	printf %s\\t "$d"
+	[ -z "$i" ] &&
+	    printf %s "$v" ||
+	    printf %s "$i"
+	printf \\n
+    done
+}
+
+php_config() {
+if [ -z "${phpver##5.3*}" ]; then
+	# phpinfo's output format was changed significantly in 5.3.0:
+	# new filter implemented
+	$PHP_BIN -c "$PHP_INI" 2>/dev/null |
+		sed -n -e '0,/^Configuration[[:space:]]*$/d' \
+			-e '/^Directive => Local Value => Master Value/d' \
+			-e '/^[[:space:]]*$/d' \
+			-e '/^Environment[[:space:]]*$/Q' \
+			-e '/=>/p' |
+		sed -e '/^[[:alnum:]]* .*$/d' \
+			-e 's/ => /\t/g' \
+			-e 's/no value//' |
+		cut -f1,2
+else
+	# backward compatibility for php versions prior to 5.3.0:
+	# use old filter
+	$PHP_BIN -i -c "$PHP_INI" |
+		sed -n \
+			-e '0,/^PHP Core[[:space:]]*$/d' \
+			-e '/^Directive => Local Value => Master Value/d' \
+			-e '/^[[:space:]]*$/d' \
+			-e '/^Environment[[:space:]]*$/Q' \
+			-e 's#no value##g' \
+			-e 's# => enabled# => enabled#i' \
+			-e 's# => active# => enabled#i' \
+			-e 's# => #\t#gp' |
+		cut -f1,2
+fi
+}
+
+php_check() {
+    [ "$#" -eq 1 ] || { php_error "more arguments required"; return 1; }
+    local sys modes args out
+
+    modes="$(printf %s\\n "$php_modes" |egrep "^$1[[:space:]]" |cut -f2- |php_info)"
+    [ -n "$modes" ] || return 1
+    
+    args="$(printf %s "$modes" |cut -f1 |xargs -ri printf "-e '^%s[[:space:]]' " \{\})"
+    sys="$(php_config |eval grep -G $args)"
+    unset args
+
+    out="$(printf %s\\n%s\\n "$sys" "$modes" |sort |uniq -u |cut -f1 |sort -u)"
+    unset sys modes
+  
+    [ -z "$out" ] || return 1
+}
+
+php_type() {
+    local v
+    while read v; do
+	[ -n "$v" ] || continue
+	[ -z "${v#$php_off}" -o -z "${v#$php_on}" ] &&
+	    printf %s "$v" && continue
+	printf %g "$v" >/dev/null 2>&1 &&
+	    printf %s "$v" && continue
+	printf %s "$v" | grep -qs 'E_' &&
+	    printf %s "$v" && continue
+	printf '"%s"' "$v"
+    done
+}
+
+php_setmode() {
+    [ "$#" -eq 1 ] || { php_error "more arguments required"; return 1; }
+    local sys modes args out val
+
+    modes="$(printf %s\\n "$php_modes" |egrep "^$1[[:space:]]" |cut -f2,3)"
+    [ -n "$modes" ] || return 1
+
+    args="$(printf %s "$modes" |cut -f1 |xargs -ri printf "-e '^%s[[:space:]]' " \{\})"
+    sys="$(php_config |eval grep -G $args)"
+    unset args
+
+    out="$(printf %s\\n%s\\n "$sys" "$modes" |sort |uniq -u |cut -f1 |sort -u)"
+    unset sys
+  
+    [ -n "$out" ] || return 0
+
+    printf %s\\n "$out" |
+    while read d; do
+	val="$(printf %s\\n "$modes" |grep "^$d[[:space:]]" |cut -f2 |php_type)"
+	if grep -qs "^[[:space:]]*$d[[:space:]]*=" "$PHP_INI"; then
+	    if [ -z "$val" ]; then
+		subst "/^[[:space:]]*$d[[:space:]]*=.*$/d" "$PHP_INI"
+		continue
+	    fi
+    	    subst "
+/^[[:space:]]*$d[[:space:]]*=.*$/{s|^[[:space:]]*$d[[:space:]]*=.*$||
+c \
+$d = $val
+}" "$PHP_INI"
+	elif grep -qs "^;[[:space:]]*$d[[:space:]]*=" "$PHP_INI"; then
+	    sed -i "s|^\(;[[:space:]]*$d[[:space:]]*=.*$\)|\\1\\n$d = $val|" "$PHP_INI"
+	else
+	    [ -z "$val" ] || printf '%s = %s\n' "$d" "$val" >> "$PHP_INI"
+	fi
+    done
+}
+
+php_help() {
+    [ "$#" -eq 1 ] || { php_error "more arguments required"; return 1; }
+    local d v
+    echo "$1: $(php_show_description $1)"
+    echo "Following directives shuild be changed at \"$1\" security mode:"
+    IFS="	"
+    printf %s\\n "$php_modes" |egrep "^$1[[:space:]]" |cut  -f2,3 |
+    while read d v; do
+	v="$(printf %s\\n "$v" |php_type)"
+	[ -n "$v" ] || v="\"\""
+	printf '\t%s = %s\n' "$d" "$v"
+    done
+    printf \\n
+}
+
+php_get_timezone() {
+	ZI_FILE=/etc/localtime
+	ZI_PATH=/usr/share/zoneinfo/
+
+	if [ -d $ZI_PATH -a -r $ZI_FILE ]
+	then
+		ZI_SIZE=$(stat --dereference --format=%s $ZI_FILE)
+		for j in 2 1
+		do
+			for i in $(find $ZI_PATH -maxdepth $j -mindepth $j -type f -size ${ZI_SIZE}c)
+			do
+				if [ -z "$(cmp $ZI_FILE $i)$(echo $i | grep '/posix/')" ]
+				then
+					timezone_found=${i##$ZI_PATH}
+					break 2
+				fi
+			done
+		done
+	fi
+	echo ${timezone_found:-}
+}
+
+php_timezone=$(php_get_timezone)
+
+php_read_dir_rulefiles() {
+	if [ -d "$1" ]
+	then
+		local f
+		for f in $(ls -1 "$1" | grep -E -v '(~|\.rpm(save|new))$')
+		do
+			. "$1/$f"
+		done
+	fi
+}
+
+php_read_rulefiles() {
+	local RULE_DIRS_PREFS="$PHP_ETCDIR"
+
+	if [ "x$PHP_MAJOR" != "x" ]
+	then
+		RULE_DIRS_PREFS="$RULE_DIRS_PREFS
+$RULE_DIRS_PREFS/$PHP_MAJOR"
+	fi
+
+	if [ "x$PHP_SAPI" != "x" ]
+	then
+		local p
+		local NEW_RULE_DIRS_PREFS=
+		for p in $(printf %s\\n "$RULE_DIRS_PREFS")
+		do
+			NEW_RULE_DIRS_PREFS="$NEW_RULE_DIRS_PREFS$p
+$p/$PHP_SAPI
+"
+		done
+		RULE_DIRS_PREFS="$NEW_RULE_DIRS_PREFS"
+
+	fi
+
+	local d
+	for d in $(printf %s\\n "$RULE_DIRS_PREFS")
+	do
+		php_read_dir_rulefiles "$d/control.d"
+	done
+}
+
+php_control() {
+	case "${1:-}" in
+	status|'')
+		for s in $(php_show_modes); do
+			php_check "$s" || continue
+			printf %s\\n "$s"
+			exit
+		done
+		printf "unknown\n"
+		;;
+	list)
+		php_show_modes
+		;;
+	help)
+		if [ -z "${2:-}" ]; then
+			for s in $(php_show_modes); do
+				php_help "$s"
+			done
+		else
+			php_help "$2"
+		fi
+		;;
+	*)
+		if php_show_modes |grep -qs "\<$1\>"; then
+			php_setmode "$1"
+		else
+			php_error "unknown action"
+		fi
+		;;
+	esac
+}
+
+php_autocontrol() {
+	# Read control files
+	php_read_rulefiles
+
+	# Real action
+	php_control $1
+}
+

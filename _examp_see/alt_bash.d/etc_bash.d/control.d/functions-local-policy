@@ -1,0 +1,221 @@
+#!/bin/sh
+
+. /etc/control.d/functions
+
+is_status_mode()
+{
+	case "$1" in
+	''|status)
+		return 0
+		;;
+	esac
+	return 1
+}
+
+check_status_mode()
+{
+	if is_status_mode "$1"; then
+		echo "unknown"
+		return 1
+	fi
+}
+
+is_file_exists()
+{
+	local FILE="$(readlink -f "$1")"
+	test -f "$FILE"
+}
+
+_check_variants()
+{
+	local RETVAL=1
+	if test -n "$2" && echo "$2" | grep -q -w "$1"; then
+		RETVAL=0
+	else
+		if test -n "${3-}" && echo "$1" | grep -Eq "$3"; then
+			RETVAL=0
+		fi
+	fi
+	return $RETVAL
+}
+
+_control_subst_status_regexp()
+{
+	local FILE="$1" REGEXP_STATUS="$2" SUBST_STATUS="$3"
+	if ! grep -E "$REGEXP_STATUS" "$FILE"; then
+		echo "unknown"
+		return
+	fi | head -1 | (test -z "$SUBST_STATUS" || sed --follow-symlinks -e "$SUBST_STATUS")
+}
+
+control_subst_with_file_check()
+{
+	local FILE="$1" REQUEST="$2" VARIANTS="${3-}" REGEXP="${4-}" SUBST="${5-}" REGEXP_STATUS="${6-}" SUBST_STATUS="${7-}"
+	if ! is_file_exists "$FILE"; then
+		check_status_mode "$REQUEST" || return 0
+		if ! is_builtin_mode "$REQUEST"; then
+			if test $# -le 2 || _check_variants "$REQUEST" "$VARIANTS" "$REGEXP"; then
+				echo_error "Configuration file not exists: $FILE"
+			else
+				echo_error "Invalid mode: $REQUEST"
+			fi
+			return 2
+		fi
+	fi
+	if is_status_mode "$REQUEST" && test $# -gt 2; then
+		if ! _check_variants "$(control_subst_status "$FILE")" "$VARIANTS" && test -n "$REGEXP_STATUS"; then
+			STATUS="$(_control_subst_status_regexp "$FILE" "$REGEXP_STATUS" "$SUBST_STATUS")"
+			_check_variants "$STATUS" "" "$REGEXP" &&
+				echo "$STATUS" || echo "unknown"
+			return
+		fi
+	elif ! is_builtin_mode "$REQUEST" && test $# -gt 2; then
+		if ! _check_variants "$REQUEST" "$VARIANTS" "$REGEXP"; then
+			echo_error "Invalid mode: $REQUEST"
+			return 1
+		fi
+		if ! _check_variants "$REQUEST" "$VARIANTS" && test -n "$SUBST"; then
+			sed -i --follow-symlinks -e "$SUBST" -- "$FILE"
+			return $?
+		fi
+	fi
+	control_subst "$FILE" "$REQUEST" || return 1
+}
+
+
+check_default_option_with_section()
+{
+	local SECTION="$1"; shift 1
+	local FILE="$1" REQUEST="$2" OPTION="$3" DEFAULT="$4" VARIANTS="$5" REGEXP="${6-}"
+	if is_file_exists "$FILE" && ! is_builtin_mode "$REQUEST"; then
+		if _check_variants "$REQUEST" "$VARIANTS" "$REGEXP"; then
+			if ! grep -q "^\s*[#;]\?\s*$OPTION\s*=\s*" "$FILE"; then
+				sed -i --follow-symlinks -e "s/^\(\s*\[$SECTION\]\s*\)/\1\n#$OPTION = $DEFAULT/" -- "$FILE" || return 3
+			fi
+		fi
+	fi
+}
+
+_check_default_sssd_option()
+{
+	local SECTION="$1" PROVIDER="$2"; shift 2
+	local FILE="$1" REQUEST="$2" OPTION="$3" DEFAULT="$4" VARIANTS="$5" REGEXP="${6-}"
+	if is_file_exists "$FILE" && ! is_builtin_mode "$REQUEST"; then
+		if _check_variants "$REQUEST" "$VARIANTS" "$REGEXP"; then
+			if ! grep -q "^\s*[#;]\?\s*$OPTION\s*=\s*" "$FILE"; then
+				if test -n "$PROVIDER" && ! grep -q "^\s*id_provider\s*=\s*$PROVIDER$" "$FILE"; then
+					case "$PROVIDER" in
+						ad) PROVIDER="Active Directory" ;;
+						ipa) PROVIDER="FreeIPA" ;;
+						'ad\|ipa') PROVIDER="Active Directory or FreeIPA" ;;
+					esac
+					echo_error "Option '$OPTION' not exists for not initialized $PROVIDER provider"
+					return 4
+				fi
+				sed -i --follow-symlinks -e "s/^\(\s*\[$SECTION\]\s*\)/\1\n#$OPTION = $DEFAULT/" -- "$FILE" || return 3
+			fi
+		fi
+	fi
+}
+
+check_default_sssd_ad_option()
+{
+	_check_default_sssd_option 'domain\/.*' 'ad' "$@"
+}
+
+check_default_sssd_ipa_option()
+{
+	_check_default_sssd_option 'domain\/.*' 'ipa' "$@"
+}
+
+check_default_sssd_ad_ipa_option()
+{
+	_check_default_sssd_option 'domain\/.*' 'ad\|ipa' "$@"
+}
+
+check_default_sssd_domain_option()
+{
+	_check_default_sssd_option 'domain\/.*' '' "$@"
+}
+
+new_dmode()
+{
+	register "$1"
+	define NAME_TO_DMODE "$1" "$2"
+	define_array DMODE_OWNER_TO_NAME "$2_$3_$4" "$1"
+}
+
+_stat_file()
+{
+	local PATHNAME="$1"
+	[ -z "${PATHNAME##/*}" ] || return 1
+	find "$PATHNAME" -maxdepth 0 -path "$PATHNAME" -printf '%#m_%u_%g'
+}
+
+_control_dmode_status()
+{
+	local DIR="$1" STAT= NAME= ARRAY= ELEM= CAPS=
+
+	STAT="$(_stat_file "$DIR")"
+	if validate "$STAT"; then
+		lookup_array ARRAY DMODE_OWNER_TO_NAME "$STAT"
+		for ELEM in $ARRAY; do
+			eval "NAME=\"\$$ELEM\""
+			lookup CAPS NAME_TO_CAPS "$NAME"
+			if setcap -q -v "$CAPS" "$DIR"; then
+				printf "%s\\n" "$NAME"
+				return
+			fi
+		done
+	fi
+	echo "unknown"
+}
+
+control_dmode()
+{
+	local RET=0 DIR="$1" REQUEST="$2" FMODE= DMODE= OWNER= CAPS=
+
+	case "$REQUEST" in
+	help|'help '*)
+		control_help "${REQUEST#help}"
+		;;
+	list)
+		control_list
+		;;
+	status)
+		_control_dmode_status "$DIR"
+		;;
+	summary)
+		control_summary
+		;;
+	*)
+		if validate "$REQUEST"; then
+			lookup DMODE NAME_TO_DMODE "$REQUEST"
+			lookup FMODE NAME_TO_FMODE "$REQUEST"
+			lookup OWNER NAME_TO_OWNER "$REQUEST"
+			lookup CAPS NAME_TO_CAPS "$REQUEST"
+		fi
+		if [ -z "$DMODE" -o -z "$FMODE" -o -z "$OWNER" ]; then
+			echo_error "Invalid mode: $REQUEST"
+			return 1
+		fi
+		if [ "$(_control_dmode_status "$DIR")" = "$REQUEST" ]; then
+			#[ -n "$(ls -A "$DIR")" ] || return
+			return
+		fi
+		# NOTE: chown will clear all capability sets for the file.
+		# See chown(2) for details.
+		chown -R "$OWNER" "$DIR" || RET=$?
+		find "$DIR" -type f -exec chmod "0$FMODE" {} \; || RET=$?
+		find "$DIR" -type f -exec chmod "$FMODE" {} \; || RET=$?
+		find "$DIR" -type d -exec chmod "0$DMODE" {} \; || RET=$?
+		find "$DIR" -type d -exec chmod "$DMODE" {} \; || RET=$?
+		[ "$RET" = "0" ] || return $RET
+		[ -n "$CAPS" ] || return 0
+		if setcap -q -v "$CAPS" "$DIR"; then
+			return
+		fi
+		setcap -q "$CAPS" "$DIR" || return 1
+		;;
+	esac
+}

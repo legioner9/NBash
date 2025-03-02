@@ -1,0 +1,26 @@
+#!/bin/bash
+
+pickup_defaults
+pickup_options
+
+. $SCRIPTDIR/functions
+
+[ -x "${WG:=$DEFAULT_WG}" ] || {
+	print_error "$WG does not exist or is not executable. Try installing wireguard RPM."
+	exit 1
+}
+
+PRIVATEKEY=$IFACEDIR/$NAME/privatekey
+
+[ -f "$PRIVATEKEY" ] || {
+	print_error 'no private key!'
+	exit 1
+}
+
+: ${LISTENPORT:?missing LISTENPORT}
+
+$IP link add $NAME type wireguard
+
+$WG set $NAME listen-port $LISTENPORT private-key $PRIVATEKEY
+
+xargise_file "$IFACEDIR/$NAME/peers" "$WG set $NAME"

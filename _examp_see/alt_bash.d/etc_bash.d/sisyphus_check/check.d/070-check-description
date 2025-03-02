@@ -1,0 +1,22 @@
+#!/bin/sh -efu
+
+rpm_description="${rpm_description?RPM description required}"
+
+# check for valid description
+check_description()
+{
+	local f="$1" && shift || return 1
+
+	if ! printf %s "$rpm_description" 2>/dev/null |grep -Eqs '[[:alpha:]]'; then
+		FileError "invalid DESCRIPTION: $(oneliner "$rpm_description")" "$f"
+		return 1
+	fi
+	return 0
+}
+
+run_check() {
+	if ! check_description "$1"; then
+		CheckError 'invalid package description'
+		return 1
+	fi
+}

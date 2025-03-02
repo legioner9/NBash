@@ -1,0 +1,153 @@
+#!/bin/bash
+
+# Chromium launcher
+
+# Authors:
+#  Fabien Tassin <fta@sofaraway.org>
+# License: GPLv2 or later
+
+APPNAME=chromium
+GDB=/usr/bin/gdb
+
+usage () {
+  echo "$APPNAME [-h|--help] [-g|--debug] [--temp-profile] [options] [URL]"
+  echo
+  echo "        -g or --debug           Start within $GDB"
+  echo "        -h or --help            This help screen"
+  echo "        --temp-profile          Start with a new and temporary profile"
+  echo
+  echo " Other supported options are:"
+  MANWIDTH=80 man chromium | sed -e '1,/OPTIONS/d; /ENVIRONMENT/,$d'
+  echo " See 'man chromium' for more details"
+}
+
+[ ! -f "/etc/chromium-gost/default" ] ||
+  . "/etc/chromium-gost/default"
+
+CHROMIUM_ULIMIT_N=
+[ -z "${CHROMIUM_ULIMIT-}" ] ||
+	CHROMIUM_ULIMIT_N="$(echo "$CHROMIUM_ULIMIT"| sed -e 's/^.*-n \([0-9]\+\).*/\1/')"
+if [ -n "$CHROMIUM_ULIMIT_N" ]; then
+	if [ $CHROMIUM_ULIMIT_N -gt $(ulimit -n) ]; then
+		ulimit -n $CHROMIUM_ULIMIT_N
+	fi
+fi
+
+LIBDIR="$(getconf LIBDIR)"
+
+[ -n "$LIBVA_DRIVERS_PATH" ] ||
+	export LIBVA_DRIVERS_PATH="$LIBDIR/dri"
+
+CHROMIUM_ARGS=()
+
+# Prefer user defined CHROMIUM_USER_FLAGS (fron env) over system
+# default CHROMIUM_FLAGS (from /etc/chromium-gost/default)
+
+if [ -n "${CHROMIUM_USER_FLAGS-}" ]; then
+	CHROMIUM_ARGS=( $CHROMIUM_USER_FLAGS )
+elif [ -n "${CHROMIUM_FLAGS-}" ]; then
+	CHROMIUM_ARGS=( $CHROMIUM_FLAGS )
+fi
+
+case "${CHROMIUM_USE_VAAPI-}" in
+	desktop|egl)
+		CHROMIUM_ARGS+=("--ignore-gpu-blacklist" "--use-gl=$CHROMIUM_USE_VAAPI")
+		;;
+	*)
+		CHROMIUM_ARGS+=("--use-gl=any")
+		;;
+esac
+
+if [ -z "${CHROMIUM_DISABLE_WAYLAND-}" ] && [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+	CHROMIUM_ARGS+=("--enable-features=UseOzonePlatform" "--ozone-platform=wayland")
+fi
+
+# Fix crash (ALT#45269)
+CHROMIUM_ARGS+=( --disable-features=AutofillUseParameterizedSectioning )
+
+# Proxy settings
+[ -z "${no_proxy-}" ] ||
+	echo >&2 "warning: environment variable \`no_proxy' not supported"
+
+if [ -z "${auto_proxy-}" ]; then
+	for use_proxy in "${https_proxy-}" "${http_proxy-}" "${all_proxy-}"; do
+		if [ -n "$use_proxy" ]; then
+			CHROMIUM_ARGS+=("--proxy-server=$use_proxy")
+			break
+		fi
+	done
+	[ -z "${ftp_proxy-}" ] ||
+		echo >&2 "warning: environment variable \`ftp_proxy' not supported"
+else
+	CHROMIUM_ARGS+=("--proxy-auto-detect")
+fi
+
+# FFmpeg needs to know where its libs are located
+export LD_LIBRARY_PATH="$LIBDIR/chromium-gost${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+
+# For the Default Browser detection to work, we need to give access
+# to xdg-settings. Also set CHROME_WRAPPER in case xdg-settings is
+# not able to do anything useful
+export PATH="$LIBDIR/chromium-gost:$PATH"
+export CHROME_WRAPPER=true
+
+export CHROME_VERSION_EXTRA="ALT Linux"
+
+want_debug=0
+want_temp_profile=0
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -h | --help | -help )
+      usage
+      exit 0 ;;
+    -g | --debug )
+      want_debug=1
+      shift ;;
+    --temp-profile )
+      want_temp_profile=1
+      shift ;;
+    -- ) # Stop option processing
+      shift
+      break ;;
+    * )
+      break ;;
+  esac
+done
+
+if [ $want_temp_profile -eq 1 ] ; then
+  TEMP_PROFILE=`mktemp -d`
+  CHROMIUM_ARGS+=("--user-data-dir=$TEMP_PROFILE")
+fi
+
+if [ $want_debug -eq 1 ] ; then
+  if [ ! -x $GDB ] ; then
+    echo "Sorry, can't find usable $GDB. Please install it."
+    exit 1
+  fi
+  tmpfile=`mktemp /tmp/chromium-gostargs.XXXXXX` || { echo "Cannot create temporary file" >&2; exit 1; }
+  trap " [ -f \"$tmpfile\" ] && /bin/rm -f -- \"$tmpfile\"" 0 1 2 3 13 15
+  # FIXME(legion): The following line is incorrect and will not work correctly.
+  echo "set args ${CHROMIUM_ARGS[@]} ${1+"$@"}" > $tmpfile
+  echo "# Env:"
+  echo "#     LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+  echo "#                PATH=$PATH"
+  echo "#            GTK_PATH=$GTK_PATH"
+  echo "# CHROMIUM_USER_FLAGS=$CHROMIUM_USER_FLAGS"
+  echo "#      CHROMIUM_FLAGS=$CHROMIUM_FLAGS"
+  echo "#       CHROMIUM_ARGS=${CHROMIUM_ARGS[*]}"
+  echo "$GDB $LIBDIR/chromium-gost/$APPNAME -x $tmpfile"
+  $GDB "$LIBDIR/chromium-gost/$APPNAME" -x $tmpfile
+  if [ $want_temp_profile -eq 1 ] ; then
+    rm -rf $TEMP_PROFILE
+  fi
+  exit $?
+else
+  if [ $want_temp_profile -eq 0 ] ; then
+    exec $LIBDIR/chromium-gost/$APPNAME "${CHROMIUM_ARGS[@]}" "$@"
+  else
+    # we can't exec here as we need to clean-up the temporary profile
+    $LIBDIR/chromium-gost/$APPNAME "${CHROMIUM_ARGS[@]}" "$@"
+    rm -rf $TEMP_PROFILE
+  fi
+fi
+

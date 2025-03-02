@@ -1,0 +1,234 @@
+#!/bin/sh
+
+. /etc/control.d/functions
+
+new_summary 'changing hashing algorithm for passwords'
+
+CONFIG_PREF='/etc/pam.d/system-auth'
+
+for f in $CONFIG_PREF-*; do
+	v="${f#$CONFIG_PREF-}"
+	case "$v" in
+		*.*|*~) continue;;
+	esac
+	CONFIGS+=("$f")
+done
+
+TCB_SO='pam_tcb.so'
+
+REQUEST="$*"
+
+define_hash() {
+	if [ "$1" == 'default' ]; then
+		new_help "$1" "hash prefix managed by libcrypt"
+	else
+		new_help "$1" "prefix=\$$2\$ count=$5 ($3 - $4 limit)"
+		HASH_NAMES_LIST+=("$1")
+		eval "HASH_NAME_$2=\"$1\""
+		eval "$1_PREFIX=\"$2\""
+		eval "$1_COUNT_MIN=\"$3\""
+		eval "$1_COUNT_MAX=\"$4\""
+		eval "$1_COUNT_DEFAULT=\"$5\""
+	fi
+}
+
+# Hash name, hash prefix, min count, max count, default count
+HASH_DEFINES=(
+	'bcrypt_2b      2b  4    31     8'
+	'bcrypt_2y      2y  4    31     8'
+	'bcrypt_2a      2a  4    31     8'
+	'yescrypt       y   0    11     8'
+	'scrypt         7   0    11     8'
+	'gost_yescrypt  gy  0    11     8'
+	'sha256         5   1000 100000 10000'
+	'sha512         6   1000 100000 10000'
+	'default'
+)
+for HASH_DEF in "${HASH_DEFINES[@]}"; do
+	define_hash $HASH_DEF
+done
+
+get_hash_name() {
+	eval "echo \"\$HASH_NAME_$1\""
+}
+
+get_hash_prefix() {
+	eval "echo \"\$$1_PREFIX\""
+}
+
+get_hash_count_min() {
+	eval "echo \"\$$1_COUNT_MIN\""
+}
+
+get_hash_count_max() {
+	eval "echo \"\$$1_COUNT_MAX\""
+}
+
+get_hash_count_default() {
+	eval "echo \"\$$1_COUNT_DEFAULT\""
+}
+
+is_valid_hash_name() {
+	[[ "$1" =~ ^[a-z0-9_]+$ ]]&&
+	[ ! -z $(get_hash_prefix "$1") ] || [ "$1" == 'default' ]
+}
+
+is_valid_hash_count() {
+	[[ "$2" =~ ^[0-9]+$ ]] &&
+	[ $(get_hash_count_min "$1") -le "$2" ] &&
+	[ $(get_hash_count_max "$1") -ge "$2" ]
+}
+
+echoerr() {
+	echo "$@" 1>&2;
+}
+
+# Prints as 'prefix:count'
+get_info_from_line() {
+	echo $(echo "$1" | grep -Po '(?<=prefix=\$).*?(?=\$)'):$(echo "$1" | grep -Po '(?<=count=)[0-9]+')
+}
+
+get_info() {
+	local CONFIG="$1"
+	IFS=$'\n'
+	local LINES=($(grep -nE "(auth|password).*$TCB_SO" "$CONFIG"))
+
+	for LINE in "${LINES[@]}"; do
+		INFO=$(get_info_from_line "$LINE")
+
+		if [ "$INFO" != ':' ]; then
+			echo "$INFO"
+		fi
+	done
+}
+
+make_unique() {
+	echo "$@" | tr ' ' '\n' | sort -u
+}
+
+replace_or_append_count_in_line() {
+	if echo "$1" | grep -qE 'count=[0-9]+' ; then
+		echo "$1" | sed -r "s|count=[0-9]+|count=$2|"
+	else
+		echo "$1 count=$2"
+	fi
+}
+
+replace_or_append_prefix_in_line() {
+	if echo "$1" | grep -qE 'prefix=\$.+\$' ; then
+		echo "$1" | sed -r "s|prefix=\\\$.+\\\$|prefix=\$$2\$|"
+	else
+		echo "$1 prefix=\$$2\$"
+	fi
+}
+
+replace_or_append_all_in_line() {
+	local LINE="$1"
+	local PREFIX="$2"
+	local HASH_NAME=$(get_hash_name "$PREFIX")
+	local COUNT=$(get_hash_count_default "$HASH_NAME")
+
+	if [ ! -z "$3" ] && is_valid_hash_count "$HASH_NAME" "$3"; then
+		COUNT="$3"
+	fi
+
+	LINE=$(replace_or_append_prefix_in_line "$LINE" "$PREFIX")
+	echo $(replace_or_append_count_in_line "$LINE" "$COUNT")
+}
+
+replace_or_append_all() {
+	local NEW_PREFIX="$1"
+	local CONFIG="$2"
+	local COUNT="$3"
+
+	IFS=$'\n'
+	local LINES=($(grep -nE "(auth|password).*$TCB_SO" "$CONFIG"))
+	for LINE in "${LINES[@]}"; do
+		LINE_NUM="${LINE%:*}"
+		LINE="${LINE#*:}"
+
+		NEW_LINE=$(replace_or_append_all_in_line "$LINE" "$NEW_PREFIX" "$COUNT")
+		sed -i "${LINE_NUM}s|.*|$NEW_LINE|" $CONFIG
+	done
+}
+
+remove_count_in_line() {
+	echo "$1" | sed -r "s| count=[0-9]+||"
+}
+
+remove_prefix_in_line() {
+	echo "$1" | sed -r "s| prefix=\\\$.+\\\$||"
+}
+
+remove_all_in_line() {
+	LINE=$(remove_prefix_in_line "$1")
+	echo $(remove_count_in_line "$LINE")
+}
+
+remove_all() {
+	local CONFIG="$1"
+
+	IFS=$'\n'
+	local LINES=($(grep -nE "(auth|password).*$TCB_SO" "$CONFIG"))
+	for LINE in "${LINES[@]}"; do
+		LINE_NUM="${LINE%:*}"
+		LINE="${LINE#*:}"
+
+		NEW_LINE=$(remove_all_in_line "$LINE")
+		sed -i "${LINE_NUM}s|.*|$NEW_LINE|" $CONFIG
+	done
+}
+
+case "${REQUEST}" in
+	help|'help '*)
+		control_help "${REQUEST#help}"
+		;;
+	list)
+		control_list
+		;;
+	summary)
+		control_summary
+		;;
+	status)
+		for CONFIG in "${CONFIGS[@]}"; do
+			INFO+=($(get_info "$CONFIG"))
+		done
+
+		INFO=($(make_unique "${INFO[@]}"))
+
+		if [ "${#INFO[@]}" \> 1 ]; then
+			echoerr 'Warning! Different hashing prefixes or counts were found'
+		elif [ "${#INFO[@]}" \== 0 ]; then
+			echo 'default'
+		fi
+
+		for TK in "${INFO[@]}"; do
+			PREFIX="${TK%:*}"
+			COUNT="${TK#*:}"
+
+			HASH_NAME=$(get_hash_name "$PREFIX")
+			echo "$HASH_NAME"
+			if ! is_valid_hash_count "$HASH_NAME" "$COUNT"; then
+				echoerr "Count is invalid: $COUNT"
+			fi
+		done
+		;;
+	*)
+		ARGS=($REQUEST)
+
+		if ! is_valid_hash_name "${ARGS[0]}"; then
+			echoerr "Invalid hash name ${ARGS[0]}"
+			exit 1
+		else
+			NEW_PREFIX=$(get_hash_prefix "${ARGS[0]}")
+			for CONFIG in "${CONFIGS[@]}"; do
+				if [ -z "$NEW_PREFIX" ]; then
+					remove_all "$CONFIG"
+				else
+					replace_or_append_all "$NEW_PREFIX" "$CONFIG" "${ARGS[1]}"
+				fi
+			done
+		fi
+		;;
+esac
+

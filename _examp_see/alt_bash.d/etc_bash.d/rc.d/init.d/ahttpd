@@ -1,0 +1,98 @@
+#!/bin/sh
+#
+# configd          Start/Stop alterator specific httpd
+#
+# chkconfig: 2345 95 05
+#
+# processname: ahttpd
+# config: /etc/ahttpd/ahttpd.conf
+# description: alterator specific httpd
+# pidfile: /var/run/ahttpd.pid
+
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+. cert-sh-functions
+. avahi-sh-functions
+. shell-config
+
+PIDFILE=/var/run/ahttpd.pid
+LOCKFILE=/var/lock/subsys/ahttpd
+CERTCONF=/etc/ahttpd/ahttpd.cnf
+RETVAL=0
+
+ahttpd_port()
+{
+    shell_config_get /etc/ahttpd/ahttpd.conf server-port '[[:space:]]\+'
+}
+
+start()
+{
+	ssl_generate "ahttpd"
+
+	export OPENSSL_CONF=/etc/ahttpd/openssl.cnf
+
+	start_daemon --background --pidfile "$PIDFILE" --make-pidfile --lockfile "$LOCKFILE" --expect-user _ahttpd --name ahttpd --displayname ahttpd -- ahttpd
+	RETVAL=$?
+
+	[ "$RETVAL" != "0" ] || publish_service ahttpd 'System management center at %h' '_https._tcp' "$(ahttpd_port)"
+
+	return $RETVAL
+}
+
+stop_old()
+{
+	stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user _ahttpd -- ahttpd >/dev/null 2>/dev/null
+}
+
+stop()
+{
+	stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user _ahttpd --name ahttpd --displayname ahttpd -- ahttpd
+	RETVAL=$?
+
+	[ "$RETVAL" != "0" ] || unpublish_service ahttpd
+
+	return $RETVAL
+}
+
+restart()
+{
+	stop_old #try to stop old daemon
+	stop
+	start
+}
+
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart|reload)
+		restart
+		;;
+	condstop)
+		if [ -e "$LOCKFILE" ]; then
+			stop
+		fi
+		;;
+	condrestart|condreload)
+		if [ -e "$LOCKFILE" ]; then
+			restart
+		fi
+		;;
+	status)
+		status --lockfile "$LOCKFILE" --pidfile "$PIDFILE" --expect-user _ahttpd --name ahttpd --displayname ahttpd -- ahttpd
+		RETVAL=$?
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart|condreload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

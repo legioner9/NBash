@@ -1,0 +1,141 @@
+#!/bin/sh
+#
+# Copyright (C) 2001-2005  Dmitry V. Levin <ldv@altlinux.org>
+#
+# The chrooted environment update program.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+
+[ -z "$DURING_INSTALL" ] || exit 0
+
+unset a f t force verbose
+
+# override PATH
+export PATH="/bin:/sbin:/usr/bin:/usr/sbin"
+
+usage()
+{
+	[ "$1" = 0 ] || exec >&2
+	cat <<EOF
+update_chrooted - updates chrooted environments according to specified types.
+
+Usage: update_chrooted [options] <type>...
+
+Valid options are:
+  -l, --list                    list registered types;
+  -f, --force                   force update;
+  -v, --verbose                 try to be more verbose;
+  -V, --version                 print program version and exit;
+  -h, --help                    show this text and exit.
+    
+Report bugs to http://bugs.altlinux.ru/
+
+EOF
+	[ -n "$1" ] && exit "$1" || exit
+}
+
+print_version()
+{
+	cat <<EOF
+update_chrooted version 0.3.12
+
+Copyright (C) 2001-2005  Dmitry V. Levin <ldv@altlinux.org>
+
+This is free software; see the source for copying conditions.
+There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Written by Dmitry V. Levin <ldv@altlinux.org>
+EOF
+	exit
+}
+
+t=`getopt -n update_chrooted -o l,f,v,V,h -l list,force,verbose,help,version -- "$@"` || exit
+eval set -- "$t"
+
+list=
+force="--no-force"
+verbose="--no-verbose"
+while :; do
+	case "$1" in
+		-l|--list) list=1
+			;;
+		-f|--force) force="-f"
+			;;
+		-v|--verbose) verbose="-v"
+			;;
+		-V|--version) print_version
+			;;
+		-h|--help) usage 0
+			;;
+		--) shift; break
+			;;
+		*) echo "update_chrooted: unrecognized option: $1" >&2; exit 1
+			;;
+	esac
+	shift
+done
+
+sysconf="/etc/sysconfig/chrooted"
+if [ -f "$sysconf" ] && [ -r "$sysconf" ]; then
+	. "$sysconf"
+	export DISABLE_HARDLINKS
+fi
+
+if [ -n "$list" ]; then
+	# No arguments, please.
+	[ "$#" -eq 0 ] || usage
+
+	type_list=
+	for f in /etc/chroot.d/*.*; do
+		# Check if the executable exists.
+		[ -e "$f" ] || continue
+
+		# Don't run *.rpm* and *~ scripts
+		[ "${f%.rpm*}" == "$f" -a "${f%\~}" == "$f" ] || continue
+
+		f="${f##*/}"
+		type_list="$type_list ${f##*.}"
+	done
+	type_list="$(echo "$type_list" |
+			tr -s ' ' '\n' |
+			grep '^.' |
+			LC_COLLATE=C sort -u |
+			tr '\n' ' ')"
+	if [ -n "$type_list" ]; then
+		echo "List of registered types: $type_list"
+	else
+		echo "No registered types found"
+	fi
+	exit
+fi
+
+# At least one argument, please.
+[ "$#" -ge 1 ] || usage
+
+for type in "$@"; do
+	[ -n "$type" ] || continue
+	for f in /etc/chroot.d/*."$type"; do
+		# Check if the executable exists.
+		[ -x "$f" ] || continue
+
+		# Don't run *.rpm* and *~ scripts
+		[ "${f%.rpm*}" == "$f" -a "${f%\~}" == "$f" ] || continue
+
+		"$f" $force $verbose
+	done
+done
+
+:

@@ -1,0 +1,291 @@
+#!/bin/sh
+
+if ! type -t success >/dev/null; then
+	WITHOUT_RC_COMPAT=1
+	. /etc/init.d/functions
+fi
+
+OPENSSL="${OPENSSL:-openssl}"
+OPENSSL_CONFIG="${OPENSSL_CONFIG:-openssl-config}"
+if type -t "$OPENSSL_CONFIG" >/dev/null; then
+	SSLDIR="${SSLDIR:-$($OPENSSL_CONFIG --openssldir ||:)}"
+fi
+SSLDIR="${SSLDIR:-/var/lib/ssl}"
+
+SSL_KEYDIR="$SSLDIR/private"
+SSL_CERTDIR="$SSLDIR/certs"
+SSL_CSRDIR="$SSLDIR/certs"
+
+SSL_KEY_BITS="${SSL_KEY_BITS:-2048}"
+SSL_DH_BITS="${SSL_DH_BITS:-1024}"
+SSL_CERT_DAYS="${SSL_CERT_DAYS:-365}"
+
+# 2 week
+SSL_CHECK_EXPIRED_INTERVAL="${SSL_CHECK_EXPIRED_INTERVAL:-14d}"
+SSL_RENEW_SELFSIGNED="${SSL_RENEW_SELFSIGNED:-1}"
+
+#certificate config template
+DEFAULT_CERT="
+[ req ]
+encrypt_key = yes
+distinguished_name = req_dn
+x509_extensions = cert_type
+prompt = no
+
+[ req_dn ]
+CN=@HOSTNAME@
+O=@PRODUCT@
+
+[ cert_type ]
+nsCertType = server
+"
+
+TEMP_CERT=
+
+_ssl_exit_handler()
+{
+	local rc=$?
+	trap - EXIT
+	[ -z "$TEMP_CERT" ] ||
+	    rm -f -- "$TEMP_CERT"
+	exit $rc
+}
+
+ssl_fatal()
+{
+	SSL_ERROR_FATAL=yes
+	_ssl_error "$@"
+}
+
+_ssl_error()
+{
+	printf >&2 '%s\n' "${0##*/}: $*"
+	if is_yes "$SSL_ERROR_FATAL"; then
+		exit 1
+	fi
+
+	return 1
+}
+
+_ssl_check_args()
+{
+	if [ -z "$1" ]; then
+		_ssl_error 'Insufficient arguments.'
+		return 1
+	fi
+
+	return 0
+}
+
+#private key
+
+ssl_check_key()
+{
+    [ -n "$1" -a -f "$SSL_KEYDIR/$1.key" ]
+}
+
+ssl_make_key()
+{
+    ssl_check_key "$@" && return
+	_ssl_check_args "$@" || return 1
+
+    "$OPENSSL" genrsa -out "$SSL_KEYDIR/$1.key" "${2:-$SSL_KEY_BITS}" >/dev/null 2>&1 ||
+	_ssl_error "Unable to create private key"
+}
+
+#certificate request
+
+_ssl_make_req()
+{
+    local name=
+    name="$1" && shift
+
+    "$OPENSSL" req -sha256 -batch -new -key "$SSL_KEYDIR/$name.key" -out "$SSL_CSRDIR/$name.csr" "$@" ||
+	_ssl_error "Unable to create sign request"
+}
+
+ssl_check_req()
+{
+    [ -n "$1" -a -f "$SSL_CSRDIR/$1.csr" ]
+}
+
+ssl_make_req()
+{
+    ssl_check_req "$@" && return
+	_ssl_check_args "$@" || return 1
+
+    local name=
+    name="$1" && shift
+
+    if [ $# -gt 0 ]; then
+	if [ -f "$1" ]; then
+	    _ssl_make_req "$name" -config "$1"
+	else
+	    _ssl_make_req "$name" -subj "$@"
+	fi
+    else
+	local CURRENT_HOSTNAME="$(hostname)"
+	HOSTNAME="${HOSTNAME:-$CURRENT_HOSTNAME}"
+	HOSTNAME="${HOSTNAME:-localhost.localdomain}"
+
+	trap _ssl_exit_handler HUP INT QUIT TERM EXIT
+	TEMP_CERT="$(mktemp -t default.cnf.XXXXXX)"
+	echo "$DEFAULT_CERT" |
+	    sed -e "s|@HOSTNAME@|$HOSTNAME|" -e "s|@PRODUCT@|$name|" >"$TEMP_CERT"
+
+	_ssl_make_req "$name" -config "$TEMP_CERT"
+	local rc="$?"
+	rm -f -- "$TEMP_CERT"
+	TEMP_CERT=
+	return $rc
+    fi
+}
+
+#certificate
+
+ssl_check_cert()
+{
+    [ -n "$1" -a -f "$SSL_CERTDIR/$1.cert" ]
+}
+
+ssl_make_cert()
+{
+    ssl_check_cert "$1" && return
+	_ssl_check_args "$@" || return 1
+
+	if ! "$OPENSSL" x509 -req -sha256 -days "${2:-$SSL_CERT_DAYS}" -in "$SSL_CSRDIR/$1.csr" -signkey "$SSL_KEYDIR/$1.key" -out "$SSL_CERTDIR/$1.cert" >/dev/null 2>&1; then
+		_ssl_error 'Unable to create certificate'
+		return 1
+	fi
+
+    ln -sf "$1.cert" "$SSL_CERTDIR/$1.pem" &&
+	c_rehash "$SSL_CERTDIR" >/dev/null
+}
+
+ssl_check_cert_selfsigned()
+{
+	_ssl_check_args "$@" || return 1
+	ssl_check_cert "$1" || return 1
+
+	local issuer="$("$OPENSSL" x509 -noout -issuer -in "$SSL_CERTDIR/$1.cert")"
+	local subject="$("$OPENSSL" x509 -noout -subject -in "$SSL_CERTDIR/$1.cert")"
+
+	[ -n "$issuer" -a -n "$subject" -a "${issuer#issuer=}" = "${subject#subject=}" ]
+}
+
+ssl_check_cert_expired()
+{
+	local time=0
+	local unit=
+
+	ssl_check_cert "$1" || return 1
+	_ssl_check_args "$@" || return 1
+
+	if [ -n "${2-}" ]; then
+		unit="${2##*[0-9]}"
+		[ -n "$unit" ] || unit='s'
+
+		case "$unit" in
+			s|sec|seconds)
+				time="${2%$unit}"
+				;;
+			m|minutes)
+				time="$((${2%$unit} * 60))"
+				;;
+			h|hours)
+				time="$((${2%$unit} * 60 * 60))"
+				;;
+			d|days)
+				time="$((${2%$unit} * 60 * 60 * 24))"
+				;;
+			*)
+				_ssl_error "Unknown time unit $unit"
+				return 1
+				;;
+		esac
+	fi
+
+	"$OPENSSL" x509 -in "$SSL_CERTDIR/$1.cert" -noout -checkend "$time" &&
+		return 1 || return 0
+}
+
+#PEM certificate
+
+ssl_check_pem()
+{
+    [ -n "$1" -a -f "$SSL_KEYDIR/$1.pem" -a ! "$SSL_KEYDIR/$1.pem" -ot "$SSL_KEYDIR/$1.key" -a ! "$SSL_KEYDIR/$1.pem" -ot "$SSL_CERTDIR/$1.cert" ]
+}
+
+ssl_make_pem()
+{
+    ssl_check_pem "$@" && return
+	_ssl_check_args "$@" || return 1
+
+    cat "$SSL_CERTDIR/$1.cert" "$SSL_KEYDIR/$1.key" > "$SSL_KEYDIR/$1.pem" ||
+	_ssl_error 'Unable to create PEM certificate'
+}
+
+#dh params
+
+ssl_check_dhparam()
+{
+    [ -n "$1" -a -f "$SSL_KEYDIR/$1.dh" ]
+}
+
+
+ssl_make_dhparam()
+{
+    "$OPENSSL" dhparam -out "$SSL_KEYDIR/$1.dh" "${2:-$SSL_DH_BITS}" >/dev/null 2>&1 ||
+	_ssl_error 'Unable to genarate DH parameters'
+}
+
+ssl_action()
+{
+    local fun="$1"; shift
+    local msg="$1"; shift
+
+    printf $"Generating %s %s: " "$1" "$msg" 
+
+    if "$fun" "$@"; then
+	success "$1 $msg generation"
+	echo
+    else
+	failure "$1 $msg generation"
+	echo
+	exit 1
+    fi
+}
+
+ssl_generate()
+{
+	_ssl_check_args "$@" || return 1
+
+	if [ -n "$SSL_CHECK_EXPIRED_INTERVAL" -a "$SSL_CHECK_EXPIRED_INTERVAL" != 'none' ]; then
+		if ssl_check_cert_expired "$1" "$SSL_CHECK_EXPIRED_INTERVAL"; then
+			local enddate="$($OPENSSL x509 -noout -enddate -in "$SSL_CERTDIR/$1.cert" | \
+				sed -nr 's/^[[:blank:]]*notAfter=(.+)$/\1/p' 2>/dev/null)"
+			printf "SSL certificate %s will be expired at %s\n" "$1" "$enddate"
+
+			if is_yes "$SSL_RENEW_SELFSIGNED" && ssl_check_cert_selfsigned "$1"; then
+				printf "Generate new self-signed SSL certificate %s\n" "$1"
+				rm -f -- "$SSL_KEYDIR/$1.key" "$SSL_KEYDIR/$1.pem" "$SSL_CERTDIR/$1.cert" \
+					"$SSL_CERTDIR/$1.pem" "$SSL_CSRDIR/$1.csr"
+			fi
+		fi
+	fi
+
+	# Make errors fatal
+	SSL_ERROR_FATAL=1
+
+    ssl_check_key "$@" ||
+	ssl_action ssl_make_key "SSL private key" "$@"
+
+    ssl_check_req "$@" ||
+	ssl_action ssl_make_req "SSL certificate request" "$@"
+
+    ssl_check_cert "$@" ||
+	ssl_action ssl_make_cert "SSL self-signed certificate" "$@"
+
+    ssl_check_pem "$@" ||
+	ssl_action ssl_make_pem "SSL PEM certificate" "$@"
+}

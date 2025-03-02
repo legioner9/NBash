@@ -1,0 +1,61 @@
+#!/bin/sh
+
+. /etc/control.d/functions
+
+CONFIG=/lib/udev/rules.d/90-virtualbox.rules
+BINARY=`readlink -f /usr/bin/VirtualBoxVM`
+VBOXDIR=`dirname $BINARY`
+BINARY1="$VBOXDIR/VBoxHeadless"
+BINARY2="$VBOXDIR/VBoxNetDHCP"
+BINARY3="$VBOXDIR/VBoxNetAdpCtl"
+BINARY4="$VBOXDIR/VBoxSDL"
+BINARY5="$VBOXDIR/VBoxNetNAT"
+BINARY6="$VBOXDIR/VBoxVolInfo"
+BINARY7="$VBOXDIR/VBoxExtPackHelperApp"
+DEVICE=/dev/vboxdrv
+
+new_fmode public 666 root root
+new_fmode vboxusers 660 root vboxusers
+new_fmode restricted 600 root root
+
+new_subst public \
+        '^KERNEL=="vboxdrv",[[:space:]]*MODE="0666",[[:space:]]*GROUP="[^"]*"[[:space:]]*$' \
+        's/^KERNEL=="vboxdrv",[[:space:]]*MODE="[^"]*",[[:space:]]*GROUP="[^"]*"[[:space:]]*$/KERNEL=="vboxdrv", MODE="0666", GROUP="root"/g
+         s/^KERNEL=="vboxnetctl",[[:space:]]*MODE="[^"]*",[[:space:]]*GROUP="[^"]*"[[:space:]]*$/KERNEL=="vboxnetctl", MODE="0666", GROUP="root"/g'
+new_subst vboxusers \
+        '^KERNEL=="vboxdrv",[[:space:]]*MODE="0660",[[:space:]]*GROUP="vboxusers"[[:space:]]*$' \
+        's/^KERNEL=="vboxdrv",[[:space:]]*MODE="[^"]*",[[:space:]]*GROUP="[^"]*"[[:space:]]*$/KERNEL=="vboxdrv", MODE="0660", GROUP="vboxusers"/g
+         s/^KERNEL=="vboxnetctl",[[:space:]]*MODE="[^"]*",[[:space:]]*GROUP="[^"]*"[[:space:]]*$/KERNEL=="vboxnetctl", MODE="0660", GROUP="vboxusers"/g'
+new_subst restricted \
+        '^KERNEL=="vboxdrv",[[:space:]]*MODE="0600",[[:space:]]*GROUP="[^"]*"[[:space:]]*$' \
+        's/^KERNEL=="vboxdrv",[[:space:]]*MODE="[^"]*",[[:space:]]*GROUP="[^"]*"[[:space:]]*$/KERNEL=="vboxdrv", MODE="0600", GROUP="root"/g
+         s/^KERNEL=="vboxnetctl",[[:space:]]*MODE="[^"]*",[[:space:]]*GROUP="[^"]*"[[:space:]]*$/KERNEL=="vboxnetctl", MODE="0600", GROUP="root"/g'
+
+new_summary "VirtualBox support (vboxdrv)"
+new_help public "Any user can use VirtualBox"
+new_help vboxusers "Only \"vboxusers\" group members can use VirtualBox"
+new_help restricted "Only root can use VirtualBox"
+
+control_subst "$CONFIG" "$*" || exit 1
+
+is_builtin_mode "$*" && exit 0
+
+# Fix device permissions if udev is not used for some reason
+if [ -c "$DEVICE" ]; then
+	control_fmode "$DEVICE" "$*" || exit 1
+fi
+
+new_fmode public_binary 4711 root root
+new_fmode vboxusers_binary 4710 root vboxusers
+new_fmode restricted_binary 700 root root
+
+[ -f "$BINARY" ] || exit 0
+# Fix binary permissions
+control_fmode "$BINARY" "$*_binary" || exit 1
+control_fmode "$BINARY1" "$*_binary" || exit 1
+control_fmode "$BINARY2" "$*_binary" || exit 1
+control_fmode "$BINARY3" "$*_binary" || exit 1
+control_fmode "$BINARY4" "$*_binary" || exit 1
+control_fmode "$BINARY5" "$*_binary" || exit 1
+control_fmode "$BINARY6" "$*_binary" || exit 1
+control_fmode "$BINARY7" "$*_binary" || exit 1

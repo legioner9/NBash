@@ -1,0 +1,81 @@
+#!/bin/sh
+#
+# chkconfig: 5 45 05
+# description: This startup script launches the graphical display manager
+
+# Source function library.
+. /etc/init.d/functions
+
+LOCKFILE=/var/lock/subsys/dm
+RETVAL=0
+
+start()
+{
+	msg_starting $"display manager"
+	local args=
+	for f in `sed -ne 's,^\([0-9]\+\):[0-9]\+:respawn:/sbin/mingetty.*,/dev/tty\1,pg' </etc/inittab`; do
+		[ ! -c "$f" ] || args="$args $f"
+	done
+	start_daemon --lockfile "$LOCKFILE" --expect-user root --no-announce -- rundm $args --
+	RETVAL=$?
+	return $RETVAL
+}
+
+stop()
+{
+	local FGCONSOLE=`absolute fgconsole`
+	local CHVT=`absolute chvt`
+
+	local fgconsole=
+	if [ -x "$FGCONSOLE" ]; then
+		fgconsole=`$FGCONSOLE`
+	fi
+
+	msg_stopping $"display manager"
+	stop_daemon --lockfile "$LOCKFILE" --expect-user root --no-announce -- rundm
+	RETVAL=$?
+
+	if [ -n "$fgconsole" -a -x "$CHVT" ]; then
+		$CHVT "$fgconsole"
+	fi
+	
+	return $RETVAL
+}
+
+restart()
+{
+	stop
+	start
+}
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	reload|restart)
+		restart
+		;;
+	condstop)
+		if [ -e "$LOCKFILE" ]; then
+			stop
+		fi
+		;;
+	condreload|condrestart)
+		if [ -e "$LOCKFILE" ]; then
+			restart
+		fi
+		;;
+	status)
+		status --expect-user root -- rundm
+		RETVAL=$?
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|restart|condstop|condrestart|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

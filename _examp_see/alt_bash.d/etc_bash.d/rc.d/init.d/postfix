@@ -1,0 +1,149 @@
+#!/bin/sh
+#
+# postfix	This script takes care of starting and stopping postfix MTA.
+#
+# chkconfig:	2345 80 30
+#
+# description: \
+#	Postfix is Wietse Venema's attempt to provide an alternative to \
+#	the widely-used sendmail program.  Postfix Mail Transport Agent \
+#	attempts to be fast, easy to administer, and hopefully secure, \
+#	while at the same time being sendmail compatible enough to not \
+#	upset your users.
+#
+# processname:	master
+# config: /etc/postfix/
+# pidfile: /var/spool/postfix/pid/master.pid
+
+# Do not load RH compatibility interface.
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+# Source networking configuration.
+SourceIfNotEmpty /etc/sysconfig/network
+
+DAEMON=/usr/sbin/postfix
+ROOT=/var/spool/postfix
+ALIASES=/etc/postfix/aliases
+LOCKFILE=/var/lock/subsys/postfix
+RETVAL=0
+
+adjust()
+{
+	local generate_ssl_cert=/usr/sbin/postfix-generate-ssl-certificate
+	if [ -x /usr/libexec/postfix/smtpd-tls -a -x "$generate_ssl_cert" ]; then
+		"$generate_ssl_cert"
+	fi
+	getent aliases root >/dev/null || {
+		if [ ! -s "$ALIASES" ] ||
+		   cmp -s -- /usr/share/sendmail-common/aliases "$ALIASES"; then
+			text=Creating
+		else
+			local backup="$ALIASES.backup-$(date +%s)"
+			action "Saving incomplete $ALIASES as $backup:" \
+				cp -p -- "$ALIASES" "$backup"
+			text=Rewriting
+		fi
+		action "$text $ALIASES:" \
+			/usr/share/sendmail-common/make_aliases "$ALIASES"
+	}
+	action "Adjusting environment for postfix:" /etc/chroot.d/postfix.all || return
+	RETVAL=$?
+	return $RETVAL
+}
+
+start()
+{
+	is_yes "$NETWORKING" || return 0
+	adjust || return
+	check || return
+	action "Starting postfix:" "$DAEMON" start
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] && touch "$LOCKFILE"
+	return $RETVAL
+}
+
+stop()
+{
+	action "Shutting down postfix:" "$DAEMON" stop
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] && rm -f "$LOCKFILE"
+	return $RETVAL
+}
+
+abort()
+{
+	action "Aborting postfix:" "$DAEMON" abort
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] && rm -f "$LOCKFILE"
+	return $RETVAL
+}
+
+check()
+{
+	echo -n "Checking postfix configuration: "
+	if "$DAEMON" check; then
+		success "postfix check"
+		RETVAL=0
+	else
+		failure "postfix check"
+		RETVAL=1
+	fi
+	echo
+	return $RETVAL
+}
+
+flush()
+{
+	action "Flushing postfix queue:" "$DAEMON" flush
+	RETVAL=$?
+	return $RETVAL
+}
+
+reload()
+{
+	adjust || return
+	check || return
+	action "Reloading postfix configuration:" "$DAEMON" reload
+	RETVAL=$?
+	return $RETVAL
+}
+
+restart()
+{
+	stop
+	start
+}
+
+# See how we were called.
+case "$1" in
+	start|stop|adjust|reload|restart|abort|check|flush)
+		"$1"
+		;;
+	condstop)
+		if [ -e "$LOCKFILE" ]; then
+			stop
+		fi
+		;;
+	condrestart)
+		if [ -e "$LOCKFILE" ]; then
+			restart
+		fi
+		;;
+	condreload)
+		if [ -e "$LOCKFILE" ]; then
+			reload
+		fi
+		;;
+	status)
+		status --expect-user root /usr/libexec/postfix/master
+		RETVAL=$?
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|adjust|reload|restart|abort|check|flush|condstop|condrestart|condreload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

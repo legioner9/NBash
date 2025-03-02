@@ -1,0 +1,92 @@
+#!/bin/sh
+#
+# blkmapd       Start up and shut down pNFS block layout mappind daemon
+#
+# chkconfig:    - 19 69
+# description:  pNFS-related daemon performing device discovery and mapping
+# processname:  blkmapd
+# pidfile:      /var/run/blkmapd.pid
+
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+# Source networking configuration.
+# Check that networking is up.
+SourceIfNotEmpty /etc/sysconfig/network
+
+is_yes "$NETWORKING" || exit 0
+
+BLKMAPD=/usr/sbin/blkmapd
+RPCPIPEFS=/var/lib/nfs/rpc_pipefs
+
+PIDFILE=/var/run/blkmapd.pid
+LOCKFILE=/var/lock/subsys/blkmapd
+RETVAL=0
+
+mount_rpcpipefs()
+{
+    [ -d "$RPCPIPEFS/nfs" ] || {
+	modprobe sunrpc ||:
+	mount -t rpc_pipefs rpc_pipefs "$RPCPIPEFS"
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] || return $RETVAL
+    }
+}
+
+start()
+{
+    mount_rpcpipefs
+    RETVAL=$?
+    [ $RETVAL -eq 0 ] || return $RETVAL
+
+    start_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root $BLKMAPD
+    RETVAL=$?
+    return $RETVAL
+}
+
+stop()
+{
+    stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root $BLKMAPD
+    RETVAL=$?
+    return $RETVAL
+}
+
+restart()
+{
+    stop
+    start
+}
+
+# See how we were called.
+case "$1" in
+    start)
+	start
+	;;
+    stop)
+	stop
+	;;
+    restart|reload)
+	restart
+	;;
+    condstop)
+	if [ -e "$LOCKFILE" ]; then
+	    stop
+	fi
+	;;
+    condrestart|condreload)
+	if [ -e "$LOCKFILE" ]; then
+	    restart
+	fi
+	;;
+    status)
+	status --pidfile "$PIDFILE" --expect-user root $BLKMAPD
+	RETVAL=$?
+	;;
+    *)
+	msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart|condreload|status}"
+	RETVAL=1
+esac
+
+exit $RETVAL

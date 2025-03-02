@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -n "$XDG_DATA_DIRS" ] ; then
+    export XDG_DATA_DIRS="/usr/share/kf5:$XDG_DATA_DIRS"
+else
+    export XDG_DATA_DIRS="/usr/share/kf5:/usr/share"
+fi
+
+dbus-send --session --print-reply --dest=org.freedesktop.systemd1 /org/freedesktop/systemd1 org.freedesktop.systemd1.Manager.SetEnvironment array:string:"XDG_DATA_DIRS=$XDG_DATA_DIRS"
+dbus-send --session --print-reply --dest=org.freedesktop.systemd1 /org/freedesktop/systemd1 org.freedesktop.systemd1.Manager.Reload
+dbus-send --session --print-reply --dest=org.freedesktop.systemd1 /org/freedesktop/systemd1 org.freedesktop.systemd1.Manager.RestartUnit string:dbus.service string:replace

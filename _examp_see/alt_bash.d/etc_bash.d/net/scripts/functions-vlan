@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# get VLAN iface name by host iface and VLAN ID
+# Used by {create,destroy}_vlan_iface()
+get_vlan_ifname()
+{
+	local HOSTIFACE=${1:?missing 1st arg to $FUNCNAME}
+	local VID=${2:?missing 2nd arg to $FUNCNAME}
+	grep "|\ *$VID\ *|\ *$HOSTIFACE" /proc/net/vlan/config | cut -d' ' -f1
+}
+
+# create VLAN iface <parent iface> <VLAN ID> [name]
+# Used by create-vlan and start_vlantab()
+create_vlan_iface()
+{
+	local HOST_IFACE=${1:?missing 1st arg to $FUNCNAME}
+	local VID=${2:?missing 2nd arg to $FUNCNAME}
+	local NAME=${3:?missing 3rd arg to $FUNCNAME}
+	local ADDRESS=$4
+	is_no "$VLAN_REORDER_HDR" && VLAN_REORDER_PARAM="reorder_hdr off" || VLAN_REORDER_PARAM="reorder_hdr on" 
+	$IP link add link $HOST_IFACE name $NAME type vlan id $VID $VLAN_REORDER_PARAM >/dev/null 2>&1 || return 1
+	[ -n "$ADDRESS" ] && $IP address add $ADDRESS dev $NAME
+	return 0
+}
+
+# Used by destroy-vlan and stop_vlantab()
+destroy_vlan_iface()
+{
+	local HOST_IFACE=${1:?missing 1st arg to $FUNCNAME}
+	local VID=${2:?missing 2nd arg to $FUNCNAME}
+	local NAME=`get_vlan_ifname $HOST_IFACE $VID`
+	# We must do it regardless of DONT_FLUSH
+	$IP address flush dev $NAME >/dev/null 2>&1
+	$IP link del $NAME >/dev/null 2>&1 || return 1
+	return 0
+}

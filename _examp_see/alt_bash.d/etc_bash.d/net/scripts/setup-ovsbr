@@ -1,0 +1,13 @@
+#!/bin/bash
+
+pickup_defaults
+init_netprofile
+pickup_options
+
+for host in $HOST; do
+	$OVS_VSCTL -t $OVS_VSCTL_TIMEOUT -- --may-exist add-port "$NAME" "$host" && print_progress
+done
+
+if [ -n "$OVS_OPTIONS" ] || [ -n "$OVS_EXTRA" ]; then
+	$OVS_VSCTL -t $OVS_VSCTL_TIMEOUT -- set Bridge $NAME $OVS_OPTIONS ${OVS_EXTRA+-- $OVS_EXTRA} && print_progress
+fi

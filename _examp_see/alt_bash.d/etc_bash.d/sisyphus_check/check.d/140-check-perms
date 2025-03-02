@@ -1,0 +1,46 @@
+#!/bin/sh -efu
+
+package_type="${package_type?}"
+
+# check files permissions
+check_perms()
+{
+	local f="$1" && shift || return 1
+	local rc=0
+
+	if printf %s "$rpm_perms_filenames" |grep -E '^-..s(r|.w|...r|....w)|^-...((r.|.w)s|..s(r|.w))' >&2; then
+		FileError 'unsafe suid/sgid file permissions (readable or writable)' "$f"
+		rc=1
+	fi
+	if printf %s "$rpm_perms_filenames" |grep -E '^[^l].(w|..r|...w|.....r|......w)[^/]+/etc/sudo\.d/' >&2; then
+		FileError 'unsafe /etc/sudo.d/ file permissions (should be 0400)' "$f"
+		rc=1
+	fi
+	if printf %s "$rpm_perms_filenames" |grep -E '^[^l]....(w|...w)[^/]+/usr/' >&2; then
+		FileError 'writable files in /usr/' "$f"
+		rc=1
+	fi
+	if printf %s "$rpm_perms_filenames" |grep '^d......rwx' >&2; then
+		FileError 'world writable directories' "$f"
+		rc=1
+	fi
+	if printf %s "$rpm_perms_filenames" |grep -E '^d((r.|.w)[^sx]|...(r.|.w)[^sx]|......(r.|.w)[^tx])' >&2; then
+		FileError 'accessible directories must have appropriate executable bits set' "$f"
+		rc=1
+	fi
+	if [ "$package_type" = src ]; then
+		if printf %s "$rpm_perms_filenames" |grep -E '^-([^r]|.[^w])' >&2; then
+			FileError 'bad permissions in source archive' "$f"
+			rc=1
+		fi
+	fi
+
+	return $rc
+}
+
+run_check() {
+	if ! check_perms "$1"; then
+		CheckError 'file permissions violation'
+		return 1
+	fi
+}

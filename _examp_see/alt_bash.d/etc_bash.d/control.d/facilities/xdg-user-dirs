@@ -1,0 +1,15 @@
+#!/bin/bash
+
+. /etc/control.d/functions
+
+CONFIG=/etc/xdg/user-dirs.conf
+
+new_subst enabled '^enabled=[t|T]rue' 's,enabled=[f|F]alse,enabled=true,'
+new_subst disabled '^enabled=[f|F]alse' 's,enabled=[t|T]rue,enabled=false,'
+
+new_help enabled 'Enable xdg-user-dirs update'
+new_help disabled 'Disable xdg-user-dirs update'
+
+new_summary 'xdg-user-dirs behavour'
+
+control_subst "$CONFIG" "$*"

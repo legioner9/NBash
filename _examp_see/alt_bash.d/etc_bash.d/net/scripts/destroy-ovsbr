@@ -1,0 +1,11 @@
+#!/bin/bash
+
+pickup_defaults
+pickup_options
+
+[ -x "${OVS_VSCTL:=$DEFAULT_OVS_VSCTL}" ] || {
+	print_error "$OVS_VSCTL does not exist or is not executable. Try installing openvswitch RPM."
+	exit 1
+}
+
+is_yes $OVS_REMOVE && $OVS_VSCTL -t $OVS_VSCTL_TIMEOUT -- --if-exists del-br "$NAME"

@@ -1,0 +1,83 @@
+#!/bin/bash
+#
+# chkconfig: 12345 02 99
+# description: Starts and stops LVM poll daemon
+#
+# processname:  lvmpolld
+# pidfile:      /var/run/lvmpolld.pid
+#
+### BEGIN INIT INFO
+# Provides: lvm2-lvmpolld
+# Required-Start: $local_fs
+# Required-Stop: $local_fs
+# Default-Start: 1 2 3 4 5
+# Default-Stop: 0 6
+# Short-Description: A daemon that is responsible for monitoring in-progress
+#                    and possibly longer term operations on logical volumes..
+#                    It helps to reduce the number of spawned processes if same
+#                    logical volume is requested to get monitored multiple times.
+#                    Also avoids unsolicited termination due to external factors.
+### END INIT INFO
+
+WITHOUT_RC_COMPAT=1
+
+. /etc/init.d/functions
+
+DAEMON=lvmpolld
+
+LOCKFILE="/run/lock/subsys/$DAEMON"
+PIDFILE="/run/lvmpolld.pid"
+RETVAL=0
+
+start()
+{
+	start_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root $DAEMON
+	RETVAL=$?
+	return $RETVAL
+}
+
+
+stop()
+{
+	stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root $DAEMON
+	RETVAL=$?
+	return $RETVAL
+}
+
+restart()
+{
+    stop
+    start
+}
+
+# See how we were called.
+case "$1" in
+    start)
+	start
+	;;
+    stop)
+	stop
+	;;
+    restart|reload)
+	restart
+	;;
+    condstop)
+	if [ -e "$LOCKFILE" ]; then
+	    stop
+	fi
+	;;
+    condrestart|condreload)
+	if [ -e "$LOCKFILE" ]; then
+	    restart
+	fi
+	;;
+    status)
+	status --pidfile "$PIDFILE" --expect-user root $DAEMON
+	RETVAL=$?
+	;;
+    *)
+        msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart|condreload|status}"
+        RETVAL=1
+esac
+
+exit $RETVAL

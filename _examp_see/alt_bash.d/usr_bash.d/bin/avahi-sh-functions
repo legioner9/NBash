@@ -1,0 +1,60 @@
+#!/bin/sh -efu
+
+. shell-error
+. shell-getopt
+
+avahi_service_dir=/etc/avahi/services
+
+#usage: publish_service [options] file name service-type port [TXT data ...]
+#looks like avahi-publish-service utility
+publish_service()
+{
+    [ -d "$avahi_service_dir" ] || return
+
+    ## read optional args
+
+    local temp=`getopt -n $PROG -o "s:" -l "subtype:" -- "$@"` ||
+	fatal "usage: publish_service [options] file name service-type port [TXT data ...]"
+    eval set -- "$temp"
+
+    local subtype=
+    while :; do
+	case "$1" in
+		-s|--subtype) subtype="$2";shift ;;
+		--) shift; break ;;
+	esac
+	shift
+    done
+
+    ## read args
+    local file="$1";shift
+    local name="$1";shift
+    local type="$1";shift
+    local port="$1";shift
+
+    ## write  service definition file and reload avahi
+    local f="$avahi_service_dir/$file.service"
+
+    cat>"$f"<<EOF
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+<service-group>
+    <name replace-wildcards="yes">$name</name>
+    <service>
+	<type>$type</type>
+	<port>$port</port>
+	$([ -z "$subtype" ] || echo "<subtype>$subtype</subtype>")
+	$( while [ $# -gt 0 ]; do echo -n "<txt-record>$1</txt-record>"; shift; done)
+    </service>
+</service-group>
+EOF
+}
+
+unpublish_service()
+{
+    [ -d "$avahi_service_dir" ] || return
+
+    local f="$avahi_service_dir/$1.service"
+
+    [ -f "$f" ] && rm -f "$f"
+}

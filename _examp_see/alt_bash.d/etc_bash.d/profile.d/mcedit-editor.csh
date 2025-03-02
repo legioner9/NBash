@@ -1,0 +1,2 @@
+
+setenv EDITOR mcedit

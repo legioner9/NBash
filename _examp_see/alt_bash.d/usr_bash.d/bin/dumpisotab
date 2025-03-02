@@ -1,0 +1,22 @@
+#!/usr/bin/guile -s
+!#
+
+(use-modules (ice-9 rdelim))
+
+(define (comment? line)
+  (or (string-null? line)
+      (char=? #\# (string-ref line 0))))
+
+(define (out line)
+  (let ((idx (string-index line #\ht)))
+    (format #t "~A\t~A~%" (substring line 0 idx) (gettext (substring line (+ 1 idx)) "alterator-tzone-co"))))
+
+(setlocale LC_ALL "")
+
+(with-input-from-file
+  "/usr/share/zoneinfo/iso3166.tab"
+  (lambda()
+    (let loop ((line (read-line)))
+      (or (eof-object? line)
+          (begin (or (comment? line) (out line))
+                 (loop (read-line)))))))

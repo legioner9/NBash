@@ -1,0 +1,195 @@
+#!/bin/sh -efu
+
+rpm_name="${rpm_name?RPM name required}"
+rpm_release="${rpm_release?RPM release required}"
+rpm_group="${rpm_group?RPM group required}"
+rpm_requires="${rpm_requires?}"
+package_type="${package_type?}"
+
+kernel_version_code() {
+	local release="$1" && shift
+	local kver version patchlevel sublevel
+
+	kver="$(printf %s "$release"    | cut -d- -f1)"
+	version="$(printf %s "$kver"    | cut -d. -f1)"
+	patchlevel="$(printf %s "$kver" | cut -d. -f2)"
+	sublevel="$(printf %s "$kver"   | cut -d. -f3)"
+	suffix="$(printf %s "$kver"     | cut -d. -f4)"
+	[ -z "$suffix" ] || suffix=".e$suffix"
+
+	printf '%s' "$(($version * 65536 + $patchlevel * 256 + $sublevel))$suffix"
+}
+
+check_builtin_kmodule() {
+	if [ "$rpm_version" != "$kernel_version" -a "${rpm_version#*_}" != "$kernel_version" ]; then
+		FileError "kernel module VERSION ($rpm_version) should contain kernel image version ($kernel_version)" "$f"
+		return 1
+	fi
+
+	if [ "$rpm_release" != "alt$kernel_release" ]; then
+		FileError "kernel module RELEASE ($rpm_release) and kernel image release (alt$kernel_release) should be identical" "$f"
+		return 1
+	fi
+}
+
+check_standalone_kmodule() {
+	if [ "$rpm_release" = "${rpm_release%.$kernel_code.$kernel_release}" ]; then
+		FileError "kernel module RELEASE ($rpm_release) should end with appropriate suffix (.$kernel_code.$kernel_release) to match kernel image version and release specified by requirements on kernel image" "$f"
+		return 1
+	fi
+}
+
+kernel_pattern=
+check_kmodule() {
+	local f="$1" && shift || return 1
+
+	if [ "$rpm_arch" = 'noarch' ]; then
+		FileError "architecture should not be 'noarch'" "$f"
+		return 1
+	fi
+
+	local kernel_require kernel_flavour kernel_version kernel_release_disttag kernel_release kernel_code
+
+	kernel_require="$(printf %s "$rpm_requires" |cut -d' ' -f1,3- |grep "^$kernel_pattern" |sort -u)"
+
+	if [ -z "$kernel_require" ]; then
+		FileError "kernel module should require kernel image" "$f"
+		return 1
+	fi
+
+	if [ -z "${kernel_require##*
+*}" ]; then
+		FileError "kernel module should require only one kernel image: $(oneliner "$kernel_require")" "$f"
+		return 1
+	fi
+
+	if [ -n "${kernel_require##* = *}" ]; then
+		FileError "kernel module requirement ($kernel_require) should specify a kernel version" "$f"
+		return 1
+		# As for src rpms (that are checked here as well), there are
+		# actually no general considerations that make version necessary in
+		# the BuildRequires; the check of src rpms has traditionally been here,
+		# but is obviously excessive given the current practice:
+		# %setup_kernel_module queries the kernel-headers-modules-%kflavour pkg
+		# to determine %kepoch, %kversion, %krelease etc.
+		# (hsh --query-repackage would rebuild such src rpm with any headers.)
+		#
+		# * BuildRequires with a version would be useful in the case when
+		# %kepoch, %kversion, %krelease are set manually (say, by specsubst);
+		# then this BuildRequires would formally express the intention
+		# to build for the specific version.
+		#
+		# * There is another tiny use of the BuildRequires with version
+		# for sisyphus_check: it communicates the selected version to us,
+		# and makes possible to check that the kcode in the release is correct.
+		# (To leave this check for src rpms, we leave this requirement.)
+	fi
+
+	kernel_flavour="${kernel_require#$kernel_pattern}"
+	kernel_flavour="${kernel_flavour%% *}"
+
+	kernel_version="${kernel_require##* = }"
+	kernel_version="${kernel_version%%-alt*}"
+	kernel_version="${kernel_version#*:}"
+	kernel_code="$(kernel_version_code "$kernel_version")"
+
+	kernel_release_disttag="${kernel_require##*-alt}"
+	kernel_release="${kernel_release_disttag%%:*}"
+
+	if [ "$rpm_name" = "${rpm_name%-$kernel_flavour}" ]; then
+		FileError "kernel module flavour mismatch, expected flavour is '$kernel_flavour'" "$f"
+		return 1
+	fi
+
+	if [ "$package_type" = bin -a "$kernel_release_disttag" = "$kernel_release" ]; then
+		FileError "kernel module requirement ($kernel_require) should better specify a disttag (use %requires_kimage)" "$f"
+		# It's just a warning now, because (1) not all kernel-image-* pkgs have
+		# disttag-enriched Provides, (2) it's not critical (unless one uses
+		# disttag-unaware rpm+apt, in which case update-kernel would fail--even
+		# if kernel-image-* has both kinds of Provides (w/out disttag)).
+		#
+		# It's for binary packages only, because there is no reason to
+		# specify a disttag in BuildRequires: kernel-image-* (and
+		# kernel-headers-modules-*) with different releases can be
+		# installed simultaneously, but not with the same release and
+		# different disttags. So even if the purpose of such a
+		# BuildRequires were to ensure that there are headers for the
+		# selected %kversion-%krelease, %kdisttag wouldn't be
+		# significant.
+ 	fi
+
+	if [ "$rpm_sourcerpm" != "$kernel_pattern$kernel_flavour-$kernel_version-alt$kernel_release.src.rpm" ]; then
+		check_standalone_kmodule ||
+			return 1
+	else
+		check_builtin_kmodule ||
+			return 1
+	fi
+}
+
+check_kimage() {
+	local f="$1" && shift || return 1
+
+	if [ "$rpm_arch" = 'noarch' ]; then
+		FileError "architecture should not be 'noarch'" "$f"
+		return 1
+	fi
+
+	local kernel_require
+
+	kernel_require="$(printf %s "$rpm_requires" |cut -d' ' -f1,3- |grep "^kernel-module")"
+
+	if [ -n "$kernel_require" ]; then
+		FileError "kernel image shouldn't require kernel modules" "$f"
+		return 1
+	fi
+}
+
+check_kernel_group() {
+	local f="$1" && shift || return 1
+	local group
+
+	case "$rpm_name" in
+		kernel-headers-*|kernel-source-*) group='Development/Kernel' ;;
+		kernel-image-*|kernel-modules-*)  group='System/Kernel and hardware' ;;
+		*) return 0 ;;
+	esac
+
+	if [ "$rpm_group" != "$group" ]; then
+		FileError "package GROUP should be '$group'" "$f"
+		return 1
+	fi
+}
+
+run_check() {
+	local rc=0
+
+	[ -z "${rpm_name##kernel-*}" ] && [ -n "${rpm_name##kernel-*-debuginfo}" ] ||
+		return $rc
+
+	check_kernel_group "$1" ||
+		rc=1
+
+	if [ -z "${rpm_name##kernel-image*}" ]; then
+		check_kimage "$1" || rc=1
+	fi
+
+	if [ -n "${rpm_name##kernel-modules-*}" ]; then
+		[ "$rc" = 0 ] ||
+			CheckError 'kernel package violation'
+		return $rc
+	fi
+
+	case "$package_type" in
+		bin) kernel_pattern='kernel-image-' ;;
+		src) kernel_pattern='kernel-headers-modules-' ;;
+	esac
+
+	check_kmodule "$1" ||
+		rc=1
+
+	[ "$rc" = 0 ] ||
+		CheckError 'kernel module violation'
+
+	return $rc
+}

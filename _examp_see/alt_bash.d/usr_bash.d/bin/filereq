@@ -1,0 +1,116 @@
+#!/bin/sh -e
+#
+# Copyright (C) 2000-2005  Dmitry V. Levin <ldv@altlinux.org>
+# Copyright (C) 2007       Alexey Tourbin <at@altlinux.org>
+#
+# Generates list of file requires for given command.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+
+PROG=filereq
+
+if [ $# -le 1 ]; then
+	echo "Usage: $PROG <file-where-to-store-requires> <program> [program-args]" >&2
+	exit 1
+fi
+
+TARGET="$1"
+shift
+: >"$TARGET"
+
+exit_handler()
+{
+	local rc=$1
+	rm -rf -- "$workdir"
+	exit $rc
+}
+
+trap 'exit 143' HUP INT QUIT PIPE TERM
+workdir="$(mktemp -dt "$PROG.XXXXXXXXXX")"
+trap 'exit_handler $?' EXIT
+
+trace=file
+case "$(uname -m)" in
+	i?86 )
+		trace=open,openat,execve,execveat,access,faccessat,lstat,lstat64,stat,stat64,fstatat64 ;;
+	x86_64 )
+		trace=open,openat,execve,execveat,access,faccessat,lstat,stat,newfstatat ;;
+esac
+
+spp_output="$workdir"/spp_output
+/usr/share/buildreqs/strace_files --trace="$trace" -o "$spp_output" -- "$@"
+
+BUILDDIR=
+TMPPATH=
+if [ -n "$RPM" ] && $RPM --version </dev/null >/dev/null 2>&1; then
+	BUILDDIR="$($RPM --eval %_builddir)"
+	TMPPATH="$($RPM --eval %_tmppath)"
+fi
+
+patterns="$workdir"/ignore_patterns
+: >"$patterns"
+
+[ -z "$TMPDIR" ] ||
+	echo "^${TMPDIR%/}/" >>"$patterns"
+[ -z "$BUILDDIR" ] ||
+	echo "^${BUILDDIR%/}/" >>"$patterns"
+[ -z "$TMPPATH" -o "$TMPPATH" = "$TMPDIR" ] ||
+	echo "^${TMPPATH%/}/" >>"$patterns"
+
+: ${IGNORE_DIR:=/etc/buildreqs/files/ignore.d}
+ls "$IGNORE_DIR"/* |grep -v '\.rpm[^/]*$\|[^[:alnum:]]$' |
+	while IFS= read -r f; do
+		grep '^[^#]' -- "$f" || [ $? = 1 ]
+	done >>"$patterns"
+
+ignore="$workdir"/ignore_files
+cut -f2- "$spp_output" |LC_COLLATE=C sort -u |egrep -f "$patterns" >"$ignore" || [ $? = 1 ]
+
+weak="$workdir"/weak_access_files
+strong="$workdir"/strong_access_files
+egrep '^(new)?[fl]?(stat|access)' "$spp_output" |cut -f2- |LC_COLLATE=C sort -u >"$weak"
+egrep '^(open|exec)' "$spp_output" |cut -f2- |LC_COLLATE=C sort -u >"$strong"
+
+LC_COLLATE=C comm -13 "$ignore" "$weak" >"$weak$$"
+mv -f "$weak$$" "$weak"
+LC_COLLATE=C comm -13 "$ignore" "$strong" >"$strong$$"
+mv -f "$strong$$" "$strong"
+
+while IFS= read -r f; do
+	[ -e "$f" ] || continue
+	[ -d "$f" ] && continue
+	echo "$f"
+done <"$weak" >"$weak$$"
+mv -f "$weak$$" "$weak"
+
+while IFS= read -r f; do
+	[ -e "$f" ] || continue
+	[ -d "$f" ] && continue
+	echo "$f"
+	[ -L "$f" ] || continue
+	readlink -ve -- "$f" >&3
+done <"$strong" >"$strong$$" 3>"$strong".dest
+mv -f "$strong$$" "$strong"
+
+weak_only="$workdir"/weak_only_access_files
+LC_COLLATE=C comm -13 "$strong" "$weak" >"$weak_only"
+if [ -s "$weak_only" ]; then
+	echo "$PROG: weak-only access files:"
+	cat "$weak_only"
+fi >&2
+
+LC_COLLATE=C sort -u "$weak" "$strong" >>"$TARGET"
+LC_COLLATE=C sort -u "$strong".dest >>"$TARGET"

@@ -1,0 +1,95 @@
+#!/bin/sh
+#
+# gssd          Starts up and shuts down RPCSEC GSS daemon.
+#
+# chkconfig:    345 19 69
+# description:  NFS-related daemon that manages RPCSEC GSS contexts
+# processname:  rpc.gssd
+# pidfile:      /var/run/rpc.gssd.pid
+
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+# Source networking configuration.
+# Check that networking is up.
+SourceIfNotEmpty /etc/sysconfig/network
+
+is_yes "$NETWORKING" || exit 0
+
+GSSD=/sbin/rpc.gssd
+RPCPIPEFS=/var/lib/nfs/rpc_pipefs
+KEYTAB=/etc/krb5.keytab
+GSSAPI_MECH=/etc/gssapi_mech.conf
+
+PIDFILE=/var/run/rpc.gssd.pid
+LOCKFILE=/var/lock/subsys/gssd
+RETVAL=0
+
+start()
+{
+    [ -f "$KEYTAB" -a -f "$GSSAPI_MECH" ] || return 1
+
+    [ -d "$RPCPIPEFS/nfs" ] || {
+	modprobe sunrpc ||:
+	mount -t rpc_pipefs rpc_pipefs "$RPCPIPEFS"
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] || return $RETVAL
+    }
+
+    [ -f /proc/net/rpc/auth.rpcsec.context/channel ] || {
+	modprobe des ||:
+	modprobe auth_rpcgss ||:
+	modprobe rpcsec_gss_krb5 ||:
+    }
+
+    start_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root $GSSD
+    RETVAL=$?
+    return $RETVAL
+}
+
+stop()
+{
+    stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root $GSSD
+    RETVAL=$?
+    return $RETVAL
+}
+
+restart()
+{
+    stop
+    start
+}
+
+# See how we were called.
+case "$1" in
+    start)
+	start
+	;;
+    stop)
+	stop
+	;;
+    restart|reload)
+	restart
+	;;
+    condstop)
+	if [ -e "$LOCKFILE" ]; then
+	    stop
+	fi
+	;;
+    condrestart|condreload)
+	if [ -e "$LOCKFILE" ]; then
+	    restart
+	fi
+	;;
+    status)
+	status --pidfile "$PIDFILE" --expect-user root $GSSD
+	RETVAL=$?
+	;;
+    *)
+	msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart|condreload|status}"
+	RETVAL=1
+esac
+
+exit $RETVAL

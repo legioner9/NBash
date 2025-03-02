@@ -1,0 +1,96 @@
+#!/bin/sh
+#
+# chkconfig: 345 50 50
+# description: xinetd is a powerful replacement for inetd. \
+#              xinetd has access control machanisms, extensive logging \
+#              capabilities, the ability to make services available based \
+#              on time, and can place limits on the number of servers \
+#              that can be started, among other things. 
+#
+# processname: xinetd
+# config: /etc/xinetd.conf
+# pidfile: /var/run/xinetd.pid
+
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+# Source networking configuration.
+SourceIfNotEmpty /etc/sysconfig/network
+
+# Source config.
+SourceIfNotEmpty /etc/sysconfig/xinetd
+
+PIDFILE=/var/run/xinetd.pid
+LOCKFILE=/var/lock/subsys/xinetd
+RETVAL=0
+
+start()
+{
+	is_yes "$NETWORKING" || return 0
+	start_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root -- xinetd $EXTRAOPTIONS
+	RETVAL=$?
+	return $RETVAL
+}
+
+stop()
+{
+	stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root -- xinetd
+	RETVAL=$?
+	return $RETVAL
+}
+
+reload()
+{
+	msg_reloading xinetd
+	stop_daemon --pidfile "$PIDFILE" --expect-user root -HUP -- xinetd
+	RETVAL=$?
+	return $RETVAL
+}
+
+restart()
+{
+	stop
+	start
+}
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	status)
+		status --pidfile "$PIDFILE" --expect-user root -- xinetd
+		RETVAL=$?
+		;;
+	reload|sreload)
+		reload
+		;;
+	restart)
+		restart
+		;;
+	condstop)
+		if [ -e "$LOCKFILE" ]; then
+			stop
+		fi
+		;;
+	condreload)
+		if [ -e "$LOCKFILE" ]; then
+			reload
+		fi
+		;;
+	condrestart)
+		if [ -e "$LOCKFILE" ]; then
+			restart
+		fi
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|status|reload|restart|condstop|condrestart|condreload}"
+		RETVAL=1
+esac
+
+exit $RETVAL

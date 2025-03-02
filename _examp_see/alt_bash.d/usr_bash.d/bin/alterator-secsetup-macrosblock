@@ -1,0 +1,27 @@
+#!/bin/sh
+
+if [ -z "$1" ]
+then
+    echo "command not set" >&2
+    exit 1
+fi
+
+if [ ! -e "/usr/bin/secsetup-macrosblocker" ]
+then
+    echo "/usr/bin/secsetup-macrosblocker not found" >&2
+    exit 1
+fi
+
+if [ "$1" = "start" ] 
+then
+    /usr/bin/secsetup-macrosblocker enable
+    [ -e "/sbin/integalert" ] && /sbin/integalert fix
+fi
+
+if [ "$1" = "stop" ] 
+then
+    /usr/bin/secsetup-macrosblocker disable
+    [ -e "/sbin/integalert" ] && /sbin/integalert fix
+fi
+
+exit 0

@@ -1,0 +1,129 @@
+#!/bin/sh
+#
+# virtualbox		Load/unload the VirtualBox (vboxdrv) kernel module.
+#
+# chkconfig: 345 90 10
+# description:	The virtualbox service handles loading and unloading of the \
+#		VirtalBox (vboxdrv and vboxnetflt) kernel modules.
+
+# Do not load RH compatibility interface.
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+LOCKFILE=/var/lock/subsys/virtualbox
+MODULENAME=vboxdrv
+MODULENAMEPCI=vboxpci
+MODULENAMENET=vboxnetflt
+MODULENAMENETADP=vboxnetadp
+USBSCRIPT=/usr/share/virtualbox/VBoxCreateUSBNode.sh
+RETVAL=0
+
+start()
+{
+	action "Loading VirtualBox module ($MODULENAME):" modprobe --syslog $MODULENAME
+	RETVAL=$?
+	if [ $RETVAL = 0 ]; then
+		action "Loading VirtualBox module ($MODULENAMENET):" modprobe --syslog $MODULENAMENET &&
+		action "Loading VirtualBox module ($MODULENAMENETADP):" modprobe --syslog $MODULENAMENETADP
+		RETVAL=$?
+	fi
+	[ $RETVAL = 0 ] && touch "$LOCKFILE" ||:
+	$USBSCRIPT --create
+	return $RETVAL
+}
+
+stop()
+{
+	local RETVAL1 RETVAL2 RETVAL3 RETVAL4
+	if /sbin/lsmod | grep -qs "^$MODULENAMENETADP[[:space:]]"; then
+		action "Unloading VirtualBox module ($MODULENAMENETADP):" modprobe --syslog -r $MODULENAMENETADP; RETVAL4=$?
+	else
+		echo "$MODULENAMENETADP module is not loaded"
+		RETVAL4=0
+	fi
+	if /sbin/lsmod | grep -qs "^$MODULENAMENET[[:space:]]"; then
+		action "Unloading VirtualBox module ($MODULENAMENET):" modprobe --syslog -r $MODULENAMENET; RETVAL3=$?
+	else
+		echo "$MODULENAMENET module is not loaded"
+		RETVAL3=0
+	fi
+	if /sbin/lsmod | grep -qs "^$MODULENAMEPCI[[:space:]]"; then
+		action "Unloading VirtualBox module ($MODULENAMEPCI):" modprobe --syslog -r $MODULENAMEPCI; RETVAL2=$?
+	else
+		echo "$MODULENAMEPCI module is not loaded"
+		RETVAL2=0
+	fi
+	if /sbin/lsmod | grep -qs "^$MODULENAME[[:space:]]"; then
+		action "Unloading VirtualBox module ($MODULENAME):" modprobe --syslog -r $MODULENAME; RETVAL1=$?
+	else
+		echo "$MODULENAME module is not loaded"
+		RETVAL1=0
+	fi
+	[ $RETVAL4 = 0 ] || RETVAL=$RETVAL4
+	[ $RETVAL3 = 0 ] || RETVAL=$RETVAL3
+	[ $RETVAL2 = 0 ] || RETVAL=$RETVAL2
+	[ $RETVAL1 = 0 ] || RETVAL=$RETVAL1
+	[ $RETVAL = 0 ] && rm -f "$LOCKFILE" ||:
+	return $RETVAL
+}
+
+restart()
+{
+	stop
+	start
+}
+
+status()
+{
+	if /sbin/lsmod | grep -qs "^$MODULENAME[[:space:]]"; then
+		echo "$MODULENAME module is loaded"
+		if /sbin/lsmod | grep -qs "^$MODULENAMEPCI[[:space:]]"; then
+			echo "$MODULENAMEPCI module is loaded"
+		fi
+		if /sbin/lsmod | grep -qs "^$MODULENAMENET[[:space:]]"; then
+			echo "$MODULENAMENET module is loaded"
+		fi
+		if /sbin/lsmod | grep -qs "^$MODULENAMENETADP[[:space:]]"; then
+			echo "$MODULENAMENETADP module is loaded"
+		fi
+		return 0
+	elif [ -f "$LOCKFILE" ]; then
+		echo "$MODULENAME module is not loaded, but subsystem is locked"
+		return 2
+	else
+		echo "$MODULENAME service is stopped"
+		return 3
+	fi
+}
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart)
+		restart
+		;;
+	condstop)
+		if [ -e "$LOCKFILE" ]; then
+			stop
+		fi
+		;;
+	condrestart)
+		# Do nothing on package upgrade
+		;;
+	status)
+		status
+		RETVAL=$?
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|restart|condstop|condrestart|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

@@ -1,0 +1,72 @@
+#!/bin/sh -e
+#
+# Copyright (C) 2000-2005  Dmitry V. Levin <ldv@altlinux.org>
+#
+# Attempts to cleanup spec.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+
+PROG=cleanup_spec
+
+exit_handler()
+{
+	local rc=$1
+	rm -f -- "$TMPFILE"
+	exit $rc
+}
+
+trap 'exit 143' HUP PIPE INT TERM
+TMPFILE="$(mktemp -t "$PROG.XXXXXXXXXX")"
+trap 'exit_handler $?' EXIT
+
+RemoveEmpty()
+{
+	awk 'BEGIN{empty=0} /^.+$/{empty=0} /^$/{if(!empty){print;empty=1}} {if(!empty)print $0}' <"$1" >"$TMPFILE" &&
+		cat "$TMPFILE" >"$1" || return 1
+}
+
+RemoveClean()
+{
+	awk 'BEGIN{clean=0} {printed=0} /^%(pre|post|trig|files|changelog)/{clean=0} /^./{if(clean){print "%clean";clean=0}} /^%clean$/{clean=1;printed=1} /^$/{if(clean){printed=1}} {if(!printed)print $0}' <"$1" >"$TMPFILE" &&
+		cat "$TMPFILE" >"$1" || return 1
+}
+
+CleanFiles()
+{
+	awk 'BEGIN{found=0} {printed=0} /^./{found=0} /^%(description|prep|build|install|pre|post|trig|files|changelog)([^_]|$)/{found=1} /^%(pre|post|trig).*[ 	]-p[ 	]/{found=0} /^$/{if(found)printed=1} {if(!printed)print $0}' <"$1" >"$TMPFILE" &&
+		cat "$TMPFILE" >"$1" || return 1
+}
+
+for F in "$@"; do
+	sed -i -e '/^%setup[[:space:]]/ s/[[:space:]]\+-q\([[:space:]]\|$\)/\1/g' "$F"
+	sed -i -e '/^%setup[[:space:]]/ s/\([[:space:]]\)-q\(.\)/\1-\2/g' "$F"
+	perl -pi -e 's/(^|[^%])%\{([A-Za-z_0-9]+)\}([^A-Za-z_0-9?*]|$)/$1%$2$3/g' "$F"
+	perl -pi -e 's/(^|[^%])%\{([A-Za-z_0-9]+)\}([^A-Za-z_0-9?*]|$)/$1%$2$3/g' "$F"
+	perl -pi -e 's/(^|[^%])%\{([A-Za-z_0-9]+)\}([^A-Za-z_0-9?*]|$)/$1%$2$3/g' "$F"
+	perl -pi -e 's/\$\{RPM_BUILD_ROOT\}/\$RPM_BUILD_ROOT/g' "$F"
+	perl -pi -e 's/[ 	]+$//g' "$F"
+	perl -pi -e 's/^([A-Za-z_0-9]+:|%define|%package|%description|%pre|%preun|%post|%postun|%files)[ 	]+/\1 /g' "$F"
+	perl -pi -e 's/%_prefix/%prefix/g;s/%_initrddir/%_initdir/g;s/%_install_info/%install_info/g;s/%_remove_install_info/%uninstall_info/g' "$F"
+	perl -pi -e 's/^url: /Url: /ig;s/^copyright: /License: /ig;s/^prereq: /PreReq: /ig;s/^buildrequires: /BuildRequires: /ig;s/^buildprereq: /BuildPreReq: /ig;s/^summary: /Summary: /ig' "$F"
+	perl -pi -e 's/^(Summary: .*)\.$/\1/g' "$F"
+	perl -pi -e 's/^buildroot: .*//ig' "$F"
+	perl -pi -e 's/^rm\s+-(rf|fr)\s+"?\$RPM_BUILD_ROOT"?$//g' "$F"
+	perl -pi -e 's/^%defattr\s*\(\s*-\s*,\s*root\s*,\s*root\s*(,\s*(-|0?755)\s*)?\)//g' "$F"
+
+	RemoveEmpty "$F"
+	RemoveClean "$F"
+	CleanFiles "$F"
+done

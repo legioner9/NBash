@@ -1,0 +1,206 @@
+#! /bin/sh
+#
+# httpd2          Start/Stop the Apache2 Web Server
+#
+# chkconfig: - 85 15
+# description: Apache is a World Wide Web server.  It is used to serve \
+#              HTML files and CGI. 
+# processname: httpd2
+# pidfile: /var/run/httpd2/httpd.pid
+# config: /etc/httpd2/conf/httpd2.conf
+#
+### BEGIN INIT INFO
+# Provides: httpd2
+# Required-Start: $local_fs $remote_fs $network $named
+# Required-Stop: $local_fs $remote_fs $network
+# Should-Start: distcache
+# Short-Description: start and stop Apache HTTP Server
+# Description: The Apache HTTP Server is an extensible server 
+#  implementing the current HTTP standards.
+### END INIT INFO
+
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+SourceIfExists  /etc/sysconfig/httpd2
+
+# This will prevent initlog from swallowing up a pass-phrase prompt if
+# mod_ssl needs a pass-phrase from the user.
+INITLOG_ARGS=""
+
+# Set HTTPD=httpd2.worker in /etc/sysconfig/httpd2 to use a server
+# with the thread-based "worker" MPM; BE WARNED that some modules may not
+# work correctly with a thread-based MPM; notably PHP will refuse to start.
+name=${HTTPD-httpd2}
+moduledir=/usr/lib64/apache2/modules
+moduleargs=
+APACHECTL=/usr/sbin/apachectl2
+RETVAL=0
+
+export TMPDIR=/var/spool/apache2/tmp
+
+### Hack for bad hostname configuration
+thehost=`hostname`
+hostname -i 1>/dev/null 2>/dev/null|| echo "WARNING: hostname is not set correctly, thus Apache may not run correctly either." 
+
+# Check vars
+if ! echo "$WAITSTOP" \
+		| head -n 1 \
+		| grep -q '^[[:space:]]*0*[1-9][0-9]*[[:space:]]*$' ; then
+	WAITSTOP=300
+fi
+
+# Change the major functions into functions.
+conftest() {
+	/usr/bin/httpd2-cert-sh generate httpd2
+
+	# TODO: translatable form?
+	action "Checking configuration sanity for $name: " \
+		"$APACHECTL" configtest
+	RETVAL=$?
+	return $RETVAL
+}
+
+start()
+{
+	/usr/bin/httpd2-cert-sh generate httpd2
+
+	action "`msg_starting $name` " \
+		"$APACHECTL" start
+	RETVAL=$?
+	return $RETVAL
+}
+
+stop_wait()
+{
+	for (( i=$1; $i>0; i=(($i-1)) )); do
+		"$APACHECTL" stop >/dev/null 2>&1
+		RETVAL=$?
+		if [ $RETVAL -ne 255 ]; then
+			return $RETVAL
+		fi
+		printf '%5s' "$i"
+		sleep 1
+		printf "\b\b\b\b\b     \b\b\b\b\b"
+	done
+	"$APACHECTL" stop >/dev/null 2>&1
+	RETVAL=$?
+	return $RETVAL
+}
+
+stop()
+{
+	msg_stopping $name
+	stop_wait $WAITSTOP
+	RETVAL=$?
+	if [ $RETVAL -eq 0 ]; then
+		echo_success
+		echo
+	else
+		echo_failure
+		echo
+	fi
+	return $RETVAL
+}
+
+reload()
+{
+	action "`msg_reloading $name` " \
+		"$APACHECTL" restart
+	RETVAL=$?
+	return $RETVAL
+} 
+
+restart()
+{
+	stop
+	RETVAL=$?
+	sleep 2
+	if [ $RETVAL -eq 0 ]; then
+		conftest || exit $?
+		start
+		RETVAL=$?
+	fi
+	return $RETVAL
+}
+
+briefstatus()
+{
+	"$APACHECTL" briefstatus
+	RETVAL=$?
+	return $RETVAL
+}
+
+extendedstatus()
+{
+	"$APACHECTL" status
+	RETVAL=$?
+	return $RETVAL
+}
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		RETVAL=$?
+		;;
+	stop)
+		stop
+		RETVAL=$?
+		;;
+	restart)
+		restart
+		RETVAL=$?
+		;;
+	reload|graceful)
+		if [ -e $moduledir/mod_jserv.so ]; then
+			restart
+			RETVAL=$?
+		else
+			reload
+			RETVAL=$?
+		fi
+		;;
+	check|configtest)
+		conftest
+		RETVAL=$?
+		;;
+	condstop)
+		if briefstatus >/dev/null 2>&1; then
+			stop
+			RETVAL=$?
+		else
+			RETVAL=0
+		fi
+		;;
+	update|condrestart)
+		if briefstatus >/dev/null 2>&1; then
+			restart
+			RETVAL=$?
+		else
+			RETVAL=0
+		fi
+		;;
+	condreload)
+		if briefstatus >/dev/null 2>&1; then
+			reload
+			RETVAL=$?
+		else
+			RETVAL=0
+		fi
+		;;
+	extendedstatus)
+		extendedstatus
+		RETVAL=$?
+		;;
+	status)
+		briefstatus
+		RETVAL=$?
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|reload|restart|check|configtest|condstop|condrestart|condreload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

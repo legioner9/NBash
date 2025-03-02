@@ -1,0 +1,94 @@
+#!/usr/bin/guile --no-auto-compile
+!#
+(use-modules (ice-9 getopt-long)
+             (srfi srfi-13)
+             (alterator exit-handler)
+             (alterator common)
+             (alterator plist)
+             (alterator woo)
+             (alterator d))
+
+;;; functions
+
+(define *cmdline* (command-line))
+
+(define (cmdline->woo cmdline)
+  (and (pair? cmdline)
+       (plist? (cdr cmdline))
+       (cons (car cmdline)
+             (plist-fold (lambda(x y res) (cons* (string->symbol x) y res))
+                         '()
+                         (cdr cmdline)))))
+
+(define (print-command key cmd)
+  (if key
+      (let ((result (cond-plistq  (string->symbol key) (cdr cmd) 'not-found)))
+        (or (eq? result 'not-found) (format #t "~A~%" result)))
+      (begin
+        (newline)
+        (plist-for-each
+         (lambda (x y) (format #t "~A:~A~%" x y))
+         (cdr cmd)))))
+
+(define (usage)
+  (format #t "Usage:  ~A [-l] [-k name] command~%" program-name)
+  (format #t "  -h, --help     display help screen~%")
+  (format #t "  -k,--key       print key value only~%")
+  (format #t "  -l,--local     try to use local files (ui,templates,backend* etc.) if available ~%")
+  (format #t "  -d,--debug     turn on debugging~%~%")
+  (format #t "  Report bugs to <inger@altlinux.ru>~%")
+  (quit))
+
+(define (cmdline-error reason)
+  (format (current-error-port) "~A: ~A~%" program-name reason)
+  (exit 1))
+
+(define (type-error-string reasonlist)
+  (string-concatenate
+   (map (lambda(x) (format #f "~A: ~A~%" (car x) (cdr x)))
+        reasonlist)))
+
+(define (catch/message proc)
+  (with-throw-handler
+    #t
+    proc
+    (lambda(key . args)
+      (case key
+        ((woo-error) (cmdline-error (car args)))
+        ((type-error) (cmdline-error (format #f "wrong parameter types~%~A" (type-error-string (car args)))))
+        ((internal-error) (cmdline-error (format #f "Internal server error ~A~%" args)))
+        (else (apply throw key args))))))
+
+;;; main code
+
+(define option-spec
+  '((help  (single-char #\h) (value #f))
+    (key   (single-char #\k) (value #t))
+    (local (single-char #\l) (value #f))
+    (debug (single-char #\d) (value #f))))
+
+(define options (getopt-long *cmdline* option-spec))
+
+(and (option-ref options 'help #f) (usage))
+(and (option-ref options 'debug #f) (turn-on-debugging))
+
+(if (option-ref options 'local #f)
+    (begin (alterator-init-local)
+           (d-init-local))
+    (begin (alterator-init-global)
+           (d-init-global)))
+
+(define *key* (option-ref options 'key #f))
+(define *request* (or (cmdline->woo (option-ref options '() '()))
+                      (cmdline-error "Wrong query format")))
+
+(with-exit-handler
+ (lambda()
+   (catch/message
+    (lambda()
+      (let ((cmdlist (d-query *request*)))
+        (if (eof-object? cmdlist)
+            (cmdline-error "unexpected eof from alteratord")
+            (for-each
+             (lambda(cmd) (print-command *key* cmd))
+             cmdlist)))))))

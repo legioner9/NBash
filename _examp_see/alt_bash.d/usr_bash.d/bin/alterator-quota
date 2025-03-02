@@ -1,0 +1,376 @@
+#!/bin/bash -efu
+
+. shell-var
+
+LANGUAGE="${LANGUAGE:-C}"
+ALTERATOR_QUOTA_CONF="${ALTERATOR_QUOTA_CONF:-/etc/alterator/quota.conf}"
+
+# variables to be overriden for tests
+MOUNT_LIST_CMD=${MOUNT_LIST_CMD:-mount}
+QUOTA_LIST_CMD=${QUOTA_LIST_CMD:-quota -v}
+QUOTA_FILTER_CMD=${QUOTA_FILTER_CMD:-sed -n -e '/Filesystem/,${/Filesystem/!p}'}
+FSTAB_FILE=${FSTAB_FILE:-/etc/fstab}
+FSTAB_TMP_FILE=${FSTAB_TMP_FILE:-/etc/.alterator-quota.fstab.XXXXXX}
+DRYRUN="${DRYRUN:-0}"
+
+getdevicerealpath(){
+  local device="$1"
+  local realdevice
+
+  case "$device" in
+    UUID=*)
+      if [ $DRYRUN -eq 0 ] ; then
+        realdevice="$(blkid --uuid ${device#UUID=})"
+      else
+        realdevice="${device#UUID=}"
+      fi
+    ;;
+    /*)
+      if [ $DRYRUN -eq 0 ] ; then
+        realdevice="$(readlink -m "$device")"
+      else
+        realdevice="$device"
+      fi
+    ;;
+    *)
+      realdevice="$device"
+    ;;
+  esac
+
+  echo "$realdevice"
+}
+
+show_help(){
+cat <<EOF
+Helper script for alterator-quota module.
+
+    Usage:  $0 <action> [<options>]
+
+    Actions:
+
+help            -- print this help
+list            -- list users ("<UID> <name>" pairs)
+listfs          -- list enabled filesystems ("<device> <mountpoints>" pairs)
+listavailablefs -- list all supported filesystems ("<device> <mountpoints>" pairs)
+read            -- read settings for a given UID
+write           -- write settings for a given UID
+getquotastatus  -- show if quota is enabled or disabled for a given filesystem
+setquotastatus  -- enable or disable quota for a given filesystem
+
+    Options:
+
+-f <filesystem> -- specify filesystem (mandatory in read, write, getquotastatus and setquotastatus actions)
+-u <UID>        -- specify user id (mandatory in read and write actions)
+-a              -- show all users in list action; by default only users with
+                   UIDs in the range [UID_MIN..UID_MAX] (see /etc/login.defs)
+                   are shown
+-q "<block_soft>,<block_hard>,<inode_soft>,<inode_hard>"
+                -- specify quota settings for write action;
+                   default value is "0,0,0,0"
+-e <true/false> -- boolean argument for setquotastatus command;
+                   if true, setquotastatus must enable quota, and disable quota otherwise
+
+    Examples:
+
+$0 listfs
+$0 list -f
+$0 read -f /dev/sda1 -u 500
+$0 write -f / -u 500 -q 100,100,20,20
+
+EOF
+} #' -- for xgettext, not mc!
+
+. shell-getopt
+. shell-error
+
+on_list(){
+  local num o1 o2
+  getent passwd | tr ':' '\t' |
+  while read name o1 num o3; do
+
+    if [ -z "${all:-}" ]; then
+      [ "$(($num>=$UID_MIN))" = "1" -a\
+        "$(($num<=$UID_MAX))" = "1" ] || continue
+    fi
+    echo $num $name
+  done
+}
+
+on_listavailablefs(){
+  # list all mounted devices and their types
+  ${MOUNT_LIST_CMD} | sed -n -r "s;^(/[^[:blank:]]*)[[:blank:]]+on[[:blank:]]+/[^[:blank:]]*[[:blank:]]+type[[:blank:]]+([^[:blank:]]+)[[:blank:]]+.*$;\1 \2;p" |
+  while read dev fstype; do
+    # filter devices by filesystem types
+    case "$fstype" in
+      jfs|xfs|ext2|ext3|ext4)
+        # print only first mount point for device
+        ${MOUNT_LIST_CMD} | sed -n -r "s;^($dev)[[:blank:]]+on[[:blank:]]+(/[^[:blank:]]*).*$;\1 \2;p" | head -1
+      ;;
+    esac
+  done
+}
+
+on_listfs(){
+  local dev s d x1 x2 x3
+  ${QUOTA_LIST_CMD} 2>/dev/null | ${QUOTA_FILTER_CMD} |
+  while read dev x1; do
+    ${MOUNT_LIST_CMD} | sed -n -r "s;^($dev)[[:blank:]]+on[[:blank:]]+(/[^[:blank:]]*).*$;\1 \2;p" | head -1
+  done
+}
+
+
+on_read(){
+  local fs1 sep b_used b_soft b_hard i_used i_soft i_hard x
+  EDITOR=cat edquota $uid -f $fs | tail -n1 | (
+    read fs1 b_used b_soft b_hard i_used i_soft i_hard x
+    echo "uid:     $uid"
+    echo "fs:      $fs"
+    echo "b_used:  ${b_used:-0}"
+    echo "b_soft:  ${b_soft:-0}"
+    echo "b_hard:  ${b_hard:-0}"
+    echo "b_grace: ${b_grace:-0}"
+    echo "i_used:  ${i_used:-0}"
+    echo "i_soft:  ${i_soft:-0}"
+    echo "i_hard:  ${i_hard:-0}"
+    echo "i_grace: ${i_grace:-0}"
+  ) || fatal "Error: can't get quota"
+}
+
+on_write(){
+  local b_soft b_hard i_soft i_hard
+  echo -n "$quota" |
+    tr -s ',; \n' ' ' |
+    (
+      grep '^[0-9]\+ [0-9]\+ [0-9]\+ [0-9]\+$' ||
+        fatal "Error: bad quota setting: $quota"
+    ) | (
+      read b_soft b_hard i_soft i_hard
+      setquota "$uid" "$b_soft" "$b_hard" "$i_soft" "$i_hard" "$fs" ||
+        fatal "Error: can't set quota"
+    )
+}
+
+on_getquotastatus(){
+  local enabled="no"
+  local dev x1
+
+  while read dev x1; do
+    if [ "$dev" = "$fs" ] && [ -n "$(${MOUNT_LIST_CMD} | sed -n -r "s;^($dev)[[:blank:]]+.*$;\1;p" | head -1)" ] ; then
+      enabled="yes"
+    fi
+  done < <(${QUOTA_LIST_CMD} 2>/dev/null | ${QUOTA_FILTER_CMD})
+
+  echo enabled "$enabled"
+}
+
+on_setquotastatus(){
+  local inputdevice="$(getdevicerealpath "$fs")"
+  local fstabdata
+  local fstabdevice
+  local fstabmountpoint
+  local fstabtype
+  local fstaboptions
+  local fstabnewoptions
+  local fstabfile=$(mktemp ${FSTAB_TMP_FILE}) || fatal "Error: can't create temporary fstab file"
+  local fstabfilechanged=0
+  local usrquota_found
+  local grpquota_found
+  local fstablineupdated
+  local enabled_bool="$(shell_var_is_yes "$quotaenabled" && echo "1" || echo "0")"
+  local line
+  local updatedline
+  local option
+
+  # Update /etc/fstab. First create similar temporary file, and then replace old one later
+  while read -r line ; do
+    fstabdata="$(echo $line | sed -n -r "s;^([^[:blank:]]+)[[:blank:]]+(/[^[:blank:]]*)[[:blank:]]+([^[:blank:]]+)[[:blank:]]+([^[:blank:]]+)[[:blank:]]+.*$;\1 \2 \3 \4;p")"
+    fstabdevice="$(getdevicerealpath "$(echo $fstabdata | awk '{ print $1 }')")"
+    fstabmountpoint="$(echo $fstabdata | awk '{ print $2 }')"
+    fstabtype="$(echo $fstabdata | awk '{ print $3 }')"
+    fstaboptions="$(echo $fstabdata | awk '{ print $4 }')"
+
+    case "$fstabtype" in
+      jfs|xfs|ext2|ext3|ext4)
+      ;;
+      *)
+        # unsupported fs type
+        echo "$line" >> $fstabfile
+        continue
+      ;;
+    esac
+
+    # if it's correct device, and device is currently mounted
+    if [ "$(readlink -m $fstabdevice)" = "$(readlink -m $inputdevice)" ] && [ -n "$(${MOUNT_LIST_CMD} | egrep "^${fstabdevice}[[:blank:]]+on[[:blank:]]+${fstabmountpoint}[[:blank:]]+.*$" | head -1)" ] ; then
+      usrquota_found=0
+      grpquota_found=0
+      fstablineupdated=0
+
+      for option in $(echo $fstaboptions | tr ',' ' ') ; do
+        case "$option" in
+          usrquota)
+            usrquota_found=1
+          ;;
+          grpquota)
+            grpquota_found=1
+          ;;
+        esac
+      done
+
+      if [ ${enabled_bool} -eq 1 ] && [ ${usrquota_found} -eq 0 -o ${grpquota_found} -eq 0 ] ; then
+        # add usrquota and/or grpquota options
+        fstabnewoptions="$fstaboptions"
+
+        if [ ${usrquota_found} -eq 0 ] ; then
+          fstabnewoptions="${fstabnewoptions},usrquota"
+        fi
+
+        if [ ${grpquota_found} -eq 0 ] ; then
+          fstabnewoptions="${fstabnewoptions},grpquota"
+        fi
+
+        fstabfilechanged=1
+        fstablineupdated=1
+
+        if [ $DRYRUN -eq 0 ] ; then
+          mount -o remount,usrquota,grpquota "$fstabmountpoint"
+          quotacheck -ugm "$fstabmountpoint"
+          quotaon -ug "$fstabmountpoint"
+        fi
+      elif [ ${enabled_bool} -eq 0 ] && [ ${usrquota_found} -eq 1 -o ${grpquota_found} -eq 1 ] ; then
+        # remove usrquota and/or grpquota options
+        fstabnewoptions=""
+
+        for option in $(echo $fstaboptions | tr ',' ' ') ; do
+          case "$option" in
+            usrquota|grpquota)
+            ;;
+            *)
+              if [ -n "$fstabnewoptions" ] ; then
+                fstabnewoptions="${fstabnewoptions},${option}"
+              else
+                fstabnewoptions="${option}"
+              fi
+            ;;
+          esac
+        done
+
+        if [ -z "$fstabnewoptions" ] ; then
+          fstabnewoptions="defaults"
+        fi
+
+        fstabfilechanged=1
+        fstablineupdated=1
+
+        if [ $DRYRUN -eq 0 ] ; then
+          quotaoff -ug "$fstabmountpoint"
+          mount -o remount,noquota "$fstabmountpoint"
+        fi
+      fi
+
+      if [ $fstablineupdated -eq 1 ] ; then
+        echo "$line" | sed -n -r "s;^([^[:blank:]]+[[:blank:]]+/[^[:blank:]]*[[:blank:]]+[^[:blank:]]+[[:blank:]]+)[^[:blank:]]+([[:blank:]]+[^[:blank:]]+[[:blank:]]+[^[:blank:]]+.*)$;\1${fstabnewoptions}\2;p" >> $fstabfile
+      else
+        echo "$line" >> $fstabfile
+      fi
+    else
+      echo "$line" >> $fstabfile
+    fi
+  done < ${FSTAB_FILE}
+
+  if [ $fstabfilechanged -eq 1 ] ; then
+    # now replace fstab
+    chmod --reference=${FSTAB_FILE} $fstabfile
+    chown --reference=${FSTAB_FILE} $fstabfile
+    mv $fstabfile ${FSTAB_FILE}
+  else
+    # file is unchanged, remove temporary file
+    rm $fstabfile
+  fi
+}
+
+
+action="${1:-help}"
+shift ||:
+all=
+
+if [ $DRYRUN -eq 0 ] ; then
+  # get min and max gids from /etc/login.defs
+  eval "$(sed -n \
+              -e 's/^[[:space:]]*UID_MAX[[:space:]]*/UID_MAX=/p'\
+              -e 's/^[[:space:]]*UID_MIN[[:space:]]*/UID_MIN=/p'\
+        /etc/login.defs)"
+fi
+
+# parse options
+case "$action" in
+  list)
+    while getopts "af:s" "$@"; do
+      case $OPTOPT in
+        f) fs="$OPTARG" ;;
+        a) all=1 ;;
+      esac
+    done
+  ;;
+  read)
+    while getopts "f:u:" "$@"; do
+      case $OPTOPT in
+        u) uid="$OPTARG" ;;
+        f) fs="$OPTARG"  ;;
+      esac
+    done
+  ;;
+  write)
+    while getopts "f:u:q:" "$@"; do
+      case $OPTOPT in
+        u) uid="$OPTARG"   ;;
+        f) fs="$OPTARG"    ;;
+        q) quota="$OPTARG" ;;
+      esac
+    done
+  ;;
+  getquotastatus)
+    while getopts "f:" "$@"; do
+      case $OPTOPT in
+        f) fs="$OPTARG" ;;
+      esac
+    done
+  ;;
+  setquotastatus)
+    while getopts "f:e:" "$@"; do
+      case $OPTOPT in
+        f) fs="$OPTARG"           ;;
+        e) quotaenabled="$OPTARG" ;;
+      esac
+    done
+  ;;
+  *)
+  ;;
+esac
+
+if [ "$action" = read -o "$action" = write -o "$action" = getquotastatus -o "$action" = setquotastatus ]; then
+ [ -n "${fs:-}" ] || fatal "Error: filesystem does not set"
+fi
+
+if [ "$action" = read -o "$action" = write ]; then
+ [ -n "${uid:-}" ] || fatal "Error: uid does not set"
+fi
+
+if [ "$action" = write ]; then
+ [ -n "${quota:-}" ] || fatal "Error: quota settings are empty"
+fi
+
+if [ "$action" = setquotastatus ]; then
+ [ -n "${quotaenabled:-}" ] || fatal "Error: quota status not set"
+fi
+
+verbose "executing $action action"
+case $action in
+  list)            on_list            ;;
+  listfs)          on_listfs          ;;
+  listavailablefs) on_listavailablefs ;;
+  read)            on_read            ;;
+  write)           on_write           ;;
+  getquotastatus)  on_getquotastatus  ;;
+  setquotastatus)  on_setquotastatus  ;;
+  *)               show_help          ;;
+esac

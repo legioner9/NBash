@@ -1,0 +1,154 @@
+#! /bin/sh
+#
+# ifplugd          Start/Stop ifplugd
+#
+# chkconfig: - 11 89
+# description: ifplugd watches network interface to (re)configure it
+# processname: ifplugd
+# config: /etc/ifplugd/ifplugd.conf
+
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+BINARY=/sbin/ifplugd
+CONFIG=/etc/ifplugd/ifplugd.conf
+RETVAL=0
+
+# NB: per-interface lockfile/pidfile
+LOCKFILE=/var/lock/subsys/ifplugd
+PIDFILE=/var/run/ifplugd
+
+SourceIfNotEmpty "$CONFIG"
+
+[ "$INTERFACES" = "auto" -o -z "$INTERFACES" ] && \
+	INTERFACES=`cat /proc/net/dev \
+		    | awk '/^[[:space:]]*(eth|wlan)/ \
+		           { split($1, a, ":"); print a[1] }'`
+
+# Change the major functions into functions.
+start()
+{
+	# use '-w' so that independently of $CONFIG, iniscript will have retval
+	for i in $INTERFACES; do
+		echo -n "Starting connection monitor on $i: "
+		A="`eval echo \$\{ARGS_${i}\}`"
+		[ -z "$A" ] && A="$ARGS"
+		start_daemon --lockfile "$LOCKFILE.$i" --pidfile "$PIDFILE.$i.pid" \
+			--expect-user root --no-announce -- ifplugd -w -i $i $A
+		RET=$?
+		if [ "$RET" -ne 0 ]; then
+			RETVAL=1
+		fi
+	done
+	return $RETVAL
+}
+
+stop()
+{
+	for i in $INTERFACES; do
+		echo -n "Stopping connection monitor on $i: "
+		stop_daemon --lockfile "$LOCKFILE.$i" --pidfile "$PIDFILE.$i.pid" \
+			--expect-user root --no-announce -- ifplugd
+		RET=$?
+		if [ "$RET" -ne 0 ]; then
+			RETVAL=1
+		fi
+	done
+	return $RETVAL
+}
+
+restart()
+{
+	stop
+	start
+}
+
+suspend()
+{
+	for i in $INTERFACES; do
+		echo -n "Suspending connection monitor on $i: "
+		$BINARY -S -i $i
+		RET=$?
+		if [ "$RET" -ne 0 ]; then
+			RETVAL=1
+		fi
+	done
+	if [ $RETVAL -ne 0 ] ; then
+		success "ifplugd suspend"
+	else
+		failure "ifplugd suspend"
+	fi
+	echo
+	return $RETVAL
+}		
+
+resume()
+{
+	for i in $INTERFACES; do
+		echo -n "Resumding connection monitor on $i: "
+		$BINARY -R -i $i
+		RET=$?
+		if [ "$RET" -ne 0 ]; then
+			RETVAL=1
+		fi
+	done
+	if [ $RETVAL -ne 0 ] ; then
+		success "ifplugd resume"
+	else
+		failure "ifplugd resume"
+	fi
+	echo
+	return $RETVAL
+}		
+
+briefstatus()
+{
+	status --expect-user root -- ifplugd
+	RETVAL=$?
+	return $RETVAL
+}
+
+extendedstatus()
+{
+	for i in $INTERFACES; do
+		$BINARY -c -i $i
+	done
+}
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart|reload)
+		restart
+		;;
+	condstop)
+		ls $LOCKFILE* >&/dev/null && stop
+		;;
+	update|condrestart|condreload)
+		ls $LOCKFILE* >&/dev/null && restart
+		;;
+	suspend)
+		suspend
+		;;
+	resume)
+		resume
+		;;
+	status)
+		briefstatus
+		;;
+	extendedstatus)
+		extendedstatus
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|reload|restart|suspend|resume|condstop|condrestart|condreload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

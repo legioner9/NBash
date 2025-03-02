@@ -1,0 +1,2 @@
+#!/bin/sh
+plymouth --update "$1"

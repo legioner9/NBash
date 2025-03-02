@@ -1,0 +1,58 @@
+#!/bin/sh
+
+WITHOUT_RC_COMPAT=1
+# Source functions library.
+. /etc/init.d/functions
+
+alsa_cards=
+
+mixer()
+{
+    for card in $alsa_cards
+    do
+	amixer -c $card set "$1" "$2" >/dev/null 2>&1
+	amixer -c $card set "$1" "$3" >/dev/null 2>&1
+    done
+}
+
+if [ -d /proc/asound ]
+then
+    alsactl init
+
+    alsa_cards=$(echo -ne `ls -d1 /proc/asound/card* 2>/dev/null | grep -e 'card[[:digit:]][[:digit:]]*' | sed -e 's|.*/card||'`)
+
+    mixer Master           75% unmute
+    mixer PCM              90% unmute
+    mixer Front           100% unmute
+    mixer Synth            90% unmute
+    mixer CD               90% unmute
+    # ESS 1969 chipset has 2 PCM channels
+    mixer PCM,1            90% unmute
+    # Trident/YMFPCI/emu10k1
+    mixer Wave            100% unmute
+    mixer Music           100% unmute
+    mixer AC97            100% unmute
+    # CS4237B chipset:
+    mixer 'Master Digital' 75% unmute
+    # Envy24 chips with analog outs
+    mixer DAC              90% unmute
+    mixer DAC,0            90% unmute
+    mixer DAC,1            90% unmute
+    # some notebooks use headphone instead of master
+    mixer Headphone        75% unmute
+    mixer Playback        100% unmute
+    mixer Speaker          75% unmute
+    # mute mic
+    mixer Mic               0% mute
+
+    if [ -e /etc/modules ]
+    then
+	echo "# by alsa-set-initial-options" >> /etc/modules
+	echo "snd-seq-midi" >> /etc/modules
+    fi
+    modprobe snd-seq-midi >/dev/null 2>&1 ||:
+
+    action "Setup alsa:" true
+else
+    action "Do NOT setup alsa:" true
+fi

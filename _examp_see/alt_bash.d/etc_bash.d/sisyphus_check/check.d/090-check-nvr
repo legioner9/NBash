@@ -1,0 +1,51 @@
+#!/bin/sh -efu
+
+rpm_arch="${rpm_arch?RPM arch required}"
+rpm_name="${rpm_name?RPM name required}"
+rpm_version="${rpm_version?RPM version required}"
+rpm_release="${rpm_release?RPM release required}"
+
+# check for valid nvr
+check_nvr()
+{
+	local f="$1" && shift || return 1
+	local rc=0
+
+	if ! printf %s "$rpm_name" |grep -Exqs '[A-Za-z0-9]([A-Za-z0-9._+-]*[A-Za-z0-9+])?'; then
+		FileError "invalid package NAME: $rpm_name" "$f"
+		rc=1
+	fi
+
+	printf %s "$rpm_version" |grep -qx '[[:alnum:]][[:alnum:]._+~]*' || {
+		FileError "invalid package VERSION: $rpm_version" "$f"
+		rc=1
+	}
+
+	printf %s "$rpm_release" |grep -Eqx 'alt([1-9]|0.)[[:alnum:]._+~]*' || {
+		FileError "invalid package RELEASE: $rpm_release" "$f"
+		rc=1
+	}
+
+	[ -z "$rpm_disttag" ] ||
+	printf %s "$rpm_disttag" |grep -qx '[[:alnum:]][[:alnum:]._+]*' || {
+		FileError "invalid package DISTTAG: $rpm_disttag" "$f"
+		rc=1
+	}
+
+	local arch="$rpm_arch"
+	[ "$package_type" != src ] || arch="src"
+	local expected="$rpm_name-$rpm_version-$rpm_release.$arch.rpm"
+	if [ "$expected" != "${f##*/}" ]; then
+		FileError "invalid FILENAME: $expected expected" "$f"
+		rc=1
+	fi
+
+	return $rc
+}
+
+run_check() {
+	if ! check_nvr "$1"; then
+		CheckError 'package name-version-release format violation'
+		return 1
+	fi
+}

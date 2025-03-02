@@ -1,0 +1,80 @@
+#!/bin/sh
+#
+# containerd   A daemon to control runc.
+#
+# chkconfig: - 90 10
+# description: A daemon to control runc.
+
+### BEGIN INIT INFO
+# Provides: containerd
+# Required-Start: $local_fs $remote_fs $network
+# Required-Stop: $local_fs $remote_fs $network
+# Short-Description: A daemon to control runc
+# Description: A daemon to control runc.
+### END INIT INFO
+
+WITHOUT_RC_COMPAT=1
+# Source function library.
+. /etc/init.d/functions
+
+OPTIONS=
+
+LOCKFILE=/var/lock/subsys/containerd
+RETVAL=0
+
+start()
+{
+	start_daemon --background --lockfile "$LOCKFILE" --expect-user root -- containerd --config /etc/containerd/config.toml
+	RETVAL=$?
+	return $RETVAL
+}
+
+stop()
+{
+	stop_daemon --lockfile "$LOCKFILE" --expect-user root --retry 60 -- containerd
+	RETVAL=$?
+	return $RETVAL
+}
+
+restart()
+{
+	stop
+	start
+}
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	reload|restart)
+		restart
+		;;
+	status)
+		status --pidfile "$PIDFILE" -- containerd
+		RETVAL=$?
+		;;
+	condstop)
+		if [ -e "$LOCKFILE" ]; then
+			stop
+		fi
+		;;
+	condrestart)
+		if [ -e "$LOCKFILE" ]; then
+			restart
+		fi
+		;;
+	condreload)
+		if [ -e "$LOCKFILE" ]; then
+			reload
+		fi
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart|condreload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

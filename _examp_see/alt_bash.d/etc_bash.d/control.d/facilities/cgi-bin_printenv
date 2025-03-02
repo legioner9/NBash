@@ -1,0 +1,6 @@
+#! /bin/sh
+
+readonly CGIBIN_NAME="printenv"
+readonly CGIBINAPPDIR="/usr/share/apache2/cgi-bin"
+
+. /etc/control.d/webserver-cgi-bin-functions

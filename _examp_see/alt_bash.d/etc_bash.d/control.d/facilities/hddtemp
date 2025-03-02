@@ -1,0 +1,11 @@
+#!/bin/sh
+
+. /etc/control.d/functions
+
+BINARY=/usr/sbin/hddtemp
+
+new_fmode public 4711 root root
+new_fmode wheelonly 4710 root wheel
+new_fmode restricted 700 root root
+
+control_fmode "$BINARY" "$*" || exit 1

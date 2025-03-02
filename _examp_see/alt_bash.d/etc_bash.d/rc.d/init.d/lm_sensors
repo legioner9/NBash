@@ -1,0 +1,178 @@
+#!/bin/sh
+#
+# chkconfig: - 26 74
+# description: sensors is used for monitoring motherboard sensor values.
+# config: /etc/sysconfig/lm_sensors
+#
+### BEGIN INIT INFO
+# Provides:       lm_sensors
+# Required-Start: $local_fs
+# Required-Stop:  $local_fs
+# Default-Start:  2 3 4 5
+# Default-Stop:   0 1 6
+# Description:    lm_sensors Service
+### END INIT INFO
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#    MA 02110-1301 USA.
+
+# See also the lm_sensors homepage at:
+#     http://www.lm-sensors.org
+
+# It uses a config file /etc/sysconfig/lm_sensors that contains the modules
+# to be loaded/unloaded. That file is sourced into this one.
+
+# The format of this file is a shell script that simply defines variables:
+# HWMON_MODULES for hardware monitoring driver modules, and optionally
+# BUS_MODULES for any required bus driver module (for example for I2C or SPI).
+
+# Do not load RH compatibility interface.
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+LOCKFILE=/var/lock/subsys/sensors
+CONFIG=/etc/sysconfig/lm_sensors
+PSENSORS=/usr/bin/sensors
+
+# Get config.
+SourceIfNotEmpty "$CONFIG" &&
+	! is_no "$ENABLE" &&
+	[ -x "$PSENSORS" ] ||
+	exit 0
+
+RETVAL=0
+
+start() {
+	echo -n "Loading sensor modules: "
+
+	modules_missing=
+	for module in $BUS_MODULES $HWMON_MODULES ; do
+		# Ignore modules which do not exist (not all sensor modules
+		# have been ported to 2.6)
+		if /sbin/modprobe -nq $module; then
+			echo -n "$module "
+			/sbin/modprobe $module &>/dev/null
+			RETVAL=$?
+		else
+			echo -n "$module(not found) "
+			modules_missing=1
+		fi
+	done
+	if [ $RETVAL -eq 0 ]; then
+		if [ -n "$modules_missing" ]; then
+			echo_passed
+		else
+			echo_success
+		fi
+	else
+		echo_failure
+	fi
+	echo
+
+	if [ $RETVAL -eq 0 ]; then
+		if ! is_no "$SET_LIMITS"; then
+			action "Setting sensor parameters:" $PSENSORS -s
+			RETVAL=$?
+		fi
+	fi
+
+	if [ $RETVAL -eq 0 ]; then
+		touch "$LOCKFILE"
+	fi
+}
+
+unload_modules()
+{
+	for module in $HWMON_MODULES $BUS_MODULES ; do
+    	if /sbin/modprobe -nq $module; then
+    		echo -n "$module "
+    		/sbin/modprobe -r $module &>/dev/null || return $?
+    	fi
+	done
+}
+
+stop() {
+	echo -n "Unloading sensor modules: "
+
+    unload_modules
+
+	RETVAL=$?
+	if [ $RETVAL -eq 0 ]; then
+        rm -f $LOCKFILE
+        echo_success
+		echo
+	else
+		echo_failure
+		echo
+	fi
+}
+
+dostatus() {
+	$PSENSORS
+	RETVAL=$?
+	if [ $RETVAL -ne 0 ]; then
+		RETVAL=3
+	fi
+}
+
+restart() {
+	stop
+	start
+	RETVAL=$?
+}
+
+condstart() {
+	[ -e "$LOCKFILE" ] && start || :
+}
+
+condstop() {
+	[ -e "$LOCKFILE" ] && stop || :
+}
+
+condrestart() {
+	[ -e "$LOCKFILE" ] && restart ||:
+}
+
+# See how we were called.
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  status)
+	dostatus
+	;;
+  restart|reload)
+	restart
+	;;
+  condstop)
+	condstop
+	;;
+  condstart)
+	condstart
+	;;
+  condrestart)
+	condrestart
+	;;
+  *)
+	echo "Usage: $0 {start|stop|status|restart|reload|condstart|condstop|condrestart}"
+	exit 3
+esac
+
+exit $RETVAL

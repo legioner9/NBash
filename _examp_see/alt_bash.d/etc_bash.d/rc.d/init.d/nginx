@@ -1,0 +1,154 @@
+#!/bin/bash
+#
+# chkconfig: 2345 98 15
+# description: Fast web-server and reverse proxy
+# processname: /usr/sbin/nginx
+# pidfile: /var/run/nginx.pid
+
+# source function library
+
+WITHOUT_RC_COMPAT=1
+
+. /etc/init.d/functions
+
+LOCKFILE=/var/lock/nginx/nginx
+PIDFILE=/var/run/nginx.pid
+OLDBINPID=/var/run/nginx.pid.oldbin
+RETVAL=0
+
+SourceIfExists /etc/sysconfig/nginx
+
+start()
+{
+	# nginx can work with many files at one time
+	[ -n "$ULIMIT_ARGS" ] && ulimit $ULIMIT_ARGS
+	start_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root -- nginx
+	RETVAL=$?
+	return $RETVAL
+}
+
+stop()
+{
+	stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root -- nginx
+	RETVAL=$?
+	return $RETVAL
+	rm -f $PIDFILE
+}
+
+restart()
+{
+	# start _new_ nginx binary
+	# !!! warning !!! when ser rtsig, it may not working
+#	msg_reloading nginx
+#	stop_daemon --expect-user root -USR2 -- nginx
+	stop
+	start
+	RETVAL=$?
+	return $RETVAL
+}
+
+reload()
+{
+	msg_reloading nginx
+	stop_daemon --pidfile "$PIDFILE" --expect-user root -HUP -- nginx
+	RETVAL=$?
+	return $RETVAL
+} 
+
+conftest()
+{
+	action "Checking configuration sanity for nginx: " nginx -t
+	RETVAL=$?
+	return $RETVAL
+}
+
+waitpidfile()
+{
+		[ -z "$1" ] && exit 1
+		MAXCOUNT=50
+		counter=0
+		until [ -s "$1" ]; do
+				[ "$((counter++))" -eq "$MAXCOUNT" ] && break
+				usleep 100000
+		done
+}
+
+upgrade()
+{
+	conftest || return 1
+	status --lockfile "$LOCKFILE" --pidfile "$PIDFILE" --expect-user root -- nginx >&/dev/null || return 0
+	echo -n "Upgrading running nginx binary: "
+	stop_daemon --pidfile "$PIDFILE" --expect-user root -USR2 -- nginx && {
+		echo -n "Phasing out older nginx instance: "
+		waitpidfile "$OLDBINPID"
+		stop_daemon --pidfile "$OLDBINPID" --expect-user root --no-announce -- nginx
+	} || return 1
+}
+
+# See how we were called.
+case "$1" in
+	start)
+		conftest
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && start ||:
+		;;
+	stop)
+		stop
+		;;
+	reload) 
+		conftest
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && reload ||:
+		;;
+	restart)
+		conftest
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && restart ||:
+		;;
+	condstop)
+		if [ -e "$LOCKFILE" ]; then
+			stop
+		fi
+		;;
+	condrestart)
+		# package upgrade should invoke upgrade();
+		# sysadmin doing condrestart by hand
+		# should invoke restart() if nginx's running.
+		# see also manual/triggers in rpm docs
+		# and /usr/sbin/post_service
+		if ! [ "$RPM_INSTALL_ARG1" -ge 0 ] 2>/dev/null; then
+			if [ -e "$LOCKFILE" ]; then
+				restart
+			fi
+			exit 0
+		fi
+		if [ "$RPM_INSTALL_ARG1" -gt 1 ]; then
+			upgrade
+		fi
+		;;
+	condreload)
+		if [ -e "$LOCKFILE" ]; then
+			reload
+		fi
+		;;
+	status)
+		status --lockfile "$LOCKFILE" --pidfile "$PIDFILE" --expect-user root -- nginx
+		RETVAL=$?
+		;;
+	upgrade)
+		if [ -e "$LOCKFILE" ]; then
+			upgrade
+		fi
+		;;
+	rotate)
+		msg_reloading nginx
+		stop_daemon --pidfile "$PIDFILE" --expect-user root -USR1 -- nginx
+		RETVAL=$?
+		;;		
+	*)
+		msg_usage "nginx {start|stop|reload|restart|condstop|condrestart|condreload|status|rotate}"
+		RETVAL=1
+esac
+
+exit $RETVAL
+

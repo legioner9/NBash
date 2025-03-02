@@ -1,0 +1,19 @@
+#!/bin/sh
+
+. /etc/control.d/functions
+
+new_summary "Postfix user interface for queue management"
+
+new_fmode public 755 root root
+new_fmode mailadm 750 root mailadm
+new_fmode restricted 700 root root
+
+new_help public "Any user can execute postqueue(1)"
+new_help mailadm "Only \"mailadm\" group members can execute postqueue(1)"
+new_help restricted "Only root can execute postqueue(1)"
+
+DIRECTORY=/usr/libexec/postfix/postqueue
+[ -d "$DIRECTORY" -o ! -d '/usr/lib/postfix/postqueue' ] ||
+	DIRECTORY=/usr/lib/postfix/postqueue
+
+control_fmode "$DIRECTORY" "$*" || exit 1

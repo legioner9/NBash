@@ -1,0 +1,162 @@
+#!/bin/sh -efu
+
+# Example: LGPL-2.1-or-later and LGPL-2.1-or-later with GCC-exception-2.0 and GPL-2.0-or-later
+# Example: (GPL-2.0 or Artistic-1.0-Perl) and CC0-1.0
+
+: ${rpm_license?}
+
+LICENSE_DIR='/usr/share/license'
+LICENSE_EXT_DIR='/usr/share/license-exception'
+LICENSE_AMBIGUOUS_DIR='/usr/share/license-ambiguous'
+
+check_license()
+{
+	local f="$1" && shift || return 1
+
+	[ -d "$LICENSE_DIR" ] ||
+		return 0
+
+	if [ -z "$rpm_license" ]; then
+		FileError "empty LICENSE" "$f"
+		return 1
+	fi
+
+	local badsyms
+	badsyms="$(printf %s "$rpm_license" |LC_ALL=C tr -d '[A-Za-z0-9\(\)\+ .\-]')"
+
+	if [ -n "$badsyms" ]; then
+		FileError "bad symbols in the license tag: $badsyms" "$f"
+		return 0 # disable check for now
+	fi
+
+	local rc=0 bad_license=0
+	local license='' token='' tokentype='' filename='' keyword='' basedir=''
+	local level=0 grouped_names=0 parsed_string=''
+
+	license="$(printf %s "$rpm_license" |
+		sed -r \
+			-e 's/[()]/ & /g' \
+			-e 's/(^|[[:space:]])(and|or|with)([[:space:]]|$)/\1\L\2\E\3/ig'
+	)"
+
+	for token in $license; do
+		parsed_string="${parsed_string:+$parsed_string }$token"
+
+		case "$token" in
+			and|or|with)
+				case "$keyword=$token" in
+					and=*|or=*|with=*|'(=with'|')=with')
+						FileError "keyword '$token' must not follow another keyword '$keyword': '$parsed_string'" "$f"
+						rc=1
+						break
+						;;
+				esac
+
+				keyword="$token"
+
+				continue
+				;;
+			'(')
+				if [ "$level" != 0 ]; then
+					FileError "groups within groups are not allowed: '$parsed_string'" "$f"
+					rc=1
+					break
+				fi
+
+				case "$keyword=$token" in
+					'and=('|'or=('|'=(')
+						;;
+					*)
+						FileError "keyword '$token' must not follow another keyword '$keyword': '$parsed_string'" "$f"
+						rc=1
+						break
+						;;
+				esac
+
+				keyword="$token"
+				level=$(($level + 1))
+				grouped_names=0
+
+				continue
+				;;
+			')')
+				if [ "$level" = 0 ]; then
+					FileError "closing bracket without opening bracket: '$parsed_string'" "$f"
+					rc=1
+					break
+				fi
+
+				if [ -n "$keyword" ]; then
+					FileError "keyword '$token' must not follow another keyword '$keyword': '$parsed_string'" "$f"
+					rc=1
+					break
+				fi
+
+				keyword="$token"
+				level=$(($level - 1))
+
+				if [ "$grouped_names" -lt 2 ]; then
+					case "$grouped_names" in
+						0) FileError "group is empty: '$parsed_string'" "$f" ;;
+						1) FileError "group with one element does not make sense: '$parsed_string'" "$f" ;;
+					esac
+					rc=1
+					break
+				fi
+
+				continue
+				;;
+			*)
+				if [ "$keyword" != 'with' ]; then
+					tokentype='license'
+					basedir="$LICENSE_DIR"
+					grouped_names=$(($grouped_names + 1))
+				else
+					tokentype='exception'
+					basedir="$LICENSE_EXT_DIR"
+				fi
+				filename="$token"
+				keyword=
+				;;
+		esac
+
+		if [ -z "${filename##.*}" ]; then
+			:
+		elif [ "$tokentype" = 'license' ] && [ -e "$LICENSE_AMBIGUOUS_DIR/$filename" ]; then
+			FileError "The use of such a license name is ambiguous: $filename" "$f"
+		elif [ ! -e "$basedir/$filename" ]; then
+			FileError "$tokentype not found in '$basedir' directory: $filename" "$f"
+		else
+			continue
+		fi
+
+		bad_license=1
+	done
+
+	if [ $rc = 0 ]; then
+		if [ "$level" != 0 ]; then
+			FileError "unbalanced brackets: '$parsed_string'" "$f"
+			rc=1
+		fi
+
+		case "$keyword" in
+			and|or|with)
+				FileError "incomplete expression: '$parsed_string'" "$f"
+				rc=1
+				;;
+		esac
+	fi
+
+	#[ "$bad_license" = 0 ] ||
+	#	rc=1
+
+	return $rc
+}
+
+run_check()
+{
+	if ! check_license "$1"; then
+		CheckError 'license format violation'
+		return 1
+	fi
+}

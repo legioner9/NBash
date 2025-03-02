@@ -1,0 +1,269 @@
+#!/bin/sh -e
+#
+# $Id: functions,v 1.28 2005/07/01 15:02:47 ldv Exp $
+#
+# Copyright (C) 2003-2005  Stanislav Ievlev <inger@altlinux.org>,
+#                          Dmitry V. Levin <ldv@altlinux.org>,
+#                          Alexey Gladkov <legion@altlinux.org>
+# 
+# Functions used by sisyphus scripts.
+#
+# This file is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA.
+#
+
+# debug mode for cleanup stuff
+: ${test:=}
+
+unset CDPATH ||:
+PROG="${0##*/}"
+
+Info()
+{
+	printf '%s\n' "$PROG: $*" >&2
+}
+
+Fatal()
+{
+	printf %s\\n "$PROG: $*" >&2
+	exit 1
+}
+
+quiet=
+Message()
+{
+	[ -z "$quiet" ] || return 0
+	printf %s\\n "$*"
+}
+
+show_bad_files=
+FileError()
+{
+	local text="$1"
+	shift || return
+	local f="$1"
+
+	if [ -n "$f" ]; then
+		text="${text#$f: }"
+		text="$f: $text"
+		[ -z "$show_bad_files" ] || printf '%s\n' "$f"
+	fi
+	printf '%s\n' "$text" >&2
+}
+
+identic()
+{
+	local f1="$1"
+	shift || return
+	local f2="$1"
+	shift || return
+	local i1 i2
+	i1="$(stat -- "$f1" |grep '^Device: ')"
+	i2="$(stat -- "$f2" |grep '^Device: ')"
+	[ "$i1" = "$i2" ]
+}
+
+valid_architecture()
+{
+	local rpm_arch="$1" && shift || return 1
+	local archs=" src $ARCHITECTURES "
+	[ "$archs" != "${archs#* $rpm_arch }" ]
+}
+
+target_cleanup()
+{
+	local f=$1
+	shift || return
+	local n="${f##*/}"
+
+	local rep
+	for rep in "$@"; do
+		local target="$PREFIX/$rep/$n"
+		if [ -f "$target" ]; then
+			# file with same name exists
+			if identic "$f" "$target"; then
+				# shouldn't normally happen
+				FileError "belongs to $rep!!!" "$f"
+				return 1
+			elif cmp -s "$f" "$target"; then
+				$test rm -fv -- "$f"
+			else
+				FileError "differ from $rep!" "$f"
+				return 1
+			fi
+			return
+		fi
+	done
+	echo "$f: new file!"
+}
+
+cleanup_incoming()
+{
+	local rc=0
+	local f
+	for f in "$@"; do
+		if [ ! -r "$f" ]; then
+			FileError "unavailable" "$f"
+			continue
+		fi
+		local type rpm_arch component
+		type="$(file -b "$f")" || { rc=1; continue; }
+		rpm_arch="$f"; rpm_arch="${rpm_arch%.rpm}"; rpm_arch="${rpm_arch##*.}"
+		[ -n "$rpm_arch" ] ||
+			{ rc=1; continue; }
+		valid_architecture "$rpm_arch" ||
+			{ FileError "invalid architecture: $rpm_arch" "$f"; rc=1; continue; }
+		if [ -z "${type##RPM v3 src *}" ]; then
+			target_cleanup "$f" "$NEW_FILE_PREFIX/SRPMS" || rc=1
+		elif [ -z "${type##RPM v3 bin *}" ]; then
+			target_cleanup "$f" "$NEW_FILE_PREFIX/$rpm_arch/RPMS" || rc=1
+		else
+			FileError "unrecognized type: $type" "$f"
+			rc=1
+		fi
+	done
+	return $rc
+}
+
+# upload source packages
+upload_src_new()
+{
+	pushd $1 >/dev/null
+
+	local f
+	for f in *.rpm; do
+		if [ ! -f "$f" ]; then
+			[ "$f" != '*.rpm' ] || continue
+			FileError "not a regular file" "$f"
+			rc=1
+			continue
+		fi
+		$test cp -pv -- "$f" "$PREFIX/files/SRPMS/"
+	done
+
+	cleanup_incoming *.rpm
+
+	popd >/dev/null
+}
+
+# upload binary packages
+upload_bin_new()
+{
+	pushd $1 >/dev/null
+
+	local f rpm_arch
+	for f in *.rpm; do
+		if [ ! -f "$f" ]; then
+			[ "$f" != '*.rpm' ] || continue
+			FileError "not a regular file" "$f"
+			rc=1
+			continue
+		fi
+		rpm_arch="$f"; rpm_arch="${rpm_arch%.rpm}"; rpm_arch="${rpm_arch##*.}"
+		[ -n "$rpm_arch" ] ||
+			{ rc=1; continue; }
+		valid_architecture "$rpm_arch" ||
+			{ FileError "invalid architecture: $rpm_arch" "$f"; rc=1; continue; }
+		$test cp -pv -- "$f" "$PREFIX/$NEW_FILE_PREFIX/$rpm_arch/RPMS"
+	done
+
+	cleanup_incoming *.rpm
+
+	popd >/dev/null
+}
+
+# find orphaned RPMS
+check_missing_srpms()
+{
+	local rpms_dir="$1"
+	shift || return
+	local srpms_dir="$1"
+	shift || return
+
+	local rc=0
+	local f n
+	local repo_src="$PREFIX/$NEW_SRC_REPOSITORIES"
+
+	for f in "$rpms_dir"/*.rpm; do
+		if [ ! -f "$f" ]; then
+			[ "$f" != "$rpms_dir/*.rpm" ] || continue
+			FileError "not a regular file" "$f"
+			rc=1
+			continue
+		fi
+		n=`LANG=C LANGUAGE=C LC_ALL=C rpmquery -p --qf '%{SOURCERPM}' -- "$f"` ||
+			{ rc=1; continue; }
+		n="${n%.src.rpm}"
+		n="${n%.nosrc.rpm}"
+		if ! [ -f "$srpms_dir/$n.src.rpm" -o -f "$srpms_dir/$n.nosrc.rpm" ] &&
+		   ! [ -f "$repo_src/$n.src.rpm" -o -f "$repo_src/$n.nosrc.rpm" ]; then
+			FileError "$n" "$f"
+			rc=1
+		fi
+	done
+
+	return $rc
+}
+
+# find orphaned SRPMS
+check_obsolete_srpms()
+{
+	local rpms_dir="$1"
+	shift || return
+	local srpms_dir="$1"
+	shift || return
+
+	[ -n "$(find "$srpms_dir" -mindepth 1 -maxdepth 1 -type f -name '*src\.rpm' -print -quit)" ] || 
+	    return 0
+
+	local rc=0
+	local list=
+	local f n
+
+	pushd "$rpms_dir" >/dev/null #RPMS
+	for f in *.rpm; do
+		if [ ! -f "$f" ]; then
+			[ "$f" != '*.rpm' ] || continue
+			FileError "not a regular file" "$f"
+			rc=1
+			continue
+		fi
+		n=`LANG=C LANGUAGE=C LC_ALL=C rpmquery -p --qf '%{SOURCERPM}' -- "$f"` ||
+			{ rc=1; continue; }
+		n="${n%.src.rpm}"
+		n="${n%.nosrc.rpm}"
+		list="$list
+$n"
+	done
+	popd >/dev/null
+
+	pushd "$srpms_dir" >/dev/null #SRPMS
+	for f in *.rpm; do
+		if [ ! -f "$f" ]; then
+			[ "$f" != '*.rpm' ] || continue
+			FileError "not a regular file" "$f"
+			rc=1
+			continue
+		fi
+		n="${f%.src.rpm}"
+		n="${n%.nosrc.rpm}"
+		if ! printf %s "$list" |grep -qsxF "$n"; then
+			FileError "$f"
+			rc=1
+		fi
+	done
+	popd >/dev/null
+
+	return $rc
+}

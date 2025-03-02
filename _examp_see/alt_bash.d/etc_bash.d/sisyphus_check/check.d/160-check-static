@@ -1,0 +1,32 @@
+#!/bin/sh -efu
+
+: ${package_type?} ${rpm_perms_filenames?}
+
+# check packaging of static libraries
+check_static_libs()
+{
+	# Check for binary rpms only.
+	[ "$package_type" = bin ] || return 0
+
+	local f="$1" && shift || return 1
+	local dups
+
+	dups="$(printf %s "$rpm_perms_filenames" |
+		sed -r -n 's/^[^ ]+ (.+)\.a$/\1/p; s/^l[^ ]+ (.+)\.so$/\1/p' |
+		uniq -d)"
+	if [ -n "$dups" ]; then
+		local text
+		text="$(printf %s "$dups" |sed 's/.*/&.a\n&.so/')"
+		FileError "contains both .a and .so: $(oneliner "$text")" "$f"
+		return 1
+	fi
+
+	return 0
+}
+
+run_check() {
+	if ! check_static_libs "$1"; then
+		CheckError 'static library packaging violation'
+		return 1
+	fi
+}

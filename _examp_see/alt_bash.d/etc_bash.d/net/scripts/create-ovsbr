@@ -1,0 +1,21 @@
+#!/bin/bash
+
+pickup_defaults
+pickup_options
+
+[ -x "${OVS_VSCTL:=$DEFAULT_OVS_VSCTL}" ] || {
+	print_error "$OVS_VSCTL does not exist or is not executable. Try installing openvswitch RPM."
+	exit 1
+}
+
+
+if [ -z "$BRIDGE" ] || [ -z "$VID" ]; then
+	$OVS_VSCTL -t $OVS_VSCTL_TIMEOUT -- --may-exist add-br "$NAME" && print_progress
+else
+	#Creates a ‘‘fake bridge’’ named bridge within the existing Open vSwitch bridge parent, 
+	#which must already exist and must not itself be a fake bridge. 
+	#The new fake bridge will be on 802.1Q VLAN vlan, which must be an integer between 0 and 4095.
+	#Initially bridge will have no ports (other than bridge itself)
+	iface_is_up $BRIDGE || $SCRIPTDIR/ifup $BRIDGE
+	$OVS_VSCTL -t $OVS_VSCTL_TIMEOUT -- --may-exist add-br "$NAME" "$BRIDGE" "$VID" && print_progress
+fi

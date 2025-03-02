@@ -1,0 +1,24 @@
+#!/bin/bash
+
+pickup_defaults
+pickup_options
+
+: ${HOST:?HOST is missing for $NAME}
+: ${VNI:?VNI is missing for $NAME}
+: ${LOCAL:?missing LOCAL}
+
+$MODPROBE vxlan
+
+# obsolete now?
+if iface_is_up $HOST; then
+	[ -n $REMOTE ] && REMOTE_OPT="remote $REMOTE" || REMOTE_OPT="group ${GROUP:-239.1.1.1}"
+	$IP link add $NAME type vxlan id $VNI dstport ${DSTPORT:-4789} local $LOCAL $REMOTE_OPT ttl ${TTL:-255} ${HOST:+dev $HOST} $VXLANOPTIONS
+else
+	print_error "host interface '$HOST' for '$NAME' is down"
+	exit 1
+fi
+
+profiled_filename PROF_BRIDGE "$MYIFACEDIR/bridge" &&
+	xargise_file "$PROF_BRIDGE" "$BRIDGE"
+
+exit 0

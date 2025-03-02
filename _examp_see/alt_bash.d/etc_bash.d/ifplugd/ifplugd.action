@@ -1,0 +1,47 @@
+#!/bin/sh
+# $Id: ifplugd.action 99 2004-02-08 20:17:59Z lennart $
+
+# This file is part of ifplugd.
+#
+# ifplugd is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free
+# Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+#
+# ifplugd is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with ifplugd; if not, write to the Free Software Foundation,
+# Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+
+set -e
+
+if [ -z "$1" ] || [ -z "$2" ] ; then
+	logger -d "Wrong arguments to $0: '$@'"
+	exit 1
+fi
+
+NS_IFUP=/sbin/ifup
+NS_IFDOWN=/sbin/ifdown
+N_C_S_CONFIG=/etc/sysconfig/network
+
+. $N_C_S_CONFIG
+
+case $CONFMETHOD in
+	etcnet)
+		# /etc/net 0.7.10 manages ifplugd itself. Refer to /etc/net documentation.
+	;;
+	net-scripts)
+		[ "$2" = "up" ] && exec $NS_IFUP $1
+		[ "$2" = "down" ] && exec $NS_IFDOWN $1
+	;;
+	*)
+		logger -d -p user.err -t ifplugd.action -- "fix your $N_C_S_CONFIG and set CONFMETHOD correctly"
+	;;
+esac
+
+
+exit 1

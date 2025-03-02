@@ -1,0 +1,37 @@
+#!/bin/sh -efu
+
+iftab='/etc/iftab'
+rules='/etc/udev/rules.d/70-persistent-net.rules'
+udevadm=/sbin/udevadm
+
+[ -x "$udevadm" ] &&
+iftab_lines="$(grep -cs '^[[:space:]]*[^[:space:]#]' "$iftab")" ||
+	exit 0
+
+>>"$rules"
+rules_old_lines="$(grep -cs '^SUBSYSTEM==' "$rules")" ||:
+
+sed -n 's/^[[:space:]]*\([^[:space:]#*]\+\)[[:space:]]\+\(mac\|SYSFS{address}\)[[:space:]]\+\(\([[:xdigit:]][[:xdigit:]]:\)\{5\}[[:xdigit:]][[:xdigit:]]\)\([[:space:]].*\|$\)/\1 \3/p' -- "$iftab" |
+sort -u |
+while read -r iface mac; do
+	touch -d '1 second ago' "$rules"
+	t="$(stat -c %Y "$rules")"
+	$udevadm trigger --subsystem-match=net --attr-match=address="$mac"
+	for i in `seq 1 10`; do
+		[ "$t" = "$(stat -c %Y "$rules")" ] || break
+		sleep 0.05
+	done
+	sed -i "/ATTR{address}==\"$mac\"/s/NAME=\"[^\"]\+\"/NAME=\"$iface\"/" "$rules"
+done
+
+rules_new_lines="$(grep -cs '^SUBSYSTEM==' "$rules")" ||:
+rules_added="$(($rules_new_lines-$rules_old_lines))"
+
+rules_added_suff=
+[ $rules_added = 1 ] || rules_added_suff=s
+iftab_lines_suff=
+[ $iftab_lines = 1 ] || iftab_lines_suff=s
+
+echo >&2 "Added $rules_added new rule$rules_added_suff to $rules based on $iftab_lines line$iftab_lines_suff from $iftab"
+[ "$rules_added" = "$iftab_lines" ] ||
+	echo >&2 "WARNING: Automatic $iftab -> $rules conversion failed"

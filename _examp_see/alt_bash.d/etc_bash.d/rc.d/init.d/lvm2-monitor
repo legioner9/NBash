@@ -1,0 +1,111 @@
+#!/bin/bash
+#
+# This file is required for the proper handling of failures of LVM2 mirror
+# devices that were created using the -m option of lvcreate.
+#
+# chkconfig: 12345 02 99
+# description: Starts and stops dmeventd monitoring for lvm2
+### BEGIN INIT INFO
+# Provides: lvm2-monitor
+# Required-Start: $local_fs
+# Required-Stop: $local_fs
+# Default-Start: 1 2 3 4 5
+# Default-Stop: 0 6
+# Short-Description: Monitoring of LVM2 mirrors, snapshots etc. using dmeventd or progress polling
+### END INIT INFO
+
+WITHOUT_RC_COMPAT=1
+
+. /etc/init.d/functions
+
+DAEMON=lvm2-monitor
+
+VGCHANGE=/sbin/vgchange
+VGS=/sbin/vgs
+
+LOCKFILE="/run/lock/subsys/$DAEMON"
+RETVAL=0
+WARN=1
+
+start()
+{
+	# TODO do we want to separate out already active groups only?
+	VGSLIST=`$VGS --noheadings -o name 2> /dev/null`
+	for vg in $VGSLIST
+	do
+	    action "Starting monitoring for VG $vg:" $VGCHANGE --monitor y $vg || RETVAL=$?
+	done
+	return $RETVAL
+}
+
+
+stop()
+{
+	# TODO do we want to separate out already active groups only?
+	if test "$WARN" = "1"; then
+	   echo "Not stopping monitoring, this is a dangerous operation. Please use force-stop to override."
+	   return 1
+	fi
+	VGSLIST=`$VGS --noheadings -o name 2> /dev/null`
+	for vg in $VGSLIST
+	do
+	    action "Stopping monitoring for VG $vg:" $VGCHANGE --monitor n $vg || RETVAL=$?
+	done
+	return $RETVAL
+}
+
+restart()
+{
+    stop
+    start
+}
+
+# See how we were called.
+case "$1" in
+  start)
+	start
+	RETVAL=$?
+	[ $RETVAL = 0 ] && touch $LOCKFILE
+	;;
+  force-stop)
+	WARN=0
+	stop
+	RETVAL=$?
+	[ $RETVAL = 0 ] && rm -f $LOCKFILE
+	;;
+  stop)
+	test "$runlevel" = "0" && WARN=0
+	test "$runlevel" = "6" && WARN=0
+	stop
+	RETVAL=$?
+	[ $RETVAL = 0 ] && rm -f $LOCKFILE
+	;;
+  restart|reload)
+	WARN=0
+	restart
+	;;
+  condstop)
+    if [ -e "$LOCKFILE" ]; then
+		stop
+	fi
+	;;
+  condrestart)
+	if [ -e "$LOCKFILE" ]; then
+		restart
+	fi
+	;;
+  condreload)
+	if [ -e "$LOCKFILE" ]; then
+		reload
+	fi
+	;;
+  status)
+	# TODO anyone with an idea how to dump monitored volumes?
+	;;
+
+  *)
+	echo $"Usage: $0 {start|stop|reload|restart|status|force-stop|condstop|condrestart|condreload}"
+	;;
+esac
+
+exit $RETVAL

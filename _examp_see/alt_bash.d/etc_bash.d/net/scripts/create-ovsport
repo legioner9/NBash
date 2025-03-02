@@ -1,0 +1,24 @@
+#!/bin/bash
+
+pickup_defaults
+pickup_options
+
+: ${BRIDGE:?BRIDGE must be set for $NAME}
+
+[ -x "${OVS_VSCTL:=$DEFAULT_OVS_VSCTL}" ] || {
+	print_error "$OVS_VSCTL does not exist or is not executable. Try installing openvswitch RPM."
+	exit 1
+}
+
+iface_is_up $BRIDGE || $SCRIPTDIR/ifup $BRIDGE
+
+$OVS_VSCTL -t $OVS_VSCTL_TIMEOUT \
+	-- --if-exists del-port "$BRIDGE" "$NAME"
+
+iface_exists $NAME || PORT_TYPE="-- set interface $NAME type=internal "
+
+[ -z $OVS_PATCH ] || PORT_TYPE="-- set interface $NAME type=patch "
+
+$OVS_VSCTL -t $OVS_VSCTL_TIMEOUT \
+	-- add-port "$BRIDGE" "$NAME" ${VID+tag=$VID} $OVS_OPTIONS ${OVS_EXTRA+-- $OVS_EXTRA} $PORT_TYPE && print_progress
+

@@ -1,0 +1,22 @@
+#! /bin/sh
+
+. /etc/control.d/functions
+
+CONFIG=/etc/sysconfig/htcacheclean2
+
+new_summary 'htcacheclean runing management'
+
+facility=yes
+
+for facility in yes no auto
+do
+	new_subst $facility \
+		"^[[:space:]]*HTCACHECLEAN_RUN=([\"']?)$facility\1([[:space:]]+(#.*)?)?$" \
+		"s,^\\([[:space:]]*HTCACHECLEAN_RUN=\\([\"']\\?\\)\\)[^#\"']*\\2\\([[:space:]]\\+\\(#.*\\)\\?\\)\\?$,\\1$facility\\2\\3,"
+done
+
+new_help yes "Run htcacheclean"
+new_help no "Not run htcacheclean"
+new_help auto "Run if /etc/httpd2/conf/mods-enabled/cache_disk.load exists"
+
+control_subst "$CONFIG" status || exit 1

@@ -1,0 +1,107 @@
+#!/bin/sh
+#
+# rng-tools	initscript for the rng-tools package
+#		Copr. 2003 by Henrique de Moraes Holschuh <hmh@debian.org>
+#		Copr. 2002 by Viral Shah <viral@debian.org>
+#
+# $Id: rng-tools.init,v 1.6.2.5.2.4 2005/05/11 09:29:26 hmh Exp $
+# 
+# chkconfig: 2345 34 66
+# description:  Hardware RNG entropy gatherer daemon
+
+### BEGIN INIT INFO
+# Provides:          rngd
+# Required-Start:    $network
+# Required-Stop:     $network
+# Default-Start:
+# Default-Stop:
+# Short-Description: Start rngd at boot time
+# Description:       Hardware RNG entropy gatherer daemon
+### END INIT INFO
+
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+HRNGDEVICE=/dev/hwrng
+RNGDOPTIONS=
+DESC="Hardware RNG entropy gatherer daemon"
+
+SourceIfNotEmpty /etc/sysconfig/rngd
+
+DAEMON=/usr/sbin/rngd
+NAME=rngd
+PIDFILE=/var/run/rngd.pid
+LOCKFILE=/var/lock/subsys/rngd
+
+DEVICELIST="hwrng hw_random hwrandom intel_rng i810_rng"
+
+[ -f ${DAEMON} ] || exit 0
+
+finddevice () {
+	[ -c "$HRNGDEVICE" ] && return 0
+	for i in $DEVICELIST ; do
+		if [ -c "/dev/$i" ] ; then
+			HRNGDEVICE="/dev/$i"
+			return 0
+		fi
+		if [ -c "/dev/misc/$i" ] ; then
+			HRNGDEVICE="/dev/misc/$i"
+			return 0
+		fi
+	done
+
+	echo "(Hardware RNG device inode not found)"
+	echo "$0: Cannot find a hardware RNG device to use." >&2
+	exit 1
+}
+
+start()
+{
+	finddevice
+	start_daemon --pidfile "$PIDFILE" --make-pidfile --lockfile "$LOCKFILE" --name "$NAME" -- rngd -f -r "$HRNGDEVICE" "$RNGDOPTIONS"
+	RETVAL=$?
+}
+
+stop()
+{
+	stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --name "$NAME" -- rngd
+	RETVAL=$?
+}
+
+restart()
+{
+	stop
+	start
+}
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart|reload)
+	restart
+	;;
+  condstop)
+	if [ -e "$LOCKFILE" ]; then
+		stop
+	fi
+	;;
+  condrestart)
+	if [ -e "$LOCKFILE" ]; then
+		restart
+	fi
+	;;
+  status)
+	status --pidfile "$PIDFILE" --expect-user root rngd
+	;;
+  *)
+	echo "Usage: ${0##*/} {start|stop|reload|restart|condstop|condrestart|status}"
+	RETVAL=1
+esac
+
+exit $RETVAL

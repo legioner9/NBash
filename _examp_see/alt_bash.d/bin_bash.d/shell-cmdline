@@ -1,0 +1,125 @@
+#!/bin/sh -efu
+### This file is covered by the GNU General Public License,
+### which should be included with libshell as the file LICENSE.
+### All copyright information are listed in the COPYING.
+
+if [ -z "${__included_shell_cmdline-}" ]; then
+__included_shell_cmdline=1
+
+. shell-string
+
+### Run handler for each variable in /proc/cmdline.
+cmdline_foreach()
+{
+	local l h c='' m=''
+
+	l="$1"; shift
+	h="$1"; shift
+
+	__is_set() {
+		[ $(( $1 & $2 )) -eq $2 ]
+	}
+
+	fill_mask m "$l"
+
+	local state=$((0))
+	local VALUE=$((2))
+	local EQUAL=$((4))
+	local QUOTE=$((16))
+
+	local n='' v='' f=1
+
+	while [ -n "$l" ]; do
+		c="${l%$m}"
+
+		case "$c" in
+			'"')
+				__is_set $state $QUOTE &&
+					state=$(($state ^ $QUOTE)) ||
+					state=$(($state | $QUOTE))
+				;;
+			' ')
+				if __is_set $state $QUOTE; then
+					v="$v$c"
+				else
+					f=
+					__is_set $state $EQUAL ||
+						{ v=1; f=1; }
+					$h "$n" "$v" "$f" ||
+						break
+					n='' v='' f=''
+					state=$((0))
+				fi
+				;;
+			'=')
+				! __is_set $state $VALUE ||
+					v="$v$c"
+				state=$(($state | $VALUE | $EQUAL))
+				;;
+			*)
+				if ! __is_set $state $VALUE; then
+					[ "$c" != '-' ] || c='_'
+					n="$n$c"
+				else
+					v="$v$c"
+				fi
+				;;
+		esac
+
+		l="${l#?}"
+		m="${m#?}"
+	done
+
+	if [ -n "$n" ]; then
+		f=
+		__is_set $state $EQUAL ||
+			{ v=1; f=1; }
+		$h "$n" "$v" "$f" ||:
+	fi
+
+	unset -f __is_set
+}
+
+### Find spicified variable in /proc/cmdline and store result into variable.
+### Usage example:
+###   read cmdline < /proc/cmdline
+###   cmdline_get 'initrd_value' 'initrd' "$cmdline"
+###   echo "$initrd_value"
+### or:
+###   cmdline_get 'initrd_value' 'initrd'
+###   echo "$initrd_value"
+###
+cmdline_get()
+{
+	local __cmdline __retv __getn
+
+	__retv="$1"; shift
+	__getn="$1"; shift
+	if [ "$#" -eq 0 ]; then
+		read -r __cmdline < /proc/cmdline
+	else
+		__cmdline="$1"
+	fi
+
+	local c m l="$__getn"
+	__getn=
+
+	fill_mask m "$l"
+	while [ -n "$l" ]; do
+		c="${l%$m}"
+		[ "$c" != '-' ] || c='_'
+		__getn="$__getn$c"
+		l="${l#?}"
+		m="${m#?}"
+	done
+	unset c m l
+
+	__getval()
+	{
+		[ "$1" != "$__getn" ] || eval "$__retv=\"\$2\""
+	}
+	cmdline_foreach "$__cmdline" __getval
+	unset -f __getval
+}
+
+fi #__included_shell_cmdline

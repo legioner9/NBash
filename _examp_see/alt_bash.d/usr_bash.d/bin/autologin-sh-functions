@@ -1,0 +1,256 @@
+#!/bin/sh
+
+# params:
+#  DM-specifid PAM file name
+#  username to add to the group
+al_add_nopasswdlogin_group() {
+	# passwordless users only (LiveCD)
+	getent shadow "$2" | grep -q "^$2::" || return
+
+	[ -f "/etc/pam.d/$1" ] &&
+	grep -Eqs \
+		'^auth.+user[[:blank:]]+ingroup[[:blank:]]+nopasswdlogin' \
+		"/etc/pam.d/$1" &&
+	groupadd -r nopasswdlogin >&/dev/null
+	id -u "$2" >/dev/null &&
+		gpasswd -a "$2" nopasswdlogin >&2 ||:
+}
+
+al_del_nopasswdlogin() {
+	[ -n "$1" ] && id -u "$1" >/dev/null || return
+	getent group nopasswdlogin >&/dev/null &&
+		gpasswd -d "$1" nopasswdlogin >&2 ||:
+}
+
+al_backup() {
+	local BAK=".save"
+	[ ! -f "$1" ] || cp -av "$1" "$1$BAK" >&2
+}
+
+## this is only relevant for installable livecd, noop otherwise
+al_restore_later() {
+	local BAK=".save"
+	[ -n "$1" ] || return 0
+
+	local prefix="/usr/lib/alterator/hooks/livecd-preinstall.d"
+	[ -d "$prefix" ] || return 0
+
+	local hook="$prefix/51-disable-autologin-again.sh"
+	[ -s "$hook" ] || cat >> "$hook" <<- EOF
+	#!/bin/sh
+	. livecd-functions
+	EOF
+
+	echo mv -v "\$destdir$1$BAK" "\$destdir$1" >> "$hook"
+	chmod +x "$hook"
+}
+
+al_enable() {
+
+# avoid dependency generation
+# TODO: check for the actual conffiles that get modified?
+X_BIN=/usr/bin/X
+if [ ! -x "$X_BIN" ]; then
+	echo "SKIP autologin: X not installed" >&2
+	return 0
+fi
+
+local USER="${1:-altlinux}"
+id "$USER" >&/dev/null || return 1
+
+## autologin^2
+AUTOLOGIN_BIN=/usr/sbin/autologin
+AUTOLOGIN_CFG=/etc/sysconfig/autologin
+if [ -x "$AUTOLOGIN_BIN" ]; then
+	al_backup "$AUTOLOGIN_CFG"
+	cat > "$AUTOLOGIN_CFG" <<- EOF
+	USER=$USER
+	AUTOLOGIN=yes
+	EOF
+	al_restore_later "$AUTOLOGIN_CFG"
+fi
+
+## lightdm autologin
+LIGHTDM_CFG=/etc/lightdm/lightdm.conf
+if [ -f "$LIGHTDM_CFG" ]; then
+	mkdir -p /etc/lightdm/lightdm.conf.d
+	cat > /etc/lightdm/lightdm.conf.d/autologin.conf <<AUTOLOGIN_LIGHTDM
+[Seat:seat0]
+autologin-user=$USER
+autologin-user-timeout=0
+AUTOLOGIN_LIGHTDM
+	default_session="$(ls -1 /usr/share/xsessions/ | grep .desktop$ | cut -d '.' -f1 | head -1)"
+	user_session_file="$(getent passwd "$USER"|cut -f6 -d:)/.dmrc"
+	if [ -e "$user_session_file" ]; then
+		user_de="$(sed -n 's/^Session=//Ip' "$user_session_file")"
+		if [ -n "$user_de" ]; then
+			default_session="$user_de"
+		fi
+	fi
+	if [ -n "$default_session" ]; then
+		echo "autologin-session=$default_session" >> /etc/lightdm/lightdm.conf.d/autologin.conf
+	fi
+	al_backup "/etc/group"
+	al_add_nopasswdlogin_group lightdm "$USER"
+	al_restore_later "/etc/group"
+fi
+
+## lxdm autologin
+LXDM_CFG=/etc/lxdm/lxdm.conf
+if [ -f "$LXDM_CFG" ]; then
+	al_backup "$LXDM_CFG"
+	sed -ri \
+		-e "s/^#* ?(autologin=).*$/\1$USER/" \
+		"$LXDM_CFG"
+	al_backup "/etc/group"
+	al_add_nopasswdlogin_group lxdm "$USER"
+
+	al_restore_later "$LXDM_CFG"
+	al_restore_later "/etc/group"
+fi
+
+## gdm autologin
+GDM_CFG=/etc/X11/gdm/custom.conf
+if [ -f "$GDM_CFG" ]; then
+	al_backup "$GDM_CFG"
+	sed -i "/\[daemon\]/aAutomaticLoginEnable=true\nAutomaticLogin=$USER" \
+		"$GDM_CFG"
+	al_backup "/etc/group"
+	al_add_nopasswdlogin_group gdm "$USER"
+
+	al_restore_later "$GDM_CFG"
+	al_restore_later "/etc/group"
+fi
+
+autologin_kdm() {
+	al_backup "$1"
+	sed -i \
+		-e "/AutoLoginEnable/ s,^.*$,AutoLoginEnable=true," \
+		-e "/AutoLoginUser/ s,^.*$,AutoLoginUser=$USER," \
+		"$1"
+	al_restore_later "$1"
+}
+
+## kdm3 autologin
+# FIXME: tde packages have kdmrc in /usr via an absolute symlink :-(
+KDM_ETC=/etc/X11/kdm
+KDM_USR=/usr/share/kde/config/kdm
+if [ "$(readlink "$KDM_ETC")" = "$KDM_USR" ]; then
+	rm -f "$KDM_ETC"
+	ln -s ../.."$KDM_USR" "$KDM_ETC"
+fi
+
+KDM_CFG=/etc/X11/kdm/kdmrc
+if [ -f "$KDM_CFG" ]; then autologin_kdm "$KDM_CFG"; fi
+
+## kdm4 autologin
+KDM_CFG=/etc/X11/kdm4/kdmrc
+if [ -f "$KDM_CFG" ]; then autologin_kdm "$KDM_CFG"; fi
+
+## sddm autologin
+SDDM_CFG=/etc/X11/sddm/sddm.conf
+SDDM_SESSION=
+if [ -f "$SDDM_CFG" ]; then
+	al_backup "$SDDM_CFG"
+	al_backup "/etc/group"
+	al_add_nopasswdlogin_group sddm "$USER"
+	sed -i "s,^User=$,&$USER," "$SDDM_CFG"
+	if [ -f /usr/share/xsessions/lxqt.desktop ]; then
+		SDDM_SESSION=lxqt
+	elif [ -f /usr/share/xsessions/plasma.desktop ]; then
+		SDDM_SESSION=plasma
+	fi
+	if [ -n "$SDDM_SESSION" ]; then
+		sed -i "s,^Session=$,&$SDDM_SESSION," "$SDDM_CFG"
+	fi
+	al_restore_later "$SDDM_CFG"
+	al_restore_later "/etc/group"
+fi
+
+## nodm autologin (the last since the most intrusive)
+# WARNING: check user PATH if things go weird!
+NODM_CFG=/etc/sysconfig/nodm
+NODM_BIN=/usr/sbin/nodm
+if [ -x "$NODM_BIN" ]; then
+	al_backup "$NODM_CFG"
+	cat >> "$NODM_CFG" <<- EOF
+	export NODM_USER=$USER
+	EOF
+	al_restore_later "$NODM_CFG"
+else
+	return 0
+fi
+
+}
+
+al_disable() {
+	{
+		# turn username (if any) into regex
+		local USER
+		USER="${1:+$1$}"
+		USER="${USER:-.*$}"
+
+		# only remove users *we* configured for autologin from the group
+		al_check "$1" && al_del_nopasswdlogin "$1" ||:
+
+		# autologin
+		sed -i "/^AUTOLOGIN=yes$/d;/^USER=$USER/d" \
+			/etc/sysconfig/autologin
+		# lightdm
+		sed -ri \
+			-e "s/^(autologin-user=$USER).*$/#\1/" \
+			-e "s/^autologin-user-timeout=0$/#&/" \
+			/etc/lightdm/lightdm.conf
+		rm -f /etc/lightdm/lightdm.conf.d/autologin.conf
+		# lxdm
+		sed -ri \
+			-e "s/^(autologin=$USER).*$/#\1/" \
+			/etc/lxdm/lxdm.conf
+		# gdm2
+		sed -i \
+			-e "/^AutomaticLoginEnable=true/d" \
+			-e "/^AutomaticLogin=$USER/d" \
+			/etc/X11/gdm/custom.conf
+		# kdm{3,4}
+		sed -i \
+			-e "s/^AutoLoginEnable=true$/#&/" \
+			-e "s/^AutoLoginUser=$USER/#&/" \
+			/etc/X11/kdm4/kdmrc \
+			/etc/X11/kdm/kdmrc
+		# sddm
+		sed -ri "s/^(User=)$USER/\1/" /etc/X11/sddm/sddm.conf
+		# nodm
+		sed -i "/^export NODM_USER=$USER/d" /etc/sysconfig/nodm
+		:
+	} 2>/dev/null
+}
+
+al_check() {
+	LIGHTDM_BIN="/usr/sbin/lightdm"
+	[ -n "$1" ] || return 10
+	if [ -e "$LIGHTDM_BIN" ]; then
+		if ($LIGHTDM_BIN --show-config 2>&1| grep -q "autologin-user=$1$") ; then 
+			return 0
+		else
+			return 2
+		fi
+	fi
+	grep -Eqs "^USER=$1$" /etc/sysconfig/autologin ||
+	grep -Eqs "^autologin=$1$" /etc/lxdm/lxdm.conf ||
+	grep -Eqs "^AutomaticLogin=$1$" /etc/X11/gdm/custom.conf ||
+	grep -Eqs "^AutoLoginUser=$1$" /etc/X11/kdm4/kdmrc /etc/X11/kdm/kdmrc ||
+	grep -Eqs "^User=$1$" /etc/X11/sddm/sddm.conf ||
+	grep -Eqs "^export NODM_USER=$1$" /etc/sysconfig/nodm
+}
+
+al_possible() {
+	# multiseat is going to need special handling, at least don't break it
+	[ -f /etc/sysconfig/multiseat ] && return 1
+	[ -f /etc/sysconfig/autologin ] ||
+	[ -f /etc/lightdm/lightdm.conf ] ||
+	[ -f /etc/lxdm/lxdm.conf ] ||
+	[ -f /etc/X11/gdm/custom.conf ] ||
+	[ -f /etc/X11/kdm4/kdmrc -o -f /etc/X11/kdm/kdmrc ] ||
+	[ -f /etc/X11/sddm/sddm.conf ] ||
+	[ -f /etc/sysconfig/nodm ]
+}

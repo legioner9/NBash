@@ -1,0 +1,42 @@
+#
+# ALT Linux zshrc configuration file for zsh(1).
+# This file is sourced in interactive mode only.
+# For feature-rich sample zshrc, see /usr/share/doc/zsh-*/zshrc.
+# Place custom options into ~/.zshrc.
+#
+
+# Load keyboard bindings.
+[ -f /etc/zlerc ] && . /etc/zlerc
+
+# Set prompts
+PROMPT="%n@%m %3~ %(!.#.$) "    # default prompt
+
+# history options
+HISTFILE="${ZDOTDIR:-$HOME}/.zsh_history"
+HISTSIZE=11111
+SAVEHIST=9999
+
+# more history options; this makes history more convenient
+setopt INC_APPEND_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_REDUCE_BLANKS
+
+# Completion functions
+autoload -U compinit && compinit
+
+# Cache for _rpm_packages, _perl_modules, etc.
+zstyle ':completion:*' use-cache on
+
+# Set sudo's command-path to it's real command search path.
+zstyle ':completion:*:sudo:*' command-path /sbin /usr/sbin /usr/local/sbin /bin /usr/bin /usr/local/bin
+
+() {
+local f
+setopt localoptions extendedglob
+[[ -n /etc/zshrc.d/*.zsh(#qN) ]] && for f in /etc/zshrc.d/*.zsh; do
+		if [ -r "$f" ]; then
+			. "$f"
+		fi
+done
+}

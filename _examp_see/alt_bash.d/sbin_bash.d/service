@@ -1,0 +1,111 @@
+#!/bin/sh
+
+# This script is mostly compatible with Red Hat's service script,
+# version 0.91.  However, it is not so ugly and support for option
+# --status-all has been intentionally dropped.
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+export PATH
+
+VERSION="service version 0.91-alt"
+SERVICEDIR=/etc/init.d
+SYSTEMCTL=systemctl
+SYSTEMD_SERVICE_DIR=/lib/systemd/system
+LEGACY_ACTIONS_DIR=/usr/libexec/service/legacy-actions
+SERVICE=
+OPTIONS=
+
+info()
+{
+	printf %s\\n "${0##*/}: $*" >&2
+}
+
+fatal()
+{
+	printf %s\\n "${0##*/}: $*" >&2
+	exit 1
+}
+
+usage()
+{
+	[ "$1" = 0 ] || exec >&2
+	echo "usage: ${0##*/} --help | --version | service_name [command | --full-restart]"
+	[ -n "$1" ] && exit "$1" || exit
+}
+
+systemd_status=
+systemd_is_active()
+{
+	if [ -z "$systemd_status" ]; then
+		sd_booted && "$SYSTEMCTL" --version >/dev/null 2>&1
+		systemd_status=$?
+	fi
+	return $systemd_status
+}
+
+check_service()
+{
+	SERVICE="$1"; shift
+
+	[ -n "${SERVICE##*/*}" ] ||
+		fatal "$SERVICE: Invalid service name"
+
+	[ -x "$SERVICEDIR/$SERVICE" ] && return 0
+
+	systemd_is_active &&
+	"$SYSTEMCTL" cat "$SERVICE" >/dev/null &&
+		return 0
+
+	fatal "$SERVICE: Unrecognized service"
+}
+
+if [ $# -eq 0 ]; then
+	usage 1
+fi
+
+if [ $# -eq 2 -a "$2" = "--full-restart" ]; then
+	check_service "$1"
+	cd / || exit
+	"$SERVICEDIR/$SERVICE" stop
+	"$SERVICEDIR/$SERVICE" start
+	exit $?
+fi
+
+case "$1" in
+	--help|-h)
+		usage 0
+		;;
+	--version|-V )
+		echo "$VERSION"
+		exit 0
+		;;
+	-*)
+		info "$1: Invalid option"
+		usage 1
+		;;
+	*)
+		check_service "$1"
+		shift
+		cd / || exit
+		if systemd_is_active; then
+			if [ $# -eq 0 ]; then
+				set status
+			elif [ $# -gt 1 ]; then
+				fatal "$*: Invalid action"
+				exit 1
+			elif [ "$1" = status ]; then
+				set is-active
+			fi
+			legacy_script="$LEGACY_ACTIONS_DIR/$SERVICE/$1"
+			if [ -n "${1##*/*}" ] &&
+			   [ -f "$legacy_script" -a -x "$legacy_script" ]; then
+				exec "$legacy_script"
+			else
+				exec "$SYSTEMCTL" "$@" "$SERVICE"
+			fi
+		else
+			exec "$SERVICEDIR/$SERVICE" "$@"
+		fi
+		exit
+		;;
+esac

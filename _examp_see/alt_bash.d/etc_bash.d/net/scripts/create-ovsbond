@@ -1,0 +1,20 @@
+#!/bin/bash
+
+pickup_defaults
+pickup_options
+
+: ${HOST:?HOST must be set for $NAME}
+: ${BRIDGE:?BRIDGE must be set for $NAME}
+
+[ -x "${OVS_VSCTL:=$DEFAULT_OVS_VSCTL}" ] || {
+	print_error "$OVS_VSCTL does not exist or is not executable. Try installing openvswitch RPM."
+	exit 1
+}
+
+iface_is_up $BRIDGE || $SCRIPTDIR/ifup $BRIDGE
+
+$OVS_VSCTL -t $OVS_VSCTL_TIMEOUT \
+	-- --if-exists del-port "$BRIDGE" "$NAME"
+$OVS_VSCTL -t $OVS_VSCTL_TIMEOUT \
+	-- --fake-iface add-bond "$BRIDGE" "$NAME" $HOST ${VID+tag=$VID} $OVS_OPTIONS ${OVS_EXTRA+-- $OVS_EXTRA}
+

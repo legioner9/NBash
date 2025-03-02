@@ -1,0 +1,10 @@
+#
+# ALT Linux zshenv configuration file for zsh(1).
+# This file is sourced on all invocations of the shell.
+# This file should not contain commands that product output or assume the shell is attached to a tty.
+# Place custom options into ~/.zshenv.
+#
+
+# Secure TMPDIR and set TMPPREFIX according to TMPDIR.
+[ -f /etc/profile.d/tmpdir.sh ] && . /etc/profile.d/tmpdir.sh &&
+	TMPPREFIX="${TMPDIR:-/tmp}/zsh"

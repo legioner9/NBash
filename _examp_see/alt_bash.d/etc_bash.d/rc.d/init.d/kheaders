@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+# kheaders	Adjust kernel headers
+#
+# chkconfig: 2345 90 10
+# description:	Adjust kernel headers.
+
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+LOCKFILE=/var/lock/subsys/kheaders
+RETVAL=0
+
+# See how we were called.
+case "$1" in
+	start|reload|restart|condreload|condrestart)
+		action "Adjusting kernel headers:" adjust_kernel_headers
+		RETVAL=$?
+		# Mark as started regardless of exit status.
+		touch "$LOCKFILE"
+		;;
+	stop|condstop)
+		rm -f "$LOCKFILE"
+		;;
+	status)
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop}"
+		RETVAL=1
+esac
+
+exit $RETVAL

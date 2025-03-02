@@ -1,0 +1,20 @@
+#!/bin/bash
+
+pickup_defaults
+pickup_options
+
+: ${HOST:?HOST must be set for $NAME}
+: ${BONDOPTIONS:?BONDOPTIONS must be set for $NAME}
+
+$MODPROBE bonding max_bonds=0 || {
+	print_error "bonding kernel module not found"
+	exit 2
+}
+
+$IP link add $NAME type bond mode ${BONDMODE:-$DEFAULT_BONDMODE} ${BONDOPTIONS//=/ }
+
+for host in $HOST; do
+	$IP link set $host down
+	$IP link set $host master $NAME && print_progress
+	$IP link set $host up
+done

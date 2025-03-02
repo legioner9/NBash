@@ -1,0 +1,268 @@
+#!/bin/sh -efu
+### This file is covered by the GNU General Public License,
+### which should be included with libshell as the file LICENSE.
+### All copyright information are listed in the COPYING.
+
+if [ -z "${__included_shell_ini_config-}" ]; then
+__included_shell_ini_config=1
+
+shell_ini_config_comment='#'
+shell_ini_config_prefix='	'
+
+. shell-error
+. shell-var
+
+__ini_config_print()
+{
+	local p="$1"; shift
+	printf '%s%s\n' "${p:+${shell_ini_config_prefix-}}" "$@"
+}
+
+### Usage: ini_config_get file section var
+ini_config_get()
+{
+	local fn section var sect='' str eof='' n v
+	fn="$1" section="$2" var="$3"
+
+	if [ ! -e "$fn" ]; then
+		message "No such file or directory: $fn"
+		return 1
+	fi
+
+	while [ -z "$eof" ]; do
+		read -r str || eof=1
+
+		case "$str" in
+			"["*"]")
+				# Reset section variable on section change
+				sect=
+				[ "$str" != "[$section]" ] ||
+					sect=1
+				;;
+			"$shell_ini_config_comment"*|'')
+				;;
+			*)
+				if [ -n "$sect" ]; then
+					shell_var_trim n "${str%%=*}"
+
+					if [ "$n" = "$var" ]; then
+						shell_var_trim v "${str#*=}"
+						printf '%s\n' "$v"
+						break
+					fi
+				fi
+				;;
+		esac
+	done < "$fn"
+}
+
+# Usage: ini_config_is_set file section var
+ini_config_is_set()
+{
+	local fn section var sect='' str eof='' n v
+	fn="$1" section="$2" var="$3"
+
+	if [ ! -e "$fn" ]; then
+		message "No such file or directory: $fn"
+		return 1
+	fi
+
+	while [ -z "$eof" ]; do
+		read -r str || eof=1
+
+		case "$str" in
+			"["*"]")
+				# Reset section variable on section change
+				sect=
+				[ "$str" != "[$section]" ] ||
+					sect=1
+				;;
+			"$shell_ini_config_comment"*|'')
+				;;
+			*)
+				if [ -n "$sect" ]; then
+					shell_var_trim n "${str%%=*}"
+
+					if [ "$n" = "$var" ]; then
+						# Return success, since we found match.
+						return 0
+					fi
+				fi
+				;;
+		esac
+	done < "$fn"
+
+	# We did not find match, so return failure.
+	return 1
+}
+
+### Usage: ini_config_set file section var value
+ini_config_set()
+{
+	local fn fn_tmp section var value sect='' don='' str tstr eof='' n v
+
+	fn="$1" section="$2" var="$3" value="$4"
+
+	if [ ! -e "$fn" ]; then
+		message "No such file or directory: $fn"
+		return 1
+	fi
+
+	fn_tmp="$(mktemp "$fn.XXXXXX")"
+
+	while [ -z "$eof" ]; do
+		IFS='' read -r str || eof=1
+
+		shell_var_trim tstr "$str"
+
+		case "$tstr" in
+			"[$section]")
+				sect=2
+				printf '%s\n' "$tstr"
+				;;
+			"["*"]")
+				if [ "$sect" = 2 ] && [ -z "$don" ]; then
+					__ini_config_print 1 "$var = $value"
+					don=1
+				fi
+				sect=1
+				printf '%s\n' "$tstr"
+				;;
+			"$shell_ini_config_comment"*|'')
+				[ -n "$tstr" ] &&
+					__ini_config_print '' "$str" ||
+					{ [ -n "$eof" ] || printf '\n'; }
+				;;
+			*)
+				if [ -z "$sect" ]; then
+					printf '%s\n' "$str"
+					continue
+				fi
+
+				shell_var_trim n "${tstr%%=*}"
+				shell_var_trim v "${tstr#*=}"
+
+				if [ "$sect" = 2 ] && [ "$n" = "$var" ]; then
+					[ -n "$don" ] ||
+						__ini_config_print 1 "$n = $value"
+					don=1
+					continue
+				fi
+				if [ -z "${tstr##*=*}" ]; then
+					__ini_config_print 1 "$n = $v"
+				else
+					__ini_config_print 1 "$n"
+				fi
+				;;
+		esac
+
+		if [ -n "$eof" ] && [ -z "$don" ]; then
+			[ "$sect" = 2 ] ||
+				printf '[%s]\n' "$section"
+			__ini_config_print 1 "$var = $value"
+		fi
+
+	done < "$fn" > "$fn_tmp"
+	chmod --reference="$fn" "$fn_tmp"
+	mv -f -- "$fn_tmp" "$fn"
+}
+
+__ini_config_del_comment()
+{
+	local fn_tmp sect='' str tstr eof='' n v
+	fn_tmp="$(mktemp "$fn.XXXXXX")"
+
+	while [ -z "$eof" ]; do
+		IFS='' read -r str || eof=1
+
+		shell_var_trim tstr "$str"
+
+		case "$tstr" in
+			"["*"]")
+				sect=1
+				[ "$tstr" != "[$section]" ] ||
+					sect=2
+				printf '%s\n' "$tstr"
+				;;
+			"$shell_ini_config_comment"*|'')
+				[ -n "$tstr" ] &&
+					__ini_config_print '' "$str" ||
+					{ [ -n "$eof" ] || printf '\n'; }
+				;;
+			*)
+				if [ -z "$sect" ]; then
+					printf '%s\n' "$str"
+					continue
+				fi
+
+				shell_var_trim n "${tstr%%=*}"
+				shell_var_trim v "${tstr#*=}"
+
+				if [ -z "${tstr##*=*}" ]; then
+					if [ "$sect" = 2 ]; then
+						__ini_config_action 2 "$n" "$v"
+					else
+						__ini_config_print 1 "$n = $v"
+					fi
+				else
+					if [ "$sect" = 2 ]; then
+						__ini_config_action 1 "$n"
+					else
+						__ini_config_print 1 "$n"
+					fi
+				fi
+				;;
+		esac
+	done < "$fn" > "$fn_tmp"
+	chmod --reference="$fn" "$fn_tmp"
+	mv -f -- "$fn_tmp" "$fn"
+	unset -f __ini_config_action
+}
+
+### Usage: ini_config_del file section [var]
+ini_config_del()
+{
+	local fn="$1" section="$2" var="${3-}"
+
+	if [ ! -e "$fn" ]; then
+		message "No such file or directory: $fn"
+		return 1
+	fi
+
+	__ini_config_action()
+	{
+		if [ -n "$var" ] && [ ! "$2" = "$var" ]; then
+			[ "$1" = 2 ] &&
+				__ini_config_print 1 "$2 = $3" ||
+				__ini_config_print 1 "$2"
+		fi
+	}
+	__ini_config_del_comment
+}
+
+### Usage: ini_config_comment file section [var]
+ini_config_comment()
+{
+	local fn="$1" section="$2" var="${3-}"
+
+	if [ ! -e "$fn" ]; then
+		message "No such file or directory: $fn"
+		return 1
+	fi
+
+	__ini_config_action()
+	{
+		if [ -n "$var" ] && [ "$2" != "$var" ]; then
+			[ "${1}" = 2 ] && __ini_config_print 1 "$2 = $3" ||
+				__ini_config_print 1 "$2"
+			return
+		fi
+		[ "$1" = 2 ] &&
+			__ini_config_print 1 "$shell_ini_config_comment $2 = $3" ||
+			__ini_config_print 1 "$shell_ini_config_comment $2"
+
+	}
+	__ini_config_del_comment
+}
+
+fi #__included_shell_ini_config

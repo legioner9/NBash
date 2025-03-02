@@ -1,0 +1,32 @@
+#!/bin/sh
+
+usage()
+{
+	echo 'alterator-net routing handler'
+	echo "Usage: $0 <interface> <add|del>" >&2
+	exit 1
+}
+
+[ $# -ge 2 ] || usage
+NAME=$1
+
+export NAME MYIFACEDIR=/etc/net/ifaces/$NAME SCRIPTDIR=/etc/net/scripts
+
+. /etc/net/scripts/functions
+pickup_defaults
+pickup_options
+
+ACTION=$2
+case $ACTION in
+	add)
+		. $SCRIPTDIR/functions-ipv4
+		try_static && config_ipv4_routes_rules add
+	;;
+	del)
+		. $SCRIPTDIR/functions-ipv4
+		config_ipv4_routes_rules del
+	;;
+	*)
+		print_error "Illegal argument to $0: '$ACTION'"
+	;;
+esac

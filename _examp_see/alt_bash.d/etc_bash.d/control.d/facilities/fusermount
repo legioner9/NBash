@@ -1,0 +1,79 @@
+#!/bin/sh
+
+. /etc/control.d/functions
+
+RULES=/lib/udev/rules.d/60-fuse.rules
+FUSE_BINARY=/usr/bin/fusermount
+FUSE3_BINARY=/usr/bin/fusermount3
+
+setup_rule() {
+	new_subst "$1" \
+		"^[[:space:]]*KERNEL==\"fuse\",[[:space:]]*MODE=\"$2\",[[:space:]]*GROUP=\"$3\",[[:space:]]*ENV{ACL_MANAGE}=\"1\"[[:space:]]*\$" \
+		"s/^[[:space:]]*KERNEL==\"fuse\",.*\$/KERNEL==\"fuse\", MODE=\"$2\", GROUP=\"$3\", ENV{ACL_MANAGE}=\"1\"/"
+}
+
+setup_rule public 0666 fuse
+setup_rule fuseonly 0660 fuse
+setup_rule wheelonly 0660 wheel
+setup_rule restricted 0600 root
+
+new_fmode public 4711 root root
+new_fmode fuseonly 4710 root fuse
+new_fmode wheelonly 4710 root wheel
+new_fmode restricted 700 root root
+
+new_help public "Any user can execute $FUSE_BINARY and $FUSE3_BINARY"
+new_help fuseonly "Only \"fuse\" group members can execute $FUSE_BINARY and $FUSE3_BINARY"
+new_help wheelonly "Only \"wheel\" group members can execute $FUSE_BINARY and $FUSE3_BINARY"
+new_help restricted "Only root can execute $FUSE_BINARY and $FUSE3_BINARY"
+
+case "$*" in
+	status|'')
+		RULES_STATUS="`control_subst "$RULES"  status`" || exit 1
+		if [ -e $FUSE_BINARY ]; then
+			FUSE_STATUS="`control_fmode "$FUSE_BINARY" status`" || exit 1
+		fi
+		if [ -e $FUSE3_BINARY ]; then
+			FUSE3_STATUS="`control_fmode "$FUSE3_BINARY" status`" || exit 1
+		fi
+
+		if [ ! -e $FUSE_BINARY -a ! -e $FUSE3_BINARY ]; then
+			STATUS='unknown'
+		elif [ -e $FUSE_BINARY -a ! -e $FUSE3_BINARY ]; then
+			STATUS=$FUSE_STATUS
+		elif [ ! -e $FUSE_BINARY -a -e $FUSE3_BINARY ]; then
+			STATUS=$FUSE3_STATUS
+		else
+			if [ "$FUSE_STATUS" = "$FUSE3_STATUS" ]; then
+				STATUS=$FUSE_STATUS
+			else
+				STATUS='unknown'
+			fi
+		fi
+
+		[ "$STATUS" = "$RULES_STATUS" ] || STATUS='unknown'
+		echo "$STATUS"
+		;;
+	*)
+		if is_builtin_mode "$*"; then
+			control_fmode "$FUSE_BINARY" "$*" && exit 0 || exit 1
+		fi
+
+		[ ! -e $FUSE_BINARY -a ! -e $FUSE3_BINARY ] && exit 1
+		control_subst "$RULES"  "$*" || exit 1
+		if [ -d /sys/bus -o -d /sys/class ]; then
+			udevadm trigger --subsystem-match=misc --sysname-match=fuse
+			# This is just triggering udev, no need to exit with failure
+			# or creds in udev rules will desynch with binaries.
+		fi
+
+		if [ -e $FUSE_BINARY ]; then
+			control_fmode "$FUSE_BINARY" "$*" || exit 1
+		fi
+		if [ -e $FUSE3_BINARY ]; then
+			control_fmode "$FUSE3_BINARY" "$*" || exit 1
+		fi
+		;;
+esac
+
+exit 0

@@ -1,0 +1,29 @@
+#!/bin/sh +e
+#
+# run-parts - concept taken from Debian
+
+if [ "$#" -lt 1 ]; then
+	echo "Usage: run-parts <dir> [args]"
+	exit 1
+fi
+
+unset d ||:
+d="$1"
+shift
+
+if [ ! -d "$d" ]; then
+	echo "Not a directory: $d"
+	exit 1
+fi
+
+unset f ||:
+for f in "$d"/* ; do
+	[ -f "$f" -a -x "$f" ] || continue
+
+	# Don't run *.rpm* and *~ scripts.
+	[ "${f%.rpm*}" = "$f" -a "${f%\~}" = "$f" ] || continue
+
+	"$f" "$@"
+done
+
+exit 0

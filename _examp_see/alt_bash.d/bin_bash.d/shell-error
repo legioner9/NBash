@@ -1,0 +1,41 @@
+#!/bin/sh -efu
+### This file is covered by the GNU General Public License,
+### which should be included with libshell as the file LICENSE.
+### All copyright information are listed in the COPYING.
+
+if [ -z "${__included_shell_error-}" ]; then
+__included_shell_error=1
+
+PROG="${PROG:-${0##*/}}"
+
+message_syslog=
+message_time=
+message_time_format=
+message()
+{
+	local arg='' prefix=''
+	if [ -n "$message_syslog" ]; then
+		[ ! -t 2 ] || arg=-s
+		logger $arg -t "$PROG" "$*"
+		return
+	fi
+	[ -z "$message_time" ] ||
+		prefix="$(date +"${message_time_format:-[%Y-%m-%d %T]} " 2>/dev/null)" ||:
+	printf %s\\n "${prefix}$PROG: $*" >&2
+}
+
+fatal()
+{
+	message "$@"
+	exit 1
+}
+
+quiet="${quiet-}"
+verbose="${verbose-}"
+verbose()
+{
+	[ -n "$verbose" ] || return 0
+	message "$@"
+}
+
+fi #__included_shell_error

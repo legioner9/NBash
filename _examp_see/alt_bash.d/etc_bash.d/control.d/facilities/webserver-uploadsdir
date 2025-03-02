@@ -1,0 +1,20 @@
+#! /bin/sh
+
+. /etc/control.d/functions
+
+UPLOADSDIR="/var/www/uploads"
+
+new_fmode public 2777 root _webserver
+new_fmode webserveronly 2775 root _webserver
+new_fmode webmasteronly 2775 root webmaster
+new_fmode restricted 2755 root root
+
+new_summary "$UPLOADSDIR"
+
+new_help public "Any user can execute $UPLOADSDIR"
+new_help webserveronly "Only \"@webserveronly@\" group members can execute $UPLOADSDIR"
+new_help webmasteronly "Only \"@webmasteronly@\" group members can execute $UPLOADSDIR"
+new_help restricted "Only root can execute $UPLOADSDIR"
+
+control_fmode "$UPLOADSDIR" "$*" || exit 1
+

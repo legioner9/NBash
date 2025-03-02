@@ -1,0 +1,106 @@
+#!/bin/bash
+#
+# auditd        This starts and stops auditd
+#
+# chkconfig: - 11 88
+# description: This starts the Linux Auditing System Daemon
+#
+# processname: /sbin/auditd
+# config: /etc/sysconfig/auditd
+# config: /etc/audit/auditd.conf
+# pidfile: /var/run/auditd.pid
+
+
+WITHOUT_RC_COMPAT=1
+
+# Source function library. 
+. /etc/init.d/functions
+
+PIDFILE=/var/run/auditd.pid
+LOCKFILE=/var/lock/subsys/auditd
+RETVAL=0
+
+start(){
+	start_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root -- auditd
+	RETVAL=$?
+	
+	#load default rules
+	[ $RETVAL -eq 0 -a -f /etc/audit/audit.rules ] && auditctl -R /etc/audit/audit.rules >/dev/null
+
+	return $RETVAL
+}
+
+stop(){
+	stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user root -- auditd
+	RETVAL=$?
+	
+	[ $RETVAL -eq 0 ] && auditctl -D >/dev/null
+	
+	return $RETVAL
+}
+
+rotate()
+{
+	printf "Rotating auditd logs\n"
+	stop_daemon --pidfile "$PIDFILE" --expect-user root -USR1 -- auditd
+	RETVAL=$?
+	return $RETVAL
+}
+
+reload()
+{
+	msg_reloading auditd
+	stop_daemon --pidfile "$PIDFILE" --expect-user root -HUP -- auditd
+	RETVAL=$?
+	return $RETVAL
+}
+
+restart()
+{
+	stop
+	start
+}
+
+
+# See how we were called.
+case "$1" in
+    start)
+	start
+	;;
+    stop)
+	stop
+	;;
+    restart)
+	restart
+	;;
+    reload)
+	reload
+	;;
+    rotate)
+	rotate
+	;;
+    condstop)
+        if [ -e "$LOCKFILE" ]; then
+                stop
+        fi
+        ;;
+    condreload)
+        if [ -e "$LOCKFILE" ]; then
+                reload
+        fi
+        ;;
+    condrestart)
+        if [ -e "$LOCKFILE" ]; then
+        	restart
+        fi
+        ;;
+	status)
+		status --pidfile "$PIDFILE" --expect-user root  -- auditd
+		RETVAL=$?
+		;;
+	*)
+		msg_usage "${0##*/} {rotate|start|stop|reload|restart|condstop|condrestart|condreload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

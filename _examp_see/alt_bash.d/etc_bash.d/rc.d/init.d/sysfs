@@ -1,0 +1,119 @@
+#!/bin/sh
+#
+# sysfs		Set sysfs variables from /etc/sysfs.conf
+#
+# chkconfig: - 33 67
+# description:	Set sysfs variables from /etc/sysfs.conf
+# config: /etc/sysfs.conf
+#
+### BEGIN INIT INFO
+# Provides:          sysfs
+# Required-Start:
+# Should-Start:      udev
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: Set sysfs variables from /etc/sysfs.conf
+# Description:       You can configure values for sysfs variables
+#                    (such as power management defaults)
+#                    and /sys file permissions in /etc/sysfs.conf.
+### END INIT INFO
+
+# Do not load RH compatibility interface.
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+CONFIG=/etc/sysfs.conf
+LOCKFILE=/var/lock/subsys/sysfs
+RETVAL=0
+
+[ -s "$CONFIG" -a -r "$CONFIG" ] || exit 0
+
+config_error () {
+	local lineno="$1" && shift
+	echo "$CONFIG:$lineno: $*" >&2
+}
+
+apply_sysfs_rules () {
+	local lineno=0 ret=0
+
+	echo -n "Setting sysfs variables..."
+
+	while read f1 f2 f3 f4; do
+		lineno=$(( $lineno + 1 ))
+
+		# Skip empty lines
+		[ -z "$f1$f2$f3$f4" ] && continue
+		# Skip comments
+		[ -n "$f1" -a -z "${f1##\#*}" ] && continue
+
+		case "$f1,$f2,$f3,$f4" in
+			mode,?*,=,?*)
+				if [ -f "/sys/$f2" ]; then
+					chmod "$f4" "/sys/$f2" || ret=1
+				else
+					echo "Unknown attribute: $f2" >&2
+				fi
+				;;
+
+			owner,?*,=,?*)
+				if [ -f "/sys/$f2" ]; then
+					chown "$f4" "/sys/$f2" || ret=1
+				else
+					echo "Unknown attribute: $f2" >&2
+				fi
+				;;
+				
+			?*,=,?*,)
+				if [ -f "/sys/$f1" ]; then
+					# Some fields need a terminating newline, others
+					# need the terminating newline to be absent :-(
+					echo -n "$f3" > "/sys/$f1" ||
+						echo "$f3" > "/sys/$f1" ||
+						ret=1
+				else
+					echo "Unknown attribute: $f1" >&2
+				fi
+				;;
+
+			*,*,*,*)
+				config_error $lineno "Synax error: $f1 $f2 $f3 $f4"
+				return 1
+				;;
+		esac
+	done < "$CONFIG"
+
+	return $ret
+}
+
+# See how we were called.
+case "$1" in
+	start|reload|restart)
+		apply_sysfs_rules && echo_success || echo_failure
+		echo
+		RETVAL=$?
+		;;
+	condrestart|condreload)
+		if [ -e "$LOCKFILE" ]; then
+			apply_sysfs_rules && echo_success || echo_failure
+			echo
+			RETVAL=$?
+		fi
+		;;
+	status)
+		echo -n "Subsystem was "
+		[ -f "$LOCKFILE" ] || echo -n "not "
+		echo "activated."
+		RETVAL=$?
+		;;
+	stop|condstop)
+		rm -f "$LOCKFILE"
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart|condreload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

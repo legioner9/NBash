@@ -1,0 +1,105 @@
+#!/bin/sh
+#
+# Load kernel modules needed to enable cpufreq scaling
+#
+# chkconfig: 345 12 90
+# description: Save power when idling
+
+# Do not load RH compatibility interface.
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+LOCKFILE=/var/lock/subsys/cpufreq-simple
+RETVAL=0
+
+MODPROBE="modprobe -qb"
+MODULE=
+EXTRA_MODULES=
+
+SourceIfNotEmpty /etc/sysconfig/cpufreq-simple
+
+CPUFREQ=/sys/devices/system/cpu/cpu0/cpufreq
+
+is_loaded()
+{
+	[ -f "$CPUFREQ/scaling_governor" -a -f "$CPUFREQ/scaling_available_governors" ]
+}
+
+start()
+{
+	# Don't try to load already loaded module
+	if is_loaded; then
+		RETVAL=0
+	else
+		# try autodetecting if not specified already
+		[ -n "$MODULE" ] || MODULE="$(detect-cpufreq-module)"
+
+		# check whether still none
+		if [ -z "$MODULE" ]; then
+			if [ -n "$GRACEFUL_DETECT" ]; then
+				exit 0
+			else 	# we've definitely tried autodetection by now
+				echo -n "No cpufreq module specified or detected"
+				echo_passed
+				echo
+				return 1
+			fi
+		fi
+
+		echo -n "Loading cpufreq module: "
+		if ! $MODPROBE "$MODULE"; then
+			echo_failure
+			echo
+			return 1
+		fi
+
+		is_loaded && echo_success || echo_failure
+		RETVAL=$?
+		echo
+	fi
+
+	[ -z "$EXTRA_MODULES" ] || $MODPROBE $EXTRA_MODULES
+
+	if [ $RETVAL -eq 0 ]; then
+		action "Tune up cpufreq: " cpufreq-simple
+		RETVAL="$?"
+	fi
+
+	return $RETVAL
+}
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		# Nothing to do
+		;;
+	reload)
+		start
+		;;
+	restart)
+		start
+		;;
+	condstop)
+		# Nothing to do
+		;;
+	condrestart)
+		# Nothing to do
+		;;
+	condreload)
+		# Nothing to do
+		;;
+	status)
+		is_loaded && echo "cpufreq is enabled" ||
+			echo "cpufreq is disabled"
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart|condreload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

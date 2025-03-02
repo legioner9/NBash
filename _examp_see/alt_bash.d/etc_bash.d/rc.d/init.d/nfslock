@@ -1,0 +1,79 @@
+#!/bin/sh
+#
+# nfslock       This shell script takes care of starting and stopping
+#               the NFS file locking service.
+#
+# chkconfig: - 14 86
+# description: NFS is a popular protocol for file sharing across \
+#	       TCP/IP networks. This service provides NFS file \
+#	       locking functionality.
+# processname: rpc.statd
+# pidfile: /var/run/rpc.statd.pid
+
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+# Source networking configuration.
+# Check that networking is up.
+SourceIfNotEmpty /etc/sysconfig/network && [ "$NETWORKING" != no ] || exit
+
+STATD=/sbin/rpc.statd
+[ -x "$STATD" ] || exit 0
+
+PIDFILE=/var/run/rpc.statd.pid
+LOCKFILE=/var/lock/subsys/nfslock
+RETVAL=0
+
+start()
+{
+    start_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user rpcuser $STATD
+    RETVAL=$?
+    return $RETVAL
+}
+
+stop()
+{
+    stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user rpcuser $STATD
+    RETVAL=$?
+    return $RETVAL
+}
+
+restart()
+{
+    stop
+    start
+}
+
+# See how we were called.
+case "$1" in
+    start)
+	start
+	;;
+    stop)
+	stop
+	;;
+    restart|reload)
+	restart
+	;;
+    condstop)
+	if [ -e "$LOCKFILE" ]; then
+	    stop
+	fi
+	;;
+    condrestart|condreload)
+	if [ -e "$LOCKFILE" ]; then
+	    restart
+	fi
+	;;
+    status)
+	status --pidfile "$PIDFILE" --expect-user rpcuser $STATD
+	RETVAL=$?
+	;;
+    *)
+	msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart|condreload|status}"
+	RETVAL=1
+esac
+
+exit $RETVAL

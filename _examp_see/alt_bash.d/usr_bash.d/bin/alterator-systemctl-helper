@@ -1,0 +1,131 @@
+#!/bin/sh -fu
+
+SYSTEMCTL=/bin/systemctl
+sd_booted || exit 1
+
+# args: service-base-name (i.e. with no .socket or .service suffix)
+# returns: .service unit filename or an empty string
+# exit-status: 0 -- file found, other -- not found
+sdctl_service_unit () {
+    [ -n "${1:-}" ] || return 1
+    $SYSTEMCTL show "$1" | sed -n -e '/^FragmentPath=/ { s/^FragmentPath=//p; q }' -e '$ q 1'
+}
+
+# args: service-base-name (i.e. with no .socket or .service suffix)
+# returns: .socket unit filename or an empty string
+# exit-status: 0 -- file found, other -- not found
+sdctl_socket_unit () {
+    [ -n "${1:-}" ] || return 1
+    $SYSTEMCTL show "$1.socket" | sed -n -e '/^FragmentPath=/ { s/^FragmentPath=//p; q }' -e '$ q 1'
+}
+
+# args: service-base-name
+# returns: simple status value ("disabled-inactive", "disabled-active", "enabled-inactive", "enabled-active")
+# exit-code: 0 -- active, other -- inactive
+sdctl_status () {
+    local srv_loaded=;sock_loaded=;srv_active=;sock_active=
+    [ -n "${1:-}" ] || return 1
+    eval -- "$($SYSTEMCTL status "$1.socket" | sed -n -e "s/^[[:space:]]*Loaded:[[:space:]]\\+loaded[[:space:]]\\+(\\(.*\\);[[:space:]]\\+\\([^)]\\+\\))[[:space:]]*\$/sock_loaded='\\2';/p" -e "s/^[[:space:]]*Active:[[:space:]]\\+\\([^)]\\+\\)[[:space:]]\\+(\\([^)]\\+\\))[^()]*\$/sock_active='\\1';/p")"
+    if [ -n "$sock_loaded" ] && [ -n "$sock_active" ]; then
+        echo "${sock_loaded}-${sock_active}"
+        [ "$sock_active" = "active" ]
+        return $?
+    fi
+    eval -- "$($SYSTEMCTL status "$1" | sed -n -e "s/^[[:space:]]*Loaded:[[:space:]]\\+loaded[[:space:]]\\+(\\(.*\\);[[:space:]]\\+\\([^)]\\+\\))[[:space:]]*\$/srv_loaded='\\2';/p" -e "s/^[[:space:]]*Active:[[:space:]]\\+\\([^)]\\+\\)[[:space:]]\\+(\\([^)]\\+\\))[^()]*\$/srv_active='\\1';/p")"
+    [ -n "$srv_loaded" ] || srv_loaded="disabled"
+    [ "$srv_loaded" = "static" ] && srv_loaded=enabled
+    echo "${srv_loaded}-${srv_active}"
+    [ "$srv_active" = "active" ]
+    return $?
+}
+
+# Activates the specified service.
+# args: service-base-name
+# exit-code: 0 -- success, other -- insuccess
+sdctl_activate () {
+    [ -n "${1:-}" ] || return 1
+    $SYSTEMCTL start "$1.socket" 2>/dev/null || $SYSTEMCTL start "$1" 2>/dev/null
+}
+
+# Deactivates the specified service.
+# args: service-base-name
+# exit-code: 0 -- success, other -- insuccess
+sdctl_deactivate () {
+    [ -n "${1:-}" ] || return 1
+    $SYSTEMCTL stop "$1.socket" 2>/dev/null || $SYSTEMCTL stop "$1" 2>/dev/null
+}
+
+# args: service-base-name
+# returns: the server socket path or an empty string
+# exit-code: 0 -- socket exists, other -- doesn't exist
+sdctl_socketname () {
+    local unit_name=;socket_name=
+    [ -n "${1:-}" ] || return 1
+    unit_name="$(sdctl_socket_unit "$1")"
+    [ -n "$unit_name" ] && [ -e "$unit_name" ] || return 1
+    socket_name="$(sed -n -e 's/^ListenStream=//p' "$unit_name")"
+    echo "$socket_name"
+    [ -n "$socket_name" ] && [ -S "$socket_name" ]
+    return $?
+}
+
+PROG="${0##*/}"
+show_help()
+{
+	cat <<EOF
+
+Usage: $PROG service-base-name [command]
+
+$PROG makes use of the \`systemctl\` command in one or another way and
+returns the simplified result. For most of the commands the one
+mandatory argument is the basic name of a service, i.e. the name
+without ".socket" or ".service" suffix.
+
+Commands:
+    status      This is the default command. Returns the simple status
+                value, one of: "disabled-inactive", "disabled-active",
+                "enabled-inactive", "enabled-active".
+    activate    Tries to activate the specified service. The first
+                attempt made is to start the .socket unit, but if fails
+                the latter is to start the .service unit.
+    deactivate  Tries to deactivate the specified service. The first
+                attempt made is to start the .socket unit, but if fails
+                the latter is to stop the .service unit.
+    socket      Returns the name of the configured server socket.
+    help        Prints this screen and exit.
+
+Report bugs to http://bugs.altlinux.ru/
+
+EOF
+}
+
+[ "${1:-}" = "help" ] && show_help && exit 0
+
+SRVNAME="${1:-}"
+[ -z "$SRVNAME" ] && echo "Service name is missing. Use \`$PROG help\` for more information" >&2 && exit 1
+shift
+
+COMMAND="${1:-status}"
+[ $# -gt 0 ] && shift
+
+case "$COMMAND" in
+    activate)
+        sdctl_activate "$SRVNAME"
+        ;;
+    deactivate)
+        sdctl_deactivate "$SRVNAME"
+        ;;
+    socket)
+        sdctl_socketname "$SRVNAME"
+        ;;
+    status)
+        sdctl_status "$SRVNAME"
+        ;;
+    help)
+        show_help
+        ;;
+    *)
+        echo "Unknown command. Use \`$PROG help\` for more information" >&2
+        exit 1
+        ;;
+esac

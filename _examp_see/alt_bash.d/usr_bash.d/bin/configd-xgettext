@@ -1,0 +1,33 @@
+#!/usr/bin/guile --no-auto-compile
+!#
+
+(set! %load-path (cons "." %load-path))
+
+(use-modules (ice-9 getopt-long)
+             (srfi srfi-1)
+
+	     (alterator algo)
+	     (alterator pipe)
+
+	     (alterator http template)
+	     (alterator http html))
+
+(define (print-msg str)
+  (format #t "(_ \"~a\")~%" str))
+
+(define (print-value options content)
+  (let ((value (cond-assoc 'value options)))
+    (and value (print-msg value))
+    ""))
+
+(define (extract-text filename)
+  (template filename
+	    (tag: "input" (@ 'type "submit") print-value)
+	    (tag: "input" (@ 'type "reset") print-value)
+	    (tag: "input" (@ 'type "button") print-value)
+	    (tag: "span" (lambda(options content)
+			   (if (cond-assq 'translate options)
+			        (print-msg (apply string-append (filter string? content)))
+				(extract-text content))))))
+
+(for-each extract-text (cdr (command-line)))

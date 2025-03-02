@@ -1,0 +1,1267 @@
+#!/bin/sh
+
+PATH="/usr/lib/alterator-net-functions:$PATH"
+
+etcnet_iface_dir=/etc/net/ifaces
+etcnet_default_iface_dir="$etcnet_iface_dir/default"
+systemd_networkd_dir="/etc/systemd/network"
+systemd_resolved_conf="/lib/systemd/resolv.conf"
+systemd_resolved_default_nameserver="127.0.0.53"
+systemd_resolved_default_options="edns0 trust-ad"
+openresolv_conf="/etc/resolvconf.conf"
+resolvconf_rdelim='[[:space:]]\+'
+resolvconf_wdelim=' '
+__iface_removed_tag=".REMOVED"
+
+. alterator-hw-functions
+. shell-config
+. shell-var
+. shell-ip-address
+. shell-ini-config
+
+### IPv4 helpers
+valid_ipv4prefix()
+{
+	[ "$1" -ge 1 -a "$1" -le 32 ] 2>/dev/null
+}
+
+# Heavy based on valid_ipv4() from libshell.
+# We can't use valid_ipv4() because it
+# don't treat 127.* and 224.* addresses as valid addresses.
+valid_ipv4addr()
+{
+	local ipaddr="$1"
+	local i=0 byte
+
+	byte="${ipaddr##*.}"
+	ipaddr="${ipaddr%.$byte}"
+
+	[ "$byte" -ge 0 -a "$byte" -le 255 ] 2>/dev/null ||
+		return 1
+
+	while [ $i -lt 3 ]; do
+		byte="${ipaddr##*.}"
+
+		[ "$byte" != "$ipaddr" ] ||
+			break
+
+		ipaddr="${ipaddr%.$byte}"
+
+		[ "$byte" -ge 0 -a "$byte" -le 255 ] 2>/dev/null ||
+			return 1
+
+		i=$(($i+1))
+	done
+
+	[ $i -eq 2  -a \
+		"$byte" -gt 0 -a "$byte" -lt 255 ] 2>/dev/null ||
+		return 1
+}
+
+
+### IPv6 helpers
+# argument (interface name) is optional
+is_ipv6_enabled()
+{
+	local iface="${1-}"
+
+	# Check if module ipv6 is not loaded or disabled
+	[ -e /proc/net/if_inet6 ] || return 1
+
+	# Check if ipv6 disabled by sysctl
+	if [ -n "$iface" -a -e /proc/sys/net/ipv6/conf/"$iface"/disable_ipv6 ]; then
+		[ "$(cat /proc/sys/net/ipv6/conf/"$iface"/disable_ipv6)" = '0' ] &&
+			return 0 || return 1
+	fi
+	if [ -e /proc/sys/net/ipv6/conf/all/disable_ipv6 ]; then
+		[ "$(cat /proc/sys/net/ipv6/conf/all/disable_ipv6)" = '0' ] &&
+			return 0
+	fi
+
+	return 1
+}
+
+valid_ipv6addr()
+{
+	local c=0 s=
+
+	# Check that there is no single ':' in the beginning and the end
+	# of the string
+	case "$1" in
+		:[0-9a-fA-F]*|*[0-9a-fA-F]:) return 1;;
+		*);;
+	esac
+
+	local IFS=':'
+
+	for a in $1; do
+		c=$(($c + 1))
+		[ "$c" -le 8 ] || return 1
+		case "$a" in
+			[0-9a-fA-F]) ;;
+			[0-9a-fA-F][0-9a-fA-F]) ;;
+			[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]) ;;
+			[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]) ;;
+			'') if [ $c -gt 1 ]; then
+					[ -z "$s" ] && s=1 || return 1
+				fi
+				;;
+			*) return 1;;
+		esac
+	done
+
+	if [ "$c" -lt 8 ]; then
+		if [ -n "$s" ]; then
+			return 0
+		else
+			return 1
+		fi
+	else
+		return 0
+	fi
+}
+
+valid_ipv6prefix()
+{
+	[ "$1" -ge 1 -a "$1" -le 128 ] 2>/dev/null
+}
+
+# FIXME: Should replace longest zeros sequence
+ipv6addr_terse()
+{
+	case "$1" in
+		*::) echo "$1" | sed -r 's/:[0:]+::$/::/' ;;
+		::*) echo "$1" | sed -r 's/^::[0:]+:/::/' ;;
+		*::*) echo "$1" ;;
+		*) echo "$1" | sed -r 's/(:[0:]+:|^[0:]+:|:[0:]+$)/::/' ;;
+	esac | sed -r 's/(^|:)(0+)([[:xdigit:]])/\1\3/g'
+}
+
+ipv6addr_expand()
+{
+	local in="$1"; shift
+	local c= tmp= out= z=
+
+	valid_ipv6addr "$in" || return 1
+	c=$(echo "$in" | grep -o ":" | wc -l)
+
+	# Replace :: with zero segmets
+	case "$in" in
+		*::*)
+			if [ $c -eq 8 ]; then
+				if [ -z "${in%%::*}" ]; then
+					# ::a:a:a:a:a:a:a expanded to 0:a:a:a:a:a:a:a
+					tmp="0${in#:}"
+				elif [ -z "${in##*::}" ]; then
+					# a:a:a:a:a:a:a:: expanded to a:a:a:a:a:a:a:0
+					tmp="${in%:}0"
+				else
+					return 1
+				fi
+			elif [ $c -gt 0 -a $c -le 7 ]; then
+				while [ "$c" -le 7 ]; do
+					c=$((c + 1))
+					z="$z${z:+:}0"
+				done
+
+				if [ -z "${in%%::*}" ]; then
+					z="0:$z:"
+				elif [ -z "${in##*::}" ]; then
+					z=":$z:0"
+				else
+					z=":$z:"
+				fi
+				tmp="$(echo "$in" | sed s/::/$z/)"
+			else
+				return 1
+			fi
+			;;
+		*) [ $c -eq 7 ] && tmp="$in" || return 1
+			;;
+	esac
+
+	# Expand each segment to four hex digits
+	local i= s=
+	local IFS=:
+	for i in $tmp; do
+		case $i in
+			[0-9a-fA-F]) s=000$i;;
+			[0-9a-fA-F][0-9a-fA-F]) s=00$i;;
+			[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]) s=0$i;;
+			[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]) s=$i;;
+		esac
+		out="$out${out:+:}$s"
+	done
+
+	echo "$out"
+}
+
+ipv6_network()
+{
+	local network= n= r= c= tmp=
+	local ip="$(ipv6addr_expand "${1%%/*}")"
+	local prefix="${1##*/}"
+
+	if [ -z "$ip" ] || ! valid_ipv6prefix "$prefix"; then
+		return 1
+	fi
+
+	local IFS=":"
+	set -- $ip
+
+	n=$(($prefix / 16))
+	r=$(($prefix % 16))
+	c=0
+
+	for i; do
+		if [ $c -eq $n ]; then
+			tmp=$(( ~(0xffff >> $r) & 0xffff & 0x$i))
+			if [ $tmp -gt 0 ]; then
+				network="$network${network:+:}$(printf "%x" "$tmp")"
+			fi
+			[ $c -eq 7 -a $tmp -gt 0 ] || network="$network::"
+			break
+		fi
+
+		network="$network${network:+:}$i"
+		c=$(($c + 1))
+	done
+
+	echo "$(ipv6addr_terse "$network")/$prefix"
+}
+
+ipv6addr_is_in_subnet()
+{
+	local ip="${1-}"; shift
+	local net="${1-}"; shift
+	local prefix="${net##*/}"
+	local p=$((0xFFFF))
+	local pos seg ip_seg net_seg n hex_mask
+
+	valid_ipv6prefix "$prefix" ||
+		return 2
+
+	n=$(($prefix % 16))
+	hex_mask="$(($p - ($p >> $n)))"
+
+	pos=$(($prefix / 16))
+	seg="$(($pos * 4 + $pos))"
+
+	net="$(ipv6addr_expand ${net%%/*})"
+	[ -n "$net" ] || return 2
+	net_head="${net:0:$seg}"
+	# get IPv6 network segment
+	net_seg="${net:$seg:4}"
+
+	ip="$(ipv6addr_expand $ip)"
+	[ -n "$ip" ] || return 2
+	ip_head="${ip:0:$seg}"
+	# get IPv6 address segment
+	ip_seg="${ip:$seg:4}"
+
+	[ "$net_head" = "$ip_head" ] &&
+	[ "$((0x$net_seg & $hex_mask))" -eq "$((0x$ip_seg & $hex_mask))" ] ||
+		return 1
+}
+
+### common helpers
+
+get_ip_version()
+{
+	local ip="$1"
+	if valid_ipv4addr "$ip"; then
+		echo 4
+	elif valid_ipv6addr "$ip"; then
+		echo 6
+	else
+		return 1
+	fi
+
+	return 0
+}
+
+next_iface()
+{
+	local name="$1";shift
+	local i="${1:-0}"
+	local ifacesdir="${2:-$etcnet_iface_dir}"
+	local path="$ifacesdir/$name"
+	while true; do
+		[ -d "$path$i" ] || { echo "$name$i" && break; }
+		i=$(($i + 1))
+	done
+}
+
+### common iface options
+
+delete_iface_option()
+{
+    shell_config_del "$1/options" "$2"
+}
+
+write_iface_option()
+{
+    shell_config_set "$1/options" "$2" "$3"
+}
+
+# write_iface_addr <iface_path> <address> [ ip_version ]
+write_iface_addr()
+{
+	local p="${3:-4}"
+    echo "$2" >"$1/ipv${p}address"
+}
+
+# write_iface_addresses <iface_path> <address_list> [ ip_version ]
+write_iface_addresses()
+{
+	local p="${3:-4}"
+	local addresses_file="$1/ipv${p}address"
+	>"$addresses_file"
+	for i in $2;do
+	    echo "$i" >>"$addresses_file"
+	done
+}
+
+read_iface_option()
+{
+    # shell_config_get always returns 0,
+    # so we can't merge commands with || :(
+
+    local ret="$(shell_config_get "$1/options" "$2")"
+    if [ -z "$ret" ]; then
+      local type="$(shell_config_get "$1/options" "TYPE")"
+      [ -z "$type" ] ||
+        ret="$(shell_config_get "$etcnet_default_iface_dir/options-$type" "$2")"
+    fi
+    if [ -z "$ret" ]; then
+      ret="$(shell_config_get "$etcnet_default_iface_dir/options" "$2")"
+    fi
+    echo "$ret"
+}
+
+__ipv4_addr_start_re='^[0-9]'
+__ipv6_addr_start_re='^[[:xdigit:]:]'
+
+__ipv4_network_re="[[:space:]]+inet[[:space:]]+([.0-9/]+).*"
+__ipv6_network_re="[[:space:]]+inet6[[:space:]]+([[:xdigit:]:/]+).*"
+
+# read_iface_addr <iface_path> [ ip_version ]
+read_iface_addr()
+{
+	local p="${2:-4}" r=
+	eval "r=\$__ipv${p}_addr_start_re"
+    [ ! -s "$1/ipv${p}address" ] || grep -m 1 "$r" "$1/ipv${p}address"
+}
+
+# read_iface_addresses <iface_path> [ ip_version ]
+read_iface_addresses()
+{
+    local retval
+    local v=
+	local p="${2:-4}" r=
+
+	eval "r=\$__ipv${p}_addr_start_re"
+    [ ! -s "$1/ipv${p}address" ] || v=$(grep "$r" "$1"/ipv${p}address| tr '\n' ' ')
+    shell_var_trim retval "$v"
+    echo "$retval"
+}
+
+# read_iface_current_addr <iface_path> [ ip_version ]
+read_iface_current_addr()
+{
+	local name="${1##*/}"
+	local p="${2:-4}" r=
+	eval "r=\$__ipv${p}_network_re"
+	/sbin/ip -$p a s "$name" 2>/dev/null|sed -r -n "s,$r,\1,p" | head -n1
+}
+
+# read_iface_current_addr <iface_path> [ ip_version ]
+read_iface_current_addresses()
+{
+	local name="${1##*/}"
+	local p="${2:-4}" r=
+	eval "r=\$__ipv${p}_network_re"
+	/sbin/ip -$p a s "$name" 2>/dev/null|sed -r -n "s,$r,\1,p"
+}
+
+__default_ipv4_gw_re='^[[:space:]]*default[[:space:]]\+via[[:space:]]\([0-9.]\+\).*'
+__default_ipv6_gw_re='^[[:space:]]*default[[:space:]]\+via[[:space:]]\([[:xdigit:]:]\+\).*'
+
+# read_iface_default_gw <iface_path> [ ip_version ]
+read_iface_default_gw()
+{
+	local p="${2:-4}" r=
+
+	eval "r=\$__default_ipv${p}_gw_re"
+    [ ! -s "$1/ipv${p}route" ] ||
+	sed -n -e "s/$r/\1/p" \
+	       -e 't l1' \
+	       -e 'b' \
+	       -e ': l1' \
+	       -e 'q' \
+	       "$1/ipv${p}route"
+}
+
+# write_iface_default_gw <iface_path> <address> [ ip_version ]
+write_iface_default_gw()
+{
+	local p="${3:-4}" r=
+
+	eval "r=\$__default_ipv${p}_gw_re"
+    [ ! -s "$1/ipv${p}route" ] ||
+	sed "/$r/ d" -i "$1/ipv${p}route"
+    [ -z "$2" ] ||
+	printf 'default via %s\n' "$2" >>"$1/ipv${p}route"
+}
+
+# read_iface_current_default_gw <iface_path> [ ip_version ]
+read_iface_current_default_gw()
+{
+	local name="${1##*/}"
+	local p="${2:-4}" r= d=
+
+	eval "r=\$__default_ipv${p}_gw_re"
+
+	/sbin/ip -$p route show to default dev "$name" 2>/dev/null | \
+		sed -n -e "s/$r/\1/p" \
+			   -e 't l1' \
+			   -e 'b' \
+			   -e ': l1' \
+			   -e 'q'
+}
+
+read_iface_search()
+{
+    local retval
+    local v="$(shell_config_get "$1/resolv.conf" search "$resolvconf_rdelim"| tr '\n' ' ')"
+    shell_var_trim retval "$v"
+    echo "$retval"
+}
+
+write_iface_search()
+{
+	local resolvconf_file="$1/resolv.conf"
+
+	shell_config_del "$resolvconf_file" search "$resolvconf_rdelim"
+	[ -z "$2" ] || shell_config_set "$resolvconf_file" search "$2" "$resolvconf_rdelim" "$resolvconf_wdelim"
+
+	[ -s "$resolvconf_file" ] || rm -f -- "$resolvconf_file"
+}
+
+read_current_search()
+{
+	read_iface_search /etc
+}
+
+read_iface_dns()
+{
+    local retval
+    local v="$(shell_config_get "$1/resolv.conf" nameserver "$resolvconf_rdelim"| tr '\n' ' ')"
+    shell_var_trim retval "$v"
+    echo "$retval"
+}
+
+write_iface_dns()
+{
+	local resolvconf_file="$1/resolv.conf"
+
+	shell_config_del "$resolvconf_file" nameserver "$resolvconf_rdelim"
+
+	local IFS=' '
+	for i in $2;do
+	    printf 'nameserver %s\n' "$i" >>"$resolvconf_file"
+	done
+
+	[ -s "$resolvconf_file" ] || rm -f -- "$resolvconf_file"
+}
+
+read_current_dns()
+{
+	read_iface_dns /etc
+}
+
+# NOTE: For bond/bridge interfaces HOST variable means
+# "_This_ interface is a host for interfaces in the list".
+# But for VLAN interfaces HOST variable has opposite meaning:
+# "It is a host for this interfaces".
+read_iface_host_var()
+{
+	local ifacedir="$1"; shift
+	local ifaces_list="$(read_iface_option "$ifacedir" HOST)"
+
+	shell_var_unquote ifaces_list "$ifaces_list"
+
+	echo "$ifaces_list"
+}
+
+iface_has_host()
+{
+	local name="$1"; shift
+	local ifacesdir="${1:-$etcnet_iface_dir}"
+
+	# VLAN interface always has host
+	if [ "$(read_iface_option "$ifacesdir/$name" TYPE)" = "vlan" ]; then
+		return 0
+	fi
+
+	for i in $(find "$ifacesdir" -maxdepth 2 -mindepth 2 -name options 2>/dev/null); do
+		if egrep -qs "^HOST=[\"']?([[:alnum:]]+[[:blank:]])*$name([[:blank:]][[:alnum:]]+)*[\"']?[[:blank:]]*$" $i; then
+			if [ "$(read_iface_option "${i%/options}" TYPE)" = "vlan" ]; then
+				continue
+			fi
+			return 0
+		fi
+	done
+
+	return 1
+}
+
+### string ppp options
+
+write_ppp_option()
+{
+    shell_config_set "$1/pppoptions" "$2" "$3" '[[:space:]]\+' ' '
+    chmod o-rw "$name/pppoptions"
+}
+
+read_ppp_option()
+{
+    shell_config_get "$1/pppoptions" "$2" '[[:space:]]\+'
+}
+
+### boolean ppp options
+
+read_ppp_option1()
+{
+    local file="$1";shift
+    local name1="$1";shift
+    local name2="$1";shift
+    local defvalue="${1:-no}";shift ||:
+
+    if grep -qs "^$name1\$" "$file/pppoptions";then
+	echo 'yes'
+    elif grep -qs "^$name2\$" "$file/pppoptions"; then
+	echo 'no'
+    else
+	echo "$defvalue"
+    fi
+}
+
+write_ppp_option1()
+{
+    local file="$1";shift
+    local name1="$1";shift
+    local name2="$1";shift
+    local value="$1";shift
+
+    [ -f "$file/pppoptions" ] || touch "$file/pppoptions"
+
+    sed \
+	-e "/^$name1/d" \
+	-e "/^$name2/d " \
+	-i "$file/pppoptions"
+
+    if [ "$value" -eq 0 ]; then
+	echo "$name1" >> "$file/pppoptions"
+    else
+	echo "$name2" >> "$file/pppoptions"
+    fi
+}
+
+next_ppp()
+{
+    # not to interfere with dialup ppp0
+    next_iface ppp 1
+}
+
+### filter functions
+__filter_etcnet_iface_default()
+{
+	local ifname="${1##*/}"
+	[ -n "$ifname" -a "$ifname" != "lo" -a "$ifname" != "default" -a "$ifname" != "unknown" ]
+}
+
+__filter_iface_type()
+{
+	local ifacedir="$1"
+	local iftype="$2"
+
+	__filter_etcnet_iface_default "$ifacedir" || return 1
+	[ -n "$iftype" -a "$(read_iface_option "$ifacedir" TYPE)" = "$iftype" ] || return 1
+}
+
+__filter_iface_ppp()
+{
+	local ifacedir="$1"
+	local t="${2:-}"
+
+	__filter_iface_type "$ifacedir" "ppp" || return 1
+
+	if [ -n "$t" ]; then
+		[ "$(read_iface_option "$ifacedir" PPPTYPE)" = "$t" ] || return 1
+	fi
+
+	return 0
+}
+
+__filter_iface_static()
+{
+	local ifacedir="$1"
+	local ipv="${2:-4}"
+
+	__filter_etcnet_iface_default "$ifacedir" || return 1
+	[ "$(read_iface_option "$ifacedir" BOOTPROTO)" = "static" -a -s "$ifacedir/ipv${ipv}address" ] || return 1
+}
+
+### list various interface types
+# list_etcnet_iface_filtered [ ifaces_dir [ filter_func [ filter_func params ... ]]]
+#
+# list_etcnet_iface_filtered() prints iface name if filter_func returns TRUE
+# filter_func will be called with an interface directory as first parameter and
+# all additional parameters with which list_etcnet_iface_filtered() was called
+list_etcnet_iface_filtered()
+{
+	local dir="${1:-$etcnet_iface_dir}"
+	local filter_func="${2:-__filter_etcnet_iface_default}"
+	local i=
+
+	# Shift parameters for posterior filter_func call
+	if [ $# -gt 2 ]; then
+		shift 2
+	else
+		shift $#
+	fi
+
+	for i in $(find "$dir" -mindepth 1 -maxdepth 1 -type d 2>/dev/null); do
+		$filter_func "$i" $@ >/dev/null || continue
+		echo "${i##*/}" 2>/dev/null
+	done
+}
+
+list_ppp()
+{
+	local t="${1:-}"
+	local dir="${2:-}"
+
+	list_etcnet_iface_filtered "$dir" __filter_iface_ppp "$t"
+}
+
+list_bond()
+{
+	local dir="${1:-$etcnet_iface_dir}"
+
+	list_etcnet_iface_filtered "$dir" __filter_iface_type "bond"
+}
+
+list_vlan()
+{
+	local dir="${1:-$etcnet_iface_dir}"
+
+	list_etcnet_iface_filtered "$dir" __filter_iface_type "vlan"
+}
+
+list_bridge_types()
+{
+	echo bri
+	echo ovsbr
+}
+
+list_bridge()
+{
+	local dir="${1:-$etcnet_iface_dir}"
+	local t=
+
+	for t in $(list_bridge_types); do
+		list_etcnet_iface_filtered "$dir" __filter_iface_type "$t"
+	done
+}
+
+list_vlans_for_iface()
+{
+	local name="$1"; shift
+	local dir="$1"; shift
+	local i=
+
+	for i in $(list_vlan "$dir"); do
+		if [ "$(read_iface_host_var "$dir/$i")" = "$name" ]; then
+			echo "$i" 2>/dev/null
+		fi
+	done
+}
+
+list_eth()
+{
+    netdev_list|
+	while read iface; do
+	    netdev_is_eth "$iface" || continue
+	    netdev_is_real "$iface" || continue
+
+	    echo "$iface" 2>/dev/null
+	done
+}
+
+# Is this function really used anywhere?
+list_iface()
+{
+    netdev_list|
+	while read iface; do
+	    [ "$iface" != "lo" ] || continue
+	    [ -z "$(netdev_find_bridge "$iface")" ] || continue
+	    [ -z "$(netdev_find_bond "$iface")" ] || continue
+	    local tf="/sys/class/net/$iface/type"
+	    [ ! -f "$tf" ] || [ "$(cat "$tf")" != 801 ] || continue
+	    echo "$iface" 2>/dev/null
+	done
+}
+
+# list_static_iface [ ip_version [ ifaces_dir ] ]
+list_static_iface()
+{
+	local ipv="${1:-4}"
+	local dir="${2:-$etcnet_iface_dir}"
+
+	list_etcnet_iface_filtered "$dir" __filter_iface_static "$ipv"
+}
+
+# list_network [ ip_version [ ifaces_dir ] ]
+list_network()
+{
+	local p="${1:-4}" r=
+	local dir="${2:-$etcnet_iface_dir}"
+	local ifname= ifdir=
+
+	eval "r=\$__ipv${p}_network_re"
+	for ifname in $(list_etcnet_iface_filtered "$dir"); do
+		ifdir="$dir/$ifname"
+
+		local proto="$(read_iface_option "$ifdir" BOOTPROTO)"
+		local addr=
+		if [ "$proto" = "static" ];then
+			addr="$(read_iface_addresses "$ifdir" "$p")"
+		else
+			addr="$(read_iface_current_addresses "$ifdir" "$p")"
+		fi
+		if [ "$p" = 4 ]; then
+			[ -z "$addr" ] || netname "$addr" | cut -f1
+		else
+			[ -z "$addr" ] || ipv6_network "$addr"
+		fi
+	done
+}
+
+### start/stop interfaces
+
+iface_up()
+{
+    local iface="$1";shift
+    local n="${1:-0}";shift
+
+    env -i PATH="$PATH" HOME="$HOME" TMPDIR="$TMPDIR" /sbin/ifup "$iface" >/dev/null
+    for i in $(seq 0 "$n"); do
+	netdev_is_up "$iface" && return 0
+	[ "$i" != "$n" ] || sleep 1
+    done
+    return 1
+}
+
+iface_down()
+{
+    local iface="$1";shift
+    local n="${1:-0}";shift
+
+    env -i PATH="$PATH" HOME="$HOME" TMPDIR="$TMPDIR" /sbin/ifdown "$iface" >/dev/null
+    for i in $(seq 0 "$n"); do
+	netdev_is_up "$iface" || return 0
+	[ "$i" != "$n" ] || sleep 1
+    done
+    return 1
+}
+
+### cache functions
+iface_will_removed()
+{
+	local cachedir="$1"; shift
+	local ifname="$1"; shift
+
+	[ -n "$cachedir" -a -n "$ifname" -a -f "$cachedir/$ifname/$__iface_removed_tag" ]
+}
+
+# read stdin
+__filter_out_removed_ifaces()
+{
+	local cachedir="$1"; shift
+	local ifname=
+
+	while read ifname; do
+		iface_will_removed "$cachedir" "$ifname" || echo "$ifname" 2>/dev/null
+	done
+}
+
+ifacedir_with_cache()
+{
+	local cachedir="$1"; shift
+	local name="$1"; shift
+
+	if [ -n "$cachedir" -a -n "$name" -a -d "$cachedir/$name" ];then
+		echo "$cachedir/$name"
+	else
+		echo "$etcnet_iface_dir/$name"
+	fi
+}
+
+remove_iface_with_cache()
+{
+	local cachedir="$1"; shift
+	local name="$1"; shift
+	local ifacedir="$cachedir/$name"
+
+	if [ -z "$cachedir" -o -z "$name" ]; then
+		return 1
+	fi
+
+	if iface_will_removed "$cachedir" "$name"; then
+		return 1
+	fi
+
+	if [ -d "$ifacedir" ]; then
+		rm -r -- "$ifacedir"
+	fi
+
+	if [ -d "$etcnet_iface_dir/$name" ]; then
+		mkdir -p "$ifacedir"
+		touch "$ifacedir/$__iface_removed_tag"
+	fi
+}
+
+init_slave_eth_iface_cache()
+{
+	local cachedir="$1"; shift
+	local name="$1"; shift
+	local is_wireless=
+
+	if [ ! -d "$cachedir/$name" ]; then
+		if [ -d "$etcnet_iface_dir/$name" ]; then
+			cp -a "$etcnet_iface_dir/$name" "$cachedir/"
+		else
+			mkdir -p "$cachedir/$name"
+			write_iface_option "$cachedir/$name" TYPE eth
+			netdev_is_wireless "$name" && is_wireless=yes || is_wireless=no
+			write_iface_option "$cachedir/$name" CONFIG_WIRELESS "$is_wireless"
+		fi
+	fi
+
+	rm -f "$cachedir/$name/"ipv*address "$cachedir/$name/"ipv*route
+	write_iface_option "$cachedir/$name" DISABLED no
+	write_iface_option "$cachedir/$name" NM_CONTROLLED no
+	write_iface_option "$cachedir/$name" BOOTPROTO static
+	write_iface_option "$cachedir/$name" ONBOOT yes
+	write_iface_option "$cachedir/$name" CONFIG_IPV4 no
+	write_iface_option "$cachedir/$name" CONFIG_IPV6 no
+}
+
+# slaves list must be separated with ';', spaces or new lines
+host_add_slaves_with_cache()
+{
+	local cachedir="$1"; shift
+	local host_iface="$1"; shift
+	local slaves="$1"; shift
+	local ifacedir="$cachedir/$host_iface"
+	local h= i= new_slaves=
+
+	[ -n "$cachedir" -a -n "$host_iface" -a "$slaves" -a -d "$ifacedir" ] || return 1
+
+	h="$(read_iface_host_var "$ifacedir")"
+
+	local IFS=' ;
+'
+	for i in $slaves; do
+		new_slaves="$new_slaves${new_slaves:+ }$i"
+		init_slave_eth_iface_cache "$cachedir" "$i"
+	done
+
+	if [ -n "$h" ]; then
+		h="$h $new_slaves"
+	else
+		h="$new_slaves"
+	fi
+
+	write_iface_option "$ifacedir" HOST "\"$h\""
+}
+
+# slaves list must be separated with ';', spaces or new lines
+host_del_slaves_with_cache()
+{
+	local cachedir="$1"; shift
+	local host_iface="$1"; shift
+	local slaves="$1"; shift
+	local ifacedir="$cachedir/$host_iface"
+	local i=
+
+	[  -n "$cachedir" -a -n "$host_iface" -a "$slaves" -a -f "$ifacedir/options" ] || return 1
+
+	local IFS=' ;
+'
+	for i in $slaves; do
+		sed -i -r "/^HOST=/{s/$i//; s/ +/ /; s/=([\"'])? /=\1/; s/ ([\"'])?$/\1/}" "$ifacedir/options"
+		if [ ! -d "$cachedir/$i" ]; then
+			cp -a "$etcnet_iface_dir/$i" "$cachedir/"
+		fi
+		write_iface_option "$cachedir/$i" CONFIG_IPV4 yes
+	done
+}
+
+remove_host_iface_with_cache()
+{
+	local cachedir="$1"; shift
+	local host_iface="$1"; shift
+	local ifacedir="$cachedir/$host_iface"
+	local h=
+
+	[  -n "$cachedir" -a -n "$host_iface" ] || return 1
+	[ -d "$ifacedir" ] && ! iface_will_removed "$cachedir" "$host_iface" || return 0
+
+	h="$(read_iface_host_var "$ifacedir")"
+	host_del_slaves_with_cache "$cachedir" "$host_iface" "$h"
+
+	remove_iface_with_cache "$cachedir" "$host_iface"
+}
+
+next_iface_with_cache()
+{
+	local cachedir="$1"; shift
+	local name="$1";shift
+	local i="${1:-0}"
+	local path1="$etcnet_iface_dir/$name"
+	local path2="$cachedir/$name"
+
+	while true; do
+		if [ ! -d "$path1$i" -a ! -d "$path2$i" ] || iface_will_removed "$cachedir" "$name"; then
+			echo "$name$i"
+			break
+		fi
+		i=$(($i + 1))
+	done
+}
+
+iface_has_host_with_cache()
+{
+	local cachedir="$1"; shift
+	local name="$1"; shift
+	local i= exclude=
+
+	if [ -d "$cachedir" ]; then
+		if iface_has_host "$name" "$cachedir"; then
+			return 0
+		fi
+		# don't check in the /etc/net/ifaces ifaces which were cached
+		for i in $(find "$cachedir" -mindepth 1 -maxdepth 1 -type d 2>/dev/null); do
+			exclude="$exclude${exclude:+ -o }-path $etcnet_iface_dir/${i##*/}/options"
+		done
+		if [ -n "$exclude" ]; then
+			exclude="\( \( $exclude \) -prune -o -print \)"
+		fi
+	elif [ "$(read_iface_option "$etcnet_iface_dir/$name" TYPE)" = "vlan" ]; then
+		return 0
+	fi
+
+	for i in $(eval find "$etcnet_iface_dir" -maxdepth 2 -mindepth 2 -name options $exclude 2>/dev/null); do
+		if [ "$(read_iface_option "${i%/options}" TYPE)" = "vlan" ]; then
+			continue
+		fi
+		if egrep -qs "^HOST=[\"']?([[:alnum:]]+[[:blank:]])*$name([[:blank:]][[:alnum:]]+)*[\"']?[[:blank:]]*$" $i; then
+			return 0
+		fi
+	done
+
+	return 1
+}
+
+list_ppp_with_cache()
+{
+	local cachedir="$1"; shift
+	local t="${1:-}"
+
+	{
+		[ -d "$cachedir" ] && list_ppp "$t" "$cachedir"
+		list_ppp "$t" "$etcnet_iface_dir"
+	} | sort -u | __filter_out_removed_ifaces "$cachedir"
+}
+
+list_bond_with_cache()
+{
+	local cachedir="$1"; shift
+
+	{
+		[ -d "$cachedir" ] && list_bond "$cachedir"
+		list_bond "$etcnet_iface_dir"
+	} | sort -u | __filter_out_removed_ifaces "$cachedir"
+}
+
+list_bridge_with_cache()
+{
+	local cachedir="$1"; shift
+
+	{
+		[ -d "$cachedir" ] && list_bridge "$cachedir"
+		list_bridge "$etcnet_iface_dir"
+	} | sort -u | __filter_out_removed_ifaces "$cachedir"
+}
+
+list_vlan_with_cache()
+{
+	local cachedir="$1"; shift
+
+	{
+		[ -d "$cachedir" ] && list_vlan "$cachedir"
+		list_vlan "$etcnet_iface_dir"
+	} | sort -uV | __filter_out_removed_ifaces "$cachedir"
+}
+
+list_vlans_for_iface_with_cache()
+{
+	local cachedir="$1"; shift
+	local name="$1"; shift
+
+	{
+		[ -d "$cachedir" ] && list_vlans_for_iface "$name" "$cachedir"
+		list_vlans_for_iface "$name" "$etcnet_iface_dir"
+	} | sort -uV | __filter_out_removed_ifaces "$cachedir"
+}
+
+# list_static_iface [ ip_version ]
+list_static_iface_with_cache()
+{
+	local cachedir="$1"; shift
+	local ipv="${1:-4}"
+
+	{
+		[ -d "$cachedir" ] && list_static_iface "$ipv" "$cachedir"
+		list_static_iface "$ipv" "$etcnet_iface_dir"
+	} | sort -u | __filter_out_removed_ifaces "$cachedir"
+}
+
+### ipv4address calculations
+# For backward compatibility only.
+# In new code use functions from shell-ip-address directly.
+ipv4addr_is_in_subnet()
+{
+	echo "WARNING: Function ipv4addr_is_in_subnet is deprecated and" 1>&2
+	echo "will be removed in the future." 1>&2
+	echo "Use ipv4_ip_subnet from libshell instead." 1>&2
+	ipv4_ip_subnet "$@"
+}
+
+ipv4addr_mask_to_prefix()
+{
+	echo "WARNING: Function ipv4addr_mask_to_prefix is deprecated and" 1>&2
+	echo "will be removed in the future." 1>&2
+	echo "Use ipv4_mask2prefix from libshell instead." 1>&2
+	ipv4_mask2prefix "$@"
+}
+
+ipv4addr_prefix_to_mask()
+{
+	echo "WARNING: Function ipv4addr_prefix_to_mask is deprecated and" 1>&2
+	echo "will be removed in the future." 1>&2
+	echo "Use ipv4_prefix2mask from libshell instead." 1>&2
+	ipv4_prefix2mask "$@"
+}
+
+### common systemd-networkd helpers
+
+get_systemd_networkd_network_filename()
+{
+	local name="$1"
+	local network_dir="${2:-$systemd_networkd_dir}"
+	echo "$network_dir/alterator-$name.network"
+}
+
+write_systemd_networkd_ini_option()
+{
+	ini_config_set "$1" "$2" "$3" "$4"
+}
+
+add_systemd_networkd_ini_option()
+{
+	local latest=
+	if ini_config_is_set "$1" "$2" "$3"; then
+		latest=$(grep "^\s*$3\s*=.*" $1 | sed -e 's|^\s*||g' | tail -1)
+		sed -i -e "1,// s|^\(\s*\)\($latest\)$|\1\2\n\1$3 = $4|" -- "$1"
+	else
+		ini_config_set "$1" "$2" "$3" "$4"
+	fi
+}
+
+unset_systemd_networkd_ini_option()
+{
+	ini_config_del "$1" "$2" "$3"
+}
+
+overwrite_systemd_networkd_ini_option()
+{
+	local value="$4"
+	if [ -n "$value" ]; then
+		write_systemd_networkd_ini_option "$1" "$2" "$3" "$value"
+	else
+		unset_systemd_networkd_ini_option "$1" "$2" "$3"
+	fi
+}
+
+write_openresolv_with_systemd_resolved()
+{
+	local nameserver_value="$systemd_resolved_default_nameserver"
+	local options_value="$systemd_resolved_default_options"
+
+	[ -f "$openresolv_conf" ] || return
+
+	if [ -f "$systemd_resolved_conf" ]; then
+		nameserver_value="$(shell_config_get "$systemd_resolved_conf" "nameserver" "\s\+")"
+		options_value="$(shell_config_get "$systemd_resolved_conf" "options" "\s\+")"
+	fi
+
+	[ -z "$nameserver_value" ] ||
+		shell_config_set "$openresolv_conf" "name_servers" "'$nameserver_value'"
+
+	[ -z "$options_value" ] ||
+		shell_config_set "$openresolv_conf" "resolv_conf_options" "'$options_value'"
+}
+
+clean_openresolv_from_systemd_resolved()
+{
+	[ -f "$openresolv_conf" ] || return
+
+	shell_config_del "$openresolv_conf" "name_servers"
+	shell_config_del "$openresolv_conf" "resolv_conf_options"
+}
+
+write_systemd_networkd_bootproto()
+{
+	local cachedir="$1"; shift
+	local network_filename="$1"; shift
+	local first_value_flag= value=
+	local ipv4_static= ipv6_static=
+	local ipv4_addresses= ipv6_addresses=
+	local ipv4_gateway= ipv6_gateway=
+	local ipll= ra=
+
+	case "$1" in
+		dhcp) value=yes;;
+		dhcp6) value=ipv6; ipv4_static=1;;
+		dhcp4) value=ipv4; ipll=no; ra=false; ipv6_static=1;;
+		ipv4ll) value=; ipll=ipv4; ra=false;;
+		ipv6ll) value=; ipll=ipv6; ra=false;;
+		ipll) value=; ipll=yes; ra=false;;
+		static) ipv4_static=1; ipv6_static=1; ra=false;;
+	esac
+	overwrite_systemd_networkd_ini_option "$network_filename" "Network" "DHCP" "$value"
+	overwrite_systemd_networkd_ini_option "$network_filename" "Network" "LinkLocalAddressing" "$ipll"
+	overwrite_systemd_networkd_ini_option "$network_filename" "Network" "IPv6AcceptRA" "$ra"
+
+	unset_systemd_networkd_ini_option "$network_filename" "Network" "Address"
+	unset_systemd_networkd_ini_option "$network_filename" "Network" "Gateway"
+
+	if [ -n "$ipv4_static" ]; then
+		ipv4_addresses="$(read_iface_addresses "$cachedir" 4)"
+		ipv4_gateway="$(read_iface_default_gw "$cachedir" 4)"
+	fi
+
+	if [ -n "$ipv6_static" ]; then
+		ipv6_addresses="$(read_iface_addresses "$cachedir" 6)"
+		ipv6_gateway="$(read_iface_default_gw "$cachedir" 6)"
+	fi
+
+	first_value_flag=1
+	for addr in $ipv4_addresses $ipv6_addresses; do
+		if [ -n "$first_value_flag" ]; then
+			write_systemd_networkd_ini_option "$network_filename" "Network" "Address" "$addr"
+			first_value_flag=
+		else
+			add_systemd_networkd_ini_option "$network_filename" "Network" "Address" "$addr"
+		fi
+	done
+
+	first_value_flag=1
+	for gw in $ipv4_gateway $ipv6_gateway; do
+		if [ -n "$first_value_flag" ]; then
+			write_systemd_networkd_ini_option "$network_filename" "Network" "Gateway" "$gw"
+			first_value_flag=
+		else
+			add_systemd_networkd_ini_option "$network_filename" "Network" "Gateway" "$gw"
+		fi
+	done
+
+	value="$(read_iface_search "$cachedir")"
+	overwrite_systemd_networkd_ini_option "$network_filename" "Network" "Domains" "$value"
+	if ini_config_is_set "$network_filename" "Network" "Domains"; then
+		unset_systemd_networkd_ini_option "$network_filename" "DHCPv4" "UseDomains"
+	else
+		value=true
+		[ -z "$ipv4_static" ] || value=
+		overwrite_systemd_networkd_ini_option "$network_filename" "DHCPv4" "UseDomains" "$value"
+
+		value=true
+		[ -z "$ipv6_static" ] || value=
+		overwrite_systemd_networkd_ini_option "$network_filename" "IPv6AcceptRA" "UseDomains" "$value"
+	fi
+
+	ini_config_del "$network_filename" "Network" "DNS"
+	for ns in $(read_iface_dns "$cachedir"); do
+		add_systemd_networkd_ini_option "$network_filename" "Network" "DNS" "$ns"
+	done
+
+	value=yes
+	[ -z "$ipv4_static" ] || value=
+	overwrite_systemd_networkd_ini_option "$network_filename" "DHCPv4" "UseDNS" "$value"
+}
+
+### system-networkd functions
+
+init_systemd_networkd_cache()
+{
+	local cachedir="$1"; shift
+	local name="$1"; shift
+	local network_filename="$(get_systemd_networkd_network_filename "$name")"
+
+	if [ -f "$network_filename" ]; then
+		cp -f "$network_filename" "$cachedir/"
+	fi
+}
+
+write_systemd_networkd()
+{
+	local cachedir="$1"; shift
+	local name="$1"; shift
+	local bootproto="$1"; shift
+	local network_filename="$(get_systemd_networkd_network_filename "$name" "$cachedir")"
+
+	[ -f "$network_filename" ] || touch "$network_filename"
+	write_systemd_networkd_ini_option "$network_filename" "Match" "Name" "$name"
+	write_systemd_networkd_bootproto "$cachedir" "$network_filename" "$bootproto"
+}
+
+del_systemd_networkd()
+{
+	local cachedir="$1"; shift
+	local name="$1"; shift
+	local network_filename="$(get_systemd_networkd_network_filename "$name" "$cachedir")"
+
+	rm -f "$network_filename"
+}
+
+commit_systemd_networkd()
+{
+	local cachedir="$1"; shift
+	local name="$1"; shift
+	local new_network_filename="$(get_systemd_networkd_network_filename "$name" "$cachedir")"
+	local old_network_filename="$(get_systemd_networkd_network_filename "$name")"
+
+	if [ -f "$new_network_filename" ]; then
+		[ -d "$systemd_networkd_dir" ] ||
+			mkdir -p "$systemd_networkd_dir"
+		mv -f -- "$new_network_filename" "$old_network_filename"
+		write_openresolv_with_systemd_resolved
+	else
+		rm -f "$old_network_filename"
+		clean_openresolv_from_systemd_resolved
+	fi
+}

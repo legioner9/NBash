@@ -1,0 +1,92 @@
+#!/bin/sh
+#
+# Linux Additions Guest Additions service daemon init script.
+#
+# Copyright (C) 2006-2010 Oracle Corporation
+#
+# This file is part of VirtualBox Open Source Edition (OSE), as
+# available from http://www.virtualbox.org. This file is free software;
+# you can redistribute it and/or modify it under the terms of the GNU
+# General Public License (GPL) as published by the Free Software
+# Foundation, in version 2 as it comes in the "COPYING" file of the
+# VirtualBox OSE distribution. VirtualBox OSE is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY of any kind.
+#
+
+# chkconfig: 35 35 65
+# description: VirtualBox Additions service
+#
+### BEGIN INIT INFO
+# Provides:       vboxadd-service
+# Required-Start: vboxadd
+# Required-Stop:  vboxadd
+# Default-Start:  2 3 4 5
+# Default-Stop:   0 1 6
+# Description:    VirtualBox Additions Service
+### END INIT INFO
+
+# Do not load RH compatibility interface.
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+LOCKFILE="/var/lock/subsys/vboxadd-service"
+PIDFILE="/var/run/vboxadd-service"
+RETVAL=0
+
+# Source vboxadd configuration.
+VBOXADD_SERVICE_ARGS=""
+SourceIfNotEmpty /etc/sysconfig/vboxadd-service
+
+binary=VBoxService
+
+vboxaddrunning() {
+    lsmod | grep -q "vboxguest[^_-]"
+}
+
+start() {
+    if vboxaddrunning; then
+        start_daemon --displayname "VirtualBox Guest Addition" \
+            --make-pidfile --pidfile "$PIDFILE" --lockfile "$LOCKFILE" -- $binary -f $VBOXADD_SERVICE_ARGS
+        RETVAL=$?
+    else
+        echo "VirtualBox Additions module not loaded!"
+        RETVAL=2
+    fi
+    return $RETVAL
+}
+
+stop() {
+    stop_daemon --displayname "VirtualBox Guest Addition" --pidfile "$PIDFILE" --lockfile "$LOCKFILE" -- $binary
+    RETVAL=$?
+    return $RETVAL
+}
+
+restart() {
+    stop && start
+}
+
+case "$1" in
+start)
+    start
+    ;;
+stop)
+    stop
+    ;;
+restart)
+    restart
+    ;;
+status)
+    status --displayname "VirtualBox Guest Addition service" --pidfile "$PIDFILE" -- $binary
+    ;;
+setup)
+    ;;
+cleanup)
+    ;;
+*)
+    echo "Usage: $0 {start|stop|restart|status}"
+    exit 1
+esac
+
+exit $RETVAL

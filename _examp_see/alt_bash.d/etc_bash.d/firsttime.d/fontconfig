@@ -1,0 +1,5 @@
+#!/bin/sh
+WITHOUT_RC_COMPAT=1
+# Source functions library.
+. /etc/init.d/functions
+action "Updating fonts cache:" /usr/bin/fc-cache --force --system-only

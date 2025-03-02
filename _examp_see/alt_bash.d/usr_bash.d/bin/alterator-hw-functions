@@ -1,0 +1,427 @@
+#!/bin/sh
+
+ifplugstatus_tool=/usr/sbin/ifplugstatus
+ethtool_tool=/usr/sbin/ethtool
+ip_tool=/sbin/ip
+iw_tool=/usr/sbin/iw
+
+__fstab_file=/etc/fstab
+
+# get_hw_info <vendor> <model> <bus>
+#
+#   Get names from /usr/share/hwdatabase/<bus>.ids
+#   or /usr/share/misc/<bus>.ids
+#   Valid bus names are "pci", "usb"
+#
+get_hw_info(){
+  local vendor="${1#0x}"
+  local model="${2#0x}"
+  local path=
+  local info=
+  [ -z "$vendor" ] || vendor="$(printf "%04x" "0x$vendor")"
+  [ -z "$model" ]  || model="$(printf "%04x" "0x$model")"
+
+  local bus="$3"
+
+  for path in /usr/share/misc /usr/share/hwdatabase; do
+      local file="$path/$bus.ids"
+
+      [ -s "$file" ] || continue
+
+      info="$(sed -n -e "/^$vendor/,/^[^[:space:]#]/{
+        s/^$vendor[[:space:]]\+\(.*\)$/\1/p
+        s/^\t$model[[:space:]]\+\(.*\)$/\1/p
+        }" "$file" | tr "\n" " ")"
+
+      [ -n "$info" ] && break
+  done
+  echo "$info"
+}
+
+### network devices
+
+netdev_list()
+{
+    find /sys/class/net/  -mindepth 1 -maxdepth 1 -xtype d -printf '%f\n' | sort
+}
+
+netdev_is_eth()
+{
+    local type
+    read type < "/sys/class/net/$1/type" # 2.6.18 has it already
+    [ "$type" = "1" ]
+}
+
+netdev_is_virtual()
+{
+    if [ -d "/sys/devices/virtual/net/" ]; then
+      [ -d "/sys/devices/virtual/net/$1" ] # 2.6.27
+    else
+      [ ! -h "/sys/class/net/$1/device" ]  # 2.6.18-24
+    fi
+}
+
+netdev_is_real()
+{
+    ! netdev_is_virtual $@
+}
+
+netdev_is_bridge()
+{
+    [ -d "/sys/class/net/$1/bridge" ]
+}
+
+netdev_is_bond()
+{
+	[ -d "/sys/class/net/$1/bonding" ]
+}
+
+netdev_is_wireless()
+{
+    if [ -h "/sys/class/net/$1/phy80211" ] || [ -d "/sys/class/net/$1/wireless" ]; then
+        return 0
+    elif [ -x "$iw_tool" ]; then
+        $iw_tool dev "$1" info >/dev/null 2>&1
+    else
+        return 1
+    fi
+}
+
+netdev_is_plugged()
+{
+    local link= ret=1
+    if [ -x "$ifplugstatus_tool" ]; then
+      "$ifplugstatus_tool" "$1" >/dev/null 2>/dev/null
+      [ "$?" != "2" ] || ret=0
+    else
+      link=`"$ethtool_tool" "$1" 2>/dev/null | awk '/Link detected:/ {print $3}'`
+      [ "$link" != "yes" ] || ret=0
+    fi
+    return $ret
+}
+
+netdev_is_up()
+{
+    [ ! -x "$ip_tool" ] ||
+	[ -n "$( "$ip_tool" link show up dev "$1" 2>/dev/null)" ]
+}
+
+netdev_read_mac()
+{
+    local f="/sys/class/net/$1/address"
+    [ ! -s "$f" ] || cat "$f"
+}
+
+# Deprecated. Use read_iface_current_addr()
+# from alterator-net-functions.
+netdev_read_ip()
+{
+    echo "WARNING: netdev_read_ip is deprecated." 1>&2
+    [ ! -x "$ip_tool" ] ||
+	"$ip_tool" addr show dev "$1"|
+	    sed -n \
+		-e 's/^[[:space:]]*inet[[:space:]]\+\([0-9\./]\+\).*/\1/p'
+}
+
+netdev_read_businfo()
+{
+    [ ! -x "$ethtool_tool" ] || "$ethtool_tool" -i "$1" 2>/dev/null|
+	sed -nr 's,^bus-info:[[:space:]]([^[:space:]]+),\1,p'
+}
+
+netdev_list_brif()
+{
+    ! netdev_is_bridge "$1" ||
+    [ ! -d "/sys/class/net/$1/brif" ] ||
+	find "/sys/class/net/$1/brif" -type l -printf '%f\n'
+}
+
+netdev_find_bridge()
+{
+    for i in $(netdev_list); do
+	netdev_is_bridge "$i" || continue
+	[ ! -h "/sys/class/net/$i/brif/$1" ] || echo "$i"
+    done
+}
+
+netdev_list_bond_slaves()
+{
+	! netdev_is_bond "$1" ||
+		[ ! -f "/sys/class/net/$1/bonding/slaves" ] ||
+		cat "/sys/class/net/$1/bonding/slaves" | tr ' ' '\n'
+}
+
+netdev_find_bond()
+{
+	for i in $(netdev_list); do
+		netdev_is_bond "$i" || continue
+		if netdev_list_bond_slaves "$i" | grep -qs "^$1$"; then
+			echo "$i"
+		fi
+	done
+}
+
+netdev_read_info(){
+  local dev="$1"
+  local devdir="/sys/class/net/$dev/device"
+
+  local bus=
+  [ ! -s "$devdir/modalias" ] || bus="$(head -c3 $devdir/modalias)"
+
+  case "$bus" in
+  usb)
+    local p="$(grep "PRODUCT=" "$devdir/uevent")"
+    p="${p#PRODUCT=}"
+    local v="${p%%/*}"
+    local m="${p#*/}"
+    m="${m%%/*}"
+    get_hw_info "$v" "$m" usb
+    ;;
+  pci)
+    local v m
+    [ ! -s "$devdir/vendor" ] || v="$(cat "$devdir/vendor")"
+    [ ! -s "$devdir/device" ] || m="$(cat "$devdir/device")"
+    get_hw_info "$v" "$m" pci
+    ;;
+  *)
+    ;;
+  esac
+}
+
+### block devices
+
+disk_list()
+{
+    find "/sys/block/"\
+           -mindepth 1 -maxdepth 1 -xtype d  -printf '%f\n' | tr '!' '/' | sort
+}
+
+disk_is_virtual()
+{
+    local dev="$(echo "$1" | tr '/' '!')"
+    local d="/sys/block/"
+
+    if [ -d "/sys/devices/virtual/block/" ]; then
+      [ -d "/sys/devices/virtual/block/$dev" ] # 2.6.27
+    else
+      [ ! -h "/sys/block/$dev/device" ]        # 2.6.18-24
+    fi
+}
+
+disk_is_removable()
+{
+    local dev="$(echo "$1" | tr '/' '!')"
+    local f="/sys/block/$dev/removable"
+    [ -s "$f" ] && [ "$(cat "$f")" = "1" ]
+}
+
+disk_is_root()
+{
+	local rootdev="$(awk '{ if ($2=="/image") print $1 }' < /proc/mounts)"
+	[ "$1" = "${rootdev#/dev/}" ]
+}
+
+# a USB flash drive with a hybrid ISO on it will fit this test too
+disk_is_isofs()
+{
+	blkid -t "TYPE=iso9660" /dev/"$1" >&/dev/null
+}
+
+disk_size()
+{
+    local dev="$(echo "$1" | tr '/' '!')"
+    local f="/sys/block/$dev/size"
+    [ ! -s "$f" ] || ( read s; echo "$(($s*512))" ) < "$f"
+}
+
+disk_info(){
+  local dev="$(echo "$1" | tr '/' '!')"
+  local devdir="/sys/block/$dev/device"
+
+  local ret=
+  [ ! -s "$devdir/vendor" ] || ret="$(cat "$devdir/vendor")"
+  [ ! -s "$devdir/model" ]  || ret="$ret $(cat "$devdir/model")"
+
+  echo "$ret" | sed -e 's/ \+/ /g;s/\( \+$\)\|\(^ \+\)//'
+}
+
+partition_num()
+{
+    echo "${1##*[a-z]}"
+}
+
+partition_sort()
+{
+    # sort: sda1 < sda2 < sda10 < sdb1 < sdb2 < sdb10
+    while read a; do
+      local pnum="$(partition_num "$a")"
+      echo -e "$a\t${a%$pnum}\t$pnum"
+    done |
+    sort -k 2,2 -k3,3n | cut -f 1
+}
+
+partition_list()
+{
+    local d="/sys/block/"
+
+    find "$d" -mindepth 1 -maxdepth 1 -xtype d  -printf '%f\n' |
+    while read dev; do
+      find "$d/$dev/" \
+        -mindepth 1 -maxdepth 1 -xtype d -name "$dev*" -printf '%f\n'
+    done | tr '!' '/'
+}
+
+partition_size()
+{
+    local dev="$(echo "$1" | tr '/' '!')"
+    local pnum="$(partition_num "$dev")"
+    f="/sys/block/${dev%$pnum}/$dev/size"
+    [ ! -s "$f" ] || ( read s; echo "$(($s*512))" ) < "$f"
+}
+
+partition_parent()
+{
+    local dev="$(echo "$1" | tr '/' '!')"
+    local pnum="$(partition_num "$dev")"
+    [ ! -d "/sys/block/${1%$pnum}/$dev" ] || echo "${1%$pnum}"
+}
+
+partition_uuid()
+{
+  /sbin/blkid /dev/"${1#/dev/}" -s UUID |
+    sed -n -e 's/^.*UUID="\([^"]\+\)".*/\1/p'
+}
+
+partition_fstype()
+{
+  /sbin/blkid /dev/"${1#/dev/}" -s TYPE |
+    sed -n -e 's/^.*TYPE="\([^"]\+\)".*/\1/p'
+}
+
+partition_is_PReP()
+{
+    local t=$(lsblk -n -r -o PTTYPE,PARTTYPE /dev/"$1" 2>/dev/null)
+    [ "$t" = "dos 0x41" ] || [ "$t" = "gpt 9e1a2d38-c612-4316-aa26-8b49521e5a8b" ]
+}
+
+# superuser only
+partition_id()
+{
+  local dev="/dev/${1#/dev/}"
+  local pnum="$(partition_num "$dev")"
+  /sbin/sfdisk --print-id "${dev%$pnum}" "$pnum"
+}
+
+## human_readable_size <size>
+##
+## Convert bytes to human readable form:
+## 1 b, 12 b, 123 b, 1.23 Kb, 12.3 Kb, 123 Kb 1.23 Mb etc.
+## for localized output use
+## SIZE_DEC_PT=$(LC_NUMERIC="$in_language" locale decimal_point)
+## SIZE_b="`_ "b"`"
+## SIZE_kb="`_ "kb"`"
+## SIZE_Mb="`_ "Mb"`"
+## SIZE_Gb="`_ "Gb"`"
+## SIZE_Tb="`_ "Tb"`"
+##
+
+human_readable_size(){
+  local size=$1
+  local frac=0
+  local byte="${SIZE_b:-b}"
+  local units=$byte
+  local div=1024
+  local u
+  for u in "${SIZE_kb:-kb}" "${SIZE_Mb:-Mb}" "${SIZE_Gb:-Gb}" "${SIZE_Tb:-Tb}"; do
+    if [ $(($size < 1000)) = 1 ]; then break; fi
+    frac=$((($size % $div)*1000/$div))  # we want frac in the range 0..999
+    size=$(($size / $div))
+    units=$u
+  done
+  if      [ "$(($size > 99))" = 1 ]; then frac=$(($frac/100))
+  else if [ "$(($size > 9))" = 1 ]; then frac=$(printf "%02d" $(($frac/10)))
+  fi; fi;
+
+  # add zeroes
+  frac=$(printf "%02d" $((frac/10)))
+
+  [ "$units" = "$byte" ] && frac="" || frac="${SIZE_DEC_PT:-.}$frac"
+  echo "$size$frac $units"
+}
+
+## blockdev_find_symlink <dev> <type>
+##
+##   Convert device name from /dev/<dev> to /dev/disk/by-<type>/* if possible.
+##   Default type is "id".
+##
+
+blockdev_get_symlink(){
+  local dev="${1:-}"
+  [ -n "$dev" ] || return 0
+
+  local type="${2:-id}"
+  [ -n "$type" ] || return 0
+
+  local ret=
+  local i
+  for i in $(/sbin/udevadm info --name="$dev" --query=symlink 2>/dev/null); do 
+    [ -z "${i##disk/by-$type/*}" ] || continue
+
+    # For type=id don't return ata* if scsi* exists
+    # It is done automatically due to sorting, but let's keep explicit code here:
+    [ "$type" = "id" -a -n "$ret" -a -z "${ret##*/scsi/*}" -a -z "${i##*/ata*}" ] && continue ||:
+
+    ret="/dev/$i"
+  done
+  echo "${ret:-$dev}"
+}
+
+## blockdev_follow_symlink <symlink>
+##
+##   Revert of blockdev_find_symlink function
+##   Find file symlink points to
+##
+
+blockdev_follow_symlink(){
+  local dev="${1:-}"
+  [ -n "$dev" ] || return 0
+  local ret="$(readlink -f "$dev")"
+  echo "${ret:-$dev}"
+}
+
+### fstab edition
+
+fstab_del()
+{
+    local fs_file="$1";shift
+    local qfs_file
+    quote_sed_regexp_variable qfs_file "$fs_file"
+    sed "/^[[:space:]]*[^[:space:]]\+[[:space:]]\+$qfs_file[[:space:]]/d" -i "$__fstab_file"
+}
+
+fstab_add()
+{
+    local fs_spec="$1";shift
+    local fs_file="$1";shift
+    local fs_rest="$1";shift
+
+    local qfs_file qfs_rest qfs_spec
+    quote_sed_regexp_variable qfs_spec "$fs_spec"
+    quote_sed_regexp_variable qfs_file "$fs_file"
+    quote_sed_regexp_variable qfs_rest "$fs_rest"
+
+    mkdir -p -- "$mpoint"
+    [ -z "$(tail -c1 "$__fstab_file")" ] || printf '\n' >>"$__fstab_file"
+
+    local re="^[[:space:]]*[^[:space:]]\+[[:space:]]\+$qfs_file[[:space:]]"
+    if grep -qs "$re" "$__fstab_file";then
+	    sed \
+		-e "s/${re}.*/$qfs_spec	$qfs_file	$qfs_rest/" \
+		-i "$__fstab_file"
+	else
+	    printf '%s\t%s\t%s\n' \
+		"$fs_spec" \
+		"$fs_file" \
+		"$fs_rest" >>"$__fstab_file"
+	fi
+}

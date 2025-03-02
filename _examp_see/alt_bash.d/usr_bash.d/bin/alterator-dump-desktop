@@ -1,0 +1,98 @@
+#!/bin/gawk -f
+
+function do_init(i,a)
+{
+    num=split(lang,a,";");
+    langnum=0;
+
+    for(i=1;i<=num;++i)
+    {
+	langlist[langnum++]=a[i];
+	if (a[i] ~ /_/) {
+	    sub(/_.*/,"",a[i]);
+	    langlist[langnum++] = a[i];
+	}
+    }
+    langlist[langnum++]="en_US";
+
+    outnum=split(out,outlist,";");
+    defnum=split(def,deflist,";");
+}
+
+function langlist_find(lst,	i,l)
+{
+    for(i=0;i<langnum;++i)
+    {
+	l = lst[langlist[i]];
+	if (l) return l;
+    }
+}
+
+function do_reset(i)
+{
+    for(i in name) delete name[i];
+    for(i in comment) delete comment[i];
+    for(i in params) delete params[i];
+    for(i=1;i<=outnum;++i) params[outlist[i]]=deflist[i];
+}
+
+function do_output(i,n,v)
+{
+    if (first == 1)
+    {
+	first = 0;
+	return;
+    }
+
+    for(i=1;i<=outnum;++i)
+    {
+	n = outlist[i];
+	v = "";
+
+	switch (n)
+	{
+	    case "Name":
+		v = langlist_find(name);
+		break;
+	    case "Comment":
+		v = langlist_find(comment);
+		break;
+	    default:
+		v = params[n];
+		break;
+	}
+
+	printf "%s%s",v,(i == outnum)?"":OFS;
+    }
+    printf "\n";
+}
+
+function _key() {
+    return gensub(/[[:space:]]*=.*$/, "", 1, $0);
+}
+function _lang() {
+    return gensub(/^[^\[]+\[([^\]]*)\][[:space:]]*=.*$/, "\\1", 1, $0);
+}
+function _val() {
+    return gensub(/^[^=]+=[[:space:]]*/, "", 1, $0);
+}
+
+BEGIN { OFS="\t"; do_init(); do_reset(); first=1;  }
+
+/\[Desktop Entry\]/ {
+    do_output();
+    do_reset();
+    params["Filename"] = FILENAME;
+}
+
+/^Name[[:space:]]*=/ { name["en_US"] = _val(); next; }
+
+/^Name\[[a-zA-Z_]+\][[:space:]]*=/ { name[_lang()] = _val(); next; }
+
+/^Comment[[:space:]]*=/ { comment["en_US"] = _val(); next; }
+
+/^Comment\[[a-zA-Z_]+\][[:space:]]*=/ { comment[_lang()] = _val(); next; }
+
+/^[^[:space:]]+[[:space:]]*=/ { params[_key()] = _val(); }
+
+END { do_output(); }

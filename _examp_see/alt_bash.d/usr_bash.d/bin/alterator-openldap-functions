@@ -1,0 +1,248 @@
+#!/bin/sh -efu
+
+# please comment here about this library
+
+if [ -z "${__included_alterator_openldap_functions}" ]; then
+__included_alterator_openldap_functions=1
+
+. shell-config
+. shell-error
+. shell-quote
+. shell-signal
+. alterator-service-functions
+
+# delimeters
+rdelim='[[:space:]]\+'
+wdelim=' '
+
+# config files
+SLAPD_CONF="/etc/openldap/slapd.conf"
+PAMLDAP_CONF="/etc/pam_ldap.conf"
+SYSCONFIG_CONF="/etc/sysconfig/ldap"
+
+# blank samba sid
+SID="S-1-0-0"
+
+# min max uid gid
+uid_min="5000"
+gid_min="5000"
+uid_max="9000000000"
+gid_max="9000000000"
+
+# mail spool dir
+ENABLE_HOMEDIR=
+ENABLE_SPOOL=
+SPOOL="/var/spool/mail"
+
+
+##############################################################################
+# read config functions
+##############################################################################
+
+#reading some config file $1 for $2 variable and removing " from its value 
+
+read_config()
+{
+    [ -e "$1" ] || fatal "read_config: '$1' file not found" 
+    shell_config_get "$1" "$2" "$rdelim"|tr -d '"'
+}
+
+read_dn_conf()
+{
+    read_config "$DN_CONF" "$1"
+}
+
+read_slapd_conf()
+{
+    read_config "$SLAPD_CONF" "$1"
+}
+
+read_pamldap_conf()
+{
+    read_config "$PAMLDAP_CONF" "$1"
+}
+
+read_sysconfig()
+{
+    local rdelim="[[:blank:]]*=[[:blank:]]*"
+    read_config "$SYSCONFIG_CONF" "$1"
+}
+
+##############################################################################
+
+
+
+##############################################################################
+# write config functions
+##############################################################################
+
+#write $2 variable into config file $1 using wdelim as delimeter
+
+write_config()
+{
+    [ -e "$1" ] || fatal "write_config: '$1' file not found" 
+    shell_config_set "$1" "$2" "$3" "$rdelim" "$wdelim"
+}
+
+write_sysconfig()
+{
+    local wdelim="="
+    local rdelim="="
+    write_config "$SYSCONFIG_CONF" "$1" "$2"
+}
+
+##############################################################################
+
+
+
+##############################################################################
+# host_2_dn dn_2_host
+##############################################################################
+
+# host.domain.com => dc=host,dc=domain,dc=com
+host_2_dn()
+{
+    echo "$1"|sed '
+    s/^/dc=/
+    s/\./,dc=/g'
+}
+
+# dc=host,dc=domain,dc=com => host.domain.com
+dn_2_host()
+{
+    echo "$1"|sed '
+    s/^dc=//
+    s/,dc=/\./g'
+}
+
+##############################################################################
+
+
+
+##############################################################################
+# slapd sysconfig functions
+##############################################################################
+
+tls_ssl_status()
+{
+    local url="$(read_sysconfig SLAPDURLLIST)"
+    echo "$url" |grep -qw 'ldaps://' 
+}
+
+localhost_status()
+{
+    local url="$(read_sysconfig SLAPDURLLIST)"
+    echo "$url" |egrep -qw 'ldap[si]?://(127\.0\.0\.1|localhost)(:[0-9]+)?/' 
+}
+
+write_sysconfig_url()
+{
+    write_sysconfig  SLAPDURLLIST "$1"
+}
+
+##############################################################################
+
+
+
+##############################################################################
+# slapd daemon functions
+##############################################################################
+
+# return 
+# 0 if all right
+# 1 if daemon stoped or disabled
+slapd_daemon_status()
+{
+    service_control slapd is-active && service_control slapd is-enabled || return 1
+}
+
+slapd_daemon_on()
+{
+    slapd_daemon_status && return 0
+
+    service_control slapd on >&2 || :
+    service_control slapd start >&2 || :
+}
+
+slapd_daemon_off()
+{
+    service_control slapd condstop >&2
+    service_control slapd off
+}
+
+slapd_daemon_condrestart()
+{
+    service_control slapd condrestart >&2
+}
+
+##############################################################################
+
+
+
+##############################################################################
+# base_rootdn_rootpw functions
+##############################################################################
+
+base_rootdn_rootpw() {
+
+    [ -z "$DN_CONF" ] && fatal "base_rootdn_rootpw: DN_CONF not set"
+    [ ! -r "$DN_CONF" ] && fatal "base_rootdn_rootpw: unable to open file '$DN_CONF'"
+    
+    base="$(read_dn_conf suffix)"
+    rootdn="$(read_dn_conf rootdn)"
+    rootpw="$(read_dn_conf rootpw)"
+
+    [ -z "$base" ] && fatal "base_rootdn_rootpw: basedn not set in conf '$DN_CONF'"
+    [ -z "$rootdn" ] && fatal "base_rootdn_rootpw: rootdn not set in conf '$DN_CONF'"
+    [ -z "$rootpw" ] && fatal "base_rootdn_rootpw: rootpw not set in conf '$DN_CONF'"
+    
+    rootpw="-w $rootpw" 
+
+    export base rootdn rootpw
+}
+
+##############################################################################
+
+##############################################################################
+# set_ldap_config
+##############################################################################
+set_ldap_config() {
+
+	# If DN_CONF is not set, try to detect default LDAP base
+	if [ -z "$DN_CONF" ]
+	then
+		base=$(/usr/sbin/system-auth status | cut -f2 -d' ')
+		[ -z "$base" ] || export DN_CONF=$(ldap-dn find "$base")
+		[ -z "$DN_CONF" ] && message "unable autodetect LDAP configuration"
+	fi
+
+        # Check if Kerberos is enabled
+	if [ "$(shell_config_get /etc/sysconfig/system SERVER_ROLE)" = "master" ]; then
+	    export ENABLE_KRB="yes"
+	fi
+
+	# Fill environment variables
+	base_rootdn_rootpw
+
+}
+
+##############################################################################
+# get_ldap_version
+##############################################################################
+get_ldap_version() {
+    rpm -q ldap-user-tools --qf '%{name}: %{version}-%{release}\n' 2>/dev/null
+    rpm -qf "/usr/bin/ldapadd" --qf '%{name}: %{version}-%{release}\n' 2>/dev/null
+}
+
+##############################################################################
+# samba helper functions
+##############################################################################
+
+get_sid()
+{
+     local sid="$(net getlocalsid | cut -f2 -d':'| sed -e "s/[[:blank:]]//g" 2>/dev/null)"
+     [ -n "$sid" ] && SID="$sid"
+}
+
+##############################################################################
+fi #__included_alterator_openldap_functions

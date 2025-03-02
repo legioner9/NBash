@@ -1,0 +1,46 @@
+#!/bin/sh
+
+. /etc/control.d/functions
+
+CONFIG=/etc/postfix/master.cf
+EXE=/etc/init.d/postfix
+FILTER="$(grep -s '^filter[[:space:]]' "$CONFIG")"
+
+new_summary "Postfix SMTP server"
+
+is_smtp_disabled='^#smtp[[:space:]]+inet[[:space:]]+.*[[:space:]]+smtpd\>'
+disable_smtp='s,^smtp[[:space:]]\+inet[[:space:]]\+.*[[:space:]]\+smtpd\>,#&,'
+
+is_smtp_enabled='^smtp[[:space:]]+inet[[:space:]]+.*[[:space:]]+smtpd\>'
+enable_smtp='s,^#\(smtp[[:space:]]\+inet[[:space:]]\+.*[[:space:]]\+smtpd\>\),\1,'
+
+is_filter_disabled='^#[[:space:]]+-o[[:space:]]+content_filter=filter:'
+disable_filter='s,^[[:space:]]\+-o[[:space:]]\+content_filter=filter:,#&,'
+
+is_filter_enabled='^[[:space:]]+-o[[:space:]]+content_filter=filter:' \
+enable_filter='s,^#\([[:space:]]\+-o[[:space:]]\+content_filter=filter:\),\1,'
+
+new_subst local "$is_smtp_disabled" "$disable_smtp"
+[ -z "$FILTER" ] ||
+	new_subst local "$is_filter_disabled" "$disable_filter"
+
+new_subst server "$is_smtp_enabled" "$enable_smtp"
+[ -z "$FILTER" ] ||
+	new_subst server "$is_filter_disabled" "$disable_filter"
+
+if [ -n "$FILTER" ]; then
+	new_subst filter "$is_smtp_enabled" "$enable_smtp"
+	new_subst filter "$is_filter_enabled" "$enable_filter"
+fi
+
+new_help local "Disable Postfix SMTP service, see smtpd(8)"
+new_help server "Enable Postfix SMTP service without content filter, see smtpd(8)"
+new_help filter "Enable Postfix SMTP service with content filter, see smtpd(8)"
+
+is_builtin_mode "$*" ||
+	[ "$*" != "`control_subst "$CONFIG" status`" ] || exit 0
+
+control_subst "$CONFIG" "$*" || exit 1
+
+is_builtin_mode "$*" ||
+	[ ! -x "$EXE" ] || "$EXE" condreload || exit 0

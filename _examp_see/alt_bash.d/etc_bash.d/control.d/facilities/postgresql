@@ -1,0 +1,25 @@
+#!/bin/sh
+
+. /etc/control.d/functions
+
+CONFIG=/etc/sysconfig/postgresql
+
+new_subst traditional \
+        '^PG_CHROOT_DIR=$' \
+        's,^PG_CHROOT_DIR=\/var\/lib\/pgsql-root$,PG_CHROOT_DIR=,'
+
+new_subst chrooted \
+        '^PG_CHROOT_DIR=\/var\/lib\/pgsql-root$' \
+        's,^PG_CHROOT_DIR=$,PG_CHROOT_DIR=\/var\/lib\/pgsql-root,'
+
+new_help chrooted 'Enable chrooted postgresql server'
+new_help traditional 'Enable traditional (non-chrooted) postgresql server'
+
+new_summary 'Chrooted postgresql server'
+
+# delete symlink to socket when switching to traditional
+if [ x"$1" = x"traditional" ]; then
+	find /tmp/ -maxdepth 1 -type l -name ".s.PGSQL.*" -delete
+fi
+
+control_subst "$CONFIG" "$*"

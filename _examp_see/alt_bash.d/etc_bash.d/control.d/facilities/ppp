@@ -1,0 +1,17 @@
+#!/bin/sh
+
+. /etc/control.d/functions
+
+BINARY='/usr/sbin/pppd'
+
+new_fmode restricted 700 root root
+new_fmode traditional 711 root root
+new_fmode uucp 4710 root uucp
+new_fmode public 4711 root root
+
+new_help restricted "Only root can execute $BINARY"
+new_help traditional "Any user can execute $BINARY without superuser privilege"
+new_help uucp "Only uucp group can execute $BINARY with superuser privilege"
+new_help public "Any user can execute $BINARY with superuser privilege"
+
+control_fmode "$BINARY" "$*" || exit 1

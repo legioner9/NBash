@@ -1,0 +1,56 @@
+#!/bin/sh
+# Startup script for plymouth 
+#
+# chkconfig: 12345 99 05
+# description: Stop splash at end of boot and start on shutdown
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+RETVAL=0
+
+start() {
+	action "Deactivating splash" /bin/plymouth quit
+	touch /var/lock/subsys/plymouth
+	sed -ne 's,^\([0-9]\+\):[0-9]\+:respawn:/sbin/mingetty.*,/dev/tty\1,pg' </etc/inittab |
+	while read t; do
+		[ ! -c "$t" ] ||
+			ExecIfExecutable /sbin/setsysfont <"$t" >>"$t" 2>&1
+	done
+}
+
+stop() {
+	/sbin/plymouthd --mode=shutdown
+	action "Activating splash" /bin/plymouth show-splash
+}
+
+restart()
+{
+	stop
+	start
+}
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	reload|restart)
+		restart
+		;;
+	condstop)
+			stop
+		;;
+	condrestart)
+			restart
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart}"
+		RETVAL=1
+esac
+
+exit $RETVAL 

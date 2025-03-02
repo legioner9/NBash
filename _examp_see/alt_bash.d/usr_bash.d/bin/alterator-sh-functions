@@ -1,0 +1,319 @@
+#!/bin/sh -efu
+
+if [ -z "${__included_alterator_sh_functions:-}" ]; then
+__included_alterator_sh_functions=1
+
+alterator_api_version="${alterator_api_version:-0}"
+
+. shell-error
+. shell-quote
+. shell-var
+
+exec 3>&1
+
+### internal functions
+_write_begin()
+{
+    printf '(\n' >&3
+}
+
+_write_end()
+{
+    printf ')\n' >&3
+}
+
+_validate_symbol()
+{
+    [ -n "${1##*[!0-9A-Za-z_]*}" ] || fatal "wrong attribute name:$1"
+}
+
+### quote
+string_quote()
+{
+    sed 's,[\"],\\&,g' -- "$@"
+}
+
+newline_unquote()
+{
+    if [ "$1" != "_objects" ]; then
+      local separator=$(printf '\007')
+      sed  -e "s,\\\\\(.\),$separator\1,g" \
+	   -e "s,${separator}n,\n,g" \
+	   -e "s,$separator,,g"
+    else
+      cat
+    fi
+}
+
+### RPC like API
+
+_alterator_export_var_list=
+
+alterator_export_var()
+{
+    while [ "$#" -gt 0 ];do
+	[ "$#" != 1 ] || break
+	_alterator_export_var_list="$_alterator_export_var_list $1 $2"
+	shift
+	shift
+    done
+}
+
+_alterator_print_export_var_list()
+{
+    local IFS=' '
+    set -- $_alterator_export_var_list
+    while [ $# -gt 0 ];do
+	write_type_item "$1" "$2"
+	shift
+	shift
+    done
+}
+
+
+_alterator_export_proc_list=" "
+
+alterator_export_proc()
+{
+    _alterator_export_proc_list="$_alterator_export_proc_list$1 "
+}
+
+### main message loop
+
+_userhandler() {  # trick to protect loop values
+    local l= readmsg= params=
+    local IFS="$IFS" PATH="$PATH" # Protected variables
+
+    [ "$alterator_api_version" -le 0 ] || _write_begin
+
+    # process exported types
+    [ "$in_action" != "type" ] || _alterator_print_export_var_list
+
+    # process exported procedures
+    local proc="${1:-}"
+    [ -n "${_alterator_export_proc_list##* $in__objects *}" ] ||
+	[ "$in_action" = "type" ] ||
+	proc="$in__objects"
+    "$proc" || : # ignore exit code of user actions
+
+    [ "$alterator_api_version" -le 0 ] || _write_end
+}
+
+
+# default handler
+on_message()
+{
+    true
+}
+
+message_loop() {
+    local l= readmsg= params= name= value=
+    [ "$alterator_api_version" -le 0 ] || exec 1>&2
+
+    while IFS= read -r l; do
+	if [ "$l" != "${l#_message:begin}" ]; then 
+	    [ -n "$params" ] && unset $params && params= ||:
+	    readmsg=1
+	    continue
+	fi
+	if [ -n "$readmsg" -a "$l" != "${l#_message:end}" ]; then
+	    _userhandler "${1:-on_message}"
+	    readmsg=
+	fi
+	[ -n "$readmsg" ] || continue
+	name="$(printf %s\\n "${l%%:*}" | sed -e 's,[^[:alnum:]_],,g')" && 
+	value="$(printf %s\\n "${l#*:}" | newline_unquote "$name")" ||
+    		continue
+	eval "in_$name=\"$(quote_shell "$value")\"" && params="$params in_$name" && name= value= ||:
+    done
+}
+
+### input/output functions
+
+write_string()
+{
+    local out="$*"
+    if [ -z "${out##*[\"\\\\]*}" ]; then
+	out="$(printf %s "$out" |string_quote)" ||
+	return 1
+    fi
+    printf %s "$out"
+}
+
+write_bool()
+{
+    shell_var_is_yes "$1" && echo "#t" || echo "#f"
+}
+
+
+test_bool()
+{
+    [ "$1" = "#t" ]
+}
+
+
+### i18n support
+
+write_language()
+{
+    local charset="${po_charset:-UTF-8}"
+    echo "$1" |
+        sed -r \
+            -e "s,([^;]+)(;|$),\1.$charset\2,g" \
+            -e 's,;,:,g'
+}
+
+set_locale(){
+  local charset="${po_charset:-UTF-8}"
+  local langlist="$(echo "$in_language" |\
+	sed -r \
+	    -e "s,([^;]+)(;|$),\1.$charset\2,g" \
+	    -e 's,;,:,g')"
+  local firstlang="${langlist%%:*}"
+  export LC_ALL="$firstlang"
+  export LANGUAGE="$langlist"
+}
+
+run_localized(){
+  local charset="${po_charset:-UTF-8}"
+  local langlist="$(echo "$in_language" |\
+    sed -r \
+        -e "s,([^;]+)(;|$),\1.$charset\2,g" \
+        -e 's,;,:,g')"
+  local firstlang="${langlist%%:*}"
+  local cmd="$1"; shift
+  LC_ALL="$firstlang" LANGUAGE="$langlist" "$cmd" "$@"
+}
+
+#Note: gettext uses encoding from lc_ctype and translation from language
+po_domain="${po_domain:-alterator-${0##*/}}"
+
+_()
+{
+  local domain="${2:-$po_domain}"
+  run_localized gettext "$domain" "$1"
+}
+
+
+
+### high level output
+
+write_string_param()
+{
+    _validate_symbol "$1"
+    printf '%s "%s"\n' "$1" "$(write_string "$2")" >&3
+}
+
+write_bool_param()
+{
+    _validate_symbol "$1"
+    printf '%s %s\n' "$1" "$(write_bool "$2")" >&3
+}
+
+write_blob_param()
+{
+    local name="$1";shift
+    _validate_symbol "$name"
+    local value="$(base64 -w0 -- "$@"|string_quote)"
+    printf '%s "%s"\n' "$name" "$value" >&3
+}
+
+write_enum_item()
+{
+    if [ $# -eq 0 ];then
+	echo "WARNING: write_enum_item for stream is deprecated, use write_enum instead" >&2
+	string_quote|
+	    while read -r name label;do
+		[ -n "$name" ] || continue
+		printf '(name "%s" label "%s")\n' \
+		    "$name" \
+		    "${label:-$name}"
+	    done
+    else
+	printf '(name "%s" label "%s")\n' \
+	    "$(write_string "$1")" \
+	    "$(write_string "${2:-$1}")"
+    fi >&3
+}
+
+write_enum()
+{
+    string_quote|
+        while read -r name label;do
+	    [ -n "$name" ] || continue
+	    printf '(name "%s" label "%s")\n' \
+		    "$name" \
+		    "${label:-$name}"
+	done >&3
+}
+
+write_table_item()
+{
+    [ $# -gt 0 -a "$(($# % 2))" = "0" ] || fatal "wrong number of arguments"
+
+    printf '(' >&3
+    while [ $# -gt 0 ]; do
+	local name="$1";shift
+	local value="$1";shift
+	_validate_symbol "$name"
+        case "$value" in
+            '#t'|'#f')
+                printf ' %s %s' "$name" "$(write_string "$value")" >&3
+                ;;
+            *)
+                printf ' %s "%s"' "$name" "$(write_string "$value")" >&3
+                ;;
+        esac
+    done
+    printf ')' >&3
+}
+
+write_type_item()
+{
+    write_string_param "$1" "$2"
+}
+
+write_error()
+{
+    [ "$alterator_api_version" -gt 0 ] || _write_begin
+    write_string_param 'error' "$1"
+    [ "$alterator_api_version" -gt 0 ] || _write_end
+}
+
+write_nop()
+{
+    [ "$alterator_api_version" -gt 0 ] || _write_begin
+    [ "$alterator_api_version" -gt 0 ] || _write_end
+}
+
+write_debug()
+{
+    [ -z "${ALTERATOR_DEBUG:-}" ] || printf "$@" >&2
+}
+
+### helpers
+
+file_list_add()
+{
+    local file="$1";shift
+    local line="$1";shift
+
+    fgrep -xqs "$line" "$file" ||
+	printf '%s\n' "$line" >>"$file"
+}
+
+file_list_del()
+{
+    local file="$1";shift
+    local line
+    quote_sed_regexp_variable line "$1"
+
+    sed "/^$line$/d" -i "$file"
+}
+
+
+### backward compatibility: api_version < 0
+alias simple_quote=string_quote
+
+
+fi #__included_alterator_sh_functions

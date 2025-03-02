@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# Memory limit for composer could be set via:
+# - command line (within other configuration options),
+# - or CONFIG_FILE,
+# - or CLI php.ini,
+# - or at least 256M as minimal requirement.
+COMPOSER_MEMORY_LIMIT=512M
+
+CONFIG_FILE=/etc/sysconfig/composer
+
+[ -n "$PHP_MEMORY_LIMIT" ] || eval $(/bin/grep '^PHP_MEMORY_LIMIT' "$CONFIG_FILE" | /bin/sed -e 's/[[:blank:]]*=[[:blank:]]*/=/')
+[ -n "$PHP_PARAMETERS" ]   || eval $(/bin/grep '^PHP_PARAMETERS' "$CONFIG_FILE"   | /bin/sed -e 's/[[:blank:]]*=[[:blank:]]*/=/')
+
+if [ ! -n "$PHP_PARAMETERS" ]; then
+  if [ ! -n "$PHP_MEMORY_LIMIT" ]; then
+     # Check if CLI memory_limit is greater then $COMPOSER_MEMORY_LIMIT:
+     # if we can set memory_limit to $COMPOSER_MEMORY_LIMIT in code, memory_limit in php.ini is equal or greater that limit
+     PHP_INI_MEMORY_LIMIT=$(php -r 'ini_set("memory_limit","'$COMPOSER_MEMORY_LIMIT'");echo ini_get("memory_limit");')
+     [ "$PHP_INI_MEMORY_LIMIT" != "$COMPOSER_MEMORY_LIMIT" ] && PHP_MEMORY_LIMIT="$COMPOSER_MEMORY_LIMIT"
+  fi
+  PHP_PARAMETERS="-d suhosin.executor.include.whitelist=phar"
+  [ -n "$PHP_MEMORY_LIMIT" ] && PHP_PARAMETERS="$PHP_PARAMETERS -d memory_limit=$PHP_MEMORY_LIMIT"
+fi
+
+php $PHP_PARAMETERS /usr/share/composer.phar "$@"

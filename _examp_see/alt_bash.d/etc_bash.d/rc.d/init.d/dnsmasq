@@ -1,0 +1,131 @@
+#!/bin/sh
+# Startup script for the DNS caching server under ALTLinux
+#
+# chkconfig: - 20 55
+# description: This script starts your DNS caching server
+# processname: dnsmasq
+# config: /etc/dnsmasq.conf
+# pidfile: /var/run/dnsmasq.pid
+
+# Do not load RH compatibility interface.
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+if [ "$1" = "--trace-script" ]; then
+	shift
+	set -x
+fi
+
+# Source networking configuration and check that networking is up.
+SourceIfNotEmpty /etc/sysconfig/network
+is_yes "${NETWORKING}" || exit 0
+
+dnsmasq=/usr/sbin/dnsmasq
+[ -x $dnsmasq ] || exit 0
+
+# Internal variables
+PIDFILE=/var/run/dnsmasq.pid
+LOCKFILE=/var/lock/subsys/dnsmasq
+RETVAL=0
+DNSMASQ_USER="${DNSMASQ_USER:-_dnsmasq}"
+
+#---------------------------------------------------------------
+#
+#	Status helpers
+#
+
+function print_listening()
+{
+	ss -tnlp | grep 'users:(("dnsmasq",' | sed -r 's;[[:blank:]]+;\t;g' | cut -f 4
+}
+
+#---------------------------------------------------------------
+#
+#	Main routines
+#
+
+function start()
+{
+	start_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --displayname dnsmasq --expect-user "$DNSMASQ_USER" -- \
+		/usr/sbin/dnsmasq-helper start -u "$DNSMASQ_USER"
+	RETVAL=$?
+	return $RETVAL
+}
+
+function start_debug()
+{
+	"$RESOLVCONF" -u
+	# don't adds/removes routing!
+	$dnsmasq -d -q $OPTIONS
+}
+
+function stop()
+{
+	stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user "$DNSMASQ_USER" -- $dnsmasq
+	RETVAL=$?
+	return $RETVAL
+}
+
+function my_status() {
+	status --pidfile "$PIDFILE" --expect-user "$DNSMASQ_USER" -- $dnsmasq
+	RETVAL=$?
+	if [ $RETVAL = 0 ]; then
+		echo "Listening:"
+		print_listening
+	fi
+	return $RETVAL
+}
+
+function restart() {
+	# check for old dnsmasq < 2.80-alt1 running as user 'nobody'
+	if status --pidfile "$PIDFILE" --expect-user nobody -- $dnsmasq >/dev/null 2>&1; then
+		stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user nobody -- $dnsmasq
+	else
+		stop
+	fi
+	start
+	RETVAL=$?
+	return $RETVAL
+}
+
+function reload() {
+	msg_reloading dnsmasq
+	stop_daemon --pidfile "$PIDFILE" --expect-user "$DNSMASQ_USER" -HUP -- $dnsmasq
+	RETVAL=$?
+	return $RETVAL
+}
+
+function clean() {
+	stop
+	$RM -f $LOCKFILE $PID_FILE
+	/usr/sbin/dnsmasq-helper cleanup_routing
+	RETVAL=0
+}
+
+case "$1" in
+	start)
+		start
+		/usr/sbin/dnsmasq-helper poststart "$?"
+		;;
+	stop)
+		stop
+		/usr/sbin/dnsmasq-helper poststop
+		;;
+	status)  my_status ;;
+	restart) restart ;;
+	reload)  reload ;;
+	clean)   clean ;;
+	startdebug)  start_debug ;;
+	condrestart) [ -e "$LOCKFILE" ] && restart ;;
+	condreload)  [ -e "$LOCKFILE" ] && reload ;;
+	condstop)    [ -e "$LOCKFILE" ] && stop ;;
+	*)
+		echo "Usage: ${0##*/} {start|stop|restart|reload|condrestart|condreload|condstop|clean|status}"
+		exit 1
+esac
+
+exit $RETVAL
+
+## EOF ##

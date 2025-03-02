@@ -1,0 +1,94 @@
+#!/bin/bash
+#
+# chkconfig: 2345 98 30
+# description: Layer 2 Tunnelling Protocol Daemon (RFC 2661)
+# processname: /usr/sbin/openl2tpd
+# pidfile: /var/run/openl2tpd.pid
+# config: /etc/openl2tpd.conf
+
+WITHOUT_RC_COMPAT=1
+
+. /etc/init.d/functions
+
+SERVICE="openl2tp"
+PROCESSNAME="openl2tpd"
+LOCKFILE="/var/lock/subsys/$PROCESSNAME"
+PIDFILE="/var/run/$PROCESSNAME.pid"
+RETVAL=0
+
+# Source local config.
+SourceIfNotEmpty "/etc/sysconfig/$PROCESSNAME"
+
+start()
+{
+    local options="$OPENL2TPDARGS"
+    start_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user "root" -- "$PROCESSNAME" $options
+    RETVAL=$?
+    return $RETVAL
+}
+
+stop()
+{
+    stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" --expect-user "root" -- "$PROCESSNAME"
+    RETVAL=$?
+    return $RETVAL
+    rm -f $PIDFILE
+}
+
+restart()
+{
+    stop
+    start
+    RETVAL=$?
+    return $RETVAL
+}
+
+reload()
+{
+    msg_reloading
+    stop_daemon --pidfile "$PIDFILE" --expect-user "root" -HUP -- "$PROCESSNAME"
+    RETVAL=$?
+    return $RETVAL
+}
+
+# See how we were called.
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    reload)
+        reload
+        ;;
+    restart)
+        restart
+        ;;
+    condstop)
+        if [ -e "$LOCKFILE" ]; then
+            stop
+        fi
+        ;;
+    condrestart)
+        if [ -e "$LOCKFILE" ]; then
+            restart
+        fi
+        exit 0
+        ;;
+    condreload)
+        if [ -e "$LOCKFILE" ]; then
+            reload
+        fi
+        ;;
+    status)
+        status --lockfile "$LOCKFILE" --pidfile "$PIDFILE" --expect-user root -- "$PROCESSNAME"
+        RETVAL=$?
+        ;;
+    *)
+        msg_usage "$SERVICE {start|stop|reload|restart|condstop|condrestart|condreload|status}"
+        RETVAL=1
+esac
+
+exit $RETVAL
+

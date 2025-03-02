@@ -1,0 +1,18 @@
+#!/bin/sh
+# $Id: newgrp.control,v 1.1 2001/11/12 01:47:45 solar Exp $
+
+. /etc/control.d/functions
+
+BINARY=/usr/bin/newgrp
+
+new_fmode public 4711 root root
+new_fmode wheelonly 4710 root wheel
+new_fmode restricted 700 root root
+
+new_help public "Any user can execute $BINARY"
+new_help wheelonly "Only \"wheel\" group members can execute $BINARY"
+new_help restricted "Only root can execute $BINARY"
+
+new_summary 'Change the current group ID during a login session'
+
+control_fmode "$BINARY" "$*" || exit 1

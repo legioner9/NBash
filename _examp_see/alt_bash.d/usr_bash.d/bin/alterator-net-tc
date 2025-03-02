@@ -1,0 +1,108 @@
+#!/bin/sh -efu
+
+. shell-config
+. shell-error
+
+int="$(alterator-net-iptables show -i)"
+ext="$(alterator-net-iptables show -e)"
+datafile="/etc/alterator/net-tc.conf"
+
+#TODO: move to iptables_helper!
+BASEDIR="/etc/net/ifaces/default/fw/iptables"
+MANGPOST="$BASEDIR/mangle/POSTROUTING"
+IPTABLES_HELPER_CONF="/etc/alterator/net-iptables.conf"
+EFW="/etc/net/scripts/contrib/efw --iptables default all restart"
+RESTART_NETWORK="service network restart"
+
+
+restart_firewall(){
+  local restart_network="$(shell_config_get "$IPTABLES_HELPER_CONF" restart_network)"
+
+  [ "$restart_network" = "on" ] &&
+      $RESTART_NETWORK ||
+      $EFW
+}
+
+efw_restart(){
+  verbose "restarting efw"
+  if [ -z "$verbose" ]; then
+    restart_firewall > /dev/null 2>&1 || fatal "`_ "Error while reloading firewalling rules"`"
+  else
+    restart_firewall > /dev/stderr || fatal "`_ "Error while reloading firewalling rules"`"
+  fi
+}
+
+start(){
+
+  echo -n > "$MANGPOST"
+
+  for i in $int $ext; do
+    tc qdisc add dev "$i" root handle 1: htb ||:
+  done
+
+  local n=10
+  local ip= kbps=
+
+  sed -e 's|#.*||; /^[[:space:]]*$/d' "$datafile" |
+  while read ip ikbps okbps; do
+    [ -n "$ip" ] || continue
+    echo "$ip" | grep -q "^[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}$" ||
+      fatal "Wrong ip address: $ip"
+    echo "$ikbps" | grep -q "^[0-9]\+$" ||
+      fatal "Wrong rate value: $ikbps"
+    echo "$okbps" | grep -q "^[0-9]\+$" ||
+      fatal "Wrong rate value: $okbps"
+
+    echo "  restricting flow rate for $ip to ${ikbps}/${okbps}kbps"
+
+    if [ "$okbps" != "0" ]; then
+      for i in $ext; do
+        echo "-o $i -s $ip -j CLASSIFY --set-class 1:$n" >> "$MANGPOST"
+        tc class add dev "$i" parent 1: classid "1:$n"\
+           htb rate "$okbps"kbps ceil "$okbps"kbps ||:
+      done
+    fi
+
+    if [ "$ikbps" != "0" ]; then
+      for i in $int; do
+        echo "-o $i -d $ip -j CLASSIFY --set-class 1:$n" >> "$MANGPOST"
+        tc class add dev "$i" parent 1: classid "1:$n"\
+           htb rate "$ikbps"kbps ceil "$ikbps"kbps ||:
+      done
+    fi
+
+    n="$(($n+1))"
+  done
+  efw_restart
+}
+
+stop(){
+  echo -n > "$MANGPOST"
+  for i in $int $ext; do
+
+    [ -z "$(tc filter show dev "$i" protocol ip prio 1)" ] ||
+      tc filter del dev "$i" protocol ip prio 1 u32 ||:
+
+    for id in $(tc class list dev eth0 parent 1: | sed 's/class htb 1:\([0-9]\+\).*/\1/'); do #'
+      tc class del dev "$i" classid 1:"$id" ||:
+    done
+
+    tc qdisc show dev "$i" | grep -qv 'qdisc htb' ||
+      tc qdisc del dev "$i" root handle 1: htb ||:
+  done
+  efw_restart
+}
+
+action="${1:-}"
+
+case "$action" in
+start) start ;;
+stop)  stop  ;;
+restart) stop; start ;;
+*)
+  echo "Usage: $0 start|stop|restart"
+  echo "Config file: $datafile"
+;;
+esac
+
+

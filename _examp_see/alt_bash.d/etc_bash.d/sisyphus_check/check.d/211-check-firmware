@@ -1,0 +1,63 @@
+#!/bin/sh -efu
+
+rpm_arch="${rpm_arch?RPM arch required}"
+rpm_name="${rpm_name?RPM name required}"
+rpm_filenames="${rpm_filenames?RPM file list required}"
+
+check_firmware()
+{
+	# Check firmware for binary rpms only.
+	[ "$package_type" = bin ] || return 0
+
+	local f="$1" && shift || return 1
+	local rc=0 firmware_name firmware_files
+
+	case "$rpm_name" in
+		udev|kernel-image-*)
+			# these packages are allowed (but not required) to package
+			# objects inside /lib/firmware/
+			return 0
+			;;
+		firmware-tools|firmware-tools-*)
+			# these packages are not allowed to package objects
+			# inside /lib/firmware/
+			firmware_name=0
+			;;
+		firmware-*)
+			# these packages are required to package objects
+			# inside /lib/firmware/
+			firmware_name=1
+			;;
+		*)
+			# these packages are not allowed to package objects
+			# inside /lib/firmware/
+			firmware_name=0
+			;;
+	esac
+
+	if printf %s "$rpm_filenames" 2>/dev/null |grep -qs '^/lib/firmware/'; then
+		firmware_files=1
+	else
+		firmware_files=0
+	fi
+
+	case "$firmware_name,$firmware_files" in
+		0,1)	FileError "package NAME should start with the 'firmware-': $rpm_name" "$f"
+			rc=1
+			;;
+		1,0)	FileError "firmware files should be placed in /lib/firmware/" "$f"
+			rc=1
+			;;
+		0,0)	return 0
+			;;
+	esac
+
+	return $rc
+}
+
+run_check() {
+	if ! check_firmware "$1"; then
+		CheckError 'firmware packaging violation'
+		return 1
+	fi
+}

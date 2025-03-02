@@ -1,0 +1,90 @@
+#!/bin/sh
+#
+# asterisk	Open source PBX
+#
+# chkconfig: - 90 10
+# description:	Asterisk is an Open Source PBX and telephony toolkit.
+# processname: asterisk
+# config: /etc/asterisk/asterisk.conf
+# pidfile: /var/run/asterisk/asterisk.pid
+
+# Do not load RH compatibility interface.
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+PIDFILE=/var/run/asterisk/asterisk.pid
+LOCKFILE=/var/lock/subsys/asterisk
+
+SourceIfNotEmpty /etc/sysconfig/asterisk
+
+RETVAL=0
+
+start()
+{
+	start_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" -- asterisk -U _asterisk -G _asterisk $EXTRAOPTIONS
+	RETVAL=$?
+	return $RETVAL
+}
+
+stop()
+{
+	stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" -- asterisk
+	RETVAL=$?
+	return $RETVAL
+}
+
+restart()
+{
+	stop
+	start
+}
+
+reload()
+{
+	msg_reloading asterisk
+	asterisk -x 'core reload'
+	RETVAL=$?
+	return $RETVAL
+}
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	reload)
+		reload
+		;;
+	restart)
+		restart
+		;;
+	condstop)
+		if [ -e "$LOCKFILE" ]; then
+			stop
+		fi
+		;;
+	condrestart)
+		if [ -e "$LOCKFILE" ]; then
+			restart
+		fi
+		;;
+	condreload)
+		if [ -e "$LOCKFILE" ]; then
+			reload
+		fi
+		;;
+	status)
+		status --pidfile "$PIDFILE" -- asterisk
+		RETVAL=$?
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart|condreload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

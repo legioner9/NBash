@@ -1,0 +1,106 @@
+#! /bin/sh
+
+readonly CGIBIN="${CGIBINDIR:=/var/www/cgi-bin}/${CGIBIN_NAME?}"
+readonly CGIBINAPP="${CGIBINAPPDIR?}/${CGIBIN_NAME?}"
+
+. /etc/control.d/functions
+
+new_summary "$CGIBIN use"
+
+new_help none "$CGIBIN does not exist"
+new_help file_root_noexec "$CGIBIN is not an executable file with the owner root"
+new_help file_root_exec "$CGIBIN is an executable file with the owner root"
+new_help file_webmaster_noexec "$CGIBIN is not an executable file with the owner \"webmaster\" group"
+new_help file_webmaster_exec "$CGIBIN is an executable file with the owner \"webmaster\" group"
+new_help symlink_root_noexec "$CGIBIN symlink there, the owner root, not on an executable file $CGIBINAPP"
+new_help symlink_root_exec "$CGIBIN symlink there, the owner root, to the executable file $CGIBINAPP"
+new_help symlink_webmaster_noexec "$CGIBIN symlink there, the owner \"webmaster\" group, not on an executable file $CGIBINAPP"
+new_help symlink_webmaster_exec "$CGIBIN symlink there, the owner \"webmaster\" group, to the executable file $CGIBINAPP"
+
+new_fmode file_root_noexec 644 root root
+new_fmode file_root_exec 755 root root
+new_fmode file_webmaster_noexec 664 root webmaster
+new_fmode file_webmaster_exec 775 root webmaster
+new_fmode symlink_root_noexec 777 root root
+new_fmode symlink_root_exec 777 root root
+new_fmode symlink_webmaster_noexec 777 root webmaster
+new_fmode symlink_webmaster_exec 777 root webmaster
+
+if is_builtin_mode "$*"; then
+	case "$*" in
+	status|'')
+		if [ -L "$CGIBIN" ]; then
+			PATH_CGIBIN="`readlink -e "$CGIBIN"`" || exit 1
+			PATH_CGIBINAPP="`readlink -e "$CGIBINAPP"`" || exit 1
+			if [ "$PATH_CGIBIN" = "$PATH_CGIBINAPP" ]; then
+				STATUS_CGIBIN="`control_fmode "$CGIBIN" status`" || exit 1
+				STATUS_SYMLINK="`echo "$STATUS_CGIBIN" \
+						| sed -nr '/^symlink_(root|webmaster)_(no|)exec$/s/^(symlink_(root|webmaster)_).*$/\1/p'`"
+				if [ "$STATUS_SYMLINK" != "" ]; then
+					STATUS_CGIBINAPP="`control_fmode "$CGIBINAPP" status`" || exit 1
+					STATUS_FILE="`echo "$STATUS_CGIBINAPP" \
+							| sed -nr '/^file_(root|webmaster)_(no|)exec$/s/^.+_((no|)exec)$/\1/p'`"
+					if [ "$STATUS_FILE" != "" ]; then
+						echo "$STATUS_SYMLINK$STATUS_FILE"
+						exit 0
+					fi
+				fi
+			fi
+			echo "unknown"
+			exit 0
+		elif [ -f "$CGIBIN" ]; then
+			control_fmode "$CGIBIN" status || exit 1
+		else
+			echo "none"
+			exit 0
+		fi
+		;;
+	*)
+		control_fmode "$CGIBIN" "$*"
+		;;
+	esac
+else
+	case "$*" in
+	none)
+		rm -f "$CGIBIN"
+		;;
+	file_*)
+		if [ -L "$CGIBIN" ]; then
+			rm -f "$CGIBIN"
+			cp -a "$CGIBINAPP" "$CGIBIN"
+		fi
+
+		control_fmode "$CGIBIN" "$*" || exit 1
+		;;
+	symlink_*)
+		PATH_CGIBINAPP="`readlink -e "$CGIBINAPP"`" || exit 1
+		( [ -L "$CGIBIN" ] \
+			&& PATH_CGIBIN="`readlink -e "$CGIBIN"`" \
+			&& [ "$PATH_CGIBIN" == "$PATH_PCGIBINAPP" ] \
+		) || ln -sf "$CGIBINAPP" "$CGIBIN"
+
+		STATUS_EXEC="`echo "$1" \
+				| sed -nr '/^([^_]+_){2}(no|)exec$/s/^.+_((no|)exec)$/\1/p'`"
+		if [ "$STATUS_EXEC" != "" ]; then
+			control_fmode "$CGIBINAPP" file_root_$STATUS_EXEC
+		else
+			exit 1
+		fi
+
+		case "$1" in
+		*_root_*)
+			GROUP="root"
+			;;
+		*_webmaster_*)
+			GROUP="webmaster"
+			;;
+		*)
+			exit 1
+		esac
+		chown -h "root:$GROUP" "$CGIBIN"
+		;;
+	*)
+		control_fmode "$CGIBIN" "$*"
+		;;
+	esac
+fi

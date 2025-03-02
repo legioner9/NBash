@@ -1,0 +1,59 @@
+#!/bin/sh
+
+unset \
+	LANG \
+	LANGUAGE \
+	LINGUAS \
+	LC_CTYPE \
+	LC_NUMERIC \
+	LC_TIME \
+	LC_COLLATE \
+	LC_MONETARY \
+	LC_MESSAGES \
+	LC_PAPER \
+	LC_NAME \
+	LC_ADDRESS \
+	LC_TELEPHONE \
+	LC_MEASUREMENT \
+	LC_IDENTIFICATION \
+	LC_ALL \
+	||:
+
+#Sisyphus root
+PREFIX="/raid/ALT/Sisyphus"
+
+#Architectures
+ARCHITECTURES="i586 i686 i386 x86_64 noarch"
+
+#Distribution name
+: ${DISTRIBUTION:=i586}
+
+ARCHIVE="$(date +%s)"
+ORIGIN='ALT Linux Team'
+LABEL='Sisyphus'
+CODENAME='ALT'
+SUITE='ALT Linux'
+DESCRIPTION='ALT Linux Sisyphus'
+VERSION=unstable
+GENBASEDIR_OPT_ARGS='--bz2only --mapi --no-oldhashfile'
+: ${GENBASEDIR_SIGNING_ARGS:='-s --default-key=security@altlinux.ru'}
+
+#Components
+LINKONLY_COMPONENTS='classic'
+MIXED_COMPONENTS=
+ALL_COMPONENTS="$LINKONLY_COMPONENTS"
+
+#new files location
+NEW_FILE_PREFIX=files
+
+LIST_PREFIX=list
+
+#Obsolete variables
+NEW_SRC_REPOSITORIES="$NEW_FILE_PREFIX/SRPMS"
+
+#permissions
+PERM_GROUP=sisyphus
+PERM_MODE='g+w,a+rX'
+
+#outgoing incoming
+: ${START_DIR:=/raid/OUT/Sisyphus}

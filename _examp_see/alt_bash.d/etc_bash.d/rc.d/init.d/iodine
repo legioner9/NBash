@@ -1,0 +1,95 @@
+#!/bin/sh
+#
+# iodine - client for IPv4 tunnel through a DNS server
+#
+# chkconfig: - 90 10
+# description: This is a piece of software that lets you tunnel IPv4 data through a DNS
+#              server. This can be usable in different situations where internet access is
+#              firewalled, but DNS queries are allowed.
+# processname: iodine
+# pidfile: /var/run/iodine.pid
+### BEGIN INIT INFO
+# Provides: iodine
+# Required-Start: $network $syslog
+# Required-Stop: $network $syslog
+# Default-Start:
+# Default-Stop:
+### END INIT INFO
+
+# Do not load RH compatibility interface.
+WITHOUT_RC_COMPAT=1
+
+# Source function library.
+. /etc/init.d/functions
+
+PIDFILE=/var/run/iodine.pid
+LOCKFILE=/var/lock/subsys/iodine
+RETVAL=0
+
+SourceIfNotEmpty /etc/sysconfig/iodine
+
+start()
+{
+	/sbin/modprobe tun 2>/dev/null; /bin/sleep 1s
+	start_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" -- iodine -F "$PIDFILE" -P "$IODINE_PASS" "$IODINE_ARGS" "$IODINE_NAMESERVER" "$IODINE_TOPDOMAIN"
+	RETVAL=$?
+	return $RETVAL
+}
+
+stop()
+{
+	stop_daemon --pidfile "$PIDFILE" --lockfile "$LOCKFILE" -- iodine
+	RETVAL=$?
+	return $RETVAL
+}
+
+restart()
+{
+	stop
+	start
+}
+
+reload()
+{
+	restart
+} 
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	reload)
+		reload
+		;;
+	restart)
+		restart
+		;;
+	condstop)
+		if [ -e "$LOCKFILE" ]; then
+			stop
+		fi
+		;;
+	condrestart)
+		if [ -e "$LOCKFILE" ]; then
+			restart
+		fi
+		;;
+	condreload)
+		if [ -e "$LOCKFILE" ]; then
+			reload
+		fi
+		;;
+	status)
+		status --pidfile "$PIDFILE" -- iodine
+		RETVAL=$?
+		;;
+	*)
+		msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart|condreload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

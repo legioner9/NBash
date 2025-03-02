@@ -1,0 +1,60 @@
+#!/bin/sh -efu
+
+. shell-error
+
+if [ -z "${__included_alterator_unittest_functions:-}" ]; then
+__included_alterator_unittest_functions=1
+
+ALTERATOR_QUERY="${ALTERATOR_QUERY:-alterator-cmdline -l}"
+
+assertEnumref()
+{
+    local msg="$1";shift
+    local arglist="$@"
+    local rc=0
+    $ALTERATOR_QUERY "$@" action list|
+	awk 'BEGIN {FS=":"; hasrecord=0; }
+	     function reset() { for (i in params) delete params[i]; }
+	     function check() { if (params["name"] == "" || params["label"] == "") exit(1); }
+	     /^$/ { if (hasrecord) check(); reset(); next; }
+	     { params[$1]=$2; hasrecord=1}
+	     END {if (hasrecord) check(); }' || rc=1
+    assertEquals "$msg : enumref($arglist)" "$rc" "0"
+}
+
+assertRead()
+{
+    local msg="$1";shift
+    local param="$1";shift
+    local expected="$1";shift
+
+    local arglist="$@"
+
+    local v="$($ALTERATOR_QUERY -k "$param"  "$@" action read)" || fatal "backend execution failed"
+
+    assertEquals "$msg: read($arglist) : \"$param\" : expected \"$expected\", got \"$v\"" "$v" "$expected"
+}
+
+assertList()
+{
+    local msg="$1";shift
+    local param="$1";shift
+    local expected="$1";shift
+
+    local arglist="$@"
+
+    local v="$($ALTERATOR_QUERY -k "$param" "$@" action list)" || fatal "backend execution failed"
+
+    assertEquals "$msg: list($arglist) : \"$param\" :
+expected: \"$expected\"
+got: \"$v\"" "$v" "$expected"
+}
+
+showSummary() {
+	printf 'Completed: %s passes, %s failures, %s total\n' \
+	    "$passed" \
+	    "$failed" \
+	    "$total"
+}
+
+fi #__included_alterator_unitest_functions

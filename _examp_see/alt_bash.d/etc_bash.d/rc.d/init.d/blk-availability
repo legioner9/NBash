@@ -1,0 +1,79 @@
+#!/bin/bash
+#
+# This file is part of LVM2.
+# It is required for the proper handling of failures of LVM2 mirror
+# devices that were created using the -m option of lvcreate.
+#
+#
+# chkconfig: 12345 25 75
+# description: Controls availability of block devices
+#
+### BEGIN INIT INFO
+# Provides: blk-availability
+# Required-Start:
+# Required-Stop:
+# Default-Start: 1 2 3 4 5
+# Default-Stop: 0 6
+# Short-Description: Availability of block devices
+### END INIT INFO
+
+WITHOUT_RC_COMPAT=1
+
+. /etc/init.d/functions
+
+OPTIONS="-u -l wholevg -m disablequeueing"
+LOCKFILE="/run/lock/subsys/blk-availability"
+RETVAL=0
+
+start()
+{
+    touch $LOCKFILE
+    RETVAL=$?
+    return $RETVAL
+}
+
+stop()
+{
+    action "Stopping block device availability:" blkdeactivate $OPTIONS
+    RETVAL=$?
+    return $RETVAL
+}
+
+restart()
+{
+    stop
+    start
+}
+
+
+# See how we were called.
+case "$1" in
+    start)
+	start
+	;;
+    stop)
+	stop
+	RETVAL=$?
+	[ $RETVAL = 0 ] && rm -f $LOCKFILE
+	;;
+    restart|reload)
+	restart
+	;;
+    condstop)
+	if [ -e "$LOCKFILE" ]; then
+	    stop
+	fi
+	;;
+    condrestart|condreload)
+	if [ -e "$LOCKFILE" ]; then
+	    restart
+	fi
+	;;
+    status)
+	;;
+    *)
+	msg_usage "${0##*/} {start|stop|reload|restart|condstop|condrestart|condreload|status}"
+	RETVAL=1
+esac
+
+exit $RETVAL

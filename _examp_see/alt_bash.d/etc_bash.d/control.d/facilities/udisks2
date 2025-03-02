@@ -1,0 +1,21 @@
+#!/bin/sh
+
+. /etc/control.d/functions
+
+CONFIG=/lib/udev/rules.d/99-alt-udisks2-media-mount-point.rules
+
+new_subst default \
+	'ENV{UDISKS_FILESYSTEM_SHARED}="0"' \
+	's|\(ENV{UDISKS_FILESYSTEM_SHARED}="\)1"|\10"|'
+
+new_subst shared \
+	'ENV{UDISKS_FILESYSTEM_SHARED}="1"' \
+	's|\(ENV{UDISKS_FILESYSTEM_SHARED}="\)0"|\11"|'
+
+new_summary "UDISKS removable media mount point"
+new_help default "/run/media/\$user used for mounting"
+new_help shared "/media used for mounting"
+
+control_subst "$CONFIG" "$*" || exit 1
+
+is_builtin_mode "$*" || /sbin/udevadm control --reload ||:
