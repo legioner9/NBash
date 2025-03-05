@@ -1,0 +1,32 @@
+#!/bin/sh
+
+if [ "`id -u`" -ne "0" ]; then
+    echo "ERROR: Please run `basename $0` as root."
+    exit 1
+fi
+
+REQUIRES=
+NEEDLESS=
+
+for MODULE_PACKAGE in `rpmquery -a | grep '^kernel-modules-nvidia-'` ; do
+    REQUIRES+=`rpmquery --requires $MODULE_PACKAGE | grep '^nvidia_glx_'`
+done
+
+for INSTALLED_NVIDIA in `rpmquery -f --qf '%{NAME}\n' /usr/lib{,64}/nvidia_*/libGL.so 2>/dev/null` ; do
+    echo "$INSTALLED_NVIDIA" | grep -q '^nvidia_glx_' || continue
+    NEED=
+    for REQ in $REQUIRES ; do
+	[ -n "$REQ" ] || continue
+	if [ "$INSTALLED_NVIDIA" == "$REQ" ] ; then
+	    NEED=true
+	    break
+	fi
+    done
+    [ -n "$NEED" ] || NEEDLESS+=" $INSTALLED_NVIDIA"
+done
+
+if [ -n "$NEEDLESS" ] ; then
+    apt-get remove $NEEDLESS
+else
+    echo "Nothing to remove."
+fi

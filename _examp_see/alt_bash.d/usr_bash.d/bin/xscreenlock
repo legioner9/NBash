@@ -1,0 +1,59 @@
+#!/bin/sh
+#
+# Copyright (C) 2003, 2005, 2006  Dmitry V. Levin <ldv@altlinux.org>
+#
+# Wrapper for xscreensaver and xlockmore.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+
+unset n XSCREEN_CUSTOM XSCREEN_SERVER XSCREEN_CLIENT XSCREEN_XLOCK ||:
+XSCREEN_CUSTOM="$HOME/.xscreenlock"
+XSCREEN_SERVER="xscreensaver"
+XSCREEN_CLIENT="xscreensaver-command"
+XSCREEN_XLOCK="xlock"
+
+# Emulate which(1) internally.
+absolute()
+{
+	local WHICH
+
+	[ -n "$1" ] || return 1
+	WHICH="$(type -p "$1")" || return 1
+	[ "$WHICH" != "${WHICH##/}" ] || return 1
+
+	echo "$WHICH"
+}
+
+if [ -x "$XSCREEN_CUSTOM" ]; then
+	exec "$XSCREEN_CUSTOM" "$@"
+fi
+
+XSCREEN_SERVER="$(absolute "$XSCREEN_SERVER")"
+XSCREEN_CLIENT="$(absolute "$XSCREEN_CLIENT")"
+XSCREEN_XLOCK="$(absolute "$XSCREEN_XLOCK")"
+
+if [ -x "$XSCREEN_SERVER" -a -x "$XSCREEN_CLIENT" ]; then
+	if ! "$XSCREEN_CLIENT" -version >/dev/null 2>&1; then
+		"$XSCREEN_SERVER" -nosplash </dev/null &
+		for n in `seq 1 5`; do
+			"$XSCREEN_CLIENT" -version >/dev/null 2>&1 && break
+			usleep 100000
+		done
+	fi
+	"$XSCREEN_CLIENT" -lock
+elif [ -x "$XSCREEN_XLOCK" ]; then
+	"$XSCREEN_XLOCK"
+fi

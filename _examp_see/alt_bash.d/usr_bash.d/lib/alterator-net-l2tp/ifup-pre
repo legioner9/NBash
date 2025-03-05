@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# START RPCBIND
+# Info: to give commands to openl2tpd it is necessary RPC
+# Dirty hack:
+# 'chkconfig rpcbind on' is not enough. `network' service starts before `rpcbind'
+
+INITDIR="${INITDIR:-/etc/init.d}"
+UNITDIR="${UNITDIR:-/lib/systemd/system}"
+RETRIES="${2:-5}"
+
+service_test_locked()
+{
+    eval "service rpcbind status 2>/dev/null 1>&2" </dev/null
+    [ $? -eq 2 ] && return 0 || return 1
+}
+
+if sd_booted && [ -f "${UNITDIR%/}/rpcbind.service" ]; then
+    eval "systemctl start rpcbind.service 2>/dev/null 1>&2" </dev/null
+elif [ -f "${INITDIR%/}/rpcbind" ]; then
+    # Start
+    eval "service rpcbind start 2>/dev/null 1>&2" </dev/null
+    # Wait for active
+    x=0;
+    while [ $x -lt "$RETRIES" ] && service_test_locked "rpcbind"; do
+        x=$(( x + 1 ))
+        sleep 1
+    done
+    # Report result
+    eval "service rpcbind status 2>/dev/null 1>&2" </dev/null
+fi

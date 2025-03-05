@@ -1,0 +1,171 @@
+#!/bin/sh -e
+#
+# Copyright (C) 2000-2011  Dmitry V. Levin <ldv@altlinux.org>
+# Copyright (C) 2006-2008  Alexey Tourbin <at@altlinux.ru>
+# Copyright (C) 2010  Michael Shigorin <mike@altlinux.org>
+#
+# Generates list of package requires for given command.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+
+PROG=packagereq
+
+. shell-error
+. shell-args
+
+trap '' PIPE
+
+OUTFILE=
+ESSENTIAL=/etc/buildreqs/packages/essential
+IGNORE=/etc/buildreqs/packages/ignore.d
+SUBST=/etc/buildreqs/packages/substitute.d
+PACKAGEOF=packageof
+FILEREQ=filereq
+QUIET=
+
+show_help()
+{
+	cat <<EOF
+packagereq - generates list of file requires while running the program.
+
+packagereq is free software, covered by the GNU General Public License.
+packagereq comes with ABSOLUTELY NO WARRANTY, see license for details.
+
+Usage: $PROG options <program> [program-args]
+
+Valid options are:
+-o FILENAME, --output=FILENAME      filename to write optimized requires to;
+-u FILENAME, --pruned=FILENAME      filename to write pruned requires to;
+-e ESSENTIAL, --essential=ESSENTIAL filename to get list of
+                                    essential packages from;
+-i IGNORE, --ignore=IGNORE          directory to get list of
+                                    packages to ignore from;
+-s SUBST, --substitute=SUBST        directory to get package
+                                    name substitution rules from;
+-p PACKAGEOF, --packageof=PACKAGEOF PACKAGEOF executable;
+-f FILEREQ, --filereq=FILEREQ       FILEREQ executable;
+-q, --quiet                         be quiet;
+-h, --help                          show this text.
+
+There are no default filename for output.
+Configured file with list of essential packages is $ESSENTIAL.
+Configured directory where to get list of packages to ignore is $IGNORE.
+Configured directory where to get package name substitution rules is $SUBST.
+Configured PACKAGEOF executable is $PACKAGEOF.
+Configured FILEREQ executable is $FILEREQ.
+
+EOF
+	exit
+}
+
+TEMP=`getopt -n $PROG -o +o:u:e:f:i:p:s:r:qh -l output:,pruned:,essential:,filereq:,ignore:,packageof:,substitute:,rpm:,quiet,help -- "$@"` || show_usage
+eval set -- "$TEMP"
+
+while :; do
+	case "$1" in
+		-o|--output) shift; OUTFILE="$1"; shift
+			;;
+		-u|--pruned) shift; PRUNEDFILE="$1"; shift
+			;;
+		-e|--essential) shift; ESSENTIAL="$1"; shift
+			;;
+		-p|--packageof) shift; PACKAGEOF="$1"; shift
+			;;
+		-f|--filereq) shift; FILEREQ="$1"; shift
+			;;
+		-i|--ignore) shift; IGNORE="$1"; shift
+			;;
+		-s|--substitute) shift; SUBST="$1"; shift
+			;;
+		-q|--quiet) shift; QUIET=1
+			;;
+		-h|--help) show_help
+			;;
+		--) shift; break
+			;;
+		*) fatal "Unrecognized option: $1"
+			;;
+	esac
+done
+
+# At least one argument, please.
+[ "$#" -ge 1 ] || show_usage 'Insufficient arguments.'
+# Output file, please.
+[ -n "$OUTFILE" ] || show_usage 'Output file not specified.'
+
+WORKDIR=
+exit_handler()
+{
+	local rc=$1
+	[ -z "$WORKDIR" ] || rm -rf -- "$WORKDIR"
+	exit $rc
+}
+
+trap 'exit 143' HUP INT TERM
+trap : QUIT
+WORKDIR="$(mktemp -dt "$PROG.XXXXXXXXXX")"
+trap 'exit_handler $?' EXIT
+
+export LC_COLLATE=C
+
+ls -1 "$IGNORE"/ >"$WORKDIR/ignore"
+egrep -v '^[[:space:]]*(#|$)' "$ESSENTIAL" >>"$WORKDIR/ignore" ||:
+sort -u -o "$WORKDIR/ignore" "$WORKDIR/ignore"
+sed -i 's/^.*/^&$/' "$WORKDIR/ignore"
+
+"$FILEREQ" "$WORKDIR/files" "$@"
+[ -s "$WORKDIR/files" ] ||
+	fatal "ERROR: $FILEREQ produced no requires"
+
+"$PACKAGEOF" -f "$WORKDIR/files" >"$WORKDIR/n0"
+/usr/share/buildreqs/optimize_package_list <"$WORKDIR/n0" >"$WORKDIR/n1"
+
+SubstIgnore()
+{
+	while read -r p; do
+		[ -f "$SUBST/$p" ] &&
+			cat "$SUBST/$p" ||
+			printf %s\\n "$p"
+	done |
+	egrep -v -f "$WORKDIR/ignore" || [ $? = 1 ]
+}
+
+SubstIgnore <"$WORKDIR/n1" >"$WORKDIR/deps1"
+
+# Calculate what has been optimized out.
+cat >>"$WORKDIR/ignore" <<'EOF'
+^lib[^-]+$
+^(zlib|bzlib|glib|glib2)$
+EOF
+SubstIgnore <"$WORKDIR/n0" >"$WORKDIR/deps0"
+sort -u -o "$WORKDIR/deps0" "$WORKDIR/deps0"
+sort -u -o "$WORKDIR/deps1" "$WORKDIR/deps1"
+comm -23 "$WORKDIR/deps0" "$WORKDIR/deps1" >"$WORKDIR/optimized-out"
+
+REQS="$(cat "$WORKDIR/deps1" |tr '\n' ' ' |sed -e 's/ \+$//')"
+printf %s\\n "$REQS" >"$OUTFILE"
+
+if [ -n "$PRUNEDFILE" ]; then
+	PRUNED="$(tr '\n' ' ' < "$WORKDIR/optimized-out")"
+	printf %s\\n "${PRUNED%% }" > "$PRUNEDFILE"
+fi
+
+if [ -z "$QUIET" ]; then
+	if [ -s "$WORKDIR/optimized-out" ]; then
+		message "optimized out:" $(cat "$WORKDIR/optimized-out")
+	fi
+	message "BuildRequires: ${REQS:-"(none)"}"
+fi

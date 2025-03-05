@@ -1,0 +1,323 @@
+#!/bin/sh -efu
+#
+# Copyright (C) 2003-2009  Stanislav Ievlev <inger@altlinux.org>,
+#                          Dmitry V. Levin <ldv@altlinux.org>,
+#                          Alexey Gladkov <legion@altlinux.org>
+#
+# The sisyphus_check utility.
+#
+# This file is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+
+. sisyphus-check-functions
+
+sisyphus_check_d='/etc/sisyphus_check/check.d'
+
+check_list=
+recurse_subdir=
+files=
+
+# cummulative check
+fast_check=
+run_checks()
+{
+	local f="$1" && shift || return 1
+	local rc=0 check check_var
+
+	for check in $check_list; do
+		[ -s "$sisyphus_check_d/$check" ] ||
+			Fatal "$f: file not found or empty"
+
+		check_var="no_check_${check#*-check-}"
+		eval "[ -z \"\${$check_var-}\" ]" || continue
+
+		if ! (. "$sisyphus_check_d/$check" && run_check "$f"); then
+			[ -z "$fast_check" ] || return 1
+			rc=1
+		fi
+	done
+
+	return $rc
+}
+
+check_files()
+{
+	init_check || Fatal 'init_check failed.'
+
+	local f rc=0
+	for f; do
+		if [ ! -f "$f" ]; then
+			FileError 'not a regular file' "$f"
+			rc=1
+			continue
+		fi
+
+		if ! get_package_type "$f"; then
+			FileError 'unexpected file type' "$f"
+			rc=1
+			continue
+		fi
+
+		local values
+
+		if ! values="$(LC_ALL=C rpmquery -p --qf='
+rpm_arch=%{arch:shescape};
+rpm_buildhost=%{buildhost:shescape};
+rpm_buildtime=%{buildtime:shescape};
+rpm_changelogname=%{changelogname:shescape};
+rpm_changelogtext=%{changelogtext:shescape};
+rpm_changelogtime=%{changelogtime:shescape};
+rpm_description=%{description:shescape};
+rpm_distribution=%{distribution:shescape};
+rpm_disttag=%|disttag?{%{disttag:shescape}}|;
+rpm_group=%{group:shescape};
+rpm_license=%{license:shescape};
+rpm_name=%{name:shescape};
+rpm_packager=%{packager:shescape};
+rpm_platform=%{platform:shescape};
+rpm_release=%{release:shescape};
+rpm_serial=%|serial?{%{serial:shescape}}|;
+rpm_siggpg=\"%|siggpg?{%{siggpg}}|\";
+rpm_size=%{size:shescape};
+rpm_sourcerpm=%{sourcerpm:shescape};
+rpm_summary=%{summary:shescape};
+rpm_url=%{url:shescape};
+rpm_vendor=%{vendor:shescape};
+rpm_version=%{version:shescape};
+rpm_filenames=[%{filenames:shescape}"
+"];
+rpm_perms_filenames=["%{filemodes:perms} "%{filenames:shescape}"
+"];
+rpm_requires=[%{requirename:shescape}" %{requireflags} %{requireflags:depflags} "%{requireversion:shescape}"
+"];
+rpm_provides=[%{providename:shescape}" %{provideflags:depflags} "%{provideversion:shescape}"
+"];
+rpm_obsoletes=[%{obsoletename:shescape}" %{obsoleteflags:depflags} "%{obsoleteversion:shescape}"
+"];
+rpm_conflicts=[%{conflictname:shescape}" %{conflictflags:depflags} "%{conflictversion:shescape}"
+"];
+			' -- "$f")"; then
+			FileError 'rpmquery failed' "$f"
+			rc=1
+			continue
+		fi
+
+		local rpm_arch
+		local rpm_buildhost
+		local rpm_buildtime
+		local rpm_changelogname
+		local rpm_changelogtext
+		local rpm_changelogtime
+		local rpm_conflicts
+		local rpm_description
+		local rpm_distribution
+		local rpm_disttag
+		local rpm_filenames
+		local rpm_group
+		local rpm_license
+		local rpm_name
+		local rpm_obsoletes
+		local rpm_packager
+		local rpm_perms_filenames
+		local rpm_platform
+		local rpm_provides
+		local rpm_release
+		local rpm_requires
+		local rpm_serial
+		local rpm_siggpg
+		local rpm_size
+		local rpm_sourcerpm
+		local rpm_summary
+		local rpm_url
+		local rpm_vendor
+		local rpm_version
+
+		eval "$values"
+		unset values
+
+		[ -z "$rpm_filenames" ] ||
+			rpm_filenames="$(printf %s "$rpm_filenames" |sort -u)"
+		[ -z "$rpm_perms_filenames" ] ||
+			rpm_perms_filenames="$(printf %s "$rpm_perms_filenames" |sort -u -k2)"
+
+		rpm_requires="$(printf %s "$rpm_requires" |sed 's/ *$//' |sort -u)"
+		rpm_provides="$(printf %s "$rpm_provides" |sed 's/ *$//' |sort -u)"
+		[ -z "$rpm_obsoletes" ] || rpm_obsoletes="$(printf %s "$rpm_obsoletes" |sed 's/ *$//' |sort -u)"
+		[ -z "$rpm_conflicts" ] || rpm_conflicts="$(printf %s "$rpm_conflicts" |sed 's/ *$//' |sort -u)"
+
+		run_checks "$f" || rc=1
+	done
+
+	return $rc
+}
+
+check_dirs()
+{
+	local rc=0
+
+	# quick arg check.
+	local d
+	for d; do
+		[ -d "$d" ] || { FileError "$d: not a directory"; rc=1; continue; }
+	done
+	[ $rc = 0 ] || return $rc
+
+	for d; do
+		[ -d "$d" ] || { FileError "$d: not a directory"; rc=1; continue; }
+		local filelist f
+		if [ -n "$recurse_subdir" ]; then
+			filelist="$(find "$d" -mindepth 1 -not -type d)" || { rc=1; continue; }
+		else
+			filelist="$(find "$d" -mindepth 1 -maxdepth 1)" || { rc=1; continue; }
+		fi
+
+		[ -n "$filelist" ] || continue
+
+		check_files $filelist || rc=1
+	done
+
+	return $rc
+}
+
+get_check_list()
+{
+	find "$sisyphus_check_d" \
+		-regextype posix-egrep \
+		-mindepth 1 \
+		-maxdepth 1 \
+		-type f \
+		-regex '.*/[0-9]+-check-[[:alpha:]]+' \
+		-printf '%f\n'
+}
+
+expand_check_list()
+{
+	local list="$1"; shift
+	if [ -z "${list#[Aa][Ll][Ll]}" ]; then
+		printf %s "$check_env" |sed 's/^check-//'
+	else
+		printf %s "$list" |tr , ' '
+	fi
+}
+
+show_usage()
+{
+	[ -z "$*" ] || Info "$*"
+	echo "Try \`$PROG --help' for more information." >&2
+	exit 1
+}
+
+show_help()
+{
+	cat <<EOF
+
+sisyphus_check - check packages for acceptability for Sisyphus.
+
+This program is free software, covered by the GNU General Public License.
+sisyphus_check comes with ABSOLUTELY NO WARRANTY, see license for details.
+
+Usage: $PROG [options] <target>...
+
+Valid options are:
+  --quiet                  try to be more quiet;
+  --verbose                print a message for each action;
+  --fast-check             stop checking after first error;
+  --files                  treat <target> as a packages;
+  --directories            treat <target> as a directory. Packages in this
+                           directory will be checked. This is default
+                           behavior;
+  --recursive              search packages recursively;
+  --show-bad-files         print bad packages;
+  --trust-gpg-names=LIST   change the list of trusted gpg names;
+  --[no-]check=LIST        change the list of checks;
+EOF
+	printf %s\\n "$check_env" |sed -n 's/.*/  --[no-]&/pg'
+	exit
+}
+
+check_list="$(get_check_list)"
+check_env="$(printf %s\\n "$check_list" |sed 's/^[0-9]\+-//' |sort -u)"
+getopt_check="$(printf %s "$check_env" |tr -s '[:space:]' ',')"
+getopt_no_check="$(printf %s "$check_env" |sed 's/.*/no-&/' |tr -s '[:space:]' ',')"
+TEMP=`getopt -n $PROG -o h,q,v -l help,quiet,verbose,fast-check,files,directories,show-bad-files,recursive,trust-gpg-names:,check:,no-check:,check-,no-check-,$getopt_check,$getopt_no_check -- "$@"` || show_usage
+eval set -- "$TEMP"
+
+while :; do
+	case "$1" in
+		--check|--no-check)
+			mode="$1"
+			shift
+			check_value=
+			[ -n "${mode##--no-check*}" ] || check_value=1
+			if [ -n "$(printf %s "$1" |tr -d '[:alpha:],[:space:]')" ]; then
+				Info "$mode: invalid argument: $1"
+				show_usage
+			fi
+			for arg in `expand_check_list "$1"`; do
+				if ! printf '%s' "$check_env" |grep -qs "^check-$arg\$"; then
+					Info "$mode: invalid argument: $arg"
+					show_usage
+				fi
+				eval no_check_$arg=$check_value
+			done
+			;;
+		--check-|--no-check-) show_usage
+			;;
+		--check-[a-z]*)
+			arg="no_check_${1##--check-}"
+			eval $arg=
+			;;
+		--no-check-[a-z]*)
+			arg="no_check_${1##--no-check-}"
+			eval $arg=1
+			;;
+		-q|--quiet) quiet=-q
+			;;
+		-v|--verbose) quiet=
+			;;
+		--fast-check) fast_check=1
+			;;
+		--files) files=1
+			;;
+		--directories) files=
+			;;
+		--show-bad-files) show_bad_files=1
+			;;
+		--recursive) recurse_subdir=1
+			;;
+		--trust-gpg-names) shift
+			trust_gpg_names="$(printf %s "$1" |tr -s :, ' ')"
+			;;
+		-h|--help) show_help
+			;;
+		--) shift; break
+			;;
+		*) Fatal "unrecognized option: $1"
+			;;
+	esac
+	shift
+done
+
+# At least one argument, please.
+if ! [ "$#" -ge 1 ]; then
+	Info 'Insufficient arguments.'
+	show_usage
+fi
+
+if [ -n "$files" ]; then
+	check_files "$@"
+else
+	check_dirs "$@"
+fi

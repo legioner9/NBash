@@ -1,0 +1,75 @@
+#!/bin/sh -e
+#
+# $Id: sisyphus_genhash,v 1.8 2005/07/01 18:40:26 ldv Exp $
+#
+# Copyright (C) 2003-2005  Stanislav Ievlev <inger@altlinux.org>,
+#                          Dmitry V. Levin <ldv@altlinux.org>,
+#                          Alexey Gladkov <legion@altlinux.org>
+# 
+# sisyphus_genhash script.
+#
+# This file is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA.
+#
+
+. /etc/sisyphus/config
+
+for arch in $ARCHITECTURES; do
+	echo "Generating apt indices for $arch"
+	TZ=UTC genbasedir \
+		--archive="$ARCHIVE" \
+		--origin="$ORIGIN" \
+		--label="$LABEL" \
+		--codename="$CODENAME" \
+		--architectures="$ARCHITECTURES" \
+		--architecture="$arch" \
+		--suite="$SUITE" \
+		--description="$DESCRIPTION" \
+		--version="$VERSION" \
+		--topdir="$PREFIX" \
+		--flat \
+		$GENBASEDIR_OPT_ARGS \
+		"$@" \
+		"$arch" $ALL_COMPONENTS
+done
+
+echo -n 'Generating contents indices:'
+for arch in $ARCHITECTURES; do
+	printf %s " $arch"
+	c_dir="$PREFIX/$NEW_FILE_PREFIX/$arch/RPMS"
+	c_file="$PREFIX/$arch/base/contents_index"
+	workfile="$(mktemp "$c_file".XXXXXXXXXX)"
+
+	sisyphus_gen_contents "$c_dir" >"$workfile" &&
+		egrep -qs '^/((usr/)?bin|(usr/)?sbin|usr/X11R6/bin|etc)/' "$workfile" &&
+		chmod 644 "$workfile" &&
+		mv -f "$workfile" "$c_file" &&
+		printf %s '-done' ||
+		{ rm -f "$workfile"; printf %s '-skip'; }
+done
+echo
+
+if [ -n "$(printf %s "$GENBASEDIR_SIGNING_ARGS" |tr -d '[:space:]')" ]; then
+	for arch in $ARCHITECTURES; do
+		rel="$PREFIX/$arch/base/release"
+		echo "Signing $rel"
+		gpg -armour --quiet --detach-sign --yes \
+			`printf %s "$GENBASEDIR_SIGNING_ARGS" |sed -e 's/-s\> *//'` -- "$rel"
+		cat "$rel.asc" >>"$rel"
+		rm -f "$rel.asc"
+	done
+fi
+
+echo "Preparing sisyphus for upload"
+sisyphus_prepare

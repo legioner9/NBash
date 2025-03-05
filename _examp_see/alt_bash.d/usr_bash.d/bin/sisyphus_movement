@@ -1,0 +1,71 @@
+#!/bin/sh -e
+# -*- mode: Shell-script; tab-width: 8; fill-column: 70; -*- 
+#
+# $Id: movement,v 0.0.1 2005/10/02 21:03:06 legion Exp $ 
+#
+# Copyright (C) 2005 Alexey Gladkov <legion@altlinux.org>
+# 
+# sisyphus_movement script.
+#
+# This file is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA.
+#
+
+. /etc/sisyphus/config
+
+TEST=${TEST:+echo}
+WORKDIR=
+exit_handler()
+{
+	local rc=$?
+	trap - EXIT
+	[ -z "$WORKDIR" ] || rm -rf -- "$WORKDIR"
+	exit $rc
+}
+
+trap exit_handler HUP INT QUIT TERM EXIT
+WORKDIR="$(mktemp -dt "$PROG.XXXXXXXXXX")"
+>"$WORKDIR/noarch"
+
+printf %s:\  "Prepare"
+for a in $ARCHITECTURES; do
+    printf %s "$a"
+    find "$PREFIX/$NEW_FILE_PREFIX/$a/RPMS" \
+	-name '*\.rpm' \
+	-execdir rpmquery -p --qf="$PREFIX/$NEW_FILE_PREFIX/$a/RPMS/%{NAME}-%{VERSION}-%{RELEASE}.%|SOURCERPM?{%{ARCH}}:{src}|.rpm\t%{BUILDTIME}\t%{NAME}\n" \{\} \+ > "$WORKDIR/$a"
+    printf %s\  "-done"
+done
+echo
+
+for a in $ARCHITECTURES; do
+    [ "$a" != "noarch" ] || continue
+    printf Removing\ %s:\\n "$a"
+    
+    > "$WORKDIR/last.$a"
+    sort -k 3,3 "$WORKDIR/noarch" "$WORKDIR/$a" | 
+	uniq -f2 -d |
+	cut -f3 | 
+    while read n; do
+	grep -hG "[[:space:]]$n$" "$WORKDIR/noarch" "$WORKDIR/$a" | 
+	    sort -r -k 2,2 |
+	    uniq -f2 -d >> "$WORKDIR/last.$a"
+    done
+	
+    sort -k 3,3 "$WORKDIR/noarch" "$WORKDIR/$a" | 
+	uniq -f2 -d --all-repeated=separate | 
+	fgrep -vf "$WORKDIR/last.$a" |
+	cut -f1 |
+	xargs -r $TEST rm -vf --
+done
+echo

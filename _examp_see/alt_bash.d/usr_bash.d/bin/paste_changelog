@@ -1,0 +1,58 @@
+#!/bin/sh -e
+#
+# Copyright (C) 2016  Ivan Zakharyaschev <imz@altlinux.org>
+#
+# Pastes stdin to the top of the changelog of an rpm spec.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+
+set -o pipefail
+
+readonly PROG=paste_changelog
+
+usage()
+{
+    printf '%s - pastes stdin to the top of the changelog of an rpm spec.\n' "$PROG"
+    echo
+    printf '%s is free software, covered by the GNU General Public License.\n' "$PROG"
+    printf '%s comes with ABSOLUTELY NO WARRANTY, see license for details.\n' "$PROG"
+    echo
+    printf 'Usage: %s SPECFILE\n' "$PROG"
+}
+
+if [ $# != 1 ]; then
+    usage >&2
+    exit 1
+fi
+readonly spec="$1"
+if [ ! -r "$spec" ]; then
+    printf '%s: Error: %s not available.\n' "$PROG" "$spec" >&2
+    exit 1
+fi
+
+grep -qs '^%changelog' "$spec" || cat << __EOF__ >> "$spec"
+
+%changelog
+__EOF__
+
+# The use of ed borrowed from add_changelog.
+{
+    echo /^%changelog/a
+    cat
+    echo .
+    echo w
+} |
+ed - "$spec"

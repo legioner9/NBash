@@ -1,0 +1,129 @@
+#!/bin/bash
+
+# functions for getting hardware information for alterator-lilo
+# * places for bootloader (list_bootloader_places, get_default_boot_dev)
+# * ...
+
+
+# for localized lists set
+# dec_pt=$(LC_NUMERIC="$in_language" locale decimal_point)
+
+. alterator-sh-functions
+. alterator-hw-functions
+. grub-raid-boot
+
+quote_udevadm_out='s|^\([^=]\+\)=\(.*\)|\1="\2"|'
+
+LILO_DESTDIR="${LILO_DESTDIR:-}"
+
+list_bootloader_places(){
+	local HDDRIVE="$(_ "Hard drive")"
+	local LINPART="$(_ "Linux partition")"
+	local BIOSDISK='21686148-6449-6e6f-744e-656564454649'
+
+	detect_raidroot
+
+	if [ -n "${raidboot:-}" ]; then
+		write_enum_item "$raidboot" "RAID (${raidboot#/dev/})"
+	fi
+
+	local dev=
+	local bootdev="$(get_part_with_mntpt "/boot")"
+	local rootdev="$(get_part_with_mntpt "/")"
+	local partdev="${bootdev:-$rootdev}"
+	local disklist="$(disk_list)"
+	[ -z "$partdev" ] || grep -Eq '/dev/dm-[0-9]|/dev/md[0-9]' <<< "$partdev" &&
+		partdev=
+	[ -z "$partdev" ] || dev="$(lsblk -n -i "$partdev" --output PKNAME)"
+	[ -z "$dev" ] || disklist="$(sed "/$dev/d" <<< "$disklist")"
+
+	for i in $dev $disklist; do
+		! disk_is_root "$i" || continue
+		! disk_is_isofs "$i" || continue
+		! disk_is_virtual "$i" || continue
+
+		! [ -z `echo "$i" | sed -e 's/^sr[0-9]*//'` ] || continue
+		! [ -z `echo "$i" | sed -e 's/^fd[0-9]*//'` ] || continue
+
+		local info="$(disk_info "$i")"
+
+		unset DEVNAME
+		eval $(/sbin/udevadm info --name=$i --query=env 2>/dev/null | sed -e "$quote_udevadm_out")
+
+		local size="$(disk_size "$i")"
+		size="$(human_readable_size "$size")"
+
+		DEVNAME="${DEVNAME:-/dev/$i}" # on 2.6.24 udevadm will fail
+
+		lsblk -o PTTYPE "$DEVNAME" | grep -q dos ||
+			if lsblk -o PTTYPE "$DEVNAME" | grep -q gpt; then
+				lsblk -o PARTTYPE "$DEVNAME" | grep -q "$BIOSDISK" || continue
+			else
+				continue
+			fi
+
+		local sym="$(blockdev_get_symlink "${DEVNAME:-/dev/$i}")"
+
+		write_enum_item "$sym" "$HDDRIVE ${DEVNAME##*/}${info:+, $info}${size:+, $size}"
+	done
+
+	[ -z "$partdev" ] ||
+		write_enum_item "$(blockdev_get_symlink "$partdev")" \
+			"$LINPART (${partdev#/dev/})"
+}
+
+list_bootloader_places_ppc () {
+	local part=
+	local disk=
+	local platform="$(pseries_platform)"
+	local link=
+	case "$platform" in
+		"PowerNV Host")
+			write_enum_item "configonly" "$(_ "Generate grub.cfg config for firmware bootloader")"
+			return
+			;;
+	esac
+	local PREPPART="$(_ "PowerPC PReP partition")"
+
+	for part in $(partition_list); do
+		partition_is_PReP "$part" || continue
+		local disk="$(partition_parent "$part")"
+		! disk_is_root "$disk" || continue
+		! disk_is_isofs "$disk" || continue
+		! disk_is_virtual "$disk" || continue
+
+		case "$disk" in
+			sr[0-9]*|fd[0-9]*) continue ;;
+		esac
+
+		local size="$(partition_size "$part")"
+		size="$(human_readable_size "$size")"
+
+		# is /dev/disk/by-path/ better then /dev/$part ?
+		link="$(blockdev_get_symlink "/dev/$part" path)"
+		write_enum_item "$link" "$PREPPART ${part}${size:+, $size}"
+	done
+	write_enum_item "none" "$(_ "Skip bootloader install")"
+}
+
+get_part_with_mntpt(){
+	local target="$1"
+
+	local dev mntpt type opts n1 n2
+	while read dev mntpt type opts n1 n2; do
+		[ "$dev" = "${dev#\#}" ] || continue
+		[ "$mntpt" = "$target" ] || continue
+		[ "$type" != "rootfs" -a "$type" != "squashfs" ] || continue
+
+		if [ "${dev%UUID=*}" != "$dev" ]; then
+			for d in $(/sbin/blkid -t "$dev" -s UUID | cut -d' ' -f1); do
+				d="${d%:}"
+				! disk_is_virtual "${d#/dev/}" || [ -z "${d##/dev/md*}" ] || continue
+				dev="$d"
+				break
+			done
+		fi
+
+		readlink -f "$dev"
+	done < "$LILO_DESTDIR/etc/fstab"
+}

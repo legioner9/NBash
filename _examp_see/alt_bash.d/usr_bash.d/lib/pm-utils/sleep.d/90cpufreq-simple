@@ -1,0 +1,16 @@
+#!/bin/sh
+# Setup cpufreq
+
+[ -d /sys/devices/system/cpu/ ] || exit $NA
+
+case "$1" in
+	suspend|hibernate)
+		# Nothing to do
+		exit 0
+		;;
+	resume|thaw)
+		/usr/sbin/cpufreq-simple
+		;;
+	*) exit $NA
+		;;
+esac

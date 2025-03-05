@@ -1,0 +1,23 @@
+#!/bin/sh -e
+
+gconf2_bin=/usr/bin/gconftool-2
+options="--direct --config-source=`$gconf2_bin --get-default-source`"
+owner="$1"
+shift
+type="$1"
+shift
+if [ "$type" == "list" ]; then
+    list_type="$1"
+    shift
+fi
+key="$1"
+shift
+val="$*"
+
+$gconf2_bin $options --owner "$owner" --type "$type" --set-schema "$key" >/dev/null
+
+if [ -n "$list_type" ]; then
+    $gconf2_bin $options --type "$type" --list-type "$list_type" --set "$key" "$val" >/dev/null
+else
+    $gconf2_bin $options --type "$type" --set "$key" "$val" >/dev/null
+fi

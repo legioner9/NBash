@@ -1,0 +1,136 @@
+#!/bin/sh -e
+#
+# Copyright (C) 2002, 2005, 2006  Dmitry V. Levin <ldv@altlinux.org>
+#
+# Executes window manager using wm.d database.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+
+PROG="${0##*/}"
+WM_DIR=/etc/X11/wmsession.d
+
+Usage()
+{
+	[ "$1" = 0 ] || exec >&2
+	cat <<EOF
+Usage: $PROG <window manager> [args]
+       $PROG --print <window manager> [args]
+       $PROG --list
+       $PROG --help
+EOF
+	[ -n "$1" ] && exit "$1" || exit
+}
+
+[ "$1" != '--help' ] || Usage 0
+
+print_only=
+if [ "$1" = '--print' ]; then
+	print_only=1
+	shift
+fi
+
+if [ $# -lt 1 ]; then
+	Usage
+fi
+
+wm=`printf %s "$1" |tr '[:upper:]' '[:lower:]'`
+shift
+
+try_exec_wm()
+{
+	local f
+	for f in "$@"; do
+		exec "$f" ||:
+	done
+}
+
+exec_wm()
+{
+	if [ -n "$print_only" ]; then
+		printf '%s\n' "$*"
+		exit
+	else
+		exec "$@"
+	fi
+}	
+
+is_safe_config()
+{
+	[ -f "$1" -a -r "$1" -a -s "$1" ] || return
+}
+
+found_default=
+scan_wm_dir()
+{
+	local wm="$1" && shift
+	local d
+
+	for d in "$WM_DIR/default" "$WM_DIR"/*; do
+		is_safe_config "$d" || continue
+
+		local n=${d##*/}
+
+		# skip files with names containing dot
+		[ -n "${n##*.*}" ] || continue
+
+		# if found default, skip file named "default"
+		[ -z "$found_default" -o "$n" != default ] || continue
+
+		# fetch pathname for later execution
+		local exec=`sed -ne 's,^EXEC=\(/.\+\)$,\1,pg' "$d" |tail -1`
+
+		if [ -x "$exec" ]; then
+			# fetch WM name
+			local name0=`sed -ne 's,^NAME=\(.\+\)$,\1,pg' "$d" |tail -1`
+			[ -n "$name0" ] || continue
+
+			# canonicalize WM name
+			local name=`printf %s "$name0" |tr '[:upper:]' '[:lower:]'`
+
+			# if in list mode, print and continue
+			if [ "$wm" = '--list' ]; then
+				printf '%s\n' "$name0"
+				[ "$name" != default ] || found_default=1
+				continue
+			fi
+
+			# if found WM, execute
+			if [ "$wm" = default -o "$wm" = "$name" -o "$wm" = "$exec" ]; then
+				exec_wm "$exec" "$@"
+			fi
+		fi
+	done
+}
+
+if [ "$wm" = failsafe ]; then
+	exec_wm xvt -fn fixed -geometry 80x24+0+0
+fi
+
+prefdm_config=/etc/sysconfig/desktop
+if [ "$wm" = default ] && is_safe_config "$prefdm_config"; then
+	prefdm="$(sed -ne 's/^[[:space:]]*\([^#[:space:]]\+\)[[:space:]]*$/\1/p' "$prefdm_config" |
+			head -1 |tr '[:upper:]' '[:lower:]')"
+	[ -z "$prefdm" ] || scan_wm_dir "$prefdm" "$@"
+fi
+
+scan_wm_dir "$wm" "$@"
+
+if [ "$wm" != '--list' ]; then
+	printf '%s: window manager "%s" not found.\n' "$PROG" "$wm" >&2
+	exit 1
+fi
+
+[ -n "$found_default" ] || echo default

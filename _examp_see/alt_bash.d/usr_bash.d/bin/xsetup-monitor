@@ -1,0 +1,102 @@
+#!/bin/sh -eu
+
+PROG="${0##*/}"
+XSETUP=xsetup
+XORG_CONFIG="/etc/X11/xorg.conf.d/10-monitor.conf"
+DRIVER=
+RESOLUTION=
+DEPTH=
+HSYNC=
+VREFR=
+CREATE_ONLY=
+
+usage()
+{
+	local rc="${1:-0}"
+	[ "$rc" = 0 ] || exec >&2
+	cat <<EOF
+Write monitor's simple configuration for Xorg server
+to a config file.
+Usage: $PROG options [ <config_file> ]
+Valid options are:
+	-d, --driver <driver>              - set driver
+	-r, --resolution <resolution>      - set resolution
+	-c, --colour-depth <colour-depth>  - set colour depth
+	--hsync <horizsync-range>          - range(s) of horizontal sync frequencies
+	--vrefr <vertrefresh-range>        - range(s) of vertical refresh frequencies
+	--create-only                      - don't touch existing config
+	-h, --help                         - show this text and exit
+
+Default config file is /etc/X11/xorg.conf.d/10-monitor.conf
+EOF
+	exit "$rc"
+}
+
+TEMP="$(getopt -n "$PROG" -o d:r:c:h -l create-only,driver:,resolution:,colour-depth:,hsync:,vrefr:,help -- "$@")" || usage 1
+eval set -- "$TEMP"
+
+while :; do
+	case "${1-}" in
+		-d|--driver) shift; DRIVER="$1"; shift
+			;;
+		-r|--resolution) shift; RESOLUTION="$1"; shift
+			;;
+		-c|--colour-depth) shift; DEPTH="$1"; shift
+			;;
+		--hsync) shift; HSYNC="$1"; shift
+			;;
+		--vrefr) shift; VREFR="$1"; shift
+			;;
+		--create-only) shift; CREATE_ONLY=1
+			;;
+		-h|--help) usage 0
+			;;
+		--) shift; XORG_CONFIG="${1:-$XORG_CONFIG}"; break
+			;;
+		*) echo "$PROG: unrecognized option: $1" >&2; exit 1
+			;;
+	esac
+done
+
+[ -n "$CREATE_ONLY" -a -s "$XORG_CONFIG" ] && exit 0
+
+[ -n "$DRIVER" -o -n "$RESOLUTION" -o -n "$DEPTH" -o -n "$HSYNC" -o -n "$VREFR" ] || usage 1
+monitor_id="$($XSETUP -s Monitor -e Identifier "$XORG_CONFIG")"
+device_id="$($XSETUP -s Device -e Identifier "$XORG_CONFIG")"
+
+if [ -z "$monitor_id" ]; then
+	$XSETUP -s Monitor -e Identifier -v '"Monitor0"' "$XORG_CONFIG"
+fi
+
+if [ -z "$device_id" ]; then
+	$XSETUP -s Device -e Identifier -v '"Card0"' "$XORG_CONFIG"
+fi
+
+if [ -n "$DRIVER" ]; then
+	$XSETUP -s Device -e Driver -v "\"$DRIVER\"" "$XORG_CONFIG"
+fi
+
+if [ -n "$HSYNC" ]; then
+	$XSETUP -s Monitor -e HorizSync -v "$HSYNC" "$XORG_CONFIG"
+fi
+
+if [ -n "$VREFR" ]; then
+	$XSETUP -s Monitor -e VertRefresh -v "$VREFR" "$XORG_CONFIG"
+fi
+
+if [ -n "$RESOLUTION" -o -n "$DEPTH" ]; then
+	screen_id="$($XSETUP -s Screen -e Identifier "$XORG_CONFIG")"
+	if [ -z "$screen_id" ]; then
+		$XSETUP -s Screen -e Identifier -v '"Screen0"' "$XORG_CONFIG"
+		$XSETUP -s Screen -e Device -v "\"${device_id:-Card0}\"" "$XORG_CONFIG"
+		$XSETUP -s Screen -e Monitor -v "\"${monitor_id:-Monitor0}\"" "$XORG_CONFIG"
+	fi
+	if [ -n "$RESOLUTION" ]; then
+		$XSETUP -s Screen -S Display -e Modes -v "\"$RESOLUTION\"" "$XORG_CONFIG"
+	fi
+
+	if [ -n "$DEPTH" ]; then
+		$XSETUP -s Screen -e DefaultDepth -v "$DEPTH" "$XORG_CONFIG"
+		$XSETUP -s Screen -S Display -e Depth -v "$DEPTH" "$XORG_CONFIG"
+	fi
+fi

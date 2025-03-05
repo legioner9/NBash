@@ -1,0 +1,112 @@
+#!/bin/sh -efu
+. alterator-net-functions
+
+ipv4_rdns_net()
+{
+	local net="$1";shift
+	local pos="$1";shift
+	local inc="$1";shift
+
+	local IFS='.'
+	set -- $net
+	case "$pos" in
+	1)
+	    printf "%s\n" "$(( $1 + $inc ))"
+	;;
+	2)
+	    printf "%s.%s\n"  "$(( $2 + $inc ))" "$1"
+	;;
+	3)
+	    printf "%s.%s.%s\n"   "$(( $3 + $inc ))" "$2" "$1"
+	;;
+    esac
+}
+
+ipv4_revdns()
+{
+	local nprefix pos i num
+	local net="$(netname "$ip/$prefix"|cut -f1)"
+	net="${net%%/$prefix}"
+
+	if [ "$prefix" -gt 0 -a "$prefix" -le 8 ];then
+		nprefix=8
+		pos=1
+
+	elif [ "$prefix" -gt 8 -a "$prefix" -le 16 ];then
+		nprefix=16
+		pos=2
+	elif [ "$prefix" -gt 16 -a "$prefix" -le 24 ];then
+		nprefix=24
+		pos=3
+	else
+		prefix=24
+		nprefix=24
+		pos=3
+	fi
+
+	num="$(( 2**($nprefix - $prefix) - 1 ))"
+
+	for i in `seq 0 $num` ;do
+		ipv4_rdns_net "$net" "$pos" "$i"
+	done
+}
+
+ipv6_rdns_net()
+{
+	local net="$1";shift
+	local pos="$1";shift
+	local inc="$1";shift
+	local c=0
+	local out tmp i p
+
+	net="$(ipv6addr_expand "${net%%/$prefix}")"
+
+	local IFS=':'
+	for i in $net; do
+		[ $c -lt $pos ] || break
+		tmp="$tmp$i"
+		c=$(($c + 1))
+	done
+
+	tmp="$tmp$(printf '%04x' $((0x$i + 0x$inc)))"
+	for p in $(echo $tmp | sed -r 's;([[:xdigit:]]);\1:;g'); do
+		out="$p${out:+.}$out"
+	done
+	echo "$out"
+}
+
+ipv6_revdns()
+{
+	local nprefix pos i num
+	local net="$(ipv6_network "$ip/$prefix")"
+
+	pos=$(($prefix / 16))
+	nprefix=$((16 - $prefix % 16))
+	if [ $nprefix -eq 16 ]; then
+		nprefix=0
+		pos=$(($pos - 1))
+	fi
+
+	num="$(( 2**$nprefix - 1 ))"
+
+	for i in $(printf "%x " $(seq 0 $num)) ;do
+		ipv6_rdns_net "$net" "$pos" "$i"
+	done
+}
+
+ip="${1%%/*}"
+prefix="${1##*/}"
+ipv="${2:-4}"
+
+case "$ipv" in
+	4) valid_ipv4addr "$ip" &&
+	   valid_ipv4prefix "$prefix" &&
+	   ipv4_revdns
+	;;
+	6) valid_ipv6addr "$ip" &&
+	   valid_ipv6prefix "$prefix" &&
+	   ipv6_revdns
+	;;
+	*) exit 1 ;;
+esac
+

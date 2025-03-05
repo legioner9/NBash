@@ -1,0 +1,168 @@
+#!/bin/sh
+
+PROG="${0##*/}"
+
+SYSTEM_CONFIG="/etc/X11/xinit/Xkbmap"
+LOCAL_CONFIG="$HOME/.Xkbmap"
+
+### config
+
+cat_config()
+{
+    touch "$SYSTEM_CONFIG" 2>/dev/null
+    if [ -w "$SYSTEM_CONFIG" ];then
+	cat "$SYSTEM_CONFIG"
+    else
+	cat "$LOCAL_CONFIG"
+    fi
+}
+
+echo_config()
+{
+    if [ -w "$SYSTEM_CONFIG" ];then
+	echo "$@" > "$SYSTEM_CONFIG"
+    else
+	echo "$@" > "$LOCAL_CONFIG"
+    fi
+}
+
+### read operations
+
+read_layout()
+{
+    local layout="$1";shift
+    local variant="$1";shift
+    local count=1
+
+    local IFS=,
+    set -- $variant
+    
+    for lay in $layout;do
+	local var="$(eval echo \$$count)"
+	if [ -n "$var" ];then
+	    printf '%s(%s)\n' "$lay" "$var"
+	else
+	    printf '%s\n' "$lay"
+	fi
+	count=$((count + 1))
+    done
+}
+
+read_grp()
+{
+    local IFS=,
+    set -- $1
+    for i in "$@";do
+	if [ "$i" != "${i#grp:}" ];then
+	    echo "$i"
+	    break
+	fi
+    done
+}
+
+read_config()
+{
+    local action="$1"
+    local layout= variant= model= option=
+    eval set -- $(cat_config)
+
+    while [ $# -gt 0 ];do
+	case "$1" in
+	    -layout) layout="$2";shift;shift;;
+	    -variant) variant="$2";shift;shift;;
+	    -model) model="$2";shift;shift;;
+	    -option) option="$2";shift;shift;;
+	esac
+    done
+
+    case "$action" in
+	model)	echo "$model";;
+	grp)	read_grp "$option";;
+	layout)	read_layout "$layout" "$variant";;
+    esac
+    
+    exit
+}
+
+# write operations
+
+write_variant()
+{
+    echo "$1"|sed -r 's/([^,()]+)\(?([^,()]*)\)?/\2/g'
+}
+
+write_layout()
+{
+    echo "$1"|sed -r 's/([^,()]+)\(?([^,()]*)\)?/\1/g'
+}
+
+write_config()
+{
+    local layout= variant= model=
+
+    while [ $# -gt 0 ];do
+	case "$1" in
+	    -layout) layout="$2";shift;shift;;
+	    -variant) variant="$2";shift;shift;;
+	    -model) model="$2";shift;shift;;
+	    *) args="$args $1 $2";shift;shift;;
+	esac
+    done
+
+    #try to extract variant from layout
+    if [ -z "$variant" -a -n "$layout" ];then
+	variant="$(write_variant "$layout")"
+	layout="$(write_layout "$layout")"
+    fi
+
+    [ -z "$variant" ] || args="$args -variant $variant"
+    [ -z "$layout" ] || args="$args -layout $layout"
+    [ -z "$model" ] || args="$args -model $model"
+
+    eval echo_config $args
+}
+
+show_help()
+{
+	cat <<EOF
+xkbmapconf - read and write ~/.Xkbmap and /etc/X11/xinit/Xkbmap config files
+
+Usage: $PROG [option]
+
+  Read options
+
+  -h, --help		show this text and exit;
+
+  -m, --get-model	read keyboard model;
+  -g, --get-grp		read keyboard switch;
+  -l, --get-layout	read keyboard layout;
+
+  -s, --save		save parameters.
+    
+Report bugs to http://bugs.altlinux.ru/
+
+EOF
+	exit
+}
+
+### main
+
+save=
+short_opt="h,m,l,g,s"
+long_opt="help,get-model,get-layout,get-grp,save"
+temp=`getopt -n $PROG -o "$short_opt" -l "$long_opt" -- "$@"` || show_help
+eval set -- "$temp"
+
+while :; do
+    case "$1" in
+	-h|--help) show_help;;
+	-m|--get-model) read_config "model";;
+	-l|--get-layout) read_config "layout";;
+	-g|--get-grp) read_config "grp";;
+	-s|--save) save=1;;
+	--)shift; break ;;
+	*) echo "$1";show_help;;
+    esac
+    shift
+done
+[ -n "$save" ] && write_config "$@"

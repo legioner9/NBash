@@ -1,0 +1,84 @@
+#!/bin/bash -e
+#
+# $Id: sisyphus_add_new,v 1.6 2005/07/01 14:59:29 ldv Exp $
+#
+# Copyright (C) 2003-2004  Stanislav Ievlev <inger@altlinux.org>,
+#                          Dmitry V. Levin <ldv@altlinux.org>,
+#                          Alexey Gladkov <legion@altlinux.org>
+# 
+# sisyphus_add_new script.
+#
+# This file is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA.
+#
+
+. /etc/sisyphus/config
+. /etc/sisyphus/functions
+
+lock_incoming()
+{
+	cd "$START_DIR"
+	chmod g-rw RPMS SRPMS
+}
+
+unlock_incoming()
+{
+	cd "$START_DIR"
+	chmod g+rw RPMS SRPMS
+}
+
+exit_handler()
+{
+	local rc=$?
+	trap - EXIT
+	unlock_incoming
+	exit $rc
+}
+
+lock_incoming
+trap exit_handler EXIT HUP INT PIPE TERM QUIT
+
+if ! cleanup_incoming RPMS/*.rpm SRPMS/*.rpm; then
+	echo "ERROR: you have problems with your incoming files" >&2
+	exit 1
+fi
+
+check_incoming()
+{
+	echo -n "Verifying repositories: "
+	if ! check_missing_srpms "$@"; then
+		echo "ERROR: you have orphaned RPMS" >&2
+		return 1
+	fi
+
+	if ! check_obsolete_srpms "$@"; then
+		echo "ERROR: you have orphaned SRPMS" >&2
+		exit 1
+	fi
+
+	sisyphus_check -q "$@"
+	echo "done."
+}
+
+check_incoming RPMS SRPMS
+upload_bin_new RPMS
+upload_src_new SRPMS
+
+if ! cleanup_incoming RPMS/*.rpm SRPMS/*.rpm; then
+	echo "ERROR: you have problems with your incoming files" >&2
+	exit 1
+fi
+
+check_incoming RPMS SRPMS
+sisyphus_prepare

@@ -1,0 +1,7 @@
+#! /bin/sh
+
+SSLCERTSHFUNCTIONS="/usr/bin/httpd2-cert-sh-functions"
+
+if [ -e "$SSLCERTSHFUNCTIONS" ]; then
+	. "$SSLCERTSHFUNCTIONS"
+fi

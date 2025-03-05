@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+gconf2_bin=/usr/bin/gconftool-2
+key="$1"
+
+$gconf2_bin --direct --config-source=`$gconf2_bin --get-default-source` --get "$key"

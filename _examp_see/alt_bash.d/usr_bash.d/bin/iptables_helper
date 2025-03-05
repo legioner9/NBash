@@ -1,0 +1,1302 @@
+#!/bin/sh -eu
+
+LANGUAGE="${LANGUAGE:-C}"
+LOGFILE="/var/log/alterator-net-iptables"
+
+_(){
+    gettext "alterator-net-iptables" "$1"
+}
+
+print_help(){
+cat <<EOF
+Script for simple iptables(8) rules management.
+
+Usage:
+ ${0##*/} help  -- show help message
+ ${0##*/} show [<options>]  -- show current settings
+ ${0##*/} write [<options>] -- change some settings and commit them to system
+ ${0##*/} reset -- reset settings to the default values
+ ${0##*/} list  -- show list of available services (using \$LANGUAGE)
+
+Options for write action:
+ -c <mode>   -- specify commit mode (on|off)
+ -l <mode>   -- specify log mode (on|off)
+ -m <mode>   -- specify routing mode (gateway|router)
+ -e <list>   -- specify list of external interfaces
+ -s <list>   -- specify list of opened services on external ifaces
+ -t <list>   -- specify list of opened extra tcp ports on external ifaces
+ -u <list>   -- specify list of opened extra udp ports on external ifaces
+
+* Values in lists must be separated by semicolon.
+* You can add value to existing list using "+<value>" argument, remove it
+  using "-<value>" or replace the whole list using "<value1>;<value2>;..."
+
+Options for read action:
+ -c          -- show commit mode (on|off)
+ -l          -- show log mode (on|off)
+ -m          -- show routing mode (gateway|router)
+ -e          -- show list of external interfaces (space separated)
+ -i          -- show list of internal interfaces
+ -s          -- show list of opened services on external ifaces
+ -t          -- show list of opened extra tcp ports on external ifaces
+ -u          -- show list of opened extra udp ports on external ifaces
+
+Common options:
+ -4 | -6     -- use IPv4 or IPv6 (by default assumed IPv4).
+ -v          -- be verbose
+ -d          -- don't commit settings to system
+
+Other modules:
+ ${0##*/} bl help    -- show help for blacklist module
+ ${0##*/} pr help    -- show help for port redirection module
+ ${0##*/} ir help    -- show help for internal restrictions module
+ ${0##*/} dnat help  -- show help for port forwarding module
+ ${0##*/} ulog help  -- show help for ulog module
+
+For more information see alterator-net-iptables(1).
+Report bugs to https://bugzilla.altlinux.org
+EOF
+} #' -- for xgettext, not mc!
+
+
+. shell-error
+. shell-getopt
+. shell-config
+. shell-var
+. shell-quote
+. alterator-net-functions
+. /usr/lib/alterator-net-iptables/srv.sh
+
+# configuration files:
+
+set_variables()
+{
+    local iptables=
+
+    [ "$1" = 6 ] && iptables='ip6tables' || iptables='iptables'
+
+## alterator-net-iptables configuration files:
+    SERVICEDIR="/etc/alterator/net-$iptables"
+    IPTABLES_HELPER_CONF="${IPTABLES_HELPER_CONF:-/etc/alterator/net-$iptables.conf}"
+
+    IR_CONFIG="/etc/alterator/net-$iptables/ir.conf"
+    if [ "$1" = '6' ]; then
+        PR_CONFIG=
+        DNAT_CONFIG=
+    else
+        PR_CONFIG="/etc/alterator/net-iptables/pr.conf"
+        DNAT_CONFIG="/etc/alterator/net-iptables/dnat.conf"
+    fi
+    BL_CONFIG="/etc/alterator/net-$iptables/bl.conf"
+
+## setup known services
+    known_services=" $(for i in $SERVICEDIR/*.desktop; do\
+        basename "$i" .desktop; done | tr '\n' ' ') "
+## etcnet configuration files
+
+    BASEDIR="/etc/net/ifaces/default/fw/$iptables"
+
+    INPUT="$BASEDIR/filter/INPUT"
+    OUTPUT="$BASEDIR/filter/OUTPUT"
+    FORWARD="$BASEDIR/filter/FORWARD"
+    if [ "$1" = '6' ]; then
+        NAT_POST=
+        NAT_PRE=
+        NAT_OUT=
+    else
+        NAT_POST="$BASEDIR/nat/POSTROUTING"
+        NAT_PRE="$BASEDIR/nat/PREROUTING"
+        NAT_OUT="$BASEDIR/nat/OUTPUT"
+    fi
+    MANG_POST="$BASEDIR/mangle/POSTROUTING"
+    MANG_PRE="$BASEDIR/mangle/PREROUTING"
+    MANG_OUT="$BASEDIR/mangle/OUTPUT"
+    MANG_INP="$BASEDIR/mangle/INPUT"
+    MANG_FRW="$BASEDIR/mangle/FORWARD"
+
+
+    ALL_TABLES="$INPUT $OUTPUT $FORWARD
+                $NAT_POST $NAT_PRE $NAT_OUT
+                $MANG_POST $MANG_PRE $MANG_OUT $MANG_INP $MANG_FRW"
+
+    MODULES="$BASEDIR/modules"
+
+
+    EFW="/etc/net/scripts/contrib/efw --$iptables default all restart"
+    RESTART_NETWORK="service network restart"
+}
+
+IFOPTS="/etc/net/ifaces/default"
+FWOPTS="/etc/net/ifaces/default/fw"
+
+
+regex_ip='[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'
+
+##########################
+shell_config_getdef(){
+    [ "$#" -ge 2 -a "$#" -ge 3 -a "$#" -le 4 ] ||
+      fatal "Usage: shell_config_getdef file name [default [delim]]"
+    local file="$1" name="$2" default="${3-}" delim="${4-=}"
+    grep -qs "^[[:space:]]*$name$delim" "$file" &&
+      shell_config_get "$file" "$name" "$delim" ||
+      echo "$default"
+}
+shell_config_set1(){
+  [ ! -s "$1" ] || [ -z "$(tail -c1 "$1")" ] || echo >> "$1"
+  shell_config_set "$1" "$2" "${3:-}" "${4:-[[:space:]]*=[[:space:]]*}" "${5:-=}"
+}
+
+shell_config_set2(){
+  local qq=
+  quote_sed_regexp_variable qq "$2"
+  [ ! -s "$1" ] || [ -z "$(tail -c1 "$1")" ] || echo >> "$1"
+  grep -qs "^[[:space:]]*$qq[[:space:]]*\$" "$1" || echo "$2" >> "$1"
+}
+
+shell_get_nonopt(){
+  local ret="$1"; shift
+  OPTIND=1
+  while [ "$#" != 0 ] && [ -n "$1" ] && [ -z "${1%%-*}" ]; do
+    shift;
+    OPTIND="$((OPTIND+1))";
+  done
+  [ "$#" = 0 ] || quote_shell_variable "$ret" "$1"
+}
+
+# show current settings
+show_settings(){
+  echo -e "commit_mode=\"$commit_mode\""
+  echo -e "log_mode=\"$log_mode\""
+  echo -e "mode=\"$mode\""
+  echo -e "external_ifaces=\"$external_ifaces\""
+  echo -e "opened_services=\"$opened_services\""
+  echo -e "opened_tcp_ports=\"$opened_tcp_ports\""
+  echo -e "opened_udp_ports=\"$opened_udp_ports\""
+}
+
+# read settings from file
+read_settings(){
+  [ -f "$IPTABLES_HELPER_CONF" ] || return 0
+  local _keys="commit_mode log_mode mode external_ifaces opened_services opened_tcp_ports opened_udp_ports"
+  local k=
+  for k in $_keys; do
+      quote_shell_variable "$k" "$(sed -n -e "/^$k=/ { s/^$k=//; s/^\"\\(.*\\)\"\$/\\1/; p; q }" "$IPTABLES_HELPER_CONF")"
+  done
+}
+
+reset_settings(){
+  local ipv="${1:-4}"
+  commit_mode="on"
+  log_mode="on"
+  [ "$ipv" = 6 ] && mode="router" || mode="gateway"
+  external_ifaces=
+  [ "$ipv" = 6 ] && opened_services="icmpv6" || opened_services="icmp"
+  opened_tcp_ports=
+  opened_udp_ports=
+}
+
+write_settings(){
+  verbose "writing parameters to $IPTABLES_HELPER_CONF..."
+  shell_config_set1 "$IPTABLES_HELPER_CONF" commit_mode "\"$commit_mode\""
+  shell_config_set1 "$IPTABLES_HELPER_CONF" log_mode    "\"$log_mode\""
+  shell_config_set1 "$IPTABLES_HELPER_CONF" mode "\"$mode\""
+  shell_config_set1 "$IPTABLES_HELPER_CONF" external_ifaces "\"$external_ifaces\""
+  shell_config_set1 "$IPTABLES_HELPER_CONF" opened_services "\"$opened_services\""
+  shell_config_set1 "$IPTABLES_HELPER_CONF" opened_tcp_ports "\"$opened_tcp_ports\""
+  shell_config_set1 "$IPTABLES_HELPER_CONF" opened_udp_ports "\"$opened_udp_ports\""
+}
+
+show_external_ifaces(){
+  if [ "$mode" = "host" ]; then
+    local ext=
+    for i in $(list_iface | cut -f1); do
+        local x=1
+        for j in $external_ifaces; do
+          [ "$i" != "$j" ] || x=
+        done
+        case "$i" in
+          lo) ;;
+          virbr*) ;;
+          docker*) ;;
+          *) x= ;;
+        esac
+        [ -n "$x" ] || echo "$i"
+    done
+    echo "$ext" | tr -s ';, ' '\n'
+  else
+    echo "$external_ifaces" | tr -s ';, ' '\n'
+  fi
+}
+
+show_internal_ifaces(){
+  local ext="$(show_external_ifaces)"
+  for i in $(list_iface | cut -f1); do
+    local x=
+    for j in $ext; do
+      [ "$i" != "$j" ] || x=1
+    done
+    [ -n "$x" ] || echo "$i"
+  done
+}
+
+restart_firewall(){
+  local restart_network="$(shell_config_getdef "$IPTABLES_HELPER_CONF" restart_network off)"
+
+  [ "$restart_network" = "on" ] &&
+      $RESTART_NETWORK ||
+      $EFW
+}
+
+#################
+
+# test all values
+test_settings(){
+  verbose "checking all values..."
+
+  [ "$commit_mode" = "on" -o "$commit_mode" = "off" ] ||
+    fatal "`_ "Error: bad commit mode"` \"$commit_mode\" `_ "(possible values: on or off)"`"
+
+  [ "$log_mode" = "on" -o "$log_mode" = "off" ] ||
+    fatal "`_ "Error: bad log mode"` \"$log_mode\" `_ "(possible values: on or off)"`"
+
+  if [ "$ipv" = 6 ]; then
+      [ "$mode" = "router" -o "$mode" = "host" ] ||
+        fatal "`_ "Error: bad mode"` \"$mode\" `_ "(possible values: router or host)"`"
+  else
+      [ "$mode" = "gateway" -o "$mode" = "router" -o "$mode" = "host" ] ||
+        fatal "`_ "Error: bad mode"` \"$mode\" `_ "(possible values: gateway, router or host)"`"
+  fi
+
+  for i in $(echo "$opened_tcp_ports" | tr -s ';,' ' '); do
+    echo $i | grep -q '^[0-9]\+\(-[0-9]\+\)\?$' ||\
+      fatal "`_ "Error: bad TCP port"` \"$i\" `_ "(must be a number)"`"
+  done
+
+  for i in $(echo "$opened_udp_ports" | tr -s ';,' ' '); do
+    echo $i | grep -q '^[0-9]\+\(-[0-9]\+\)\?$' ||\
+      fatal "`_ "Error: bad UTP port"` \"$i\" `_ "(must be a number)"`"
+  done
+
+#  local ifaces="$(list_iface | cut -f1 | tr -s '\n' ' ')"
+#  ifaces=" $ifaces "
+#  for i in $(echo "$external_ifaces" | tr -s ';,' ' '); do
+#    [ -z "${ifaces##* $i *}" ] ||\
+#      fatal "`_ "Error: unknown interface"` \"$i\" (`_ "possible values:"` $ifaces)"
+#  done
+
+  echo "$opened_services" | tr -s ';, ' '\n' | srv_expand > /dev/null
+}
+
+write_fw_type()
+{
+  local fwtypes="$(shell_config_get $FWOPTS/options FW_TYPE)"
+  local t=
+
+  shell_var_unquote fwtypes "$fwtypes"
+  for t in $fwtypes; do
+      [ "$t" = "$1" ] && return
+  done
+
+  write_iface_option "$FWOPTS" "FW_TYPE" "\"$fwtypes${fwtypes:+ }$1\""
+}
+
+# write settings to config, commit them to system
+commit_settings(){
+
+  verbose "setting up system..."
+
+  verbose "* turning on IPv$ipv forwarding"
+  local frdelim='[[:space:]]*=[[:space:]]*'
+  local fwdelim=' = '
+  local fwtype=
+  if [ "$ipv" = 6 ]; then
+    shell_config_set1 /etc/net/sysctl.conf net.ipv6.conf.all.forwarding 1 "$frdelim" "$fwdelim"
+    echo 1 >/proc/sys/net/ipv6/conf/all/forwarding
+    fwtype='ip6tables'
+  else
+    shell_config_set1 /etc/net/sysctl.conf net.ipv4.ip_forward 1 "$frdelim" "$fwdelim"
+    echo 1 >/proc/sys/net/ipv4/ip_forward
+    fwtype='iptables'
+  fi
+
+  verbose "* turning on IPv$ipv firewalling"
+  write_iface_option "$IFOPTS" "CONFIG_FW"               "yes"
+  write_fw_type "$fwtype"
+  if [ "$ipv" = 6 ]; then
+	  write_iface_option "$FWOPTS" "IP6TABLES_HUMAN_SYNTAX"   "no"
+  else
+	  write_iface_option "$FWOPTS" "IPTABLES_HUMAN_SYNTAX"   "no"
+  fi
+
+  verbose "* resetting chains"
+
+  backup_dir="$(mktemp -d)"
+  mkdir -- "$backup_dir/filter"\
+           "$backup_dir/mangle"
+
+  if [ "$ipv" != "6" ]; then
+    mkdir -- "$backup_dir/nat"
+  fi
+
+  for i in $ALL_TABLES; do
+    mv -- "$i" "$backup_dir${i#$BASEDIR}"
+    cat > "$i" << EOF
+# This file was automatically created by alterator-net-iptables.
+# If you are using alterator-net-iptables then all changes
+# made in this file by hands may lost!
+# For more information see alterator-net-iptables(1).
+
+EOF
+  done
+
+  echo '-P ACCEPT' >>"$INPUT"
+  if [ "$ipv" != "6" ]; then
+    echo '-f -j DROP' >>"$INPUT"
+  fi
+
+  echo '-P ACCEPT' >>"$OUTPUT"
+  if [ "$ipv" != "6" ]; then
+    echo '-f -j DROP' >>"$OUTPUT"
+  fi
+
+  echo '-P ACCEPT' >>"$FORWARD"
+  if [ "$ipv" != "6" ]; then
+    echo '-f -j DROP' >>"$FORWARD"
+  fi
+
+  ulog_commit  # setting up ULOGD rules
+
+  echo '-m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >>"$INPUT"
+  echo '-m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >>"$OUTPUT"
+  echo '-m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >>"$FORWARD"
+
+  local modules="ip_conntrack_ftp"
+  verbose "* add modules ($modules)"
+  verbose "  to $MODULES"
+  [ -z "$(tail -c1 "$MODULES" &>/dev/null)" ] ||
+    echo >> "$MODULES" # add newline if needed
+  for i in $modules; do
+    grep -q "^$i" "$MODULES" || echo "$i" >> "$MODULES"
+  done
+
+  local i= p= s=
+
+  local ext="$(show_external_ifaces | tr '\n' ' ')"
+  local int="$(show_internal_ifaces | tr '\n' ' ')"
+  verbose "external ifaces: $ext"
+  verbose "internal ifaces: $int"
+
+  bl_commit  # setting up Blacklist rules
+
+  if [ "$ipv" != "6" ]; then
+    dnat_commit   # setting up DNAT rules
+  fi
+
+  ir_commit   # restricting access from internal networks
+
+  if [ "$ipv" != "6" ]; then
+	pr_commit   # port redirection
+  fi
+
+  # configuring external ifaces
+  for i in $ext; do
+
+    verbose "configuring external interface $i:"
+
+    verbose "  allow forwarding from each external iface to its networks"
+    # (We can configure ip from some external network on separate interface; this ip will
+    # be completely accessible from this network.)
+    local addr= n=
+    for addr in $(read_iface_current_addresses "$i" $ipv); do
+      if [ "$ipv" = 6 ]; then
+          n="$(ipv6_network "$addr")"
+      else
+          n="$(netname "$addr" | cut -f1)"
+      fi
+      if [ -n "$n" ]; then
+        verbose "  allow forwarding from $i to $n"
+        echo "-i $i -d $n -j ACCEPT" >> "$FORWARD"
+      fi
+    done
+
+    verbose "  allow forwarding through bridges"
+    echo "-m physdev --physdev-is-bridged -j ACCEPT" >> "$FORWARD"
+
+    verbose "  allow forwarding of ESTABLISHED,RELATED packets"
+    echo "-i $i -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT" >> "$FORWARD"
+
+    verbose "  closing all other forwarding from $i"
+    echo "-i $i -j DROP" >> "$FORWARD"
+
+    verbose "  open \"$opened_services\" on iface $i"
+    echo "$opened_services" | tr -s ';, ' '\n' | srv_expand |
+      while read p; do
+        echo "-i $i $p -j ACCEPT" >> "$INPUT"
+      done
+
+    for p in $(echo "$opened_tcp_ports" | tr -s ';,' '\n'); do
+      if [ "${p%-*}" != "$p" ]; then
+        p="${p%-*}:${p#*-}"
+      fi
+      verbose "  open extra port tcp:$p on iface $i"
+      echo "-i $i -p tcp --dport $p -j ACCEPT" >> "$INPUT"
+    done
+
+    for p in $(echo "$opened_udp_ports" | tr -s ';,' '\n'); do
+      if [ "${p%-*}" != "$p" ]; then
+        p="${p%-*}:${p#*-}"
+      fi
+      verbose "  open extra port udp:$p on iface $i"
+      echo "-i $i -p udp --dport $p -j ACCEPT" >> "$INPUT"
+    done
+
+    verbose "  close other ports on interface $i"
+    echo "-i $i -j DROP" >> "$INPUT"
+  done
+
+
+  # setting up NAT
+  if [ "$mode" = "gateway" ]; then
+    verbose "setting up NAT"
+    for i in $ext; do
+      echo "-o $i -j MASQUERADE" >> "$NAT_POST"
+        verbose "  to $i iface"
+    done
+  fi
+
+  if [ "$log_mode" = "on" ]; then
+    for i in $ALL_TABLES; do
+      if ! diff -q -- "$i" "$backup_dir${i#$BASEDIR}" &> /dev/null; then
+        echo -e "\n$(date) -- changed ${i#$BASEDIR/} file:" >> $LOGFILE
+        sed -e '/^#/d; /^[[:space:]]*$/d' "$i" >> $LOGFILE
+        verbose "changes in ${i#$BASEDIR/} have been logged"
+      fi
+    done
+  fi
+  rm -rf -- "$backup_dir"
+
+  verbose "restarting efw"
+  if [ -z "$verbose" ]; then
+    restart_firewall > /dev/null 2>&1 || fatal "`_ "Error while reloading firewalling rules"`"
+  else
+    restart_firewall > /dev/stderr || fatal "`_ "Error while reloading firewalling rules"`"
+  fi
+
+  verbose "running /usr/lib/alterator/hooks/net-iptables.d/*"
+  run-parts /usr/lib/alterator/hooks/net-iptables.d/ ||
+    fatal "`_ "Error while running /usr/lib/alterator/hooks/net-iptables.d/*"`"
+}
+
+# show available services (note: $LANGUAGE is used)
+list_services(){
+  alterator-dump-desktop \
+        -v lang="$LANGUAGE" \
+        -v out="Filename;X-Alterator-Port;Name" \
+        -v def="notfound;noport;" \
+    $(sed -e 's|#.*||; s|\(\w\+\)|'$SERVICEDIR'/\1.desktop|' $SERVICEDIR/List || echo $SERVICEDIR/*.desktop) | #'
+  while read filename port name; do
+    filename="${filename##*/}"
+    filename="${filename%.desktop}"
+    printf '%s\t%s\t%s\n' "$filename" "$port" "$name"
+  done
+}
+
+# modify list: <list> +<val> or <list> -<val>  or <list> <val1>;<val2>...
+modify_list(){
+  local list="$1"
+  local arg="$2"
+  if [ -z "$arg" ]; then
+      quote_shell_variable "$list" ""
+  elif [ -z "${arg%%+*}" ]; then
+      [ -z "$(echo $arg | tr -c -d ';, ')" ] || \
+          fatal "`_ "Can't add multiple values to list"`" #'
+      local new="$(
+eval echo \$$list | tr -s ';, ' '\n' |
+    while read l; do
+        [ "$l" = "${arg#+}" ] || echo -n "${l:+$l;}"
+    done
+)"
+      quote_shell_variable "$list" "$new${arg#+}"
+  elif [ -z "${arg%%-*}" ]; then
+      [ -z "$(echo $arg | tr -c -d ';, ')" ] || \
+          fatal "`_ "Can't remove multiple values from list"`" #'
+      local new="$(
+eval echo \$$list | tr -s ';, ' '\n' |
+    while read l; do
+        [ "$l" = "${arg#-}" ] || echo -n "${l:+$l;}"
+    done
+)"
+      quote_shell_variable "$list" "${new%;}"
+  else
+      arg="$(echo "$arg" | tr -s ';, ' ';')"
+      quote_shell_variable "$list" "$arg"
+  fi
+}
+
+########################
+
+test_proto(){
+  local proto="${1:-}"
+  [ "$proto" = "tcp" -o "$proto" = "udp" ] ||
+    fatal "`_ "Error: unknown protocol"` $proto (`_ "possible values:"` tcp, udp)"
+}
+test_ip(){
+  local ip="${1:-}"
+  local ipv="${2:-4}"
+  if [ "$ipv" = "6" ]; then
+    valid_ipv6addr "$ip" ||
+    fatal "`_ "Error: bad IPv6-address"`: $ip"
+  else
+    echo "$ip" | grep -q "^$regex_ip\$" ||
+      fatal "`_ "Error: bad IPv4-address"`: $ip"
+  fi
+}
+test_ipm(){
+  local ipm="${1:-}"
+  local ipv="${2:-4}"
+  if [ "$ipv" = "6" ]; then
+    local prefix="${ipm#*/}"
+    if [ "$prefix" != "$ipm" ]; then
+        [ -n "$prefix" -a "$prefix" -ge 1 -a "$prefix" -le 128 ] 2>/dev/null ||
+           fatal "`_ "Error: bad IPv6 network prefix"`: $prefix"
+    fi
+    valid_ipv6addr "${ipm%/*}" ||
+      fatal "`_ "Error: bad network or host IP-address"`: $ipm"
+  else
+    echo "$ipm" | grep -q "^$regex_ip\(\(/3[0-2]\)\|\(/[1-2][0-9]\)\|\(/[1-9]\)\)\?\$" ||
+      fatal "`_ "Error: bad network or host IP-address"`: $ipm"
+  fi
+}
+test_port(){
+  local port="${1:-}"
+  echo "$port" | grep -q "^[0-9]\+\$" ||
+    fatal "`_ "Error: bad port"`: $port `_ "(must be a number)"`"
+}
+test_portrange(){
+  local prange="${1:-}"
+  echo "$prange" | grep -q "^[0-9]\+\(:[0-9]\+\)\?\$" ||
+    fatal "`_ "Error: bad port or port range"`: \"$prange\""
+  local p1="${prange%:*}"
+  local p2="${prange#*:}"
+  [ "$p1" = "$prange" -o "$(($p2-$p1 > 0))" = "1" ] ||
+    fatal "`_ "Error: bad port or port range"`: \"$prange\""
+}
+test_mac(){
+  local mac="${1:-}"
+  echo "$mac" | grep -q '^\([0-9A-Fa-f]\{2\}:\)\{5\}[0-9A-Fa-f]\{2\}$' ||\
+    fatal "`_ "Error: bad MAC-address"`: $mac"
+}
+
+########################
+
+bl_help(){
+cat <<EOF
+${0##*/} pr -- blacklist handling
+
+Usage:
+ ${0##*/} bl help      -- show help message
+ ${0##*/} bl on|off    -- switch on|off
+ ${0##*/} bl status    -- show status (on|off)
+ ${0##*/} bl list      -- show all rules
+ ${0##*/} bl clear     -- remove all rules
+ ${0##*/} bl add <ip>[/<mask>] -- add rule
+ ${0##*/} bl del <ip>[/<mask>] -- remove rule
+EOF
+exit 0
+}
+
+bl_on(){
+  shell_config_set1 "$IPTABLES_HELPER_CONF" bl on
+}
+bl_off(){
+  shell_config_set1 "$IPTABLES_HELPER_CONF" bl off
+}
+bl_status(){
+  shell_config_getdef "$IPTABLES_HELPER_CONF" bl off
+}
+
+bl_list(){
+  [ -s "$BL_CONFIG" ] || return 0
+  local ipm=
+  sed "s/#.*$//; /^[[:space:]]*$/d" "$BL_CONFIG" |
+  while read ipm; do
+    test_ipm "$ipm" $ipv
+    echo "$ipm"
+  done || exit 1
+}
+
+bl_clear(){
+  [ -s "$BL_CONFIG" ] || return 0
+  echo > "$BL_CONFIG"
+}
+
+bl_add(){
+  local ipm=
+  shell_get_nonopt ipm $@
+  shift "$((OPTIND))" ||:
+
+  [ -n "$ipm" ] || bl_help
+  test_ipm "$ipm" $ipv
+  verbose "adding $ipm to blacklist"
+
+  shell_config_set2 "$BL_CONFIG" "$ipm"
+}
+
+bl_del(){
+  ipm=
+  shell_get_nonopt ipm $@
+  shift "$((OPTIND))" ||:
+
+  [ -n "$ipm" ] || bl_help
+  test_ipm "$ipm" $ipv
+  verbose "removing $ipm from blacklist"
+
+  local qipm=
+  quote_sed_regexp_variable qipm "$ipm"
+  sed -i "/^[[:space:]]*$qipm[[:space:]]*\$/d" "$BL_CONFIG"
+}
+
+bl_commit(){
+  local status="$(bl_status)"
+  verbose "* blacklist is $status"
+  [ "$status" = "on" ] || return 0
+  [ -s "$BL_CONFIG" ]  || return 0
+
+  local ipm=
+  bl_list |
+  while read ipm; do
+    verbose "  $ipm"
+    echo "-s $ipm -j DROP" >> "$INPUT"
+    echo "-s $ipm -j DROP" >> "$FORWARD"
+    echo "-d $ipm -j DROP" >> "$OUTPUT"
+    echo "-d $ipm -j DROP" >> "$FORWARD"
+  done
+  verbose "blacklist configured"
+}
+
+########################
+
+ulog_help(){
+cat <<EOF
+${0##*/} ulog -- add ULOG rules
+
+Usage:
+ ${0##*/} ulog help      -- show help message
+ ${0##*/} ulog on|off    -- switch on|off
+ ${0##*/} ulog status    -- show status (on|off)
+EOF
+exit 0
+}
+
+ulog_on(){
+  shell_config_set1 "$IPTABLES_HELPER_CONF" ulog on
+}
+ulog_off(){
+  shell_config_set1 "$IPTABLES_HELPER_CONF" ulog off
+}
+ulog_status(){
+  shell_config_getdef "$IPTABLES_HELPER_CONF" ulog off
+}
+
+ulog_commit(){
+  local status="$(ulog_status)"
+  verbose "* ulog feature is $status"
+  [ "$status" = "on" ] || return 0
+
+  verbose "  setting up ULOG rules"
+  local text='-j ULOG --ulog-nlgroup 1 --ulog-cprange 48 --ulog-qthreshold 50'
+  echo "$text --ulog-prefix \"icount\"" >> "$INPUT"
+  echo "$text --ulog-prefix \"ocount\"" >> "$OUTPUT"
+  echo "$text --ulog-prefix \"fcount\"" >> "$FORWARD"
+}
+
+########################
+
+pr_help(){
+cat <<EOF
+${0##*/} pr -- port redirection
+
+Usage:
+ ${0##*/} pr help      -- show help message
+ ${0##*/} pr on|off    -- switch on|off
+ ${0##*/} pr status    -- show port redirection status (on|off)
+ ${0##*/} pr list      -- show all rules
+ ${0##*/} pr clear     -- remove all rules
+ ${0##*/} pr add <port1>[:<port2>] <port3> -- add rule
+ ${0##*/} pr del <port1>[:<port2>]         -- remove rule
+
+  -I PREROUTING -t nat -i <internal ifaces> -p tcp \
+  --dport <port1>[:<port2>] -j REDIRECT --to-port <port3>
+EOF
+exit 0
+}
+
+pr_on(){
+  shell_config_set1 "$IPTABLES_HELPER_CONF" pr on
+}
+pr_off(){
+  shell_config_set1 "$IPTABLES_HELPER_CONF" pr off
+}
+pr_status(){
+  shell_config_getdef "$IPTABLES_HELPER_CONF" pr off
+}
+
+pr_list(){
+  [ -s "$PR_CONFIG" ] || return 0
+  local key= val=
+  sed "s/#.*$//; /^[[:space:]]*$/d" "$PR_CONFIG" |
+  while read key val; do
+    test_portrange "$key"
+    test_port "$val"
+    echo "$key	$val"
+  done || exit 1
+}
+
+pr_clear(){
+  [ -s "$PR_CONFIG" ] || return 0
+  echo > "$PR_CONFIG"
+}
+
+pr_add(){
+  local key= val=
+  shell_get_nonopt key $@
+  shift "$((OPTIND))" ||:
+  shell_get_nonopt val $@
+  shift "$((OPTIND))" ||:
+
+  [ -n "$key" -a -n "$val" ] || pr_help
+  test_portrange "$key"
+  test_port "$val"
+  verbose "adding PR rule $key -> $val"
+
+  shell_config_set1 "$PR_CONFIG" "$key" "$val" '[[:space:]]\+' '	'
+}
+
+pr_del(){
+  key=
+  shell_get_nonopt key $@
+  shift "$((OPTIND))" ||:
+
+  [ -n "$key" ] || pr_help
+  test_portrange "$key"
+  verbose "removing PR rule for port: $key"
+
+  shell_config_del "$PR_CONFIG" "$key" "[[:space:]]\+"
+}
+
+pr_commit(){
+  local status="$(pr_status)"
+  verbose "* port redirection is $status"
+  [ "$status" = "on" ] || return 0
+  [ -s "$PR_CONFIG" ]  || return 0
+
+  local int="$(show_internal_ifaces)"
+  local p1= p2=
+  pr_list |
+  while read p1 p2; do
+    for i in $int; do
+      verbose "  iface: $i, port $p1 -> $p2"
+      echo "-i $i -p tcp --dport $p1 -j REDIRECT --to-port $p2" >> "$NAT_PRE"
+    done
+  done
+  verbose "port redirection configured"
+}
+
+########################
+
+dnat_help(){
+cat <<EOF
+${0##*/} dnat -- port forwardind with DNAT
+
+Usage:
+ ${0##*/} dnat help      -- show help message
+ ${0##*/} dnat on|off    -- switch on|off
+ ${0##*/} dnat status    -- show dnat status (on|off)
+ ${0##*/} dnat list      -- show all rules
+ ${0##*/} dnat clear     -- remove all rules
+ ${0##*/} dnat add <proto>:<ip>:<port> <ip>:<port> -- add rule
+ ${0##*/} dnat del <proto>:<ip>:<port>             -- remove rule
+EOF
+exit 0
+}
+
+dnat_test_key(){
+  # proto:ip:port
+  local proto= ip= port=
+  echo "${1:-}" |
+  while IFS=':' read proto ip port; do
+    test_proto "$proto"
+    test_ip    "$ip"
+    test_port  "$port"
+  done || exit 1
+}
+dnat_test_val(){
+  # ip:port
+  local ip= port=
+  echo "${1:-}" |
+  while IFS=':' read ip port; do
+    test_ip    "$ip"
+    test_port  "$port"
+  done || exit 1
+}
+
+dnat_on(){
+  shell_config_set1 "$IPTABLES_HELPER_CONF" dnat on
+}
+dnat_off(){
+  shell_config_set1 "$IPTABLES_HELPER_CONF" dnat off
+}
+dnat_status(){
+  shell_config_getdef "$IPTABLES_HELPER_CONF" dnat off
+}
+
+dnat_list(){
+  [ -s "$DNAT_CONFIG" ] || return 0
+  local key= val=
+  sed "s/#.*$//; /^[[:space:]]*$/d" "$DNAT_CONFIG" |
+  while read key val; do
+    dnat_test_key "$key"
+    dnat_test_val "$val"
+    echo "$key	$val"
+  done || exit 1
+}
+
+dnat_clear(){
+  [ -s "$DNAT_CONFIG" ] || return 0
+  echo > "$DNAT_CONFIG"
+}
+
+dnat_add(){
+  local key= val=
+  shell_get_nonopt key $@
+  shift "$((OPTIND))" ||:
+  shell_get_nonopt val $@
+  shift "$((OPTIND))" ||:
+
+  [ -n "$key" -a -n "$val" ] || dnat_help
+  dnat_test_key "$key"
+  dnat_test_val "$val"
+  verbose "adding DNAT rule $key -> $val"
+
+  shell_config_set1 "$DNAT_CONFIG" "$key" "$val" '[[:space:]]\+' '	'
+}
+
+dnat_del(){
+  key=
+  shell_get_nonopt key $@
+  shift "$((OPTIND))" ||:
+
+  [ -n "$key" ] || dnat_help
+  dnat_test_key "$key"
+  verbose "removing DNAT rule for $key"
+
+  shell_config_del "$DNAT_CONFIG" "$key" "[[:space:]]\+"
+}
+
+dnat_commit(){
+  local status="$(dnat_status)"
+  verbose "* port forwarding (DNAT) is $status"
+  [ "$status" = "on" ]   || return 0
+  [ -s "$DNAT_CONFIG" ]  || return 0
+
+  local key= val=
+  dnat_list |
+  while read key val; do
+
+    local pr="${key%%:*}"
+    local key="${key#$pr:}"
+    local sip="${key%%:*}"
+    local sp="${key#$sip:}"
+    local dip="${val%%:*}"
+    local dp="${val#$dip:}"
+
+    verbose "  setting up DNAT rule: $pr $sip:$sp -> $dip:$dp"
+    echo "-p $pr --destination $dip --dport $dp -j ACCEPT" >> "$FORWARD"
+    echo "-p $pr --destination $sip --dport $sp -j DNAT --to-destination $dip:$dp" >> "$NAT_PRE"
+    echo "-p $pr --destination $sip --dport $sp -j DNAT --to-destination $dip:$dp" >> "$NAT_OUT"
+  done
+  verbose "port forwarding configured"
+}
+
+
+########################
+
+ir_help(){
+cat <<EOF
+${0##*/} ir -- Access restrictions for internal networks.
+
+Usage:
+ ${0##*/} ir help      -- show help message
+ ${0##*/} ir on|off    -- switch on|off
+ ${0##*/} ir status    -- show ir status (on|off)
+ ${0##*/} ir list      -- show all rules
+ ${0##*/} ir clear     -- remove all rules
+ ${0##*/} ir show <ip> -- show rule for a single ip
+ ${0##*/} ir add <ip>[=<mac>] <services> <comment> -- add rule
+ ${0##*/} ir del <ip>  -- remove rule
+
+For more information see alterator-net-iptables(1).
+EOF
+exit 0
+}
+
+ir_test_key(){
+  local ipmac="$1" ip= mac=
+  [ -n "${ipmac##*=}" -a -n "${ipmac%%=*}" ] || 
+    fatal "`_ "Error: Bad rule"`: $ipmac"
+
+  echo "$ipmac" |\
+  while IFS="=" read ip mac; do
+    if [ "$ip" = "default" ]; then
+      [ -n "$mac" ] &&
+        fatal "`_ "Error: MAC-address is not allowed in default rule"`" ||
+        continue
+    fi
+    test_ipm $ip $ipv
+    [ -z "$mac" ] || test_mac $mac
+  done || exit 1 # (we are in subshell, so explicit exit 1 needed in bash!)
+}
+
+ir_test_val(){
+  local services="$1"
+  local icmp=
+
+  [ "$ipv" = 6 ] && icmp=icmpv6 || icmp=icmp
+  for i in $(echo "$services" | tr -s ';,' ' '); do
+    echo "$i" | grep -q "^\(\(\(tcp\|udp\):\)\?[0-9]\+\)\|\($icmp:\)$" && continue ||:
+    [ -z "${known_services##* $i *}" ] ||\
+      fatal "`_ "Error: unknown service"` \"$i\""
+  done
+}
+
+ir_get_default_services(){
+  sed -r -n \
+	  "s/^[[:space:]]*default[[:space:]]+([^[:space:]]+).*$/\1/p" \
+	  "$IR_CONFIG"
+}
+
+ir_on(){
+  shell_config_set1 "$IPTABLES_HELPER_CONF" ir on
+}
+
+ir_off(){
+  shell_config_set1 "$IPTABLES_HELPER_CONF" ir off
+}
+
+ir_status(){
+  shell_config_getdef "$IPTABLES_HELPER_CONF" ir off
+}
+
+ir_list(){
+  [ -s "$IR_CONFIG" ] || return 0
+  local key= val=
+  sed "s/#.*$//; /^[[:space:]]*$/d" "$IR_CONFIG" |
+  while read key val comm; do
+    ir_test_key "$key"
+    ir_test_val "$val"
+    echo "$key	$val $comm"
+  done || exit 1
+}
+
+ir_clear(){
+  [ -s "$IR_CONFIG" ] || return 0
+  echo > "$IR_CONFIG"
+}
+
+
+ir_show(){
+  local ip=
+  shell_get_nonopt ip $@
+  shift "$((OPTIND))" ||:
+
+  [ -n "$ip" ] || ir_help
+  [ "$ip" = "default" ] || test_ipm "$ip" $ipv
+
+  [ ! -s "$IR_CONFIG" ] ||
+    grep "^[[:space:]]*$ip\([[:space:]]\|=\)" "$IR_CONFIG"
+}
+
+ir_add(){
+  local key= val= comm=
+  local services= default_services=
+  shell_get_nonopt key $@
+  shift "$((OPTIND))" ||:
+  shell_get_nonopt val $@
+  shift "$((OPTIND))" ||:
+  shell_get_nonopt comm $@
+  shift "$((OPTIND))" ||:
+
+  [ -n "$key" ] || ir_help
+  ir_test_key "$key"
+  ir_test_val "$val"
+
+  if [ ${key%%=*} != 'default' ] &&
+     ! grep -qs "^[[:space:]]*${key%%=*}[[:space:]]" "$IR_CONFIG"; then
+       default_services="$(ir_get_default_services)"
+  fi
+
+  # add default services and drop dublicates
+  services="$(echo "$val${default_services:+;}$default_services" | sort -u -t ';')"
+  [ -n $services ] || services=';'
+
+  verbose "adding IR rule: $key -> $services ($comm)"
+
+  if [ -s "$IR_CONFIG" ]; then
+    sed -i "/^[[:space:]]*$(quote_sed_regexp ${key%%=*})\(=\|[[:space:]]\)/d" "$IR_CONFIG"
+    [ -z "$(tail -c1 "$IR_CONFIG")" ] || echo >> "$IR_CONFIG"
+  fi
+  echo "$key	$services	$comm" >> "$IR_CONFIG"
+}
+
+ir_del(){
+  key=
+  shell_get_nonopt key $@
+  shift "$((OPTIND))" ||:
+
+  [ -n "$key" ] || ir_help
+  ir_test_key "$key"
+  verbose "removing IR rule for $key"
+
+  if [ -s "$IR_CONFIG" ]; then
+    sed -i "/^[[:space:]]*$(quote_sed_regexp ${key%%=*})\(=\|[[:space:]]\)/d" "$IR_CONFIG"
+  fi
+}
+
+ir_commit(){
+  local status="$(ir_status)"
+  verbose "* internal restrictions are $status"
+  [ "$status" = "on" ] || return 0
+  [ -s "$IR_CONFIG" ]  || return 0
+
+  local default_services="$(ir_get_default_services)"
+  ir_test_val "$default_services"
+  verbose "  default services: $default_services"
+
+  local ipmac= ip= mac= services= p=
+  local int="$(show_internal_ifaces)"
+
+  ir_list |
+    while read ipmac services comm; do
+      [ -n "$ipmac" ] || continue
+      [ "$ipmac" != default ] || # we dont need default ipmac here
+        continue
+
+      echo "$ipmac" |\
+        while IFS="=" read ip mac; do
+          # allow packets with propper sIP-sMAC-dPORT combinations
+          echo "$services" | tr ';' '\n' |
+            srv_expand | sort -u |
+            while read p; do
+              verbose "  ip:$ip mac:${mac:-any}: $p"
+              for i in $int; do
+                for f in "$INPUT" "$FORWARD"; do
+                  echo "-i $i -s $ip ${mac:+ -m mac --mac-source $mac} \
+                        $p -j ACCEPT" >> "$f"
+                done
+              done
+            done || exit 1
+          # silently drop all other packets from propper IP-MAC
+          for i in $int; do
+            for f in "$INPUT" "$FORWARD"; do
+              echo "-i $i -s $ip ${mac:+ -m mac --mac-source $mac}\
+                    -j DROP" >> "$f"
+            done
+          done
+        done || exit 1
+    done || exit 1
+
+  # Handle default services:
+  # allow all packets for specified ports
+  echo "$default_services" | tr ';' '\n' |
+      srv_expand | sort -u |
+      while read p; do
+          for i in $int; do
+              for f in "$INPUT" "$FORWARD"; do
+                  echo "-i $i $p -j ACCEPT" >> "$f"
+              done
+          done
+      done
+  # log and drop others
+  for i in $int; do
+    for f in "$INPUT" "$FORWARD"; do
+      echo "-i $i -j LOG --log-prefix 'iptables: wrong IP/MAC:'" >> "$f"
+      echo "-i $i -j DROP" >> "$f"
+    done
+  done
+  verbose "internal restrictions configured"
+}
+
+########################
+
+
+dontcommit=
+needcommit=
+ipv=4
+
+for i in $@; do
+  case "$i" in
+    "-6") ipv=6 ;;
+    "-v") verbose=1 ;;
+    "-d") dontcommit=1 ;;
+  esac
+done
+
+set_variables "$ipv"
+
+action=
+shell_get_nonopt action $@;
+shift "$((OPTIND))" ||:
+OPTIND=1
+
+# reset vars to default values
+reset_settings "$ipv"
+
+# read current settings from config file
+read_settings
+
+# parse options
+case "$action" in
+  write)
+    while getoptex "c:
+                    l:
+                    m: mode:
+                    e: ext:
+                    s: t: u: S:
+                    v; d; 4; 6;" "$@"; do
+      case $OPTOPT in
+        "c")        commit_mode="$OPTARG" ;;
+        "l")        log_mode="$OPTARG" ;;
+        "m"|"mode") mode="$OPTARG"        ;;
+        "e"|"ext")  modify_list external_ifaces  "$OPTARG" ;;
+        s) modify_list opened_services  "$OPTARG" ;;
+        t) modify_list opened_tcp_ports "$OPTARG" ;;
+        u) modify_list opened_udp_ports "$OPTARG" ;;
+      esac
+    done
+    test_settings
+    write_settings
+    needcommit=1
+  ;;
+  reset)
+    echo > "$IPTABLES_HELPER_CONF"
+    reset_settings
+    test_settings
+    write_settings
+    needcommit=1
+  ;;
+  show)
+    while getoptex "c;
+                    l;
+                    m; mode
+                    e; ext i; int
+                    s; t; u; S;
+                    v; d; 4; 6;" "$@"; do
+      case $OPTOPT in
+        "c") echo $commit_mode; exit 0 ;;
+        "l") echo $log_mode; exit 0 ;;
+        "m"|"mode") echo $mode; exit 0 ;;
+        "e"|"ext")  show_external_ifaces; exit 0 ;;
+        "i"|"int")  show_internal_ifaces; exit 0 ;;
+        s) echo "$opened_services"   | tr -s ';, ' '\n'; exit 0 ;;
+        t) echo "$opened_tcp_ports"  | tr -s ';, ' '\n'; exit 0 ;;
+        u) echo "$opened_udp_ports"  | tr -s ';, ' '\n'; exit 0 ;;
+      esac
+    done
+    show_settings
+  ;;
+  list)
+    list_services
+  ;;
+
+  bl)
+    bl_action=
+    shell_get_nonopt bl_action $@
+    shift "$((OPTIND))" ||:
+    case "$bl_action" in
+      on)     bl_on    ; needcommit=1 ;;
+      off)    bl_off   ; needcommit=1 ;;
+      status) bl_status ;;
+      clear)  bl_clear ; needcommit=1 ;;
+      list)   bl_list   ;;
+      add)    bl_add $@; needcommit=1 ;;
+      del)    bl_del $@; needcommit=1 ;;
+      *)      bl_help   ;;
+    esac
+  ;;
+
+  ulog)
+    ulog_action=
+    shell_get_nonopt ulog_action $@
+    shift "$((OPTIND))" ||:
+    case "$ulog_action" in
+      on)     ulog_on    ; needcommit=1 ;;
+      off)    ulog_off   ; needcommit=1 ;;
+      status) ulog_status ;;
+      *)      ulog_help   ;;
+    esac
+  ;;
+
+  pr)
+    [ "$ipv" != 6 ] || fatal "Error: Can't be used with ip6tables"
+    pr_action=
+    shell_get_nonopt pr_action $@
+    shift "$((OPTIND))" ||:
+    case "$pr_action" in
+      on)     pr_on    ; needcommit=1 ;;
+      off)    pr_off   ; needcommit=1 ;;
+      status) pr_status ;;
+      clear)  pr_clear ; needcommit=1 ;;
+      list)   pr_list   ;;
+      add)    pr_add $@; needcommit=1 ;;
+      del)    pr_del $@; needcommit=1 ;;
+      *)      pr_help   ;;
+    esac
+  ;;
+
+  dnat)
+    [ "$ipv" != 6 ] || fatal "Error: Can't be used with ip6tables"
+    dnat_action=
+    shell_get_nonopt dnat_action $@
+    shift "$((OPTIND))" ||:
+    case "$dnat_action" in
+      on)     dnat_on    ; needcommit=1 ;;
+      off)    dnat_off   ; needcommit=1 ;;
+      status) dnat_status ;;
+      clear)  dnat_clear ; needcommit=1 ;;
+      list)   dnat_list   ;;
+      add)    dnat_add $@; needcommit=1 ;;
+      del)    dnat_del $@; needcommit=1 ;;
+      *)      dnat_help   ;;
+    esac
+  ;;
+
+  ir)
+    ir_action=
+    shell_get_nonopt ir_action $@
+    shift "$((OPTIND))" ||:
+
+    case "$ir_action" in
+      on)     ir_on     ; needcommit=1 ;;
+      off)    ir_off    ; needcommit=1 ;;
+      status) ir_status  ;;
+      clear)  ir_clear  ; needcommit=1 ;;
+      list)   ir_list    ;;
+      show)   ir_show $@ ;;
+      add)    ir_add $@ ; needcommit=1 ;;
+      del)    ir_del $@ ; needcommit=1 ;;
+      *)      ir_help    ;;
+    esac
+  ;;
+
+  *) print_help ;;
+esac
+
+if [ "$dontcommit" = 1 ]; then
+  verbose "don't commit settings to system"
+  needcommit=
+fi
+if [ "$commit_mode" = "off" ]; then
+  verbose "don't commit settings to system (commit_mode is \"off\")"
+  needcommit=
+fi
+if [ "$needcommit" = 1 ]; then commit_settings; fi

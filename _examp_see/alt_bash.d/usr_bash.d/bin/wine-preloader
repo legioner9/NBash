@@ -1,0 +1,16 @@
+#!/bin/sh -e
+
+winepreloader32=/usr/lib/wine/wine-preloader
+winepreloader64=/usr/lib/wine/wine64-preloader
+
+if test -x "$winepreloader64"; then
+    winepreloader=$winepreloader64
+elif test -x "$winepreloader32"; then
+    winepreloader=$winepreloader32
+else
+    echo "error: unable to find winepreloader executable." >&2
+    echo "wine and/or i586-wine must be installed." >&2
+    exit 1
+fi
+
+exec $winepreloader "$@"

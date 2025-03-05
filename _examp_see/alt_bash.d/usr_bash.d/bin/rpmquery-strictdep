@@ -1,0 +1,43 @@
+#!/bin/sh -efuC
+
+. shell-error
+
+NEVR="$(rpmquery "$@" --qf '%{NAME} = %|EPOCH?{%{EPOCH}:}|%{VERSION}-%{RELEASE}\n')"
+readonly NEVR
+
+case "$NEVR" in
+	*$'\n'*) fatal 'Only one package should be queried.'
+		  ;;
+esac
+
+DISTTAG="$(rpmquery "$@" --qf '%|DISTTAG?{%{DISTTAG}}|\n')"
+readonly DISTTAG
+
+PROVIDES="$(rpmquery "$@" --provides)"
+readonly PROVIDES
+
+if [ -n "$DISTTAG" ]; then
+	# We are going to use sed as grep -m 1,
+	# because we have handy quoting functions for sed already.
+	. shell-quote
+	quote_sed_regexp_variable NEVR_regex "$NEVR"
+	readonly NEVR_regex
+	quote_sed_regexp_variable DISTTAG_regex "$DISTTAG"
+	readonly DISTTAG_regex
+
+	# Allow some padding junk after the colon, before the disttag.
+	# (Non-empty padding may be inserted by some (future) releases of rpmbuild.)
+	printf '%s\n' "$PROVIDES" |
+		sed -ne "/^$NEVR_regex:.*$DISTTAG_regex\$/ { p;q; }; \$ q 1" && exit ||:
+fi
+
+# The deprecated format of a strict dep used by ALT's rpmbuild in autumn 2018:
+: ${allow_deps_with_beginning_dot="$(rpmbuild --eval '%{?_allow_deps_with_beginning_dot}' 2>/dev/null)"}
+if [ "$allow_deps_with_beginning_dot" == 1 ]; then
+	printf '%s\n' "$PROVIDES" | grep "^[.]" && exit ||:
+fi
+
+# We don't check here the simple format against PROVIDES,
+# because it must always work as a dependency.
+# If not, you are in trouble and you'll notice this because of this unmet dep.
+printf '%s\n' "$NEVR"

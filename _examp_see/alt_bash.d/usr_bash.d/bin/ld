@@ -1,0 +1,7 @@
+#!/bin/sh -efu
+
+if [ -n "${LD_FLAVOUR-}" ]; then
+	exec -a "${0##*/}.$LD_FLAVOUR" "$0.$LD_FLAVOUR" "$@"
+else
+	exec -a "${0##*/}" "$0.default" "$@"
+fi

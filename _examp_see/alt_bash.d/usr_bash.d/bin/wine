@@ -1,0 +1,36 @@
+#!/bin/sh -e
+
+wine32=/usr/lib/wine/wine
+wine64=/usr/lib/wine/wine64
+
+wine32_hint () {
+    local winepkgname="wine"
+    if [ "$(rpm --eval %_arch)" = "x86_64" ] ; then
+        winepkgname="i586-wine"
+    fi
+
+    echo "it looks like ${winepkgname} is missing, you should install it."
+    echo "as root, please execute \"apt-get install ${winepkgname}\""
+}
+
+if test -x $wine32; then
+    wine=$wine32
+elif test -x $wine64; then
+    wine=$wine64
+    if test -z "$WINELOADER"; then
+        export WINELOADER=$wine64
+    fi
+    case "x$WINEDEBUG" in
+        x-all*|x*,-all*|x*err-all*)
+            ;;
+        *)
+            wine32_hint >&2
+            ;;
+    esac
+else
+    echo "error: unable to find wine executable.  this shouldn't happen." >&2
+    wine32_hint >&2
+    exit 1
+fi
+
+exec $wine "$@"

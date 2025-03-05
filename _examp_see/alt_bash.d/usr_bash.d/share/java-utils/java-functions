@@ -1,0 +1,428 @@
+# Functions library for Java applications.                           -*- sh -*-
+#
+# Copyright (c) 2012-2014, Red Hat, Inc
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the
+#    distribution.
+# 3. Neither the name of Red Hat nor the names of its
+#    contributors may be used to endorse or promote products derived
+#    from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+# OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Fedora Project <http://www.fedoraproject.org/>
+#   Mikolaj Izdebski <mizdebsk@redhat.com>
+#
+# JPackage Project <http://www.jpackage.org/>
+#   Guillaume Rousse <guillomovitch@sourceforge.net>
+#   Ville Skyttä <scop at jpackage.org>
+#   David Walluck <david@jpackage.org>
+#   Nicolas Mailhot <Nicolas.Mailhot at laPoste.net>
+
+
+_log()
+{
+    if [ -n "${JAVAPACKAGES_DEBUG}" ]; then
+	echo "${0}: ${@}" >&2
+    fi
+}
+
+_err()
+{
+    echo "${0}: ${@}" >&2
+}
+
+# Load a single Java configuration file.
+_load_java_conf_file()
+{
+    local IFS
+    local JAVA_LIBDIR
+    local JNI_LIBDIR
+
+    if [ -f "${1}" ]; then
+	_log "Loading config file: ${1}"
+	. "${1}"
+
+	_javadirs="${_javadirs}${_javadirs:+:}${JAVA_LIBDIR}:${JNI_LIBDIR}"
+    else
+	_log "Skipping config file ${1}: file does not exist"
+    fi
+}
+
+# Load system and user Java configuration.
+_load_java_conf()
+{
+    local IFS=:
+    local java_home_save="${JAVA_HOME}"
+    local java_opts_save="${JAVACMD_OPTS}"
+    local javaconfdir
+    local conf
+
+    unset _javadirs
+
+    set -- ${JAVACONFDIRS:-/etc/java}
+
+    _log "Java config directories are:"
+    for javaconfdir; do
+	_log "  * ${javaconfdir}"
+    done
+
+    for javaconfdir; do
+	conf="${javaconfdir}/java.conf"
+	if [ ! -f "${conf}" ]; then
+	    _err "Java configuration directory ${javaconfdir} was ignored because configuration file ${conf} does not exist"
+	else
+	    _load_java_conf_file "${conf}"
+	fi
+    done
+
+    _load_java_conf_file "${HOME}/.java/java.conf"
+
+    _javadirs=${_javadirs:-/usr/share/java:/usr/lib/java}
+
+    if [ -d "${java_home_save}" ]; then
+	JAVA_HOME="${java_home_save}"
+    fi
+    if [ -n "${java_opts_save}" ]; then
+	JAVACMD_OPTS="${java_opts_save}"
+    fi
+
+    if [ "_${JAVA_ABRT}" != "_off" -a -f "/usr/lib/abrt-java-connector/libabrt-java-connector.so" ]; then
+        if [ -f "/var/run/abrt/abrtd.pid" ]; then
+            ABRT_JAVA_CONNECTOR_OPTS="abrt=on,"
+        fi
+        if [ -f "/usr/bin/container-exception-logger" ]; then
+            ABRT_JAVA_CONNECTOR_OPTS+="cel=on"
+        fi
+        if [ ! -z ${ABRT_JAVA_CONNECTOR_OPTS} ]; then
+            _log "ABRT Java connector was enabled"
+            _log "Using ABRT Java agent: /usr/lib/abrt-java-connector/libabrt-java-connector.so=${ABRT_JAVA_CONNECTOR_OPTS}"
+            JAVACMD_OPTS="${JAVACMD_OPTS} -agentpath:/usr/lib/abrt-java-connector/libabrt-java-connector.so=${ABRT_JAVA_CONNECTOR_OPTS}"
+        fi
+    else
+        _log "ABRT Java connector is disabled"
+    fi
+}
+
+
+# Test default JRE/JVM roots if nothing is defined yet
+_set_java_home()
+{
+    local IFS=:
+    local jvmdir
+
+    if [ -n "${JAVA_HOME}" ]; then
+        return
+    fi
+
+    case "${_prefer_jre}" in
+        1|[Yy][Ee][Ss]|[Tt][Rr][Uu][Ee])
+            dirs="/usr/lib/jvm/jre-11-openjdk:/usr/lib/jvm/java-11-openjdk"
+            ;;
+        *)
+            dirs="/usr/lib/jvm/java-11-openjdk:/usr/lib/jvm/jre-11-openjdk"
+            ;;
+    esac
+
+    for JAVA_HOME in $dirs; do
+        if [ -d "${JAVA_HOME}" ]; then
+            _log "Using configured JAVA_HOME: ${JAVA_HOME}"
+            return
+        fi
+    done
+
+    unset JAVA_HOME
+}
+
+# Set the java virtual machine
+set_jvm()
+{
+    local IFS=:
+    local javaconfdirs
+
+    _set_java_home
+
+    if [ -z "${JAVA_HOME}" ]; then
+        javaconfdirs="${JAVACONFDIRS:-/etc/java}"
+        _err "JAVA_HOME is not set and default java installation was not found. JAVA_HOME for system applications can be set in java.conf in ${javaconfdirs}"
+        exit 1
+    fi
+
+    return 0
+}
+
+# Set the classpath
+set_classpath()
+{
+    local IFS
+
+    _set_java_home
+
+    # get local classpath first
+    set -- "${@}" ${ADDITIONAL_JARS}
+    LOCAL_CLASSPATH=$("/usr/bin/build-classpath" "${@}")
+
+    # append original classpath if defined
+    CLASSPATH="${LOCAL_CLASSPATH}${CLASSPATH:+:}${CLASSPATH}"
+}
+
+set_javacmd()
+{
+    local IFS
+    local cmd
+
+    if [ -x "${JAVACMD}" ]; then
+	return
+    fi
+
+    set_jvm
+
+    # Add all sorts of jvm layouts here
+    for cmd in jre/sh/java bin/java; do
+	JAVACMD="${JAVA_HOME}/${cmd}"
+	if [ -x "${JAVACMD}" ]; then
+	    _log "Using configured JAVACMD: $JAVACMD"
+	    if [ -n "${JAVACMD_OPTS}" ]; then
+		_log "Using java-wrapper with extra options: ${JAVACMD_OPTS}"
+		export _JP_JAVACMD="${JAVACMD}"
+		export _JP_JAVACMD_OPTS="${JAVACMD_OPTS}"
+		JAVACMD="/usr/share/java-utils/java-wrapper"
+	    fi
+	    return 0
+	fi
+    done
+
+    JAVACMD=$(which java 2>/dev/null || :)
+    if [ -x "${JAVACMD}" ]; then
+	_log "Using JAVACMD from PATH: $JAVACMD"
+	if [ -n "${JAVACMD_OPTS}" ]; then
+	    _log "Using java-wrapper with extra options: ${JAVACMD_OPTS}"
+	    export _JP_JAVACMD="${JAVACMD}"
+	    export _JP_JAVACMD_OPTS="${JAVACMD_OPTS}"
+	    JAVACMD="/usr/share/java-utils/java-wrapper"
+	fi
+	return 0
+    fi
+
+    _err "Failed to set JAVACMD"
+    return 1
+}
+
+# Set flags
+set_flags()
+{
+    FLAGS=""
+    set -- "${@}" ${ADDITIONAL_FLAGS}
+    while [ $# -gt 0 ]; do
+	FLAGS="${FLAGS}${FLAGS:+ }'$(echo "$1"|sed "s#[']#'\\\\''#g")'"
+	shift
+    done
+}
+
+# Set options
+set_options()
+{
+    OPTIONS=""
+    set -- "${@}" ${ADDITIONAL_OPTIONS}
+    while [ $# -gt 0 ]; do
+	OPTIONS="${OPTIONS}${OPTIONS:+ }'$(echo "$1"|sed "s#[']#'\\\\''#g")'"
+	shift
+    done
+}
+
+# Run application
+jvm_run()
+{
+    set_javacmd
+
+    if [ -n "${VERBOSE}" ]; then
+	echo "Java virtual machine used: ${JAVACMD}"
+	echo "classpath used: ${CLASSPATH}"
+	echo "main class used: ${MAIN_CLASS}"
+	echo "flags used: ${FLAGS}"
+	echo "options used: ${OPTIONS}"
+	echo "arguments used: ${@}"
+    fi
+
+    # let's start
+    eval "exec \"\${JAVACMD}\" ${FLAGS} -classpath \"\${CLASSPATH}\" ${OPTIONS} \"\${MAIN_CLASS}\" \"\${@}\""
+}
+run()
+{
+    jvm_run "${@}"
+}
+
+# Set JVM-related directories
+set_jvm_dirs()
+{
+    _set_java_home
+
+    return 0
+}
+
+
+# Links a jar repository
+link_jar_repository() {
+
+   unset repository
+   unset extension_list
+
+   unset _LINK_CMD
+   unset _PRESERVE_NAMING
+
+   while [ $# -gt 0 ] ; do
+      case "$1" in
+         -h|--hard)
+            _LINK_CMD="ln -fL"
+            ;;
+         -s|--soft|--symbolic)
+            _LINK_CMD="ln -fs"
+            ;;
+         -c|--copy)
+            _LINK_CMD="cp -f"
+            ;;
+         -p|--preserve-naming)
+            _PRESERVE_NAMING="true"
+            [ -z "$_LINK_CMD" ] && _LINK_CMD="cp -f"
+            ;;
+         --|-)
+            break
+            ;;
+         *)
+            if [ -z "$repository" ] ; then
+               repository=$1
+               if ! [ -d "$repository" -a -w "$repository" ] ; then
+                  _err "$1 must be a writable directory"
+                  exit 1
+               fi
+            else
+               extension_list="$extension_list $1"
+            fi
+            ;;
+      esac
+      shift
+   done
+
+   [ -z "$_LINK_CMD" ] && _LINK_CMD="ln -fs"
+   extension_list="$extension_list $@"
+
+   pushd $repository > /dev/null
+      _ALLFOUND=0
+      for extension in $extension_list ; do
+         extension=$(echo $extension | sed 's+/$++g' | sed 's+\.jar$++g')
+         found_extension=$(find_jar $extension)
+         found=$?
+         [ -z "$_PRESERVE_NAMING" ] \
+            && extension=[$(echo $extension | sed 's+/+][+g')] \
+            || extension=$(echo $extension | sed 's+/+_+g')
+        extension=$(echo "$extension" | sed 's+:+@+')
+         if [ $found -eq 0 ] ; then
+            if [ -d "$found_extension" ] ; then
+               for jar in $(find "$found_extension" -follow -name "*.jar") ; do
+                  rm -fr "$extension$(basename $jar)"
+                  $_LINK_CMD $jar "$extension$(basename $jar)"
+               done
+            else
+               rm -fr $extension.jar
+               $_LINK_CMD $found_extension $extension.jar
+            fi
+         else
+            # Defer failure to get list of all errors in one shot
+            # Do create a symlink so we can recover with another jvm
+            rm -fr $extension.jar
+            ln -fs /could/not/find/extension/for/this/jvm $extension.jar
+            _ALLFOUND=1
+         fi
+      done
+   popd > /dev/null
+   return $_ALLFOUND
+}
+
+
+# Finds a specific extention (jar or directory)
+find_jar()
+{
+    local IFS=:
+    local artifact="${1}"
+    local cmd=$(which xmvn-resolve 2>/dev/null || :)
+
+    # If artifact contains semicolon then assume it specifies Maven
+    # artifact coordinates.
+    set -- ${artifact}
+    if [ ${#} -gt 1 ]; then
+	if [ -z "${cmd}" ]; then
+            echo "${0}: Unable to find xmvn-resolve." >&2
+            echo "${0}: Make sure that xmvn-resolve package is installed." >&2
+            return 1
+	fi
+	_log "Using xmvn-resolve: ${cmd}"
+
+	"${cmd}" -c "${artifact}"
+	return ${?}
+    fi
+
+    set -- ${_javaverdirs} ${_javadirs}
+
+    _log "JAR search path is:"
+    for dir; do
+	_log "  * ${dir}"
+    done
+
+    for artifact in ${artifact%.jar} ${artifact%-*} ${artifact%/*}; do
+	for dir; do
+	    _log "Trying file ${dir}/${artifact}.jar"
+	    if [ -r "${dir}/${artifact}.jar" ]; then
+		echo "${dir}/${artifact}.jar"
+		return 0
+	    fi
+	    _log "Trying dir  ${dir}/${artifact}/"
+	    if [ -d "${dir}/${artifact}" ]; then
+		echo "${dir}/${artifact}"
+		return 0
+	    fi
+	done
+    done
+
+    _err "Could not find ${artifact} Java extension for this JVM"
+    return 1
+}
+
+
+## Checks java environment
+check_java_env()
+{
+    # This is usually set by set_jvm
+    if [ -z "${JAVA_HOME}" ]; then
+	_err "JAVA_HOME must be set"
+	return 1
+    fi
+
+    if [ -z "${JAVACMD}" ]; then
+	_err "JAVACMD must be set"
+	return 2
+    fi
+
+    return 0
+}
+
+
+_load_java_conf

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+NAME="$1" && shift
+VAR="$1" && shift
+
+unset $VAR
+
+. "${SCRIPTDIR:=/etc/net/scripts}/functions"
+pickup_defaults
+if [ -d "$IFACEDIR/$NAME@$NETHOST" ]; then
+	MYIFACEDIR="$IFACEDIR/$NAME@$NETHOST"
+else
+	MYIFACEDIR="$IFACEDIR/$NAME"
+fi
+
+[ -d "$MYIFACEDIR" ] || {
+	print_error "interface configuration directory '$MYIFACEDIR' not found"
+	exit 1
+}
+export MYIFACEDIR NETPROFILE
+
+init_netprofile
+pickup_options
+
+eval "echo \"\$$VAR\""

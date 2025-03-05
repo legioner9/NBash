@@ -1,0 +1,34 @@
+#!/bin/sh
+# Script for launching KDE5 applications from outside of the KDE5 desktop
+
+if [ "$KDE_SESSION_VERSION" != "5" ] ; then
+
+    OLD_PATH=$PATH
+    PATH=`echo "$PATH" | sed "s|$HOME/bin|$HOME/bin:/usr/lib/kf5/bin|"`
+    [ "$PATH" != "$OLD_PATH" ] || PATH="/usr/lib/kf5/bin:$PATH"
+    export PATH
+
+    export LIBEXEC_PATH="/usr/libexec/kf5:/usr/libexec"
+
+    if [ -n "$XDG_DATA_DIRS" ] ; then
+	export XDG_DATA_DIRS="/usr/share/kf5:$XDG_DATA_DIRS"
+    else
+	export XDG_DATA_DIRS="/usr/share/kf5:/usr/share"
+    fi
+
+    if [ -n "$XDG_CONFIG_DIRS" ] ; then
+	export XDG_CONFIG_DIRS="/etc/kf5/xdg:$XDG_CONFIG_DIRS"
+    else
+	export XDG_CONFIG_DIRS="/etc/kf5/xdg:/etc/xdg"
+    fi
+
+#    if [ -n "$DBUS_SESSION_BUS_PID" ] ; then
+#	unset DBUS_SESSION_BUS_PID DBUS_SESSION_BUS_ADDRESS
+#	eval `dbus-launch --sh-syntax --exit-with-session`
+#	[ -z "$DBUS_SESSION_BUS_PID" ] || export DBUS_SESSION_BUS_PID
+#    fi
+#    qdbus-qt5 >/dev/null 2>/dev/null
+
+fi
+
+[ -z "${*}" ] || exec "${@}"

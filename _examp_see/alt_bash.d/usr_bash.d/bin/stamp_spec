@@ -1,0 +1,99 @@
+#!/bin/sh -e
+#
+# Copyright (C) 2000-2005, 2011  Dmitry V. Levin <ldv@altlinux.org>
+#
+# Generates timestamp for rpm specfile changelog entry.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+
+PROG=stamp_spec
+
+. shell-error
+. shell-quote
+
+trap '' PIPE
+
+RPM=rpm
+RPMARG=
+FORMAT=
+
+USAGE()
+{
+	[ "$1" = 0 ] || exec >&2
+	cat <<EOF
+stamp_spec - generates timestamp for rpm specfile changelog entry.
+
+stamp_spec is free software, covered by the GNU General Public License.
+stamp_spec comes with ABSOLUTELY NO WARRANTY, see license for details.
+
+Usage: $PROG [options] <specfile> [ <specfile>]*
+
+Valid options are:
+-r RPM, --rpm=RPM                       RPM executable;
+-a args, --args=args                    arguments for RPM;
+-f format, --format=format              alternative query format for RPM;
+-h, --help                              show this text.
+
+Configured RPM executable is $RPM.
+EOF
+	[ -n "$1" ] && exit "$1" || exit
+}
+
+TEMP=`getopt -n $PROG -o a:f:r:h -l args:,format:,rpm:,help -- "$@"` || USAGE
+eval set -- "$TEMP"
+
+while :; do
+	case "$1" in
+		-a|--args) shift; RPMARG="$1"; shift
+			;;
+		-f|--format) shift; FORMAT="$1"; shift
+			;;
+		-r|--rpm) shift; RPM="$1"; shift
+			;;
+		-h|--help) USAGE 0
+			;;
+		--) shift; break
+			;;
+		*) echo "$PROG: unrecognized option: $1" >&2; exit 1
+			;;
+	esac
+done
+
+[ -n "$*" ] || USAGE
+
+quote_shell_variable RPM "$RPM"
+p="$(eval "\"$RPM\"" --eval %packager)"
+if [ "$p" = '%packager' ]; then
+	echo 'Configuration error: undefined packager' >&2
+	exit 1
+fi
+d=$(LC_TIME=C date '+%a %b %d %Y')
+n='%|SERIAL?{%{SERIAL}:}|%{VERSION}-%{RELEASE}'
+if [ -n "$FORMAT" ]; then
+	qf="$(printf %s "$FORMAT" |sed "s/\$d/$d/g;s/\$p/$p/g;s/\$n/$n/g")"
+else
+	qf="* $d $p $n\n"
+fi
+
+[ -z "$RPMARG" ] ||
+	quote_shell_args RPMARG "$RPMARG"
+RPMARG="$RPMARG -q --qf \"$(quote_shell "$qf")\""
+
+for spec; do
+	quote_shell_variable spec "$spec"
+	eval "\"$RPM\" $RPMARG --specfile \"$spec\"" |
+		head -1
+done

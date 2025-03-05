@@ -1,0 +1,236 @@
+#!/bin/sh -e
+#
+# $Id: sisyphus_cleanup_dups,v 1.11 2005/07/01 14:59:29 ldv Exp $
+#
+# Copyright (C) 2003-2005  Stanislav Ievlev <inger@altlinux.org>,
+#                          Dmitry V. Levin <ldv@altlinux.org>,
+#                          Alexey Gladkov <legion@altlinux.org>
+# 
+# sisyphus_cleanup_dups script.
+#
+# This file is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA.
+#
+
+. /etc/sisyphus/config
+. /etc/sisyphus/functions
+
+TEST=
+force_yes=
+dereference=1
+
+show_help()
+{
+	cat <<EOF
+Usage: $PROG [options]
+
+Valid options are:
+  -p, --prefix=DIR          path to repository location;
+  -a, --architectures=LIST  architectures to handle;
+  -f, --force-yes           force yes answer;
+  -P, --no-dereference      do not dereference symbolic links;
+  -d, --dry-run             dry run;
+  -h, --help                show this text and exit.
+EOF
+	exit
+}
+
+show_usage()
+{
+	[ -z "$*" ] || Info "$*"
+	echo "Try \`$PROG --help' for more information." >&2
+	exit 1
+}
+
+process_dups()
+{
+	local rep arch
+	rep="$1" && shift || Fatal "first argument required"
+	arch="$1" && shift || Fatal "second argument required"
+
+	mkdir -p -m700 -- "$WORKDIR/$rep"
+	echo -n "Processing $rep: "
+	pushd "$PREFIX/$NEW_FILE_PREFIX/$rep"  >/dev/null
+	for n in `ls -1 |grep ".$arch.rpm\$" |cut -c1 |LC_COLLATE=C sort -u`; do
+		printf %s "$n"
+		rpmrdups "$n"*.$arch.rpm >> "$WORKDIR/$rep/dups"
+	done
+	popd >/dev/null
+	echo
+}
+
+sources_index() {
+	local arch n rc=1
+	>"$WORKDIR/src-arch"
+	for arch in $ARCHITECTURES; do
+		echo -n "Generating SRPMS-$arch list: "
+		pushd "$PREFIX/$NEW_FILE_PREFIX/$arch/RPMS"  >/dev/null
+		for n in `ls -1 |grep ".$arch.rpm\$" |cut -c1 |LC_COLLATE=C sort -u`; do
+			printf %s "$n"
+			rpmquery -p --qf '%{SOURCERPM}\t%{ARCH}\n' --  "$n"*.$arch.rpm >>"$WORKDIR/src-arch"
+		done
+		popd >/dev/null
+		echo
+		rc=0
+	done
+	[ ! -s "$WORKDIR/src-arch" ] || sort -u -o "$WORKDIR/src-arch" "$WORKDIR/src-arch"
+	return $rc
+}
+
+correct_dups() {
+	local rep="$1" && shift || Fatal "first argument required"
+	local n f fn
+	>"$WORKDIR/$rep/needremove"
+	cut -d\  -f2- -- "$WORKDIR/$rep/dups" | tr \  \\n |
+	while read f; do
+		fn="${f##*/}"
+		[ -f "$PREFIX/$NEW_FILE_PREFIX/$rep/$fn" ] || continue
+		grep --mmap -qsF "$fn" "$WORKDIR/src-arch" &&
+			printf %s\\n "Package retained: $fn" || 
+			printf '%s\n' "$f" >> "$WORKDIR/$rep/needremove"
+	done
+}
+
+confirm_cleanup() {
+	local REPLY
+	while :; do
+		echo "Really purge files listed above? (yes/no)"
+		read
+		if [ "$REPLY" = no ]; then
+			echo Cancelled!
+			return 1
+		fi
+		if [ "$REPLY" = yes ]; then
+			break
+		fi
+	done
+	return 0
+}
+
+repos_cleanup() {
+	local type="$1" && shift || Fatal "first argument required"
+	[ "$#" -gt 0 ] || return 1
+	local rep
+
+	for rep in $*; do
+		[ -s "$WORKDIR/$rep/dups" ] || continue
+
+		echo "Duplicated files found in \"$rep\" repository:"
+		cat -- "$WORKDIR/$rep/dups"
+		echo
+
+		if [ "$type" = "bin" ]; then
+			cut -d\  -f2- -- "$WORKDIR/$rep/dups" | tr \  \\n | sort -u > "$WORKDIR/$rep/needremove"
+		elif [ "$type" = "src" ]; then
+			correct_dups "$rep"
+		fi
+
+		[ -s "$WORKDIR/$rep/needremove" ] || continue
+
+		pushd "$PREFIX/$NEW_FILE_PREFIX/$rep" >/dev/null
+		if [ -z "$force_yes" ]; then
+			cat -- "$WORKDIR/$rep/needremove" |
+			    xargs -r ls -Llt --
+			confirm_cleanup || continue
+		fi
+
+		if [ -n "$dereference" ]; then
+			cat -- "$WORKDIR/$rep/needremove" |
+			    xargs -r realpath |
+			    xargs -r $TEST rm -v --
+		else
+			cat -- "$WORKDIR/$rep/needremove" |
+			    xargs -r $TEST rm -v --
+		fi
+		popd >/dev/null
+	done
+}
+
+remove_unused() {
+	echo  "Removeing unused src: "
+
+	pushd "$PREFIX/$NEW_FILE_PREFIX/SRPMS" >/dev/null
+
+	find ! -name 'altlinux-release-*src\.rpm' -name \*.src.rpm |
+	    cut -d/ -f2- |
+	    sort -u >"$WORKDIR/src.present"
+
+	cut -f1 "$WORKDIR/src-arch" > "$WORKDIR/src.used"
+	sort -u "$WORKDIR/src.used" | join -v2 - "$WORKDIR/src.present" > "$WORKDIR/src-without-bin"
+
+	[ -s "$WORKDIR/src-without-bin" ] || return 0
+
+	echo "Unused source packages found in repository:"
+	cat "$WORKDIR/src-without-bin"
+	echo
+	confirm_cleanup || return 0
+	cat "$WORKDIR/src-without-bin" | xargs rm -vf --
+
+	popd >/dev/null
+}
+
+WORKDIR=
+exit_handler()
+{
+	local rc=$?
+	trap - EXIT
+	[ -z "$WORKDIR" ] || rm -rf -- "$WORKDIR"
+	exit $rc
+}
+
+TEMP=`getopt -n $PROG -o a:,f,h,p:,P,d -l architectures:,apt-config:,force-yes,help,no-dereference,prefix:,dry-run -- "$@"` || show_usage
+eval set -- "$TEMP"
+
+while :; do
+	case "$1" in
+		-a|--architectures) shift
+			ARCHITECTURES="$1"
+			;;
+		-p|--prefix) shift
+			PREFIX="$(readlink -ev "$1")"
+			;;
+		-f|--force-yes) force_yes=1
+			;;
+		-P|--no-dereference) dereference=
+			;;
+		-d|--dry-run) TEST=echo
+			;;
+		-h|--help) show_help
+			;;
+		--) shift; break
+			;;
+		*) Fatal "unrecognized option: $1"
+			;;
+	esac
+	shift
+done
+
+[ -n "$ARCHITECTURES" ] || Fatal 'Invalid ARCHITECTURES.'
+
+trap exit_handler HUP INT QUIT TERM EXIT
+WORKDIR="$(mktemp -dt "$PROG.XXXXXXXXXX")"
+
+echo 'Making dups in repositories...'
+
+reps_bin=
+for arch in $ARCHITECTURES; do
+	reps_bin="$reps_bin $arch/RPMS"
+	process_dups "$arch/RPMS" "$arch"
+done
+process_dups "SRPMS" "src"
+
+repos_cleanup bin $reps_bin
+sources_index
+repos_cleanup src "SRPMS"
+remove_unused

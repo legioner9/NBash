@@ -1,0 +1,31 @@
+#!/bin/sh -efu
+
+net_ip="${1%%/*}"
+net_len="${1##*/}"
+ext_ip1="$2"
+ext_ip2="$3"
+
+position=$((0xffffffff))
+[ "$net_len" -ge 1 -a "$net_len" -le 32 ] 2>/dev/null
+mask="$(( $position - ($position >> $net_len) ))"
+wildcard="$(( ~mask & $position))"
+
+OLD_IFS="$IFS"
+IFS=.
+set ${ext_ip1} ${ext_ip2}
+IFS="$OLD_IFS"
+
+#network
+n1="$(($mask >> 24 & $1 & 0xff))"
+n2="$(($mask >> 16 & $2 & 0xff))"
+n3="$(($mask >> 8 & $3 & 0xff))"
+n4="$(($mask & $4 & 0xff))"
+
+n5="$(($mask >> 24 & $5 & 0xff))"
+n6="$(($mask >> 16 & $6 & 0xff))"
+n7="$(($mask >> 8 & $7 & 0xff))"
+n8="$(($mask & $8 & 0xff))"
+
+[ "$n1.$n2.$n3.$n4" = "$net_ip" ] &&
+    [ "$n5.$n6.$n7.$n8" = "$net_ip" ] &&
+    [ "$1" -le "$5" -a "$2" -le "$6" -a "$3" -le "$7" -a "$4" -le "$8" ]

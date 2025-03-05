@@ -1,0 +1,16 @@
+#!/bin/sh -e
+
+if [ -n "$MUTT_FLAVOUR" ]; then
+        MUTT_FLAVOUR=$(echo $MUTT_FLAVOUR)
+elif [ -x "/usr/bin/${0##*/}-Maxi" ]; then
+	MUTT_FLAVOUR=Maxi
+elif [ -x "/usr/bin/${0##*/}-Mini" ]; then
+	MUTT_FLAVOUR=Mini
+elif [ -x "/usr/bin/${0##*/}-default" ]; then
+	MUTT_FLAVOUR=default
+elif [ -x "/usr/bin/${0##*/}-Nano" ]; then
+	MUTT_FLAVOUR=Nano
+fi
+
+exec "/usr/bin/${0##*/}-$MUTT_FLAVOUR" "$@"
+

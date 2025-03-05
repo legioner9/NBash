@@ -1,0 +1,39 @@
+#!/bin/sh -efu
+
+ip="${1%%/*}"
+len="${1##*/}"
+
+position=$((0xffffffff))
+[ "$len" -ge 1 -a "$len" -le 32 ] 2>/dev/null
+mask="$(( $position - ($position >> $len) ))"
+wildcard="$(( ~mask & $position))"
+
+IFS="."
+set  $ip
+
+#network
+n1="$(($mask >> 24 & $1 & 0xff))"
+n2="$(($mask >> 16 & $2 & 0xff))"
+n3="$(($mask >> 8 & $3 & 0xff))"
+n4="$(($mask & $4 & 0xff))"
+
+#broadcast
+b1="$(($wildcard >> 24 & 0xff | $1))"
+b2="$(($wildcard >> 16 & 0xff | $2))"
+b3="$(($wildcard >> 8 & 0xff | $3))"
+b4="$(($wildcard & 0xff | $4))"
+
+printf '%s.%s.%s.%s/%s' \
+    "$n1" "$n2" "$n3" "$n4" "$len"
+
+if [ "$len" -lt 31 ] ;then
+    printf '	%s.%s.%s.%s	%s.%s.%s.%s\n' \
+	"$n1" "$n2" "$n3" "$(( $n4 | 1 ))" \
+	"$b1" "$b2" "$b3" "$(( $b4 & 0xfe ))"
+elif [ "$len" -eq 31 ] ;then
+    printf '	%s.%s.%s.%s	%s.%s.%s.%s\n' \
+	"$n1" "$n2" "$n3" "$n4" \
+	"$b1" "$b2" "$b3" "$b4"
+else
+    printf '	%s	%s\n' "$ip" "$ip"
+fi

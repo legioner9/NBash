@@ -1,0 +1,31 @@
+#!/bin/sh
+# Unload requested services.
+
+. "${PM_FUNCTIONS}"
+
+stop_services()
+{
+	[ -z "$SUSPEND_SERVICES" ] && return $NA
+	for x in $SUSPEND_SERVICES ; do
+		stopservice $x
+	done
+	return 0
+}
+
+restart_services()
+{
+	for x in `echo $SUSPEND_SERVICES | tac -s " "` ; do
+		restartservice $x
+	done
+}
+
+case "$1" in
+	hibernate|suspend)
+		stop_services
+		;;
+	thaw|resume)
+		restart_services
+		;;
+	*) exit $NA
+		;;
+esac

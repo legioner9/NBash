@@ -1,0 +1,25 @@
+#!/bin/sh
+# Log some extra information at the beginning of a suspend/resume cycle.
+# TODO: Make this hook only run when PM_DEBUG is true?
+
+. "${PM_FUNCTIONS}"
+
+case "$1" in
+        hibernate|suspend)
+		# Bump the loglevel so we see the progress bar.
+		# If the level is higher than needed, we leave it alone.
+		read loglevel dummy </proc/sys/kernel/printk
+		if [ $loglevel -lt 5 ]; then
+			echo $loglevel |savestate loglevel
+			echo 5 >/proc/sys/kernel/printk
+		fi
+		[ -n "$PM_LOGFILE" ] || exit 0
+		/bin/uname -a
+		lsmod
+		free
+		;;
+	thaw|resume)
+		state_exists loglevel || exit 0
+		restorestate loglevel >/proc/sys/kernel/printk
+		;;
+esac

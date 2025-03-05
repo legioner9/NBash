@@ -1,0 +1,17 @@
+#!/bin/bash
+
+NPROC=$(grep -c ^processor /proc/cpuinfo)
+[ $NPROC != 0 ] || NPROC=1
+
+modprobe -q zram num_devices=$NPROC
+
+MEMTOT=$(grep MemTotal /proc/meminfo | awk ' { print $2 * 1024 } ')
+MEMSIZE=$(($MEMTOT / 2 / $NPROC))
+
+for i in $(seq 0 $(($NPROC - 1)))
+do
+    grep -q lz4 /sys/block/zram$i/comp_algorithm && echo lz4 > /sys/block/zram$i/comp_algorithm
+    echo $MEMSIZE > /sys/block/zram$i/disksize
+    mkswap /dev/zram$i -L zram$i &>/dev/null
+    swapon -p 100 /dev/zram$i
+done

@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/lib64/LibreOffice-still/program/soffice --impress "$@"

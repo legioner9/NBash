@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# $Id: sisyphus_prepare,v 1.5 2005/07/01 18:40:26 ldv Exp $
+#
+# Copyright (C) 2003-2004  Stanislav Ievlev <inger@altlinux.org>,
+#                          Dmitry V. Levin <ldv@altlinux.org>,
+#                          Alexey Gladkov <legion@altlinux.org>
+# 
+# sisyphus_prepare script.
+#
+# This file is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA.
+#
+
+. /etc/sisyphus/config
+
+find "$PREFIX" -not -type l -print0 |
+	xargs -r0 chmod a+rX,go-w -- 2>/dev/null
+chgrp -R "$PERM_GROUP" -- "$PREFIX" 2>/dev/null
+chmod -R "$PERM_MODE" -- "$PREFIX" 2>/dev/null
+find "$PREFIX/files/$LIST_PREFIX" -type f -name list.\* -print0 |
+	xargs -r0 chmod g+w -- 2>/dev/null
+find "$PREFIX" -type d -print0 |
+	xargs -r0 chmod g+ws -- 2>/dev/null

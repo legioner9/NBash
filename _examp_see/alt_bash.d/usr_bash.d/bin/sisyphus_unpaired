@@ -1,0 +1,127 @@
+#!/bin/sh -e
+#
+# $Id: sisyphus_unpaired,v 1.2 2005/07/01 18:20:05 ldv Exp $
+#
+# Copyright (C) 2005  Dmitry V. Levin <ldv@altlinux.org>
+# 
+# sisyphus_unpaired script.
+#
+# This file is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA.
+#
+
+. /etc/sisyphus/config
+. /etc/sisyphus/functions
+
+show_help()
+{
+	cat <<EOF
+Usage: $PROG [options] <output-directory>
+
+Valid options are:
+  -a, --architectures=LIST  architectures to handle;
+  -p, --prefix=DIR          path to repository location;
+  -s, --save-index          generate index file;
+  -q, --quiet               try to be more quiet;
+  -v, --verbose             try to be more verbose;
+  -h, --help                show this text and exit.
+EOF
+	exit
+}
+
+show_usage()
+{
+	[ -z "$*" ] || Info "$*"
+	echo "Try \`$PROG --help' for more information." >&2
+	exit 1
+}
+
+WORKDIR=
+exit_handler()
+{
+	local rc=$?
+	trap - EXIT
+	[ -z "$WORKDIR" ] || rm -rf -- "$WORKDIR"
+	exit $rc
+}
+
+DATADIR=
+verbose=
+save_index=
+TEMP=`getopt -n $PROG -o a:,p:,s,h,q,v -l architectures:,prefix:,save-index,help,quiet,verbose -- "$@"` || show_usage
+eval set -- "$TEMP"
+
+while :; do
+	case $1 in
+		-a|--architectures) shift
+			ARCHITECTURES="$1"
+			;;
+		-p| --prefix) shift
+			PREFIX="$(readlink -ev "$1")"
+			;;
+		-s|--save-index) save_index=1
+			;;
+		-q|--quiet) verbose=
+			;;
+		-v|--verbose) verbose=-v
+			;;
+		-h|--help) show_help
+			;;
+		--) shift; break
+			;;
+		*) Fatal "unrecognized option: $1"
+			;;
+	esac
+	shift
+done
+
+# Exactly one argument, please.
+[ "$#" -ge 1 ] || show_usage 'Insufficient arguments.'
+[ "$#" -le 1 ] || show_usage 'Too many arguments.'
+
+DATADIR="$(readlink -ev "$1")"
+
+cd "$PREFIX"
+
+trap exit_handler HUP INT QUIT TERM EXIT
+WORKDIR="$(mktemp -dt "$PROG.XXXXXXXXXX")"
+
+> "$WORKDIR/src-bin"
+for a in $ARCHITECTURES; do
+	[ -z "$verbose" ] || echo -n "Processing $a: "
+	pushd "$NEW_FILE_PREFIX/$a/RPMS" >/dev/null
+	for n in `ls -1 |grep ".$arch.rpm\$" |cut -c1 |LC_COLLATE=C sort -u`; do
+		[ -z "$verbose" ] || printf %s "$n"
+		rpmquery -p --qf '%{SOURCERPM}\t%{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}.rpm\n' "$n"*.rpm >>"$WORKDIR/src-bin"
+	done
+	popd >/dev/null
+	[ -z "$verbose" ] || echo
+done
+subst '/^altlinux-release-.*src.rpm/d' "$WORKDIR/src-bin" 
+sort -u -o "$WORKDIR/src-bin" "$WORKDIR/src-bin"
+
+pushd "$NEW_SRC_REPOSITORIES" >/dev/null
+find ! -name 'altlinux-release-*src\.rpm' -name \*.src.rpm |
+	cut -d/ -f2- |
+	sort -u >"$WORKDIR/src.present"
+popd >/dev/null
+
+cut -f1 $WORKDIR/src-bin |sort -u >"$WORKDIR/src.used"
+
+cd "$DATADIR"
+cat "$WORKDIR/src.used" | join -v2 - "$WORKDIR/src.present"	   >src-without-bin
+cat "$WORKDIR/src.used" | join -v1 - "$WORKDIR/src.present"	   >src-not-existent
+cat "$WORKDIR/src-bin"  | join -v1 -o 1.2 - "$WORKDIR/src.present" >bin-without-src
+
+[ -z "$save_index" ] || sort -o src-bin.index "$WORKDIR/src-bin"

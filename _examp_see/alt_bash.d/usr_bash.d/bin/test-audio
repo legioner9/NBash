@@ -1,0 +1,67 @@
+#!/bin/sh
+
+warn() {
+  echo >&2 "$0:" "$@"; return 1
+}
+
+fatal() {
+  warn "$@"; exit 1
+}
+
+usage() {
+  cat <<EOUsage
+  $0: @summary@
+
+Options:
+    -a backend1[,backend2...]		backends to test; default: 'alsa'
+    -i	record from sources
+    -o	playback to sinks
+EOUsage
+}
+
+tool_is_available() {
+  # We trick ALT shell script findreq not to pull utilities as package deps.
+  tia_t=$1
+  if type -ap "$tia_t" >/dev/null 2>&1; then return; fi
+  warn "The tool '$tia_t' is not installed."
+}
+
+APLAY=aplay
+ARECORD=arecord
+PAPLAY=paplay
+PARECORD=parecord
+
+# reuse defaults from test-audio 0.1
+act=playback
+backends=alsa
+while getopts 'a:io' Opt; do case "$Opt" in
+a) backends="$OPTARG" ;;
+i) act=record ;;
+o) act=playback ;;
+*) usage ;;
+esac done; shift $(($OPTIND-1))
+
+while [ -n "$backends" ]; do
+  # comma-separated list.
+  b="${backends%%,*}"
+  backends="${backends#$b}"
+  backends="${backends#,}"
+
+  case $b in
+  a|alsa) b=alsa ;;
+  pa|pulse) b=pulse ;;
+  pw) fatal "PipeWire native backend is not supported yet" ;;
+  *) fatal "Unknown backend: '$b'" ;;
+  esac
+
+  case $b,$act in
+  alsa,playback) tool_is_available $APLAY && $APLAY -v -Vmono /usr/share/sounds/alsa/Front_Center.wav ;;
+  alsa,record) tool_is_available $ARECORD && $ARECORD -v -Vmono /usr/share/sounds/alsa/Front_Center.wav ;;
+  pulse,playback) tool_is_available $PAPLAY && $PAPLAY -v /usr/share/sounds/alsa/Front_Center.wav ;;
+  pulse,record)
+    echo >&2 "$0:" "No known way to get visual feedback. Falling back to alsa."
+    tool_is_available $ARECORD && $ARECORD -v -Vmono /usr/share/sounds/alsa/Front_Center.wav
+    ;;
+  *,*) fatal "0_0 Unknown state: '$b','$act'. This is a bug" ;;
+  esac
+done

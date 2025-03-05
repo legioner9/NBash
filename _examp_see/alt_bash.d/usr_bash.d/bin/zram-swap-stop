@@ -1,0 +1,13 @@
+#!/bin/bash
+
+DEVZRAM=$(grep '^/dev/zram' /proc/swaps | awk '{ print $1 }')
+
+if [ -n "$DEVZRAM" ]
+then
+    for i in $DEVZRAM
+    do
+        swapoff "$i"
+    done
+
+    rmmod zram
+fi

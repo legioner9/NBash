@@ -1,0 +1,21 @@
+#!/bin/sh
+# wrapper script to force setup xterm with UTF-8 locale
+
+export -n name value
+
+for name in LANG LANGUAGE LC_ADDRESS LC_COLLATE LC_CTYPE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE LC_TIME; do
+	eval 'value=$'$name
+	if [ -n "$value" ]; then
+		case "$value" in
+		C|POSIX)
+			# Yes, I know this is not the same - but why are you
+			# here then?
+			value=en_US
+			;;
+		esac
+		eval ${name}=${value%.*}.UTF-8
+		eval export ${name}
+	fi
+done
+
+exec xterm -class UXTerm -u8 "$@"

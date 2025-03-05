@@ -1,0 +1,36 @@
+# Print device name of partition on specified disk with bootable flag set.
+# If there is no partitions marked as bootable on this disk - print ""
+
+get_bootable_flag(){
+	local disk=$1
+	local dev=
+	local boot=
+	local x=
+	/sbin/sfdisk -l 2>/dev/null | grep '^/dev' | \
+	while read dev boot x; do
+		[ "$boot" = "*" -a "${dev#$disk}" != "$dev" ] && echo $dev
+	done
+}
+
+# Set bootable flags of partitions for the bootloader on specified device.
+# - if device is a primary partition and there is no partitions
+#   marked as bootable on this disk -- this partition will be marked bootable
+# - if device is a disk and and there is no partitions marked as
+#   bootable on this disk -- the first partition of the disk will be marked
+#   bootable
+# - if device is raid -- above steps will be done for each raid member.
+
+set_bootable_flag() {
+	local bootdev="$1"
+	local dev=
+	for dev in $bootdev; do
+		local disk=${dev%%[0-9]*}
+		local num=${dev##*[^0-9]}
+		# do nothing if bootable flag is already set somewere in this disk
+		[ -z "$(get_bootable_flag $disk)" ] || continue
+		# if boot device is disk or extended partition - set bootable flag 
+		# for first partition
+		[ -n "$num" -a "$((num < 5))" = 1 ] || num=1
+		/sbin/sfdisk $disk -A$num
+	done
+}

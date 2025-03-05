@@ -1,0 +1,298 @@
+#!/usr/bin/env bash
+#
+# Copyright (C) 2012-2013, 2016, 2020, 2021, 2023  Etersoft
+# Copyright (C) 2012-2013, 2016, 2020, 2021, 2023  Vitaly Lipatov <lav@etersoft.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+PROGDIR=$(dirname "$0")
+PROGNAME=$(basename "$0")
+[ -n "$EPMCURDIR" ] || export EPMCURDIR="$(pwd)"
+CMDENV="/usr/bin/env"
+[ -x "$CMDENV" ] && CMDSHELL="/usr/bin/env bash" || CMDSHELL="$SHELL"
+# TODO: pwd for ./epm and which for epm
+[ "$PROGDIR" = "." ] && PROGDIR="$EPMCURDIR"
+if [ "$0" = "/dev/stdin" ] || [ "$0" = "sh" ] ; then
+    PROGDIR=""
+    PROGNAME=""
+fi
+
+# will replaced with /usr/share/eepm during install
+SHAREDIR=/usr/share/eepm
+# will replaced with /etc/eepm during install
+CONFIGDIR=/etc/eepm
+
+EPMVERSION="3.62.12-alt1"
+
+# package, single (file), pipe, git
+EPMMODE="package"
+[ "$SHAREDIR" = "$PROGDIR" ] && EPMMODE="single"
+[ "$EPMVERSION" = "@""VERSION""@" ] && EPMMODE="git"
+[ "$PROGNAME" = "" ] && EPMMODE="pipe"
+
+if [ "$EPMMODE" = "git" ] ; then
+    EPMVERSION=$(head $PROGDIR/../eepm.spec | grep "^Version: " | sed -e 's|Version: ||' )
+fi
+
+
+load_helper()
+{
+    local shieldname="loaded$(echo "$1" | sed -e 's|-||g')"
+    # already loaded
+    eval "test -n \"\$$shieldname\"" && debug "Already loaded $1" && return
+
+    local CMD="$SHAREDIR/$1"
+    # do not use fatal() here, it can be initial state
+    [ -r "$CMD" ] || { echo "FATAL: Have no $CMD helper file" ; exit 1; }
+    eval "$shieldname=1"
+    # shellcheck disable=SC1090
+    . $CMD
+}
+
+
+load_helper epm-sh-functions
+
+INITDIR=/etc/init.d
+
+PATH=$PATH:/sbin:/usr/sbin
+
+set_sudo
+
+check_tty
+
+#############################
+
+# FIXME: detect by real init system
+# FIXME: add upstart support (Ubuntu?)
+set_service_type()
+{
+    local CMD
+
+    set_distro_info
+
+case "$DISTRCONTROL" in
+    sysvinit)
+        CMD="service-chkconfig"
+        ;;
+    systemd)
+        CMD="systemd"
+        ;;
+esac
+
+# override system control detection result
+[ -n "$SERV_BACKEND" ] && CMD="$SERV_BACKEND"
+# obsoleted
+[ -n "$FORCESERVICE" ] && CMD="$FORCESERVICE"
+
+SERVICETYPE="$CMD"
+
+ANYSERVICE=$(print_command_path anyservice)
+
+}
+
+# TODO: done it on anyservice part
+is_anyservice()
+{
+    [ -n "$ANYSERVICE" ] || return
+    [ -n "$1" ] || return
+    # check if anyservice is exists and checkd returns true
+    $ANYSERVICE "$1" checkd 2>/dev/null
+}
+
+
+phelp()
+{
+    echo "$Descr
+$Usage
+ Commands:
+$(get_help HELPCMD)
+
+ Options:
+$(get_help HELPOPT)
+"
+}
+
+print_version()
+{
+        local on_text="(host system)"
+        local virt="$($DISTRVENDOR -i)"
+        [ "$virt" = "(unknown)" ] || [ "$virt" = "(host system)" ] || on_text="(under $virt)"
+        echo "Service manager version $EPMVERSION  https://wiki.etersoft.ru/Epm"
+        echo "Running on $DISTRNAME/$DISTRVERSION $on_text with $SERVICETYPE"
+        echo "Copyright (c) Etersoft 2012-2023"
+        echo "This program may be freely redistributed under the terms of the GNU AGPLv3."
+}
+
+progname="${0##*/}"
+
+Usage="Usage: $progname [options] [<service>] [<command>] [params]..."
+Descr="serv - Service manager"
+
+set_service_type
+
+verbose=
+quiet=
+short=
+non_interactive=
+show_command_only=
+serv_cmd=
+service_name=
+params=
+withoutservicename=
+
+# load system wide config
+[ -f /etc/eepm/serv.conf ] && . /etc/eepm/serv.conf
+
+check_command()
+{
+    # do not override command
+    [ -z "$serv_cmd" ] || return
+
+    case $1 in
+    status)                   # HELPCMD: show service status
+        serv_cmd=status
+        ;;
+    restart)                 # HELPCMD: restart service
+        serv_cmd=restart
+        ;;
+    reload)                  # HELPCMD: reload service
+        serv_cmd=reload
+        ;;
+    start)                    # HELPCMD: start service
+        serv_cmd=start
+        ;;
+    stop)                     # HELPCMD: stop service
+        serv_cmd=stop
+        ;;
+    on)                       # HELPCMD: add service to run on startup and start it now
+        serv_cmd=on
+        ;;
+    off)                      # HELPCMD: remove service to run on startup and stop it now
+        serv_cmd=off
+        ;;
+    enable)                   # HELPCMD: add service to run on startup (see 'on' also)
+        serv_cmd=enable
+        ;;
+    disable)                 # HELPCMD: remove service to run on startup (see 'off' also)
+        serv_cmd=disable
+        ;;
+    log|journal)              # HELPCMD: print log for the service (-f - follow,  -r - reverse order)
+        serv_cmd=log
+        ;;
+    cat)                      # HELPCMD: print out service file for the service
+        serv_cmd=cat
+        ;;
+    exists)                   # HELPCMD: check if the service is installed on the system
+        serv_cmd=exists
+        ;;
+    edit)                     # HELPCMD: edit service file overload (use --full to edit full file)
+        serv_cmd=edit
+        ;;
+    test|-t)                  # HELPCMD: test a config file of the service
+        serv_cmd=test
+        ;;
+    list)                     # HELPCMD: list running services
+        serv_cmd=list
+        withoutservicename=1
+        ;;
+    list-all)                 # HELPCMD: list all available services
+        serv_cmd=list_all
+        withoutservicename=1
+        ;;
+    list-startup)             # HELPCMD: list all services to run on startup
+        serv_cmd=list_startup
+        withoutservicename=1
+        ;;
+    list-failed|--failed)       # HELPCMD: list services failed on startup
+        serv_cmd=list_failed
+        withoutservicename=1
+        ;;
+    print)                    # HELPCMD: print some info
+        serv_cmd=print
+        withoutservicename=1
+        ;;
+    try-restart|condrestart)  # HELPCMD: Restart service if running
+        serv_cmd=try_restart
+        ;;
+    usage)                    # HELPCMD: print out usage of the service
+        serv_cmd=usage
+        withoutservicename=1
+        ;;
+    *)
+        return 1
+        ;;
+    esac
+    return 0
+}
+
+check_option()
+{
+    case $1 in
+    -h|--help|help)       # HELPOPT: this help
+        phelp
+        exit 0
+        ;;
+    -v|--version)         # HELPOPT: print version
+        print_version
+        exit 0
+        ;;
+    --verbose)            # HELPOPT: verbose mode
+        verbose=1
+        ;;
+    --short)              # HELPOPT: short mode
+        short=1
+        ;;
+    --show-command-only)  # HELPOPT: show command only, do not any action
+        show_command_only=1
+        ;;
+    --quiet)              # HELPOPT: quiet mode (do not print commands before exec)
+        quiet=1
+        ;;
+    --auto)               # HELPOPT: non interactive mode
+        non_interactive=1
+        ;;
+    *)
+        return 1
+        ;;
+    esac
+    return 0
+}
+
+for opt in "$@" ; do
+    check_command $opt && continue
+    check_option $opt && continue
+    [ -z "$service_name" ] && service_name=$opt && continue
+    params="$params $opt"
+done
+
+echover "service: $service_name"
+echover "command: $serv_cmd"
+
+# Just printout help if run without args
+if [ -z "$withoutservicename" ] && [ -z "$service_name" ] ; then
+    print_version
+    echo
+    fatal "Run $ $progname --help for get help"
+fi
+
+# use common way if the command is unknown
+if [ -z "$serv_cmd" ] ; then
+    serv_cmd=common
+fi
+
+# Run helper for command
+load_helper serv-$serv_cmd
+serv_$serv_cmd $service_name $params
+# return last error code (from subroutine)

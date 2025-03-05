@@ -1,0 +1,222 @@
+#!/bin/sh -e
+#
+# $Id: sisyphus_relink,v 1.7 2005/07/01 14:59:29 ldv Exp $
+#
+# Copyright (C) 2003-2005  Stanislav Ievlev <inger@altlinux.org>,
+#                          Dmitry V. Levin <ldv@altlinux.org>,
+#                          Alexey Gladkov <legion@altlinux.org>
+# 
+# sisyphus_relink script.
+#
+# This file is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA.
+#
+
+. /etc/sisyphus/config
+. /etc/sisyphus/functions
+
+cd "$PREFIX"
+
+: ${debug:=}
+: ${verbose:=}
+
+PROG="${0##*/}"
+WORKDIR=
+
+exit_handler()
+{
+	local rc=$?
+	trap - EXIT
+	[ -z "$WORKDIR" ] || rm -rf -- "$WORKDIR"
+	exit $rc
+}
+
+trap exit_handler HUP INT QUIT TERM EXIT
+WORKDIR="$(mktemp -d -t "$PROG.XXXXXXXXXX")"
+
+unlink_symlinked()
+{
+	local dir=$1
+	shift
+	[ -d "$dir" ] || return 0
+	echo "Unlinking in $dir"
+	find "$dir/" -type l -delete
+}
+
+check_arch_dups()
+{
+	local arch=$1
+	shift
+
+	echo "Checking layout dups for $arch"
+	local out
+	out=$(cut -f1 "files/$LIST_PREFIX/list.$arch".* |sort |uniq -c |awk '{if ($1!=1) print $2}')
+	if [ -n "$out" ]; then
+	        echo "ERROR: duplicated names found in $arch layout" >&2
+		duplicate_pkgs="$duplicate_pkgs
+$out
+"
+	fi
+}
+
+calc_arch_names()
+{
+	local arch=$1
+	shift
+	local rpms=$1
+	shift
+
+	echo "Calculating pkgnames in files/$rpms for $arch"
+	find "files/$rpms/" -type f -name \*.rpm -print0 |
+		xargs -r0 rpmquery -p --qf '%{NAME} %{NAME}-%{VERSION}-%{RELEASE}.%|SOURCERPM?{%{ARCH}}:{src}|.rpm %|SOURCERPM?{%{SOURCERPM}}:{}|\n' -- |
+		sort -u >"$WORKDIR/$arch"
+}
+
+check_arch_missing()
+{
+	local arch=$1
+	shift
+
+	local list="$WORKDIR/$arch"
+	[ -s "$list" ] || return 0
+
+	echo "Checking layout misses for $arch"
+	local out
+	out=$(cut -f1 "files/$LIST_PREFIX/list.$arch".* |sort -u |join "$list" - -v1 |cut -d' ' -f1 |sort -u)
+	if [ -n "$out" ]; then
+		echo "ERROR: unlisted packages found in $arch layout">&2
+		missing_pkgs="$missing_pkgs
+$(printf %s "$out" |join "$list" - -o 1.2)
+"
+		return 1
+	fi
+	local f
+	for f in "files/$LIST_PREFIX/list.$arch".*; do
+		out=$(cut -f1 "$f" |sort -u |join "$list" - -v2 |cut -d' ' -f1 |sort -u)
+		if [ -n "$out" ]; then
+			echo "WARNING: orphaned names found in ${f#files/$LIST_PREFIX/list.} layout" >&2
+			orphaned_pkgs="$orphaned_pkgs
+$out
+"
+		fi
+	done
+}
+
+calc_comp()
+{
+	local arch=$1
+	shift
+	local comp=$1
+	shift
+	local sarch=$1
+
+	local n=2
+	[ -z "$sarch" ] && sarch="$arch" || n=3
+
+	local list="files/$LIST_PREFIX/list.$arch.$comp"
+	[ -s "$list" ] || return 0
+
+	echo "Calculating components: $arch/$comp"
+	cut -f1 "$list" |sort -u |join "$WORKDIR/$arch" - |
+		cut -d' ' -f$n |
+		sort -u >"$WORKDIR/$sarch.$comp"
+}
+
+relink_arch()
+{
+	local arch=$1
+	shift
+	local comp=$1
+	shift
+	local rpms=$1
+	shift
+	local rfiles=$1
+	shift
+
+	local list="$WORKDIR/$arch.$comp"
+	[ -s "$list" ] || return 0
+
+	echo "Relinking in $rpms.$comp"
+	local rc=0
+	local n f
+	local full_d full_r full_n r
+
+	local d="$rpms.$comp"
+	full_d=`readlink -ev "$d"` || return 0
+	[ -d "$d" ] || { echo "$d: Not a directory"; return 0; }
+
+	full_r=`readlink -ev "files/$rfiles"` || return 0
+	[ -d "files/$rfiles" ] || { echo "files/$rfiles: Not a directory"; return 0; }
+
+	r=`relative "$full_r" "$full_d/"`
+	cat "$list" |while read n; do
+		f="files/$rfiles/$n"
+		[ -f "$f" ] || continue
+		$debug ln -s $verbose "$r/$n" "$d/" || rc=1
+	done
+	return $rc
+}
+
+problems_list=
+
+duplicate_pkgs=
+missing_pkgs=
+orphaned_pkgs=
+
+check_arch_dups "src" || exit
+calc_arch_names "src" "SRPMS" || exit
+check_arch_missing "src" || problems_list="$problems_list src"
+
+for arch in $ARCHITECTURES; do
+	check_arch_dups "$arch" || exit
+	calc_arch_names "$arch" "$arch/RPMS" || exit
+	if ! check_arch_missing "$arch"; then
+		problems_list="$problems_list $arch"
+	fi
+	for comp in $LINKONLY_COMPONENTS $MIXED_COMPONENTS; do
+		calc_comp "$arch" "$comp" || exit
+		unlink_symlinked "$arch/RPMS.$comp" || exit
+		if ! relink_arch "$arch" "$comp" "$arch/RPMS" "$arch/RPMS"; then
+			echo "ERROR: $arch"
+			problems_list="$problems_list $arch"
+		fi
+
+		calc_comp "$arch" "$comp" "src" || exit
+		unlink_symlinked "$arch/SRPMS.$comp" || exit
+		if ! relink_arch "src" "$comp" "$arch/SRPMS" "SRPMS"; then
+			echo "ERROR: $arch"
+			problems_list="$problems_list $arch"
+		fi
+	done
+	find "$WORKDIR" -type f -name 'src.*' -delete
+done
+
+[ -z "$problems_list" ] || printf '\n%s\n\n' "problems in:$problems_list" >&2
+
+if [ -n "$duplicate_pkgs" ]; then
+    Info "ERROR: duplicated names found:"
+    printf %s\\n "$duplicate_pkgs" >&2
+fi
+
+if [ -n "$missing_pkgs" ]; then
+    Info "ERROR: unlisted packages found:"
+    printf %s\\n "$missing_pkgs" >&2
+fi
+
+if [ -n "$orphaned_pkgs" ]; then
+    Info "ERROR: orphaned names found:"
+    printf %s\\n "$orphaned_pkgs" >&2
+fi
+
+[ -z "$duplicate_pkgs" -a -z "$missing_pkgs" -a -z "$orphaned_pkgs" ] || exit 1

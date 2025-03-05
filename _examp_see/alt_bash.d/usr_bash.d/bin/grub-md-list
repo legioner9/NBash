@@ -1,0 +1,49 @@
+#!/bin/sh -eu
+# ***** BEGIN LICENSE BLOCK *****
+# * Copyright (C) 2007  Alexey Gladkov <legion@altlinux.org>
+# *
+# * This program is free software; you can redistribute it and/or modify
+# * it under the terms of the GNU General Public License as published by
+# * the Free Software Foundation; either version 2 of the License, or
+# * (at your option) any later version.
+# *
+# * This program is distributed in the hope that it will be useful,
+# * but WITHOUT ANY WARRANTY; without even the implied warranty of
+# * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# * GNU General Public License for more details.
+# *
+# * You should have received a copy of the GNU General Public License
+# * along with this program; if not, write to the Free Software
+# * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+# ***** END LICENSE BLOCK *****
+
+. shell-error
+
+grub_md_list(){
+
+	md_device="${1#/dev/}"
+
+	[ -d "/sys/block/$md_device" ] || return
+
+	[ -d "/sys/block/$md_device/md" ] || return
+
+	cd "/sys/block/$md_device/md"
+
+	for devname in dev-*; do
+		[ -d "$devname" ] || break
+		dev="/dev/${devname#dev-}"
+
+		if realdev="/dev/$(devmap_name_grub -q "$dev")"; then
+			if [ ! -b "$realdev" ]; then
+				printf 'Error: %s: not block device\n' "$realdev" >&2
+				continue
+			fi
+
+			printf %s\\n "/dev/$(lsblk -dno pkname $realdev)"
+		else
+			rc=$?
+			[ "$rc" -ne 3 ] || printf %s\\n "/dev/$(lsblk -dno pkname $dev)"
+		fi
+	done
+}
+
