@@ -5,6 +5,7 @@
 # RubyMine startup script.
 # ---------------------------------------------------------------------
 
+
 message()
 {
   TITLE="Cannot start RubyMine"
